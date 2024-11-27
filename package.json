@@ -10,7 +10,10 @@
     "url": "https://github.com/djalbat/occam-furtle"
   },
   "dependencies": {
-    "necessary": "^14.2.1"
+    "necessary": "^14.2.1",
+    "occam-lexers": "^23.0.22",
+    "occam-parsers": "^23.0.31",
+    "occam-query": "^4.1.8"
   },
   "devDependencies": {
     "@swc/core": "^1.5.6",
