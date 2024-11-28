@@ -6,7 +6,7 @@ import { Element } from "easy";
 import { lexerUtilities } from "occam-lexers";
 import { parserUtilities } from "occam-parsers";
 import { eliminateLeftRecursion } from "occam-grammar-utilities";
-import { FurtleLexer, FurtleParser } from "../index"; ///
+import { FurtleLexer, FurtleParser } from "occam-grammars";
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
 import SubHeading from "./view/subHeading";
