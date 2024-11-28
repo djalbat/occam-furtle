@@ -59,6 +59,6 @@ class TokensTextarea extends Textarea {
 
 export default withStyle(TokensTextarea)`
 
-  height: 8rem;
+  height: 16rem;
   
 `;

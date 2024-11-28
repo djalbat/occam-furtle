@@ -5,10 +5,10 @@ import { CommonLexer,
          EndOfLineNonSignificantToken,
          DoublyQuotedStringLiteralToken,
          EndOfLineCommentNonSignificantToken,
-         CStyleSingleLineCommentToken,
-         CStyleEndOfMultiLineCommentToken,
-         CStyleStartOfMultiLineCommentToken,
-         CStyleMiddleOfMultiLineCommentToken } from "occam-lexers";
+         PythonStyleSingleLineCommentToken,
+         PythonStyleEndOfMultiLineCommentToken,
+         PythonStyleStartOfMultiLineCommentToken,
+         PythonStyleMiddleOfMultiLineCommentToken } from "occam-lexers";
 
 import entries from "./entries";
 
@@ -23,13 +23,13 @@ export default class FurtleLexer extends CommonLexer {
 
   static EndOfLineCommentToken = EndOfLineCommentNonSignificantToken;
 
-  static SingleLineCommentToken = CStyleSingleLineCommentToken;
+  static SingleLineCommentToken = PythonStyleSingleLineCommentToken;
 
-  static EndOfMultiLineCommentToken = CStyleEndOfMultiLineCommentToken;  ///
+  static EndOfMultiLineCommentToken = PythonStyleEndOfMultiLineCommentToken;  ///
 
-  static StartOfMultiLineCommentToken = CStyleStartOfMultiLineCommentToken;  ///
+  static StartOfMultiLineCommentToken = PythonStyleStartOfMultiLineCommentToken;  ///
 
-  static MiddleOfMultiLineCommentToken = CStyleMiddleOfMultiLineCommentToken;  ///
+  static MiddleOfMultiLineCommentToken = PythonStyleMiddleOfMultiLineCommentToken;  ///
 
   static SinglyQuotedStringLiteralToken = null;
 

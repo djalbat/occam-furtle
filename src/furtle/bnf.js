@@ -1,109 +1,157 @@
 "use strict";
 
-const bnf = `document             ::=  ( instruction | error )+ ;
+const bnf = `document              ::=  ( instruction | error )+ ;
 
 
 
-instruction          ::=  functionDeclaration
+instruction           ::=  functionDeclaration
+                        
+                        |  variablesDeclaration 
+                        
+                        |  variablesAssignment 
+                        
+                        |  variableAssignment
+                        
+                        |  conditionalBlock
 
-                       |  ( variableAssignment
-
-                          | nodesDeclaration  
-     
-                          | nodeDeclaration ) ";" ;
-
-
-
-functionDeclaration  ::=  "Function" function ;
-
-variableAssignment   ::=  variable "=" ( nodesQuery
-
-                                       | nodeQuery
-                                       
-                                       | forEach
-                                       
-                                       | value ) ;
-
-nodesDeclaration     ::=  "Nodes" variable ;
-
-nodeDeclaration      ::=  "Node" variable ;
-
-
-function             ::=  [name] "(" arguments? ")" "{" body "}" ;
-
-
-body                 ::=  ( variableAssignment ";" )* ;
+                        |  forEachLoop 
+                       
+                        ;
 
 
 
-nodesQuery           ::=  "nodesQuery"<NO_WHITESPACE>"(" expression ")" ;
+functionDeclaration   ::=  [type] function ";" ;
 
-nodeQuery            ::=  "nodeQuery"<NO_WHITESPACE>"(" expression ")" ;
+variablesDeclaration  ::=  [type] variables ";" ;
 
-
-
-value                ::=  variable | [number] | [primitive] ;
-
-
-
-arguments            ::=  argument ( "," argument )* ;
-
-argument             ::=  variable ;
-
-variable             ::=  [name] ;
-
-
-
-expression           ::=  path spread? subExpression? ;
-
-path                 ::=  "/" infiniteDescent? selectors ;
-
-subExpression        ::=  path spread? subExpression?;
-
-infiniteDescent      ::=  "/" ;
-
-selectors            ::=  selector ( "|" selector )* ;
-
-spread               ::=  unique
-
-                       |  "[" 
-    
-                          ( 
-                            
-                            ( startIndex "..." endIndex ) 
-                            
-                            | 
-                            
-                            ( startIndex "..." ) 
-                            
-                            | 
-                            
-                            ( "..." endIndex )
+variablesAssignment   ::=  ( ( "{" variables "}" ) 
                              
-                            | 
+                             | 
+                             
+                             ( "[" variables "]" ) ) "=" ( nodesQuery | 
+
+                                                           nodeQuery | 
+                                                          
+                                                           variable ) ";" ;
+                                          
+variableAssignment    ::=  variable "=" ( nodesQuery | 
+
+                                          nodeQuery | 
+                                          
+                                          variable | 
+                                          
+                                          [number] | 
+                                          
+                                          [primitive] | 
+                                          
+                                          [string-literal] ) ";" ;
+                                          
+                                          
+conditionalBlock      ::=  "If" condition ":" ;                                            
+
+
+
+forEachLoop           ::=  "forEach"<NO_WHITESPACE>"(" variable "," [type] anonymousFunction ")" ;
+
+
+
+nodesQuery            ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
+
+nodeQuery             ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
+
+
+
+
+anonymousFunction     ::=  "(" arguments? ")" "{" body? "}" ;
+
+function              ::=  [name] "(" arguments? ")" "{" body? "}" ;
+
+arguments             ::=  argument ( "," argument )* ;
+
+argument              ::=  [type] variable ;
+
+body                  ::=  ( variablesDeclaration |  
+
+                             variablesAssignment |  
+                             
+                             variableAssignment |  
+                             
+                             conditionalBlock )+ ;
+
+
+
+condition             ::=  "(" condition ")" 
+
+                        |  variable "==" ( nodesQuery | 
+
+                                           nodeQuery | 
+                                            
+                                           variable | 
+                                            
+                                           [number] | 
+                                            
+                                           [primitive] | 
+                                            
+                                           [string-literal] ) ;
+
+
+
+variables             ::=  variable ( "," variable )* ;
+
+variable              ::=  [name] ;
+
+
+
+expression            ::=  path spread? subExpression? ;
+
+path                  ::=  "/" infiniteDescent? selectors ;
+
+subExpression         ::=  path spread? subExpression?;
+
+infiniteDescent       ::=  "/" ;
+
+selectors             ::=  selector ( "|" selector )* ;
+
+spread                ::=  unique
+
+                        |  "[" 
+      
+                           ( 
+                              
+                             ( startIndex "..." endIndex ) 
+                              
+                             | 
+                              
+                             ( startIndex "..." ) 
+                              
+                             | 
+                              
+                             ( "..." endIndex )
+                               
+                             | 
+                              
+                             index 
+                              
+                           )  
                             
-                            index 
-                            
-                          )  
-                          
-                          "]" ;
+                           "]" ;
 
-selector             ::=  ruleName | tokenType ;
+selector              ::=  ruleName | tokenType ;
                    
-ruleName             ::=  [name] | "*" ;
+ruleName              ::=  [name] | "*" ;
                    
-tokenType            ::=  "@"<NO_WHITESPACE>( [name] | "*" ) ;
+tokenType             ::=  "@"<NO_WHITESPACE>( [name] | "*" ) ;
                    
-startIndex           ::=  [number] ;
+startIndex            ::=  [number] ;
                    
-endIndex             ::=  [number] ;
+endIndex              ::=  [number] ;
                    
-index                ::=  [number] ;
+index                 ::=  [number] ;
                    
-unique               ::=  "!" ;
+unique                ::=  "!" ;
                    
 
 
-error.               ::=  . ;`;
+error.                ::=  . ;`;
 
 export default bnf;

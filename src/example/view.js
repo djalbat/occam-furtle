@@ -3,6 +3,8 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
+import { parserUtilities } from "occam-parsers";
+import { eliminateLeftRecursion } from "occam-grammar-utilities";
 import { FurtleLexer, FurtleParser } from "../index"; ///
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
@@ -15,10 +17,7 @@ import ContentTextarea from "./view/textarea/content";
 import ParseTreeTextarea from "./view/textarea/parseTree";
 import LexicalEntriesTextarea from "./view/textarea/lexicalEntries";
 
-const { bnf } = FurtleParser,
-      { entries } = FurtleLexer,
-      furtleLexer = FurtleLexer.fromNothing(),
-      furtleParser = FurtleParser.fromNothing();
+const { rulesFromBNF, parserFromRulesAndStartRuleName } = parserUtilities;
 
 class View extends Element {
   keyUpHandler = (event, element) => {
@@ -35,7 +34,10 @@ class View extends Element {
   }
 
   getTokens() {
-    const lexer = furtleLexer,  ///
+    const lexicalEntries = this.getLexicalEntries(),
+          entries = lexicalEntries, ///
+          furtleLexer = FurtleLexer.fromEntries(entries),
+          lexer = furtleLexer,  ///
           content = this.getContent(),
           tokens = lexer.tokenise(content);
 
@@ -45,11 +47,19 @@ class View extends Element {
   getParseTree(tokens) {
     let parseTree = null;
 
-    const parser = furtleParser, ///
-          ruleName = this.getRuleName(),
-          ruleMap = parser.getRuleMap(),
-          rule = ruleMap[ruleName],
-          node = parser.parse(tokens, rule);
+    const bnf = this.getBNF();
+
+    let rules;
+
+    rules = rulesFromBNF(bnf);
+
+    rules = eliminateLeftRecursion(rules);  ///
+
+    const ruleName = this.getRuleName(),
+          startRuleName = ruleName, ///
+          furtleParser = parserFromRulesAndStartRuleName(FurtleParser, rules, startRuleName),
+          parser = furtleParser, ///
+          node = parser.parse(tokens);
 
     if (node !== null) {
       parseTree = node.asParseTree(tokens);
@@ -59,25 +69,10 @@ class View extends Element {
   }
 
   childElements() {
-    const { readOnly } = this.constructor;
-
     return (
 
       <ColumnsDiv>
         <SizeableDiv>
-          <RowsDiv>
-            <SubHeading>
-              Lexical entries
-            </SubHeading>
-            <LexicalEntriesTextarea onKeyUp={this.keyUpHandler} readOnly={readOnly} />
-            <SubHeading>
-              BNF
-            </SubHeading>
-            <BNFTextarea onKeyUp={this.keyUpHandler} readOnly={readOnly} />
-          </RowsDiv>
-        </SizeableDiv>
-        <VerticalSplitterDiv />
-        <ColumnDiv>
           <RowsDiv>
             <SubHeading>
               Rule name
@@ -96,6 +91,19 @@ class View extends Element {
             </SubHeading>
             <ParseTreeTextarea />
           </RowsDiv>
+        </SizeableDiv>
+        <VerticalSplitterDiv />
+        <ColumnDiv>
+          <RowsDiv>
+            <SubHeading>
+              Lexical entries
+            </SubHeading>
+            <LexicalEntriesTextarea onKeyUp={this.keyUpHandler} />
+            <SubHeading>
+              BNF
+            </SubHeading>
+            <BNFTextarea onKeyUp={this.keyUpHandler} />
+          </RowsDiv>
         </ColumnDiv>
       </ColumnsDiv>
 
@@ -105,18 +113,26 @@ class View extends Element {
   initialise() {
     this.assignContext();
 
-    const { initialContent } = this.constructor,
+    const { bnf } = FurtleParser,
+          { entries } = FurtleLexer,
+          { initialContent } = this.constructor,
           content = initialContent, ///
           lexicalEntries = entries; ///
 
     this.setBNF(bnf);
+
     this.setContent(content);
+
     this.setLexicalEntries(lexicalEntries);
 
     this.keyUpHandler();
   }
 
-  static initialContent = "";
+  static initialContent = `
+  
+If firstChildNode == "∀" :
+
+`;
 
   static tagName = "div";
 
