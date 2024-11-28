@@ -45,6 +45,6 @@ class ParseTreeTextarea extends Textarea {
 
 export default withStyle(ParseTreeTextarea)`
 
-  height: 48rem;
+  height: 24rem;
   
 `;

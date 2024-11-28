@@ -3,11 +3,8 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
-import { lexerUtilities } from "occam-lexers";
-import { parserUtilities } from "occam-parsers";
-import { eliminateLeftRecursion } from "occam-grammar-utilities";
-import { FurtleLexer, FurtleParser } from "occam-grammars";
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
+import { FurtleLexer, FurtleParser, lexersUtilities, parsersUtilities } from "occam-grammars";
 
 import SubHeading from "./view/subHeading";
 import SizeableDiv from "./view/div/sizeable";
@@ -18,8 +15,8 @@ import ContentTextarea from "./view/textarea/content";
 import ParseTreeTextarea from "./view/textarea/parseTree";
 import LexicalEntriesTextarea from "./view/textarea/lexicalEntries";
 
-const { rulesFromEntries, lexerFromRules } = lexerUtilities,
-      { rulesFromBNF, parserFromRulesAndStartRuleName } = parserUtilities;
+const { furtleLexerFromEntries } = lexersUtilities,
+      { furtleParserFromBNFAndStartRuleName } = parsersUtilities;
 
 class View extends Element {
   keyUpHandler = (event, element) => {
@@ -38,8 +35,7 @@ class View extends Element {
   getTokens() {
     const lexicalEntries = this.getLexicalEntries(),
           entries = lexicalEntries, ///
-          rules = rulesFromEntries(entries),
-          furtleLexer = lexerFromRules(FurtleLexer, rules),
+          furtleLexer = furtleLexerFromEntries(entries),
           lexer = furtleLexer,  ///
           content = this.getContent(),
           tokens = lexer.tokenise(content);
@@ -52,15 +48,9 @@ class View extends Element {
 
     const bnf = this.getBNF();
 
-    let rules;
-
-    rules = rulesFromBNF(bnf);
-
-    rules = eliminateLeftRecursion(rules);  ///
-
     const ruleName = this.getRuleName(),
           startRuleName = ruleName, ///
-          furtleParser = parserFromRulesAndStartRuleName(FurtleParser, rules, startRuleName),
+          furtleParser = furtleParserFromBNFAndStartRuleName(bnf, startRuleName),
           parser = furtleParser, ///
           node = parser.parse(tokens);
 
