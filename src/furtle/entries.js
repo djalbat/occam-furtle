@@ -2,19 +2,19 @@
 
 const entries = [
   {
-    "type": "^(?:Boolean|Number|Nodes|Node|Void)"
+    "type": "^(?:Boolean|String|Number|Nodes|Node|Void)"
   },
   {
-    "keyword": "^(?:If|Else)"
+    "keyword": "^(?:If|Else|Return|ForEach|Break)"
   },
   {
     "primitive": "^(?:null|true|false)"
   },
   {
-    "instruction": "^(?:forEach|nodeQuery|nodesQuery)"
+    "instruction": "^(?:nodeQuery|nodesQuery|isTerminalNode)"
   },
   {
-    "special": "^(?:@|!|\\*|\\||\\/|\\(|\\)|\\[|\\]|\\{|\\}|\\.\\.\\.|:|;|,|==|=|&&|\\|\\|)"
+    "special": "^(?:!=|==|=|;|,|_|&&|\\|\\||@|!|\\*|\\||\\/|\\(|\\)|\\[|\\]|\\{|\\}|\\.\\.\\.)"
   },
   {
     "name": "^[a-zA-Z\-]+"

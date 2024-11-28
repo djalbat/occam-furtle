@@ -3,6 +3,7 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
+import { lexerUtilities } from "occam-lexers";
 import { parserUtilities } from "occam-parsers";
 import { eliminateLeftRecursion } from "occam-grammar-utilities";
 import { FurtleLexer, FurtleParser } from "../index"; ///
@@ -17,7 +18,8 @@ import ContentTextarea from "./view/textarea/content";
 import ParseTreeTextarea from "./view/textarea/parseTree";
 import LexicalEntriesTextarea from "./view/textarea/lexicalEntries";
 
-const { rulesFromBNF, parserFromRulesAndStartRuleName } = parserUtilities;
+const { rulesFromEntries, lexerFromRules } = lexerUtilities,
+      { rulesFromBNF, parserFromRulesAndStartRuleName } = parserUtilities;
 
 class View extends Element {
   keyUpHandler = (event, element) => {
@@ -36,7 +38,8 @@ class View extends Element {
   getTokens() {
     const lexicalEntries = this.getLexicalEntries(),
           entries = lexicalEntries, ///
-          furtleLexer = FurtleLexer.fromEntries(entries),
+          rules = rulesFromEntries(entries),
+          furtleLexer = lexerFromRules(FurtleLexer, rules),
           lexer = furtleLexer,  ///
           content = this.getContent(),
           tokens = lexer.tokenise(content);
@@ -128,10 +131,82 @@ class View extends Element {
     this.keyUpHandler();
   }
 
-  static initialContent = `
+  static initialContent = `Node* termNode, statementNode; Boolean* bound = false;
   
-If firstChildNode == "∀" :
+String variableName = variableNameFromTermNode(termNode);
 
+If (variableName == null) {
+  Break;
+}
+
+Nodes statementNodes = nodesQuery(statementNode, //statement);
+
+ForEach(statementNodes, (Node statementNode) {
+  String boundVariableName = boundVariableNameFromStatementNode(statementNode); 
+  
+  If (boundVariableName == variableName) {
+    bound = true;
+    
+    Break;
+  }
+});
+  
+  
+String variableNameFromTermNode(Node termNode) {
+  String variableName = null;
+  
+  Node variableNameTerminalNode = nodeQuery(termNode, /term/variable/@name);
+  
+  If (variableNameTerminalNode != null) {
+    String content;
+    
+    { content } = variableNameTerminalNode;
+    
+    variableName = content;
+  }
+  
+  Return variableName;
+}
+
+String boundVariableNameFromStatementNode(Node statementNode) {
+  String boundVariableName = null;
+  
+  Nodes childNodes;
+  
+  { childNodes } = statementNode;
+  
+  Node firstChildNode;
+
+  [ firstChildNode ] = childNodes;
+  
+  Boolean firstChildNodeTerminalNode = isTerminalNode(firstChildNode);
+  
+  If (firstChildNodeTerminalNode) {
+    Node terminalNode = firstChildNode;
+    
+    String content;
+    
+    { content } = firstChildNode;
+    
+    If ((content == "∀") || (content == "∃")) {
+      Node secondChildNode;
+      
+      [ _, secondChildNode ] = childNodes;
+      
+      Node argumentNode = secondChildNode;
+      
+      Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable/@name);
+      
+      If (boundVariableNameTerminalNode != null) {
+        { content } = boundVariableNameTerminalNode;
+        
+        boundVariableName = content;
+      }
+    }
+  }
+    
+  Return boundVariableName;
+}
 `;
 
   static tagName = "div";

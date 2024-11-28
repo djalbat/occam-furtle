@@ -6,99 +6,135 @@ const bnf = `document              ::=  ( instruction | error )+ ;
 
 instruction           ::=  functionDeclaration
                         
-                        |  variablesDeclaration 
+                        |  pointersDeclaration
+
+                        |  variablesDeclaration
                         
-                        |  variablesAssignment 
+                        |  variableAssignment 
                         
-                        |  variableAssignment
+                        |  objectAssignment 
+                        
+                        |  arrayAssignment
                         
                         |  conditionalBlock
 
                         |  forEachLoop 
                        
+                        |  break 
+
                         ;
 
 
 
-functionDeclaration   ::=  [type] function ";" ;
+functionDeclaration   ::=  [type] function ;
 
-variablesDeclaration  ::=  [type] variables ";" ;
+pointersDeclaration   ::=  [type]<NO_WHITESPACE>"*" [name] assignment? ( "," [name] assignment? )* ";" ;
 
-variablesAssignment   ::=  ( ( "{" variables "}" ) 
-                             
+variablesDeclaration  ::=  [type] [name] assignment? ( "," [name] assignment? )* ";" ;
+
+variableAssignment    ::=  [name] assignment ";" ;
+
+objectAssignment      ::=  "{" 
+
+                           [name] ( "," [name] )* 
+                           
+                           "}" "=" [name] ";" ;
+
+arrayAssignment       ::=  "[" 
+
+                           ( 
+
+                             ( "_" ( "," "_" )* ( "," [name] )+ ) 
+                           
                              | 
-                             
-                             ( "[" variables "]" ) ) "=" ( nodesQuery | 
+                           
+                             ( [name] ( "," [name] )* ) 
+                               
+                           ) 
+                           
+                           "]" "=" [name] ";" ;
 
-                                                           nodeQuery | 
-                                                          
-                                                           variable ) ";" ;
-                                          
-variableAssignment    ::=  variable "=" ( nodesQuery | 
+conditionalBlock      ::=  "If" "(" condition ")" block ( "Else" block )? ;                                            
 
-                                          nodeQuery | 
-                                          
-                                          variable | 
-                                          
-                                          [number] | 
-                                          
-                                          [primitive] | 
-                                          
-                                          [string-literal] ) ";" ;
+forEachLoop           ::=  "ForEach"<NO_WHITESPACE>"(" [name] "," anonymousFunction ")" ";" ;
+
+
+             
+assignment            ::=  "=" ( functionCall | isTerminalNode | nodesQuery | nodeQuery | value ) ;
                                           
                                           
-conditionalBlock      ::=  "If" condition ":" ;                                            
+                                          
+block                 ::=  "{" ( variablesDeclaration |
+
+                                 variableAssignment | 
+                        
+                                 objectAssignment | 
+                        
+                                 arrayAssignment |
+                        
+                                 conditionalBlock |
+
+                                 forEachLoop |
+                                 
+                                 break )* "}" ;
 
 
 
-forEachLoop           ::=  "forEach"<NO_WHITESPACE>"(" variable "," [type] anonymousFunction ")" ;
+
+functionCall          ::=  [name]<NO_WHITESPACE>"(" ( [name] ( "," [name] )* )? ")" ;
+
+function              ::=  [name]<NO_WHITESPACE>"(" ( argument ( "," argument )* )? ")" body ;
+
+anonymousFunction     ::=  "(" ( argument ( "," argument )* )? ")" body ;
 
 
 
-nodesQuery            ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
+isTerminalNode        ::=  "isTerminalNode"<NO_WHITESPACE>"(" [name] ")" ;
 
-nodeQuery             ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
+nodesQuery            ::=  "nodesQuery"<NO_WHITESPACE>"(" [name] "," expression ")" ;
 
+nodeQuery             ::=  "nodeQuery"<NO_WHITESPACE>"(" [name] "," expression ")" ;
 
-
-
-anonymousFunction     ::=  "(" arguments? ")" "{" body? "}" ;
-
-function              ::=  [name] "(" arguments? ")" "{" body? "}" ;
-
-arguments             ::=  argument ( "," argument )* ;
-
-argument              ::=  [type] variable ;
-
-body                  ::=  ( variablesDeclaration |  
-
-                             variablesAssignment |  
-                             
-                             variableAssignment |  
-                             
-                             conditionalBlock )+ ;
 
 
 
 condition             ::=  "(" condition ")" 
 
-                        |  variable "==" ( nodesQuery | 
+                        |  condition ( "||" | "&&" ) condition 
 
-                                           nodeQuery | 
-                                            
-                                           variable | 
-                                            
-                                           [number] | 
-                                            
-                                           [primitive] | 
-                                            
-                                           [string-literal] ) ;
+                        |  value ( ( "!=" | "==" ) value )? 
+                        
+                        ;
 
 
 
-variables             ::=  variable ( "," variable )* ;
+body                  ::=  "{" ( variablesDeclaration | 
+                        
+                                 variableAssignment | 
+                        
+                                 objectAssignment | 
+                        
+                                 arrayAssignment |
+                        
+                                 conditionalBlock |
 
-variable              ::=  [name] ;
+                                 forEachLoop |
+
+                                 break )* return? "}" ;
+                                 
+                                 
+
+return                ::=  "Return" value ";" ; 
+
+break                 ::=  "Break" ";" ; 
+
+
+
+value                 ::=  [name] | [number] | [primitive] | [string-literal] ;
+
+
+
+argument              ::=  [type] [name] ;
 
 
 
