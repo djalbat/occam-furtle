@@ -3,7 +3,8 @@
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const nameTerminalNodeQuery = nodeQuery("/reference/@name");
+const referenceNameTerminalNodeQuery = nodeQuery("/reference/@name"),
+      assignmentProcedureCallReferenceNameTerminalNodeQuery = nodeQuery("/assignment/procedureCall/reference/@name");
 
 export default domAssigned(class Reference {
   constructor(name) {
@@ -28,12 +29,27 @@ export default domAssigned(class Reference {
 
     return reference;
   }
+
+  static fromAssignmentNode(assignment, context) {
+    const name = nameFromAssignmentNode(assignment),
+          reference = new Reference(name);
+
+    return reference;
+  }
 });
 
 function nameFromReferenceNode(referenceNode) {
-  const nameTerminalNode = nameTerminalNodeQuery(referenceNode),
-        nameTerminalNodeContent = nameTerminalNode.getContent(),
-        name = nameTerminalNodeContent; ///
+  const referenceNameTerminalNode = referenceNameTerminalNodeQuery(referenceNode),
+        referenceNameTerminalNodeContent = referenceNameTerminalNode.getContent(),
+        name = referenceNameTerminalNodeContent; ///
+
+  return name;
+}
+
+function nameFromAssignmentNode(assignmentNode) {
+  const assignmentProcedureCallReferenceNameTerminalNode = assignmentProcedureCallReferenceNameTerminalNodeQuery(assignmentNode),
+        assignmentProcedureCallReferenceNameTerminalNodeContent = assignmentProcedureCallReferenceNameTerminalNode.getContent(),
+        name = assignmentProcedureCallReferenceNameTerminalNodeContent; ///
 
   return name;
 }

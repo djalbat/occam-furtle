@@ -2,11 +2,17 @@
 
 import Step from "./dom/step";
 import Label from "./dom/label";
+import Value from "./dom/value";
 import Variable from "./dom/variable";
+import Condition from "./dom/condition";
 import Parameter from "./dom/parameter";
 import Reference from "./dom/reference";
 import Procedure from "./dom/procedure";
+import NodeQuery from "./dom/query/node";
+import NodesQuery from "./dom/query/nodes";
+import Assignment from "./dom/assignment";
 import ForEachLoop from "./dom/forEachLoop";
+import ProcedureCall from "./dom/procedureCall";
 import ArrayAssigment from "./dom/assignment/array";
 import ObjectAssignment from "./dom/assignment/object";
 import ConditionalBlock from "./dom/conditionalBlock";
