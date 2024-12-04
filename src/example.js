@@ -1,21 +1,26 @@
 "use strict";
 
-import "juxtapose";
+import { fileSystemUtilities } from "necessary";
+import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
-import withStyle from "easy-with-style";  ///
+import topLevelVerifier from "./verifier/topLevel";
 
-import { Body } from "easy";
+const { readFile } = fileSystemUtilities,
+      { furtleLexerFromNothing } = lexersUtilities,
+      { furtleParserFromNothing } = parsersUtilities;
 
-import View from "./example/view";
+const furtleLexer = furtleLexerFromNothing(),
+      furtleParser = furtleParserFromNothing();
 
-const { renderStyles } = withStyle;
+const filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
+      fileContent = readFile(filePath),
+      content = fileContent,  ///
+      tokens = furtleLexer.tokenise(content),
+      node = furtleParser.parse(tokens),
+      fileContext = null;
 
-renderStyles();
+topLevelVerifier.verify(node, fileContext);
 
-const body = new Body();
 
-body.mount(
 
-  <View/>
 
-);
