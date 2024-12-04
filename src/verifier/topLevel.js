@@ -5,7 +5,9 @@ import Verifier from "../verifier";
 
 import { nodeQuery } from "../utilities/query";
 
-const errorNodeQuery = nodeQuery("/error");
+const errorNodeQuery = nodeQuery("/error"),
+      procedureDeclarationNodeQuery = nodeQuery("/topLevelDeclaration/procedureDeclaration"),
+      variablesDeclarationNodeQuery = nodeQuery("/topLevelDeclaration/variablesDeclaration");
 
 class TopLevelVerifier extends Verifier {
   verify(node, fileContext) {
@@ -28,6 +30,26 @@ class TopLevelVerifier extends Verifier {
               errorVerified = error.verify();
 
         return errorVerified;
+      }
+    },
+    {
+      nodeQuery: procedureDeclarationNodeQuery,
+      verify: (procedureDeclarationNode, fileContext) => {
+        const { ProcedureDeclaration } = dom,
+              procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
+              procedureDeclarationVerified = procedureDeclaration.verify();
+
+        return procedureDeclarationVerified;
+      }
+    },
+    {
+      nodeQuery: variablesDeclarationNodeQuery,
+      verify: (variablesDeclarationNode, fileContext) => {
+        const { VariablesDeclaration } = dom,
+              variablesDeclaration = VariablesDeclaration.fromVariablesDeclarationNode(variablesDeclarationNode, fileContext),
+              variablesDeclarationVerified = variablesDeclaration.verify();
+
+        return variablesDeclarationVerified;
       }
     }
   ];

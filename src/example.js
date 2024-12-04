@@ -1,5 +1,7 @@
 "use strict";
 
+import "./index";
+
 import { fileSystemUtilities } from "necessary";
 import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
