@@ -5,15 +5,27 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const conditionalBlockNodeQuery = nodeQuery("/step/conditionalBlock");
+const elseBlockNodeQuery = nodeQuery("/conditionalBlock/block[1]"),
+      conditionBlockNodeQuery = nodeQuery("/conditionalBlock/block[0]"),
+      conditionalBlockNodeQuery = nodeQuery("/step/conditionalBlock");
 
 export default domAssigned(class ConditionalBlock {
-  constructor(condition) {
+  constructor(condition, conditionBlock, elseBlock) {
     this.condition = condition;
+    this.conditionBlock = conditionBlock;
+    this.elseBlock = elseBlock;
   }
 
   getCondition() {
     return this.condition;
+  }
+
+  getConditionBlock() {
+    return this.conditionBlock;
+  }
+
+  getElseBlock() {
+    return this.elseBlock;
   }
 
   getString() {
@@ -28,10 +40,14 @@ export default domAssigned(class ConditionalBlock {
     const conditionalBlockNode = conditionalBlockNodeQuery(stepNode);
 
     if (conditionalBlockNode !== null) {
-      const { Condition } = dom,
-            condition = Condition.fromConditionalBlockNode(conditionalBlockNode, context);
+      const { Block, Condition } = dom,
+            conditionBlockNode = conditionBlockNodeQuery(conditionalBlockNode),
+            elseBlockNode = elseBlockNodeQuery(conditionalBlockNode),
+            condition = Condition.fromConditionalBlockNode(conditionalBlockNode, context),
+            conditionBlock = Block.fromBlockNode(conditionBlockNode, context),
+            elseBlock = Block.fromBlockNode(elseBlockNode, context);
 
-      debugger
+      conditionalBlock = new ConditionalBlock(condition, conditionBlock, elseBlock);
     }
 
     return conditionalBlock;

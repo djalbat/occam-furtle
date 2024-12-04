@@ -5,8 +5,9 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const valueNodeQuery = nodeQuery("/assignment/value"),
-      numberTerminalNodeQuery = nodeQuery("/@number"),
+const numberTerminalNodeQuery = nodeQuery("/@number"),
+      conditionValueNodeQuery = nodeQuery("/condition/value"),
+      assignmentValueNodeQuery = nodeQuery("/assignment/value"),
       primitiveTerminalNodeQuery = nodeQuery("/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/@string-literal");
 
@@ -43,9 +44,9 @@ export default domAssigned(class Value {
   static fromValueNode(valueNode, context) {
     const { Variable } = dom,
           variable = Variable.fromValueNode(valueNode, context),
-          number = numberFromAssignmentNode(valueNode),
-          primitive = primitiveFromAssignmentNode(valueNode),
-          stringLiteral = stringLiteralFromAssignmentNode(valueNode),
+          number = numberFromValueNode(valueNode),
+          primitive = primitiveFromValueNode(valueNode),
+          stringLiteral = stringLiteralFromValueNode(valueNode),
           value = new Value(variable, number, primitive, stringLiteral);
 
     return value;
@@ -54,14 +55,34 @@ export default domAssigned(class Value {
   static fromAssignmentNode(assigmentNode, context) {
     let value = null;
 
-    const valueNode = valueNodeQuery(assigmentNode);
+    const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
 
-    if (valueNode !== null) {
+    if (assignmentValueNode !== null) {
       const { Variable } = dom,
+            valueNode = assignmentValueNode,  ///
             variable = Variable.fromValueNode(valueNode, context),
-            number = numberFromAssignmentNode(valueNode),
-            primitive = primitiveFromAssignmentNode(valueNode),
-            stringLiteral = stringLiteralFromAssignmentNode(valueNode);
+            number = numberFromValueNode(valueNode),
+            primitive = primitiveFromValueNode(valueNode),
+            stringLiteral = stringLiteralFromValueNode(valueNode);
+
+      value = new Value(variable, number, primitive, stringLiteral);
+    }
+
+    return value;
+  }
+
+  static fromConditionalNode(conditionalNode, context) {
+    let value = null;
+
+    const conditionValueNode = conditionValueNodeQuery(conditionalNode);
+
+    if (conditionValueNode !== null) {
+      const { Variable } = dom,
+            valueNode = conditionValueNode, ///
+            variable = Variable.fromValueNode(valueNode, context),
+            number = numberFromValueNode(valueNode),
+            primitive = primitiveFromValueNode(valueNode),
+            stringLiteral = stringLiteralFromValueNode(valueNode);
 
       value = new Value(variable, number, primitive, stringLiteral);
     }
@@ -70,10 +91,10 @@ export default domAssigned(class Value {
   }
 });
 
-function numberFromAssignmentNode(assigmentNode) {
+function numberFromValueNode(valueNode) {
   let number = null;
 
-  const numberTerminalNode = numberTerminalNodeQuery(assigmentNode);
+  const numberTerminalNode = numberTerminalNodeQuery(valueNode);
 
   if (numberTerminalNode !== null) {
     const numberTerminalNodeContent = numberTerminalNode.getContent();
@@ -84,10 +105,10 @@ function numberFromAssignmentNode(assigmentNode) {
   return number;
 }
 
-function primitiveFromAssignmentNode(assigmentNode) {
+function primitiveFromValueNode(valueNode) {
   let primitive = null;
 
-  const primitiveTerminalNode = primitiveTerminalNodeQuery(assigmentNode);
+  const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
 
   if (primitiveTerminalNode !== null) {
     const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
@@ -98,10 +119,10 @@ function primitiveFromAssignmentNode(assigmentNode) {
   return primitive;
 }
 
-function stringLiteralFromAssignmentNode(assigmentNode) {
+function stringLiteralFromValueNode(valueNode) {
   let stringLiteral = null;
 
-  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(assigmentNode);
+  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
 
   if (stringLiteralTerminalNode !== null) {
     const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent();

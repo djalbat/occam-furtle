@@ -7,8 +7,8 @@ import { domAssigned } from "../dom";
 
 const typeTerminalNodeQuery = nodeQuery("/parameter/@type"),
       valueVariableNodeQuery = nodeQuery("/value/variable"),
-      variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
-      parameterVariableNameTerminalNodeQuery = nodeQuery("/parameter/variable/@name");
+      parameterVariableNodeQuery = nodeQuery("/parameter/variable"),
+      variableNameTerminalNodeQuery = nodeQuery("/variable/@name");
 
 export default domAssigned(class Variable {
   constructor(type, name, assignment) {
@@ -55,8 +55,10 @@ export default domAssigned(class Variable {
   }
 
   static fromParameterNode(parameterNode, context) {
-    const type = typeFromParameterNode(parameterNode),
-          name = nameFromParameterNode(parameterNode),
+    const parameterVariableNode = parameterVariableNodeQuery(parameterNode),
+          variableNode = parameterVariableNode, ///
+          type = typeFromParameterNode(parameterNode),
+          name = nameFromVariableNode(variableNode),
           assigment = null,
           variable = new Variable(type, name, assigment);
 
@@ -77,14 +79,6 @@ function nameFromVariableNode(variableNode) {
   const variableNameTerminalNode = variableNameTerminalNodeQuery(variableNode),
         variableNameTerminalNodeContent = variableNameTerminalNode.getContent(),
         name = variableNameTerminalNodeContent; ///
-
-  return name;
-}
-
-function nameFromParameterNode(parameterNode) {
-  const parameterVariableNameTerminalNode = parameterVariableNameTerminalNodeQuery(parameterNode),
-        parameterVariableNameTerminalNodeContent = parameterVariableNameTerminalNode.getContent(),
-        name = parameterVariableNameTerminalNodeContent; ///
 
   return name;
 }

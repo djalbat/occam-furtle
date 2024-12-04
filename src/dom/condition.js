@@ -1,5 +1,7 @@
 "use strict";
 
+import dom from "../dom";
+
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
@@ -16,9 +18,14 @@ export default domAssigned(class Condition {
   static name = "Condition";
 
   static fromConditionalBlockNode(conditionalBlockNode, context) {
-    const conditionNode = conditionNodeQuery(conditionalBlockNode);
+    const { Value, Comparison, BitwiseCondition, BracketedCondition } = dom,
+          conditionalNode = conditionNodeQuery(conditionalBlockNode),
+          value = Value.fromConditionalNode(conditionalNode, context),
+          comparison = Comparison.fromConditionalNode(conditionalNode, context),
+          bitwiseCondition = BitwiseCondition.fromConditionalNode(conditionalNode, context),
+          bracketedCondition = BracketedCondition.fromConditionalNode(conditionalNode, context),
+          condition = new Condition(value, comparison, bitwiseCondition, bracketedCondition);
 
-    debugger
-
+    return condition;
   }
 });
