@@ -1,50 +1,28 @@
 "use strict";
 
+import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
+const variablesDeclarationNodeQuery = nodeQuery("/step/variablesDeclaration");
+
 export default domAssigned(class VariablesDeclaration {
-  constructor(fileContext, variables) {
-    this.fileContext = fileContext;
-    this.variables = variables;
+  constructor() {
   }
 
-  getFileContext() {
-    return this.fileContext;
-  }
-
-  getVariables() {
-    return this.variables;
-  }
-
-  getString() { return this.variables.getString(); }
-
-  verify() {
-    let verified;
-
-    const variablesDeclarationString = this.getString(); ///
-
-    this.fileContext.trace(`Verifying the '${variablesDeclarationString}' variables declaration...`);
-
-    const variablesVerifiedWhenDeclared = this.variables.verifyWhenDeclared(this.fileContext);
-
-    if (variablesVerifiedWhenDeclared) {
-      this.fileContext.addVariables(this.variables);
-
-      verified = true;
-    }
-
-    if (verified) {
-      this.fileContext.debug(`...verified the '${variablesDeclarationString}' variables declaration.`);
-    }
-
-    return verified;
+  getString() {
+    debugger
   }
 
   static name = "VariablesDeclaration";
 
-  static fromVariablesDeclarationNode(variablesDeclarationNode, fileContext) {
-    const variables = Variables.fromVariablesDeclarationNode(variablesDeclarationNode, fileContext),
-          variablesDeclaration = new VariablesDeclaration(fileContext, variables);
+  static fromStepNode(stepNode, context) {
+    let variablesDeclaration = null;
+
+    const variablesDeclarationNode = variablesDeclarationNodeQuery(stepNode);
+
+    if (variablesDeclarationNode !== null) {
+      debugger
+    }
 
     return variablesDeclaration;
   }

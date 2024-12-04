@@ -5,14 +5,18 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const parameterNodesQuery = nodesQuery("/procedureDeclaration/parameter"),
+const stepNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/step"),
+      nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
+      parameterNodesQuery = nodesQuery("/procedureDeclaration/parameter"),
       typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
-  constructor(type, label, parameters) {
+  constructor(type, label, parameters, nonsensical, steps) {
     this.type = type;
     this.label = label;
     this.paramters = parameters;
+    this.nonsensical = nonsensical;
+    this.steps = steps;
   }
 
   getType() {
@@ -25,6 +29,10 @@ export default domAssigned(class Procedure {
 
   getParameters() {
     return this.paramters;
+  }
+
+  isNonsensical() {
+    return this.nonsensical;
   }
 
   getString() {
@@ -43,31 +51,13 @@ export default domAssigned(class Procedure {
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
-          procedureDeclaration = new Procedure(type, label, parameters);
+          nonsensical = nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          steps = stepsFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          procedureDeclaration = new Procedure(type, label, parameters, nonsensical, steps);
 
     return procedureDeclaration;
   }
 });
-
-function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Parameter } = dom,
-        parameterNodes = parameterNodesQuery(procedureDeclarationNode),
-        parameters = parameterNodes.map((parameterNode) => {
-          const parameter = Parameter.fromParameterNode(parameterNode, context);
-
-          return parameter;
-        });
-
-  return parameters;
-}
-
-function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
-  const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
-
-  return type;
-}
 
 function parametersStringFromParameters(parameters) {
   const parametersString = parameters.reduce((parametersString, parameter) => {
@@ -82,3 +72,44 @@ function parametersStringFromParameters(parameters) {
 
   return parametersString;
 }
+
+function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
+  const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
+        typeTerminalNodeContent = typeTerminalNode.getContent(),
+        type = typeTerminalNodeContent; ///
+
+  return type;
+}
+
+function stepsFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Step } = dom,
+        stepNodes = stepNodesQuery(procedureDeclarationNode),
+        steps = stepNodes.map((stepNode) => {
+          const step = Step.fromStepNode(stepNode, context);
+
+          return step;
+        });
+
+  return steps;
+}
+
+function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Parameter } = dom,
+        parameterNodes = parameterNodesQuery(procedureDeclarationNode),
+        parameters = parameterNodes.map((parameterNode) => {
+          const parameter = Parameter.fromParameterNode(parameterNode, context);
+
+          return parameter;
+        });
+
+  return parameters;
+}
+
+function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const nonsenseNodes = nonsenseNodesQuery(procedureDeclarationNode),
+        nonsenseNodesLength = nonsenseNodes.length,
+        nonsensical = (nonsenseNodesLength > 0);
+
+  return nonsensical;
+}
+
