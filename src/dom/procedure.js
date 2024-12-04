@@ -2,16 +2,17 @@
 
 import dom from "../dom";
 
-import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
+const parameterNodesQuery = nodesQuery("/procedureDeclaration/parameter"),
+      typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
-  constructor(type, label, args) {
+  constructor(type, label, parameters) {
     this.type = type;
     this.label = label;
-    this.arguments = _arguments;  ///
+    this.paramters = parameters;
   }
 
   getType() {
@@ -22,10 +23,15 @@ export default domAssigned(class Procedure {
     return this.label;
   }
 
+  getParameters() {
+    return this.paramters;
+  }
+
   getString() {
     const typeString = this.type, ///
           labelString = this.label.getString(),
-          string = `${typeString} ${labelString}`;
+          parametersString = parametersStringFromParameters(this.parameters),
+          string = `${typeString} ${labelString}(${parametersString})`;
 
     return string;
   }
@@ -36,11 +42,24 @@ export default domAssigned(class Procedure {
     const { Label } = dom,
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          procedureDeclaration = new Procedure(type, label);
+          parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          procedureDeclaration = new Procedure(type, label, parameters);
 
     return procedureDeclaration;
   }
 });
+
+function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Parameter } = dom,
+        parameterNodes = parameterNodesQuery(procedureDeclarationNode),
+        parameters = parameterNodes.map((parameterNode) => {
+          const parameter = Parameter.fromParameterNode(parameterNode, context);
+
+          return parameter;
+        });
+
+  return parameters;
+}
 
 function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
   const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
@@ -48,4 +67,18 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
         type = typeTerminalNodeContent; ///
 
   return type;
+}
+
+function parametersStringFromParameters(parameters) {
+  const parametersString = parameters.reduce((parametersString, parameter) => {
+    const parameterString = parameter.getString();
+
+    parametersString = (parametersString === null) ?
+                         parameterString : ///
+                          `${parametersString} ,${parameterString}`;
+
+    return parametersString;
+  }, null);
+
+  return parametersString;
 }

@@ -5,9 +5,9 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const typeTerminalNodeQuery = nodeQuery("/argument/@type");
+const typeTerminalNodeQuery = nodeQuery("/parameter/@type");
 
-export default domAssigned(class Argument {
+export default domAssigned(class Parameter {
   constructor(type, variable) {
     this.type = type;
     this.variable = variable;
@@ -29,20 +29,20 @@ export default domAssigned(class Argument {
     return string;
   }
 
-  static name = "Argument";
+  static name = "Parameter";
 
-  static fromArgumentNode(argumentNode, context) {
+  static fromParameterNode(parameterNode, context) {
     const { Variable } = dom,
-          type = typeFromArgumentNode(argumentNode),
-          variable = Variable.fromArgumentNode(argumentNode, context),
-          argument = new Argument(type, variable);
+          type = typeFromParameterNode(parameterNode),
+          variable = Variable.fromParameterNode(parameterNode, context),
+          parameter = new Parameter(type, variable);
 
-    return argument;
+    return parameter;
   }
 });
 
-function typeFromArgumentNode(argumentNode) {
-  const typeTerminalNode = typeTerminalNodeQuery(argumentNode),
+function typeFromParameterNode(parameterNode) {
+  const typeTerminalNode = typeTerminalNodeQuery(parameterNode),
         typeTerminalNodeContent = typeTerminalNode.getContent(),
         type = typeTerminalNodeContent; ///
 

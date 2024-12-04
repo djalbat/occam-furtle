@@ -3,7 +3,7 @@
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const nameTerminalNodeQuery = nodeQuery("/variable/@name");
+const nameTerminalNodeQuery = nodeQuery("/parameter/variable/@name");
 
 export default domAssigned(class Variable {
   constructor(name) {
@@ -22,16 +22,16 @@ export default domAssigned(class Variable {
 
   static name = "Variable";
 
-  static fromArgumentNode(argumentNode, context) {
-    const name = nameFromArgumentNode(argumentNode),
+  static fromParameterNode(parameterNode, context) {
+    const name = nameFromParameterNode(parameterNode),
           variable = new Variable(name);
 
     return variable;
   }
 });
 
-function nameFromArgumentNode(argumentNode) {
-  const nameTerminalNode = nameTerminalNodeQuery(argumentNode),
+function nameFromParameterNode(parameterNode) {
+  const nameTerminalNode = nameTerminalNodeQuery(parameterNode),
         nameTerminalNodeContent = nameTerminalNode.getContent(),
         name = nameTerminalNodeContent; ///
 
