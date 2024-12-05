@@ -9,6 +9,7 @@ const numberTerminalNodeQuery = nodeQuery("/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
       assignmentValueNodeQuery = nodeQuery("/assignment/value"),
       primitiveTerminalNodeQuery = nodeQuery("/@number"),
+      returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
       stringLiteralTerminalNodeQuery = nodeQuery("/@string-literal");
 
 export default domAssigned(class Value {
@@ -79,6 +80,25 @@ export default domAssigned(class Value {
     if (conditionValueNode !== null) {
       const { Variable } = dom,
             valueNode = conditionValueNode, ///
+            variable = Variable.fromValueNode(valueNode, context),
+            number = numberFromValueNode(valueNode),
+            primitive = primitiveFromValueNode(valueNode),
+            stringLiteral = stringLiteralFromValueNode(valueNode);
+
+      value = new Value(variable, number, primitive, stringLiteral);
+    }
+
+    return value;
+  }
+
+  static fromReturnStatementNode(returnStatementNode, context) {
+    let value = null;
+
+    const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode);
+
+    if (returnStatementValueNode !== null) {
+      const { Variable } = dom,
+            valueNode = returnStatementValueNode, ///
             variable = Variable.fromValueNode(valueNode, context),
             number = numberFromValueNode(valueNode),
             primitive = primitiveFromValueNode(valueNode),

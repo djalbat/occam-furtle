@@ -8,12 +8,17 @@ import { domAssigned } from "../dom";
 const stepNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/step");
 
 export default domAssigned(class ReturnBlock {
-  constructor(steps) {
+  constructor(steps, returnStatement) {
     this.steps = steps;
+    this.returnStatement = returnStatement;
   }
 
   getSteps() {
     return this.steps;
+  }
+
+  getReturnStatement() {
+    return this.returnStatement;
   }
 
   getString() {
@@ -23,9 +28,11 @@ export default domAssigned(class ReturnBlock {
   static name = "ReturnBlock";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const stepNodes = stepNodesQuery(procedureDeclarationNode),
+    const { ReturnStatement } = dom,
+          stepNodes = stepNodesQuery(procedureDeclarationNode),
           steps = stepsFromStepNodes(stepNodes, context),
-          returnBlock = new ReturnBlock(steps);
+          returnStatement = ReturnStatement.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          returnBlock = new ReturnBlock(steps, returnStatement);
 
     return returnBlock;
   }

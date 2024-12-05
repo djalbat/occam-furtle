@@ -17,6 +17,7 @@ import ReturnBlock from "./dom/returnBlock";
 import ForEachLoop from "./dom/forEachLoop";
 import ProcedureCall from "./dom/procedureCall";
 import ArrayAssigment from "./dom/assignment/array";
+import ReturnStatement from "./dom/returnStatement";
 import ObjectAssignment from "./dom/assignment/object";
 import ConditionalBlock from "./dom/conditionalBlock";
 import BitwiseCondition from "./dom/bitwiseCondition";
