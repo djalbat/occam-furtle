@@ -8,7 +8,7 @@ import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
 const nodeQueryNodeQuery = nodeQuery("/assignment/nodeQuery"),
-      expressionNodeQuery = nodeQuery("/nodesQuery/expression");
+      expressionNodeQuery = nodeQuery("/nodeQuery/expression");
 
 export default domAssigned(class NodeQuery {
   getString(variable, query) {
