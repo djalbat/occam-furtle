@@ -10,6 +10,7 @@ const typeTerminalNodeQuery = nodeQuery("/parameter/@type"),
       parameterVariableNodeQuery = nodeQuery("/parameter/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
+      forEachLoopVariableNodeQuery = nodeQuery("/forEachLoop/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name");
 
 export default domAssigned(class Variable {
@@ -52,6 +53,17 @@ export default domAssigned(class Variable {
 
       variable = new Variable(type, name, assigment);
     }
+
+    return variable;
+  }
+
+  static fromForEachLoopNode(forEachLoopLoopNode, context) {
+    const forEachLoopVariableNode = forEachLoopVariableNodeQuery(forEachLoopLoopNode),
+          variableNode = forEachLoopVariableNode, ///
+          type = null,
+          name = nameFromVariableNode(variableNode),
+          assigment = null,
+          variable = new Variable(type, name, assigment);
 
     return variable;
   }
