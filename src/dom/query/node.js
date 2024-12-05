@@ -1,13 +1,22 @@
 "use strict";
 
 import { nodeQuery } from "../../utilities/query";
-import { domAssigned } from "../../dom";
+import dom, { domAssigned } from "../../dom";
 
 const nodeQueryNodeQuery = nodeQuery("/assignment/nodeQuery");
 
 export default domAssigned(class NodeQuery {
-  getString() {
-    debugger
+  getString(variable, expression) {
+    this.variable = variable;
+    this.expression = expression;
+  }
+
+  getVariable() {
+    return this.variable;
+  }
+
+  getExpression() {
+    return this.expression;
   }
 
   static name = "NodeQuery";
@@ -18,7 +27,11 @@ export default domAssigned(class NodeQuery {
     const nodeQueryNode = nodeQueryNodeQuery(assigmentNode);
 
     if (nodeQueryNode !== null) {
-      debugger
+      const { Variable, Expression } = dom,
+            variable = Variable.fromNodeQueryNode(nodeQueryNode, context),
+            expression = Expression.fromNodeQueryNode(nodeQueryNode, context);
+
+      nodeQuery = new NodeQuery(variable, expression);
     }
 
     return nodeQuery;
