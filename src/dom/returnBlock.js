@@ -5,9 +5,9 @@ import dom from "../dom";
 import { nodesQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const stepNodesQuery = nodesQuery("/block/step");
+const stepNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/step");
 
-export default domAssigned(class Block {
+export default domAssigned(class ReturnBlock {
   constructor(steps) {
     this.steps = steps;
   }
@@ -20,19 +20,14 @@ export default domAssigned(class Block {
     debugger
   }
 
-  static name = "Block";
+  static name = "ReturnBlock";
 
-  static fromBlockNode(blockNode, context) {
-    let block = null;
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+    const stepNodes = stepNodesQuery(procedureDeclarationNode),
+          steps = stepsFromStepNodes(stepNodes, context),
+          returnBlock = new ReturnBlock(steps);
 
-    if (blockNode !== null) {
-      const stepNodes = stepNodesQuery(blockNode),
-            steps = stepsFromStepNodes(stepNodes, context);
-
-      block = new Block(steps);
-    }
-
-    return block;
+    return returnBlock;
   }
 });
 

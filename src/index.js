@@ -13,6 +13,7 @@ import NodeQuery from "./dom/query/node";
 import Comparison from "./dom/comparison";
 import NodesQuery from "./dom/query/nodes";
 import Assignment from "./dom/assignment";
+import ReturnBlock from "./dom/returnBlock";
 import ForEachLoop from "./dom/forEachLoop";
 import ProcedureCall from "./dom/procedureCall";
 import ArrayAssigment from "./dom/assignment/array";
