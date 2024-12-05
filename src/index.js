@@ -22,6 +22,7 @@ import ObjectAssignment from "./dom/assignment/object";
 import ConditionalBlock from "./dom/conditionalBlock";
 import BitwiseCondition from "./dom/bitwiseCondition";
 import BracketedCondition from "./dom/bracketedCondition";
+import AnonymousProcedure from "./dom/anonymousProcedure";
 import VariablesAssignment from "./dom/assignment/variables";
 import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";

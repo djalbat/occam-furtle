@@ -62,7 +62,7 @@ export default domAssigned(class Procedure {
   }
 });
 
-function parametersStringFromParameters(parameters) {
+export function parametersStringFromParameters(parameters) {
   const parametersString = parameters.reduce((parametersString, parameter) => {
     const parameterString = parameter.getString();
 

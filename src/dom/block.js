@@ -2,10 +2,11 @@
 
 import dom from "../dom";
 
-import { nodesQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const stepNodesQuery = nodesQuery("/block/step");
+const stepNodesQuery = nodesQuery("/block/step"),
+      forEachLoopBlockNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/block");
 
 export default domAssigned(class Block {
   constructor(steps) {
@@ -31,6 +32,16 @@ export default domAssigned(class Block {
 
       block = new Block(steps);
     }
+
+    return block;
+  }
+
+  static fromForEachLoopNode(forEachLoopNode, context) {
+    const forEachLoopBockNode = forEachLoopBlockNodeQuery(forEachLoopNode),
+          blockNode = forEachLoopBockNode,  ///
+          stepNodes = stepNodesQuery(blockNode),
+          steps = stepsFromStepNodes(stepNodes, context),
+          block = new Block(steps);
 
     return block;
   }
