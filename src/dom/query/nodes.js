@@ -1,24 +1,27 @@
 "use strict";
 
+import { Query, Expression } from "occam-query";
+
 import dom from "../../dom";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
-const nodesQueryNodeQuery = nodeQuery("/assignment/nodesQuery");
+const nodesQueryNodeQuery = nodeQuery("/assignment/nodesQuery"),
+      expressionNodeQuery = nodeQuery("/nodesQuery/expression");
 
 export default domAssigned(class NodesQuery {
-  getString(variable, expression) {
+  getString(variable, query) {
     this.variable = variable;
-    this.expression = expression;
+    this.query = query;
   }
 
   getVariable() {
     return this.variable;
   }
 
-  getExpression() {
-    return this.expression;
+  getQuery() {
+    return this.query;
   }
 
   static name = "NodesQuery";
@@ -29,11 +32,13 @@ export default domAssigned(class NodesQuery {
     const nodesQueryNode = nodesQueryNodeQuery(assigmentNode);
 
     if (nodesQueryNode !== null) {
-      const { Variable, Expression } = dom,
+      const { Variable } = dom,
+            expressionNode = expressionNodeQuery(nodesQueryNode),
+            expression = Expression.fromExpressionNode(expressionNode),
             variable = Variable.fromNodesQueryNode(nodesQueryNode, context),
-            expression = Expression.fromNodesQueryNode(nodesQueryNode, context);
+            query = Query.fromExpression(expression);
 
-      nodesQuery = new NodesQuery(variable, expression);
+      nodesQuery = new NodesQuery(variable, query);
     }
 
     return nodesQuery;

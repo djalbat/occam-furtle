@@ -10,7 +10,6 @@ import Parameter from "./dom/parameter";
 import Reference from "./dom/reference";
 import Procedure from "./dom/procedure";
 import NodeQuery from "./dom/query/node";
-import Expression from "./dom/expression";
 import NodesQuery from "./dom/query/nodes";
 import Comparison from "./dom/comparison";
 import Assignment from "./dom/assignment";
