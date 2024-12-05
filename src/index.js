@@ -4,6 +4,7 @@ import Step from "./dom/step";
 import Label from "./dom/label";
 import Value from "./dom/value";
 import Block from "./dom/block";
+import Error from "./dom/error";
 import Variable from "./dom/variable";
 import Condition from "./dom/condition";
 import Parameter from "./dom/parameter";

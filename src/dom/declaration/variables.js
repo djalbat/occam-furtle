@@ -4,6 +4,7 @@ import dom from "../../dom";
 
 import { domAssigned } from "../../dom";
 import { nodeQuery, nodesQuery } from "../../utilities/query";
+import {findSiblingNode} from "../../utilities/node";
 
 const variableNodesQuery = nodesQuery("/variablesDeclaration/variable"),
       assignmentNodesQuery = nodesQuery("/variablesDeclaration/assignment"),
@@ -71,27 +72,11 @@ function variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclaration
         assignmentNodes = assignmentNodesQuery(variablesDeclarationNode),
         variables = variableNodes.map((variableNode) => {
           const { Variable } = dom,
-                assignmentNode = assignmentNodeFromAssignmentNodesVariableNodeAndVariablesDeclarationNode(assignmentNodes, variableNode, variablesDeclarationNode),
+                assignmentNode = findSiblingNode(assignmentNodes, variableNode, variablesDeclarationNode),
                 variable = Variable.fromTypeVariableNodeAndAssignmentNode(type, variableNode, assignmentNode);
 
           return variable;
         });
 
   return variables;
-}
-
-function assignmentNodeFromAssignmentNodesVariableNodeAndVariablesDeclarationNode(assignmentNodes, variableNode, variablesDeclarationNode) {
-  const nonTerminalNode = variablesDeclarationNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        variableNodeIndex = childNodes.indexOf(variableNode),
-        assignmentNodeIndex = variableNodeIndex + 1,
-        assignmentNode = assignmentNodes.find((assigmentNode) => {
-          const index = childNodes.indexOf(assigmentNode);
-
-          if (index === assignmentNodeIndex) {
-            return true;
-          }
-        }) || null;
-
-  return assignmentNode;
 }

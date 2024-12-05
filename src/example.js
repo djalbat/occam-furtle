@@ -3,18 +3,9 @@
 import "./index";
 
 import dom from "./dom";
-
-import { fileSystemUtilities } from "necessary";
-import { lexersUtilities, parsersUtilities } from "occam-grammars";
+import FileContext from "./context/file";
 
 import { nodesQuery } from "./utilities/query";
-
-const { readFile } = fileSystemUtilities,
-      { furtleLexerFromNothing } = lexersUtilities,
-      { furtleParserFromNothing } = parsersUtilities;
-
-const furtleLexer = furtleLexerFromNothing(),
-      furtleParser = furtleParserFromNothing();
 
 const errorNodesQuery = nodesQuery("/document/error"),
       procedureDeclarationNodesQuery = nodesQuery("/document/procedureDeclaration");
@@ -22,22 +13,18 @@ const errorNodesQuery = nodesQuery("/document/error"),
 const { Error, ProcedureDeclaration } = dom;
 
 const filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
-      fileContent = readFile(filePath),
-      content = fileContent,  ///
-      tokens = furtleLexer.tokenise(content),
-      node = furtleParser.parse(tokens),
-      fileContext = null;
+      fileContext = FileContext.fromFilePath(filePath);
 
-const errorNodes = errorNodesQuery(node),
-      errorNodesLength = errorNodes.length;
+const node = fileContext.getNode(),
+      errorNodes = errorNodesQuery(node),
+      procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
 
-if (errorNodesLength > 0) {
-  errorNodes.forEach((errorNode) => {
-    Error.fromErrorNode(errorNode, fileContext);
-  });
-}
+errorNodes.forEach((errorNode) => {
+  const error = Error.fromErrorNode(errorNode, fileContext),
+        errorString = error.getString();
 
-const procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
+  console.log(errorString);
+});
 
 procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
   ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext);

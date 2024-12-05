@@ -16,16 +16,6 @@ export default domAssigned(class Error {
     return this.string;
   }
 
-  verify() {
-    let verified = false;
-
-    const errorString = this.string;  ///
-
-    this.fileContext.debug(`The '${errorString}' error cannot be verified.`);
-
-    return verified;
-  }
-
   static name = "Error";
 
   static fromErrorNode(errorNode, fileContext) {
