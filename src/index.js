@@ -27,3 +27,5 @@ import AnonymousProcedure from "./dom/anonymousProcedure";
 import VariablesAssignment from "./dom/assignment/variables";
 import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";
+
+export { default as FileContext } from "./context/file";
