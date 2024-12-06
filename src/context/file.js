@@ -179,11 +179,13 @@ export default class FileContext {
       });
     }
 
+    addProcedures(fileContext);
+
     if (verified) {
       this.info(`...verified the '${this.filePath}' file.`);
     }
 
-    addProcedures(fileContext);
+    return verified;
   }
 
   static fromFile(file, releaseContext) {
@@ -198,7 +200,7 @@ export default class FileContext {
     return fileContext;
   }
 
-  fromFilePathAndJSON(filePath, json, releaseContext) {
+  static fromFilePathAndJSON(filePath, json, releaseContext) {
     const content = { json },
           tokens = furtleLexer.tokenise(content),
           node = furtleParser.parse(tokens),
