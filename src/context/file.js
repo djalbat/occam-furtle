@@ -45,6 +45,98 @@ export default class FileContext {
     return this.procedures;
   }
 
+  getLexer() {
+    const lexer = furtleLexer;  ///
+
+    return lexer;
+  }
+
+  getParser() {
+    const parser = furtleParser;  ///
+
+    return parser;
+  }
+
+  getMetaTypes() { return this.releaseContext.getMetaTypes(); }
+
+  getLabels(includeRelease = true) {
+    const labels = [];
+
+    return labels;
+  }
+
+  getTypes(includeRelease = true) {
+    const types = [];
+
+    return types;
+  }
+
+  getRules(includeRelease = true) {
+    const rules = []
+
+    return rules;
+  }
+
+  getAxioms(includeRelease = true) {
+    const axioms = [];
+
+    return axioms;
+  }
+
+  getLemmas(includeRelease = true) {
+    const lemmas = [];
+
+    return lemmas;
+  }
+
+  getTheorems(includeRelease = true) {
+    const theorems = [];
+
+    return theorems;
+  }
+
+  getVariables(includeRelease = true) {
+    const variables = [];
+
+    return variables;
+  }
+
+  getMetaLemmas(includeRelease = true) {
+    const metaLemmas = [];
+
+    return metaLemmas;
+  }
+
+  getConjectures(includeRelease = true) {
+    const conjectures = [];
+
+    return conjectures;
+  }
+
+  getCombinators(includeRelease = true) {
+    const combinators = [];
+
+    return combinators;
+  }
+
+  getConstructors(includeRelease = true) {
+    const constructors = [];
+
+    return constructors;
+  }
+
+  getMetatheorems(includeRelease = true) {
+    const metatheorems = [];
+
+    return metatheorems;
+  }
+
+  getMetavariables(includeRelease = true) {
+    const metavariables = [];
+
+    return metavariables;
+  }
+
   addProcedure(procedure) {
     this.procedures.push(procedure);
   }
