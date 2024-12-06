@@ -1,6 +1,5 @@
 "use strict";
 
-import { fileSystemUtilities } from "necessary";
 import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
 import dom from "../dom";
@@ -8,8 +7,7 @@ import dom from "../dom";
 import { nodesQuery } from "../utilities/query";
 import { nodeAsString } from "../utilities/string";
 
-const { readFile } = fileSystemUtilities,
-      { furtleLexerFromNothing } = lexersUtilities,
+const { furtleLexerFromNothing } = lexersUtilities,
       { furtleParserFromNothing } = parsersUtilities;
 
 const furtleLexer = furtleLexerFromNothing(),
@@ -19,16 +17,20 @@ const errorNodesQuery = nodesQuery("/document/error"),
       procedureDeclarationNodesQuery = nodesQuery("/document/procedureDeclaration");
 
 export default class FileContext {
-  constructor(log, node, tokens, filePath, procedures) {
-    this.log = log;
+  constructor(releaseContext, filePath, node, tokens, procedures) {
+    this.releaseContext = releaseContext;
+    this.filePath = filePath;
     this.node = node;
     this.tokens = tokens;
-    this.filePath = filePath;
     this.procedures = procedures;
   }
 
-  getLog() {
-    return this.log;
+  getReleaseContext() {
+    return this.releaseContext;
+  }
+
+  getFilePath() {
+    return this.filePath;
   }
 
   getNode() {
@@ -37,10 +39,6 @@ export default class FileContext {
 
   getTokens() {
     return this.tokens;
-  }
-
-  getFilePath() {
-    return this.filePath;
   }
 
   getProcedures() {
@@ -53,15 +51,15 @@ export default class FileContext {
     return string;
   }
 
-  trace(message) { this.log.trace(message, this.filePath); }
+  trace(message) { this.releaseContext.trace(message, this.filePath); }
 
-  debug(message) { this.log.debug(message, this.filePath); }
+  debug(message) { this.releaseContext.debug(message, this.filePath); }
 
-  info(message) { this.log.info(message, this.filePath); }
+  info(message) { this.releaseContext.info(message, this.filePath); }
 
-  warning(message) { this.log.warning(message, this.filePath); }
+  warning(message) { this.releaseContext.warning(message, this.filePath); }
 
-  error(message) { this.log.error(message, this.filePath); }
+  error(message) { this.releaseContext.error(message, this.filePath); }
 
   initialise() {
     const { Error, ProcedureDeclaration } = dom,
@@ -84,13 +82,14 @@ export default class FileContext {
     });
   }
 
-  static fromLogAndFilePath(log, filePath) {
-    const fileContent = readFile(filePath),
+  static fromFile(file, releaseContext) {
+    const filePath = file.getPath(),
+          fileContent = file.getContent(),
           content = fileContent,  ///
           tokens = furtleLexer.tokenise(content),
           node = furtleParser.parse(tokens),
           procedures = [],
-          fileContext = new FileContext(log, node, tokens, filePath, procedures);
+          fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
 
     return fileContext;
   }

@@ -1,17 +1,21 @@
 "use strict";
 
-import { levels } from "necessary";
-
-const { TRACE_LEVEL } = levels;
-
 import "./index";
 
-import Log from "./log";
+import { File } from "occam-entities";
+import { fileSystemUtilities } from "necessary";
+
 import FileContext from "./context/file";
 
-const logLevel = TRACE_LEVEL, ///
-      log = Log.fromLogLevel(logLevel),
-      filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
-      fileContext = FileContext.fromLogAndFilePath(log, filePath);
+const { readFile } = fileSystemUtilities;
+
+const filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
+      fileContent = readFile(filePath),
+      path = filePath,  ///
+      content = fileContent,  ///
+      released = false,
+      file = File.fromPathContentAndReleased(path, content, released),
+      releaseContext = null,
+      fileContext = FileContext.fromFile(file, releaseContext);
 
 fileContext.initialise();
