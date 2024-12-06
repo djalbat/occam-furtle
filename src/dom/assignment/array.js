@@ -21,9 +21,13 @@ export default domAssigned(class ArrayAssigment {
     const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
 
     if (arrayAssignmentNode !== null) {
-      debugger
+      const offset = offsetFromArrayAssignmentNode(arrayAssignmentNode);
     }
 
     return arrayAssignment;
   }
 });
+
+function offsetFromArrayAssignmentNode(arrayAssignmentNode) {
+
+}

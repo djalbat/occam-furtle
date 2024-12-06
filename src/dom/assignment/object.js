@@ -1,12 +1,21 @@
 "use strict";
 
-import { nodeQuery } from "../../utilities/query";
-import { domAssigned } from "../../dom";
+import dom from "../../dom";
 
-const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
+import { domAssigned } from "../../dom";
+import { nodeQuery, nodesQuery } from "../../utilities/query";
+
+const variableNodesQuery = nodesQuery("/objectAssignment/variable"),
+      typeTerminalNodesQuery = nodesQuery("/objectAssignment/@type"),
+      objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default domAssigned(class ObjectAssigment {
-  constructor() {
+  constructor(variables) {
+    this.variables = variables;
+  }
+
+  getVariables() {
+    return this.variables;
   }
 
   getString() {
@@ -21,9 +30,37 @@ export default domAssigned(class ObjectAssigment {
     const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
 
     if (objectAssignmentNode !== null) {
-      debugger
+      const typeTerminalNodes = typeTerminalNodesQuery(objectAssignmentNode),
+            variableNodes = variableNodesQuery(objectAssignmentNode),
+            types = typesFromTypeTerminalNodes(typeTerminalNodes),
+            variables = variablesFromVariableNodesAndTypes(variableNodes, types);
+
+      objectAssignment = new ObjectAssigment(variables);
     }
 
     return objectAssignment;
   }
 });
+
+function typesFromTypeTerminalNodes(typeTerminalNodes) {
+  const types = typeTerminalNodes.map((typeTerminalNode) => {
+          const typeTerminalNodeContent = typeTerminalNode.getContent(),
+                type = typeTerminalNodeContent; ///
+
+          return type;
+        });
+
+  return types;
+}
+
+function variablesFromVariableNodesAndTypes(variableNodes, types) {
+  const { Variable } = dom,
+        variables = variableNodes.map((variableNode, index) => {
+          const type = types[index],
+                variable = Variable.fromVariableNodeAndType(variableNode, type);
+
+          return variable;
+        });
+
+  return variables;
+}

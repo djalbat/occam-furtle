@@ -57,17 +57,6 @@ export default domAssigned(class Variable {
     return variable;
   }
 
-  static fromForEachLoopNode(forEachLoopLoopNode, context) {
-    const forEachLoopVariableNode = forEachLoopVariableNodeQuery(forEachLoopLoopNode),
-          variableNode = forEachLoopVariableNode, ///
-          type = null,
-          name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
-
-    return variable;
-  }
-
   static fromParameterNode(parameterNode, context) {
     const parameterVariableNode = parameterVariableNodeQuery(parameterNode),
           variableNode = parameterVariableNode, ///
@@ -95,6 +84,25 @@ export default domAssigned(class Variable {
           variableNode = nodesQueryVariableNode, ///
           type = null,
           name = nameFromVariableNode(variableNode),
+          assigment = null,
+          variable = new Variable(type, name, assigment);
+
+    return variable;
+  }
+
+  static fromForEachLoopNode(forEachLoopLoopNode, context) {
+    const forEachLoopVariableNode = forEachLoopVariableNodeQuery(forEachLoopLoopNode),
+          variableNode = forEachLoopVariableNode, ///
+          type = null,
+          name = nameFromVariableNode(variableNode),
+          assigment = null,
+          variable = new Variable(type, name, assigment);
+
+    return variable;
+  }
+
+  static fromVariableNodeAndType(variableNode, type) {
+    const name = nameFromVariableNode(variableNode),
           assigment = null,
           variable = new Variable(type, name, assigment);
 
