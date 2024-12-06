@@ -42,7 +42,7 @@ export default domAssigned(class ObjectAssigment {
   }
 });
 
-function typesFromTypeTerminalNodes(typeTerminalNodes) {
+export function typesFromTypeTerminalNodes(typeTerminalNodes) {
   const types = typeTerminalNodes.map((typeTerminalNode) => {
           const typeTerminalNodeContent = typeTerminalNode.getContent(),
                 type = typeTerminalNodeContent; ///
@@ -53,7 +53,7 @@ function typesFromTypeTerminalNodes(typeTerminalNodes) {
   return types;
 }
 
-function variablesFromVariableNodesAndTypes(variableNodes, types) {
+export function variablesFromVariableNodesAndTypes(variableNodes, types) {
   const { Variable } = dom,
         variables = variableNodes.map((variableNode, index) => {
           const type = types[index],

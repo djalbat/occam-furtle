@@ -1,12 +1,26 @@
 "use strict";
 
-import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
+import { nodeQuery, nodesQuery } from "../../utilities/query";
+import { typesFromTypeTerminalNodes, variablesFromVariableNodesAndTypes } from "../assignment/object";
 
-const arrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
+const variableNodesQuery = nodesQuery("/arrayAssignment/variable"),
+      typeTerminalNodesQuery = nodesQuery("/arrayAssignment/@type"),
+      dummyVariableNodesQuery = nodesQuery("/arrayAssignment/dummyVariable"),
+      arrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
 
 export default domAssigned(class ArrayAssigment {
-  constructor() {
+  constructor(offset, variables) {
+    this.offset = offset;
+    this.variables = variables;
+  }
+
+  getOffset() {
+    return this.offset;
+  }
+
+  getVariables() {
+    return this.variables;
   }
 
   getString() {
@@ -21,7 +35,13 @@ export default domAssigned(class ArrayAssigment {
     const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
 
     if (arrayAssignmentNode !== null) {
-      const offset = offsetFromArrayAssignmentNode(arrayAssignmentNode);
+      const typeTerminalNodes = typeTerminalNodesQuery(arrayAssignmentNode),
+            variableNodes = variableNodesQuery(arrayAssignmentNode),
+            types = typesFromTypeTerminalNodes(typeTerminalNodes),
+            offset = offsetFromArrayAssignmentNode(arrayAssignmentNode),
+            variables = variablesFromVariableNodesAndTypes(variableNodes, types);
+
+      arrayAssignment = new ArrayAssigment(offset, variables);
     }
 
     return arrayAssignment;
@@ -29,5 +49,9 @@ export default domAssigned(class ArrayAssigment {
 });
 
 function offsetFromArrayAssignmentNode(arrayAssignmentNode) {
+  const dummyVariableNodes = dummyVariableNodesQuery(arrayAssignmentNode),
+        dummyVariableNodesLength = dummyVariableNodes.length,
+        offset = dummyVariableNodesLength;  ///
 
+  return offset;
 }

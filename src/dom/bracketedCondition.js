@@ -5,10 +5,16 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const bracketedConditionNodeQuery = nodeQuery("/condition/bracketedCondition");
+const conditionNodeQuery = nodeQuery("/bracketedCondition/condition"),
+      bracketedConditionNodeQuery = nodeQuery("/condition/bracketedCondition");
 
 export default domAssigned(class BracketedCondition {
-  constructor() {
+  constructor(condition) {
+    this.condition = condition;
+  }
+
+  getCondition() {
+    return this.condition;
   }
 
   getString() {
@@ -17,15 +23,19 @@ export default domAssigned(class BracketedCondition {
 
   static name = "BracketedCondition";
 
-  static fromConditionalNode(conditionalNode, context) {
-    let bracketedConddition = null;
+  static fromConditionNode(conditionNode, context) {
+    let bracketedCondition = null;
 
-    const bracketedConditionNode = bracketedConditionNodeQuery(conditionalNode);
+    const bracketedConditionNode = bracketedConditionNodeQuery(conditionNode);
 
     if (bracketedConditionNode !== null) {
-      debugger
+      const { Condition } = dom,
+            conditionNode = conditionNodeQuery(bracketedConditionNode),
+            condition = Condition.fromConditionNode(conditionNode);
+
+      bracketedCondition = new BracketedCondition(condition);
     }
 
-    return bracketedConddition;
+    return bracketedCondition;
   }
 });

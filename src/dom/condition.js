@@ -17,13 +17,24 @@ export default domAssigned(class Condition {
 
   static name = "Condition";
 
+  static fromConditionNode(conditionNode, context) {
+    const { Value, Comparison, BitwiseCondition, BracketedCondition } = dom,
+          value = Value.fromConditionNode(conditionNode, context),
+          comparison = Comparison.fromConditionNode(conditionNode, context),
+          bitwiseCondition = BitwiseCondition.fromConditionNode(conditionNode, context),
+          bracketedCondition = BracketedCondition.fromConditionNode(conditionNode, context),
+          condition = new Condition(value, comparison, bitwiseCondition, bracketedCondition);
+
+    return condition;
+  }
+
   static fromConditionalBlockNode(conditionalBlockNode, context) {
     const { Value, Comparison, BitwiseCondition, BracketedCondition } = dom,
-          conditionalNode = conditionNodeQuery(conditionalBlockNode),
-          value = Value.fromConditionalNode(conditionalNode, context),
-          comparison = Comparison.fromConditionalNode(conditionalNode, context),
-          bitwiseCondition = BitwiseCondition.fromConditionalNode(conditionalNode, context),
-          bracketedCondition = BracketedCondition.fromConditionalNode(conditionalNode, context),
+          conditionNode = conditionNodeQuery(conditionalBlockNode),
+          value = Value.fromConditionNode(conditionNode, context),
+          comparison = Comparison.fromConditionNode(conditionNode, context),
+          bitwiseCondition = BitwiseCondition.fromConditionNode(conditionNode, context),
+          bracketedCondition = BracketedCondition.fromConditionNode(conditionNode, context),
           condition = new Condition(value, comparison, bitwiseCondition, bracketedCondition);
 
     return condition;

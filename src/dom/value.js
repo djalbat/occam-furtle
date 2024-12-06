@@ -72,10 +72,10 @@ export default domAssigned(class Value {
     return value;
   }
 
-  static fromConditionalNode(conditionalNode, context) {
+  static fromConditionNode(conditionNode, context) {
     let value = null;
 
-    const conditionValueNode = conditionValueNodeQuery(conditionalNode);
+    const conditionValueNode = conditionValueNodeQuery(conditionNode);
 
     if (conditionValueNode !== null) {
       const { Variable } = dom,

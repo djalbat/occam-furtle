@@ -36,16 +36,16 @@ export default domAssigned(class Comparison {
 
   static name = "Comparison";
 
-  static fromConditionalNode(conditionalNode, context) {
+  static fromConditionNode(conditionNode, context) {
     let comparison = null;
 
-    const comparisonNode = comparisonNodeQuery(conditionalNode);
+    const comparisonNode = comparisonNodeQuery(conditionNode);
 
     if (comparisonNode !== null) {
       const { Value } = dom,
             leftValueNode = leftValueNodeQuery(comparisonNode),
             rightValueNode = rightValueNodeQuery(comparisonNode),
-            equalTo = equalToFromComparisonNode(comparisonNode, context),
+            equalTo = equalToFromComparisonNode(comparisonNode),
             leftValue = Value.fromValueNode(leftValueNode, context),
             rightValue = Value.fromValueNode(rightValueNode, context);
 
@@ -56,7 +56,7 @@ export default domAssigned(class Comparison {
   }
 });
 
-function equalToFromComparisonNode(comparisonNode, context) {
+function equalToFromComparisonNode(comparisonNode) {
   const terminalNode = terminalNodeQuery(comparisonNode),
         terminalNodeContent = terminalNode.getContent(),
         equalTo = (terminalNodeContent === EQUAL_TO);
