@@ -177,9 +177,11 @@ export default class FileContext {
 
         this.warning(errorString);
       });
-    }
+    } else {
+      addProcedures(fileContext);
 
-    addProcedures(fileContext);
+      verified = true;
+    }
 
     if (verified) {
       this.info(`...verified the '${this.filePath}' file.`);
