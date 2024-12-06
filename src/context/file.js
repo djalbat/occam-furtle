@@ -45,6 +45,10 @@ export default class FileContext {
     return this.procedures;
   }
 
+  addProcedure(procedure) {
+    this.procedures.push(procedure);
+  }
+
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
 
@@ -61,11 +65,12 @@ export default class FileContext {
 
   error(message) { this.releaseContext.error(message, this.filePath); }
 
-  initialise() {
-    const { Error, ProcedureDeclaration } = dom,
+  verify() {
+    debugger
+
+    const { Error } = dom,
           fileContext = this, ///
-          errorNodes = errorNodesQuery(this.node),
-          procedureDeclarationNodes = procedureDeclarationNodesQuery(this.node);
+          errorNodes = errorNodesQuery(this.node);
 
     errorNodes.forEach((errorNode) => {
       const error = Error.fromErrorNode(errorNode, fileContext),
@@ -74,12 +79,7 @@ export default class FileContext {
       this.warning(errorString);
     });
 
-    procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
-      const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
-            procedure = procedureDeclaration.getProcedure();
-
-      this.procedures.push(procedure);
-    });
+    addProcedures(fileContext);
   }
 
   static fromFile(file, releaseContext) {
@@ -93,4 +93,29 @@ export default class FileContext {
 
     return fileContext;
   }
+
+  fromFilePathAndJSON(filePath, json, releaseContext) {
+    const content = { json },
+          tokens = furtleLexer.tokenise(content),
+          node = furtleParser.parse(tokens),
+          procedures = [],
+          fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
+
+    addProcedures(fileContext);
+
+    return fileContext;
+  }
+}
+
+function addProcedures(fileContext) {
+  const { ProcedureDeclaration } = dom,
+        node = fileContext.getNode(),
+        procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
+
+  procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
+    const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
+          procedure = procedureDeclaration.getProcedure();
+
+    fileContext.addProcedure(procedure);
+  });
 }
