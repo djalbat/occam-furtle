@@ -3,13 +3,8 @@
 import { domAssigned } from "../dom";
 
 export default domAssigned(class Error {
-  constructor(fileContext, string) {
-    this.fileContext = fileContext;
+  constructor(string) {
     this.string = string;
-  }
-
-  getFileContext() {
-    return this.fileContext;
   }
 
   getString() {
@@ -21,7 +16,7 @@ export default domAssigned(class Error {
   static fromErrorNode(errorNode, fileContext) {
     const node = errorNode, ///
           string = fileContext.nodeAsString(node),
-          error = new Error(fileContext, string);
+          error = new Error(string);
 
     return error;
   }

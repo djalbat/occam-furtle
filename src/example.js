@@ -1,31 +1,17 @@
 "use strict";
 
+import { levels } from "necessary";
+
+const { TRACE_LEVEL } = levels;
+
 import "./index";
 
-import dom from "./dom";
+import Log from "./log";
 import FileContext from "./context/file";
 
-import { nodesQuery } from "./utilities/query";
+const logLevel = TRACE_LEVEL, ///
+      log = Log.fromLogLevel(logLevel),
+      filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
+      fileContext = FileContext.fromLogAndFilePath(log, filePath);
 
-const errorNodesQuery = nodesQuery("/document/error"),
-      procedureDeclarationNodesQuery = nodesQuery("/document/procedureDeclaration");
-
-const { Error, ProcedureDeclaration } = dom;
-
-const filePath = "first-order-logic/Procedures/Free and bound variables.ftl",
-      fileContext = FileContext.fromFilePath(filePath);
-
-const node = fileContext.getNode(),
-      errorNodes = errorNodesQuery(node),
-      procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
-
-errorNodes.forEach((errorNode) => {
-  const error = Error.fromErrorNode(errorNode, fileContext),
-        errorString = error.getString();
-
-  console.log(errorString);
-});
-
-procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
-  ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext);
-});
+fileContext.initialise();

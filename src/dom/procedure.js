@@ -13,7 +13,7 @@ export default domAssigned(class Procedure {
   constructor(type, label, parameters, nonsensical, returnBlock) {
     this.type = type;
     this.label = label;
-    this.paramters = parameters;
+    this.parameters = parameters;
     this.nonsensical = nonsensical;
     this.returnBlock = returnBlock;
   }
@@ -27,7 +27,7 @@ export default domAssigned(class Procedure {
   }
 
   getParameters() {
-    return this.paramters;
+    return this.parameters;
   }
 
   isNonsensical() {
@@ -42,7 +42,7 @@ export default domAssigned(class Procedure {
     const typeString = this.type, ///
           labelString = this.label.getString(),
           parametersString = parametersStringFromParameters(this.parameters),
-          string = `${typeString} ${labelString}(${parametersString})`;
+          string = `${typeString} ${labelString}(${parametersString}) { ... }`;
 
     return string;
   }
