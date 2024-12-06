@@ -158,18 +158,30 @@ export default class FileContext {
   error(message) { this.releaseContext.error(message, this.filePath); }
 
   verify() {
-    debugger
+    let verified = false;
 
-    const { Error } = dom,
-          fileContext = this, ///
-          errorNodes = errorNodesQuery(this.node);
+    this.debug(`Verifying the '${this.filePath}' file...`);
 
-    errorNodes.forEach((errorNode) => {
-      const error = Error.fromErrorNode(errorNode, fileContext),
-            errorString = error.getString();
+    const fileContext = this, ///
+          errorNodes = errorNodesQuery(this.node),
+          errorNodesLength = errorNodes.length;
 
-      this.warning(errorString);
-    });
+    if (errorNodesLength > 1) {
+      const { Error } = dom;
+
+      this.warning(`The '${this.filePath}' file cannot be verified because there are errors.`)
+
+      errorNodes.forEach((errorNode) => {
+        const error = Error.fromErrorNode(errorNode, fileContext),
+              errorString = error.getString();
+
+        this.warning(errorString);
+      });
+    }
+
+    if (verified) {
+      this.info(`...verified the '${this.filePath}' file.`);
+    }
 
     addProcedures(fileContext);
   }
