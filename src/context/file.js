@@ -182,7 +182,7 @@ export default class FileContext {
       const errorNodes = errorNodesQuery(this.node),
             errorNodesLength = errorNodes.length;
 
-      if (errorNodesLength  === 0) {
+      if (errorNodesLength === 0) {
         this.addProcedures(this.node);
 
         verified = true;
