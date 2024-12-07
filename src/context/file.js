@@ -41,10 +41,6 @@ export default class FileContext {
     return this.tokens;
   }
 
-  getProcedures() {
-    return this.procedures;
-  }
-
   getLexer() {
     const lexer = furtleLexer;  ///
 
@@ -101,6 +97,10 @@ export default class FileContext {
     return variables;
   }
 
+  getProcedures(includeRelease = true) {
+    return this.procedures;
+  }
+
   getMetaLemmas(includeRelease = true) {
     const metaLemmas = [];
 
@@ -137,14 +137,26 @@ export default class FileContext {
     return metavariables;
   }
 
-  addProcedure(procedure) {
-    this.procedures.push(procedure);
-  }
+  findFile(filePath) { return this.releaseContext.findFile(filePath); }
 
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
 
     return string;
+  }
+
+  addProcedures(node) {
+    const fileContext = this; ///
+
+    const { ProcedureDeclaration } = dom,
+          procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
+
+    procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
+      const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
+            procedure = procedureDeclaration.getProcedure();
+
+      this.procedures.push(procedure);
+    });
   }
 
   trace(message) { this.releaseContext.trace(message, this.filePath); }
@@ -162,25 +174,23 @@ export default class FileContext {
 
     this.debug(`Verifying the '${this.filePath}' file...`);
 
-    const fileContext = this, ///
-          errorNodes = errorNodesQuery(this.node),
-          errorNodesLength = errorNodes.length;
+    this.prepare();
 
-    if (errorNodesLength > 1) {
-      const { Error } = dom;
-
-      this.warning(`The '${this.filePath}' file cannot be verified because there are errors.`)
-
-      errorNodes.forEach((errorNode) => {
-        const error = Error.fromErrorNode(errorNode, fileContext),
-              errorString = error.getString();
-
-        this.warning(errorString);
-      });
+    if (this.node === null) {
+      this.warning(`Unable to verify the '${this.filePath}' file because it cannot be parsed.`);
     } else {
-      addProcedures(fileContext);
+      const errorNodes = errorNodesQuery(this.node),
+            errorNodesLength = errorNodes.length;
 
-      verified = true;
+      if (errorNodesLength  === 0) {
+        this.addProcedures(this.node);
+
+        verified = true;
+      } else {
+        this.warning(`The '${this.filePath}' file cannot be verified because there are errors.`);
+
+        this.clear();
+      }
     }
 
     if (verified) {
@@ -188,6 +198,47 @@ export default class FileContext {
     }
 
     return verified;
+  }
+
+  clear() {
+    this.procedures = [];
+  }
+
+  prepare() {
+    if (this.tokens !== null) {
+      return;
+    }
+
+    const file = this.findFile(this.filePath),
+          lexer = this.getLexer(),
+          parser = this.getParser(),
+          content = file.getContent();
+
+    this.tokens = lexer.tokenise(content);
+
+    this.node = parser.parse(this.tokens);
+  }
+
+  initialise(json) {
+    const content = { json },
+          lexer = this.getLexer(),
+          parser = this.getParser(),
+          tokens = lexer.tokenise(content),
+          node = parser.parse(tokens);
+
+    this.addProcedures(node);
+  }
+
+  toJSON() {
+    const file = this.findFile(this.filePath),
+          filePath = this.filePath, ///
+          content = file.getContent(),
+          json = {
+            filePath,
+            content
+          };
+
+    return json;
   }
 
   static fromFile(file, releaseContext) {
@@ -203,27 +254,13 @@ export default class FileContext {
   }
 
   static fromFilePathAndJSON(filePath, json, releaseContext) {
-    const content = { json },
-          tokens = furtleLexer.tokenise(content),
-          node = furtleParser.parse(tokens),
-          procedures = [],
+    const tokens = null,
+          node = null,
+          procedures = null,
           fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
 
-    addProcedures(fileContext);
+    fileContext.initialise(json);
 
     return fileContext;
   }
-}
-
-function addProcedures(fileContext) {
-  const { ProcedureDeclaration } = dom,
-        node = fileContext.getNode(),
-        procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
-
-  procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
-    const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
-          procedure = procedureDeclaration.getProcedure();
-
-    fileContext.addProcedure(procedure);
-  });
 }
