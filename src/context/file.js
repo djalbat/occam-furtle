@@ -243,10 +243,8 @@ export default class FileContext {
 
   static fromFile(file, releaseContext) {
     const filePath = file.getPath(),
-          fileContent = file.getContent(),
-          content = fileContent,  ///
-          tokens = furtleLexer.tokenise(content),
-          node = furtleParser.parse(tokens),
+          tokens = null,
+          node = null,
           procedures = [],
           fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
 
