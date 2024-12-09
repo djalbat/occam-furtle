@@ -15,6 +15,8 @@ export default domAssigned(class Parameter {
 
   getString() { return this.variable.getString(); }
 
+  isTypeNodeType() { return this.variable.isTypeNodeType(); }
+
   static name = "Parameter";
 
   static fromParameterNode(parameterNode, context) {

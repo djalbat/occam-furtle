@@ -65,6 +65,18 @@ export default domAssigned(class Procedure {
     return parametersMatch;
   }
 
+  areParameterTypesNodeTypes() {
+    const parametersHaveNodeTypes = this.parameters.every((parameter) => {
+      const parameterTypeNodeType = parameter.isTypeNodeType();
+
+      if (parameterTypeNodeType) {
+        return true;
+      }
+    });
+
+    return parametersHaveNodeTypes;
+  }
+
   matchMetavariableName(metavariableName) { return this.label.matchMetavariableName(metavariableName); }
 
   static name = "Procedure";

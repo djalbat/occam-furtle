@@ -2,6 +2,7 @@
 
 import dom from "../dom";
 
+import { NODE_TYPE } from "../types";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
@@ -36,6 +37,12 @@ export default domAssigned(class Variable {
     const string = `${this.type} ${this.name}`;
 
     return string;
+  }
+
+  isTypeNodeType() {
+    const typeNodeType = (this.type === NODE_TYPE);
+
+    return typeNodeType;
   }
 
   static name = "Variable";
