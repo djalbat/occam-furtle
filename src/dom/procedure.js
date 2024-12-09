@@ -3,6 +3,7 @@
 import dom from "../dom";
 
 import { domAssigned } from "../dom";
+import { BOOLEAN_TYPE } from "../types";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
@@ -46,6 +47,25 @@ export default domAssigned(class Procedure {
 
     return string;
   }
+
+  isBoolean() {
+    const typeBooleanType = (this.type === BOOLEAN_TYPE),
+          boolean = typeBooleanType;  ///
+
+    return boolean;
+  }
+
+  matchParameters(parameters) {
+    const parametersA = parameters, ///
+          parametersB = this.parameters,  ///
+          parametersALength = parametersA.length,
+          parametersBLength = parametersB.length,
+          parametersMatch = (parametersALength === parametersBLength);
+
+    return parametersMatch;
+  }
+
+  matchMetavariableName(metavariableName) { return this.label.matchMetavariableName(metavariableName); }
 
   static name = "Procedure";
 

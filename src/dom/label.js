@@ -21,6 +21,12 @@ export default domAssigned(class Label {
     return string;
   }
 
+  matchMetavariableName(metavariableName) {
+    const metavariableNameMatches = (metavariableName === this.name);
+
+    return metavariableNameMatches;
+  }
+
   static name = "Label";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {

@@ -6,7 +6,8 @@ import { File } from "occam-entities";
 import { fileSystemUtilities } from "necessary";
 
 import FileContext from "./context/file";
-import {ReleaseContext} from "./example/context/release";
+
+import { ReleaseContext } from "./example/context/release";
 
 const { readFile } = fileSystemUtilities;
 
