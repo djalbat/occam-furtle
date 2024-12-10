@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Default",
+    "termBNF": "term.                                ::=  \"(\" argument \")\"\n\n                                       |  variable \n                                       \n                                       ;",
+    "statementBNF": "statement.                           ::=  \"(\" metaArgument \")\" \n                                                  \n                                       |  equality\n\n                                       |  typeAssertion \n                                                  \n                                       |  definedAssertion  \n\n                                       |  containedAssertion   \n                                                  \n                                       |  subproofAssertion         \n\n                                       |  procedureCall         \n       \n                                       |  judgement\n\n                                       |  metavariable ( frameSubstitution | termSubstitution )?\n\n                                       ;\n\nequality                             ::=  term \"=\" term ;\n\ntypeAssertion                        ::=  term \":\" type ;\n\ndefinedAssertion                     ::=  ( frame | term ) \"not\"? \"defined\" ;\n\ncontainedAssertion                   ::=  ( frame | term ) \"not\"? \"contained\" \"in\" statement ;\n\nsubproofAssertion                    ::=  \"[\" statement ( \",\" statement )* \"]\" \"...\" statement ;\n\nprocedureCall                        ::=  \"@\"<NO_WHITESPACE>reference<NO_WHITESPACE>\"(\" parameter ( \",\" parameter )* \")\" ;\n\njudgement                            ::=  frame \"|-\" declaration ;\n\nframe                                ::=  \"[\" ( ( declaration | metavariable ) ( \",\" ( declaration | metavariable ) )* )? \"]\" ;\n \ndeclaration                          ::=  reference \"::\" statement ;\n\ntermSubstitution                     ::=  \"[\" term \"for\" term \"]\";\n\nframeSubstitution                    ::=  \"[\" frame \"for\" frame \"]\";\n\nreferenceSubstitution                ::=  \"[\" reference \"for\" reference \"]\";\n\nstatementSubstitution                ::=  \"[\" statement \"for\" statement \"]\";\n\nparameter                            ::=  [name] ;",
+    "typePattern": "Object",
+    "symbolPattern": "",
+    "operatorPattern": "::|\\[|\\]|\\.\\.\\.|\\|-|=|@|in|for|defined|contained|not"
+  },
+  {
+    "name": "first-order-logic",
+    "termBNF": null,
+    "statementBNF": "\n\n                              statement  ::=  ( \"∀\" | \"∃\" ) ( frameArgument | argument ) metaArgument \n\n                                           |  ( frameArgument | argument ) ( \"bound\" | \"free\" ) \"in\" metaArgument\n\n                                           ;\n\n",
+    "typePattern": null,
+    "symbolPattern": null,
+    "operatorPattern": "bound|free|∀|∃"
+  }
+]
