@@ -79,6 +79,10 @@ export default domAssigned(class Procedure {
 
   matchMetavariableName(metavariableName) { return this.label.matchMetavariableName(metavariableName); }
 
+  call(nodes) {
+    debugger
+  }
+
   static name = "Procedure";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {

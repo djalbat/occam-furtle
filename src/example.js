@@ -2,18 +2,26 @@
 
 import "./index";
 
-import FileContext from "./context/file";
+import { Query } from "occam-query";
 
-import { ReleaseContext } from "./example/context/release";
-import { fileFromNothing } from "./example/utilities/file";
-import { combinedCustomGrammarFromNothing } from "./example/utilities/grammar";
+import { procedureFromNothing } from "./example/utilities/procedure";
+import { nominalLexerFromNothing, nominalParserFromNothing } from "./example/utilities/nominal";
 
-const file = fileFromNothing(),
-      releaseContext = ReleaseContext.fromFile(file),
-      fileContext = FileContext.fromFile(file, releaseContext);
+const termNodeQuery = Query.fromExpressionString("/statement/argument/term");
 
-fileContext.verify();
+const nominalLexer = nominalLexerFromNothing(),
+      nominalParser = nominalParserFromNothing();
 
-const combinedCustomGrammar = combinedCustomGrammarFromNothing();
+const content = `∀n n = n`,
+      tokens = nominalLexer.tokenise(content),
+      node = nominalParser.parse(tokens),
+      termNode = termNodeQuery.execute(node),
+      statementNode = node, ///
+      nodes = [
+        termNode,
+        statementNode
+      ];
 
-debugger
+const procedure = procedureFromNothing();
+
+procedure.call(nodes);

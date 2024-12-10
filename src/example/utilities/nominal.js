@@ -5,7 +5,7 @@ import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
 import { combinedCustomGrammarFromNothing } from "../utilities/grammar";
 
 const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
-      { nominalParserFromCombinedCustomGrammar } = parsersUtilities;
+      { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
 
 const combinedCustomGrammar = combinedCustomGrammarFromNothing();
 
@@ -16,5 +16,8 @@ export function nominalLexerFromNothing() {
 }
 
 export function nominalParserFromNothing() {
+  const startRuleName = "statement",
+        nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar);
 
+  return nominalParser;
 }
