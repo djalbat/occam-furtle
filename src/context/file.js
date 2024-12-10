@@ -220,7 +220,7 @@ export default class FileContext {
   }
 
   initialise(json) {
-    const content = { json },
+    const { content } = json,
           lexer = this.getLexer(),
           parser = this.getParser(),
           tokens = lexer.tokenise(content),
