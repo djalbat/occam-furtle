@@ -5,8 +5,9 @@ import { fileSystemUtilities } from "necessary";
 
 const { readFile } = fileSystemUtilities;
 
-export function fileFromFilePath(filePath) {
-  const fileContent = readFile(filePath),
+export function fileFromNothing() {
+  const filePath = "example/Free and bound variables.ftl",
+        fileContent = readFile(filePath),
         path = filePath,  ///
         content = fileContent,  ///
         released = false,

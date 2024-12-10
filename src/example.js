@@ -5,14 +5,15 @@ import "./index";
 import FileContext from "./context/file";
 
 import { ReleaseContext } from "./example/context/release";
-import { fileFromFilePath } from "./example/utilities/file";
-import { combinedCustomGrammarFromNothing } from "./example/utilities/customGrammar";
+import { fileFromNothing } from "./example/utilities/file";
+import { combinedCustomGrammarFromNothing } from "./example/utilities/grammar";
 
-const filePath = "example/Free and bound variables.ftl",
-      file = fileFromFilePath(filePath),
+const file = fileFromNothing(),
       releaseContext = ReleaseContext.fromFile(file),
       fileContext = FileContext.fromFile(file, releaseContext);
 
 fileContext.verify();
 
 const combinedCustomGrammar = combinedCustomGrammarFromNothing();
+
+debugger
