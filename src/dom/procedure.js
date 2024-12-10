@@ -1,6 +1,7 @@
 "use strict";
 
 import dom from "../dom";
+import BlockContext from "../context/block";
 
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
@@ -79,8 +80,23 @@ export default domAssigned(class Procedure {
 
   matchMetavariableName(metavariableName) { return this.label.matchMetavariableName(metavariableName); }
 
-  call(nodes) {
-    debugger
+  call(nodes, context) {
+    const procedureString = this.getString();
+
+    context.trace(`Calling the '${procedureString}' procedure...`);
+
+    this.parameters.forEach((parameter, index) => {
+      const node = nodes[index],
+            value = node; ///
+
+      parameter.setValue(value);
+    });
+
+    const blockContext = BlockContext.fromParameters(this.parameters, context);
+
+    context = blockContext; ///
+
+    const value = this.returnBlock.call(context);
   }
 
   static name = "Procedure";

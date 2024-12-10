@@ -2,26 +2,13 @@
 
 import "./index";
 
-import { Query } from "occam-query";
+import { nodesFromNothing } from "./example/utilities/nodes";
+import { fileContextFromNothing } from "./example/utilities/fileContext";
+import { procedureFromFileContext } from "./example/utilities/procedure";
 
-import { procedureFromNothing } from "./example/utilities/procedure";
-import { nominalLexerFromNothing, nominalParserFromNothing } from "./example/utilities/nominal";
+const nodes = nodesFromNothing(),
+      fileContext = fileContextFromNothing(),
+      procedure = procedureFromFileContext(fileContext),
+      context = fileContext;  ///
 
-const termNodeQuery = Query.fromExpressionString("/statement/argument/term");
-
-const nominalLexer = nominalLexerFromNothing(),
-      nominalParser = nominalParserFromNothing();
-
-const content = `∀n n = n`,
-      tokens = nominalLexer.tokenise(content),
-      node = nominalParser.parse(tokens),
-      termNode = termNodeQuery.execute(node),
-      statementNode = node, ///
-      nodes = [
-        termNode,
-        statementNode
-      ];
-
-const procedure = procedureFromNothing();
-
-procedure.call(nodes);
+procedure.call(nodes, context);

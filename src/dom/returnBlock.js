@@ -21,8 +21,10 @@ export default domAssigned(class ReturnBlock {
     return this.returnStatement;
   }
 
-  getString() {
-    debugger
+  call(context) {
+    this.steps.forEach((step) => {
+      step.call(context);
+    });
   }
 
   static name = "ReturnBlock";

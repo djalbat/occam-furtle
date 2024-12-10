@@ -22,9 +22,17 @@ export default domAssigned(class VariablesDeclaration {
 
   getString() {
     const variablesString = variablesStringFromVariables(this.variables),
-          string = variablesString; ///
+          string = `${variablesString};`;
 
     return string;
+  }
+
+  call(context) {
+    const variablesDeclarationString = this.getString();
+
+    context.trace(`Calling the '${variablesDeclarationString}' variables declaration`);
+
+    debugger
   }
 
   static name = "VariablesDeclaration";

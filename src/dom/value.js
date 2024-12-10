@@ -5,27 +5,27 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const numberTerminalNodeQuery = nodeQuery("/@number"),
+const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
       assignmentValueNodeQuery = nodeQuery("/assignment/value"),
-      primitiveTerminalNodeQuery = nodeQuery("/@number"),
+      primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
       returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
-      stringLiteralTerminalNodeQuery = nodeQuery("/@string-literal");
+      stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(variable, number, primitive, stringLiteral) {
-    this.variable = variable;
+  constructor(number, variable, primitive, stringLiteral) {
     this.number = number;
+    this.variable = variable;
     this.primitive = primitive;
     this.stringLiteral = stringLiteral;
   }
 
-  getVariable() {
-    return this.variable;
-  }
-
   getNumber() {
     return this.number;
+  }
+
+  getVariable() {
+    return this.variable;
   }
 
   getPrimitive() {
@@ -37,37 +37,35 @@ export default domAssigned(class Value {
   }
 
   getString() {
-    debugger
+    let string;
+
+    if (false) {
+      ///
+    } else if (this.variable !== null) {
+      const variableString = this.variable.getString();
+
+      string = variableString;  ///
+    } else if (this.number !== null) {
+      const numberString = `${this.number}`;
+
+      string = numberString;  ///
+    } else if (this.stringLiteral !== null) {
+      const stringLiteralString = `"${this.stringLiteral}"`;
+
+      string = stringLiteralString; ///
+    } else {
+      const primitiveString = `${this.primitive}`;
+
+      string = primitiveString; ///
+    }
+
+    return string;
   }
 
   static name = "Value";
 
   static fromValueNode(valueNode, context) {
-    const { Variable } = dom,
-          variable = Variable.fromValueNode(valueNode, context),
-          number = numberFromValueNode(valueNode),
-          primitive = primitiveFromValueNode(valueNode),
-          stringLiteral = stringLiteralFromValueNode(valueNode),
-          value = new Value(variable, number, primitive, stringLiteral);
-
-    return value;
-  }
-
-  static fromAssignmentNode(assigmentNode, context) {
-    let value = null;
-
-    const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
-
-    if (assignmentValueNode !== null) {
-      const { Variable } = dom,
-            valueNode = assignmentValueNode,  ///
-            variable = Variable.fromValueNode(valueNode, context),
-            number = numberFromValueNode(valueNode),
-            primitive = primitiveFromValueNode(valueNode),
-            stringLiteral = stringLiteralFromValueNode(valueNode);
-
-      value = new Value(variable, number, primitive, stringLiteral);
-    }
+    const value = valueFromValueNode(valueNode, context);
 
     return value;
   }
@@ -78,14 +76,23 @@ export default domAssigned(class Value {
     const conditionValueNode = conditionValueNodeQuery(conditionNode);
 
     if (conditionValueNode !== null) {
-      const { Variable } = dom,
-            valueNode = conditionValueNode, ///
-            variable = Variable.fromValueNode(valueNode, context),
-            number = numberFromValueNode(valueNode),
-            primitive = primitiveFromValueNode(valueNode),
-            stringLiteral = stringLiteralFromValueNode(valueNode);
+      const valueNode = conditionValueNode; ///
 
-      value = new Value(variable, number, primitive, stringLiteral);
+      value = valueFromValueNode(valueNode, context);
+    }
+
+    return value;
+  }
+
+  static fromAssignmentNode(assigmentNode, context) {
+    let value = null;
+
+    const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
+
+    if (assignmentValueNode !== null) {
+      const valueNode = assignmentValueNode;  ///
+
+      value = valueFromValueNode(valueNode, context);
     }
 
     return value;
@@ -97,19 +104,25 @@ export default domAssigned(class Value {
     const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode);
 
     if (returnStatementValueNode !== null) {
-      const { Variable } = dom,
-            valueNode = returnStatementValueNode, ///
-            variable = Variable.fromValueNode(valueNode, context),
-            number = numberFromValueNode(valueNode),
-            primitive = primitiveFromValueNode(valueNode),
-            stringLiteral = stringLiteralFromValueNode(valueNode);
+      const valueNode = returnStatementValueNode; ///
 
-      value = new Value(variable, number, primitive, stringLiteral);
+      value = valueFromValueNode(valueNode, context);
     }
 
     return value;
   }
 });
+
+function valueFromValueNode(valueNode, context) {
+  const { Value, Variable } = dom,
+        number = numberFromValueNode(valueNode),
+        variable = Variable.fromValueNode(valueNode, context),
+        primitive = primitiveFromValueNode(valueNode),
+        stringLiteral = stringLiteralFromValueNode(valueNode),
+        value = new Value(number, variable, primitive, stringLiteral);
+
+  return value;
+}
 
 function numberFromValueNode(valueNode) {
   let number = null;

@@ -5,6 +5,7 @@ import dom from "../dom";
 import { NODE_TYPE } from "../types";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import assignment from "./assignment";
 
 const typeTerminalNodeQuery = nodeQuery("/parameter/@type"),
       valueVariableNodeQuery = nodeQuery("/value/variable"),
@@ -34,15 +35,37 @@ export default domAssigned(class Variable {
   }
 
   getString() {
-    const string = `${this.type} ${this.name}`;
+    let string;
+
+    string = `${this.type} ${this.name}`;
+
+    if (this.assignment !== null) {
+      const assignmentString = this.assignment.getString();
+
+      string = `${string} = ${assignmentString}`;
+    }
 
     return string;
   }
 
+  matchType(type) {
+    const typeMatches = (this.type === type);
+
+    return typeMatches;
+  }
+
   isTypeNodeType() {
-    const typeNodeType = (this.type === NODE_TYPE);
+    const type = NODE_TYPE,
+          typeMatches = this.matchType(type),
+          typeNodeType = typeMatches;
 
     return typeNodeType;
+  }
+
+  setValue(value) {
+    const { Assignment } = dom;
+
+    this.assignment = Assignment.fromValue(value);
   }
 
   static name = "Variable";

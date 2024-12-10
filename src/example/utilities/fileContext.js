@@ -1,11 +1,24 @@
 "use strict";
 
 import { File } from "occam-entities";
+import { FileContext } from "../../index";  ///
 import { fileSystemUtilities } from "necessary";
+
+import { ReleaseContext } from "../context/release";
 
 const { readFile } = fileSystemUtilities;
 
-export function fileFromNothing() {
+export function fileContextFromNothing() {
+  const file = fileFromNothing(),
+        releaseContext = ReleaseContext.fromFile(file),
+        fileContext = FileContext.fromFile(file, releaseContext);
+
+  fileContext.verify();
+
+  return fileContext;
+}
+
+function fileFromNothing() {
   const filePath = "example/Free and bound variables.ftl",
         fileContent = readFile(filePath),
         path = filePath,  ///
