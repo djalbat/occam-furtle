@@ -226,6 +226,8 @@ export default class FileContext {
           tokens = lexer.tokenise(content),
           node = parser.parse(tokens);
 
+    this.clear();
+
     this.addProcedures(node);
   }
 
