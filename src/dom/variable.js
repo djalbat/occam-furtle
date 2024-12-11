@@ -2,14 +2,10 @@
 
 import dom from "../dom";
 
-import { NODE_TYPE } from "../types";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-import assignment from "./assignment";
 
-const typeTerminalNodeQuery = nodeQuery("/parameter/@type"),
-      valueVariableNodeQuery = nodeQuery("/value/variable"),
-      parameterVariableNodeQuery = nodeQuery("/parameter/variable"),
+const valueVariableNodeQuery = nodeQuery("/value/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       forEachLoopVariableNodeQuery = nodeQuery("/forEachLoop/variable"),
@@ -42,7 +38,7 @@ export default domAssigned(class Variable {
     if (this.assignment !== null) {
       const assignmentString = this.assignment.getString();
 
-      string = `${string} = ${assignmentString}`;
+      string = `${string}${assignmentString}`;
     }
 
     return string;
@@ -52,14 +48,6 @@ export default domAssigned(class Variable {
     const typeMatches = (this.type === type);
 
     return typeMatches;
-  }
-
-  isTypeNodeType() {
-    const type = NODE_TYPE,
-          typeMatches = this.matchType(type),
-          typeNodeType = typeMatches;
-
-    return typeNodeType;
   }
 
   setValue(value) {
@@ -83,17 +71,6 @@ export default domAssigned(class Variable {
 
       variable = new Variable(type, name, assigment);
     }
-
-    return variable;
-  }
-
-  static fromParameterNode(parameterNode, context) {
-    const parameterVariableNode = parameterVariableNodeQuery(parameterNode),
-          variableNode = parameterVariableNode, ///
-          type = typeFromParameterNode(parameterNode),
-          name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
 
     return variable;
   }
@@ -155,12 +132,4 @@ function nameFromVariableNode(variableNode) {
         name = variableNameTerminalNodeContent; ///
 
   return name;
-}
-
-function typeFromParameterNode(parameterNode) {
-  const typeTerminalNode = typeTerminalNodeQuery(parameterNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
-
-  return type;
 }

@@ -50,6 +50,8 @@ export default domAssigned(class Assignment {
       string = procedureCallString; ///
     }
 
+    string  ` = ${string}`;
+
     return string;
   }
 

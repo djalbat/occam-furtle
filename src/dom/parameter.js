@@ -1,31 +1,61 @@
 "use strict";
 
-import dom from "../dom";
-
+import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
+const nameTerminalNodeQuery = nodeQuery("/parameter/@name"),
+      typeTerminalNodeQuery = nodeQuery("/parameter/@type");
+
 export default domAssigned(class Parameter {
-  constructor(variable) {
-    this.variable = variable;
+  constructor(type, name) {
+    this.type = type;
+    this.name = name;
   }
 
-  getVariable() {
-    return this.variable;
+  getType() {
+    return this.type;
   }
 
-  getString() { return this.variable.getString(); }
+  getName() {
+    return this.name;
+  }
 
-  isTypeNodeType() { return this.variable.isTypeNodeType(); }
+  getString() {
+    const string = `${this.type} ${this.name}`;
 
-  setValue(value) { this.variable.setValue(value); }
+    return string;
+  }
+
+  matchType(type) {
+    const typeMatches = (this.type === type);
+
+    return typeMatches;
+  }
 
   static name = "Parameter";
 
   static fromParameterNode(parameterNode, context) {
-    const { Variable } = dom,
-          variable = Variable.fromParameterNode(parameterNode, context),
-          parameter = new Parameter(variable);
+    const name = nameFromParameterNode(parameterNode),
+          type = typeFromParameterNode(parameterNode),
+          parameter = new Parameter(name, type);
 
     return parameter;
   }
 });
+
+
+function nameFromParameterNode(parameterNode) {
+  const nameTerminalNode = nameTerminalNodeQuery(parameterNode),
+        nameTerminalNodeContent = nameTerminalNode.getContent(),
+        name = nameTerminalNodeContent; ///
+
+  return name;
+}
+
+function typeFromParameterNode(parameterNode) {
+  const typeTerminalNode = typeTerminalNodeQuery(parameterNode),
+        typeTerminalNodeContent = typeTerminalNode.getContent(),
+        type = typeTerminalNodeContent; ///
+
+  return type;
+}
