@@ -29,21 +29,21 @@ export default domAssigned(class ReturnBlock {
 
   static name = "ReturnBlock";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode) {
     const { ReturnStatement } = dom,
           stepNodes = stepNodesQuery(procedureDeclarationNode),
-          steps = stepsFromStepNodes(stepNodes, context),
-          returnStatement = ReturnStatement.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          steps = stepsFromStepNodes(stepNodes),
+          returnStatement = ReturnStatement.fromProcedureDeclarationNode(procedureDeclarationNode),
           returnBlock = new ReturnBlock(steps, returnStatement);
 
     return returnBlock;
   }
 });
 
-function stepsFromStepNodes(stepNodes, context) {
+function stepsFromStepNodes(stepNodes) {
   const { Step } = dom,
         steps = stepNodes.map((stepNode) => {
-          const step = Step.fromStepNode(stepNode, context);
+          const step = Step.fromStepNode(stepNode);
 
           return step;
         });

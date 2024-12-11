@@ -5,11 +5,16 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 
 export default domAssigned(class Assignment {
-  constructor(value, nodeQuery, nodesQuery, procedureCall) {
+  constructor(string, value, nodeQuery, nodesQuery, procedureCall) {
+    this.string = string;
     this.value = value;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
     this.procedureCall = procedureCall;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getValue() {
@@ -24,56 +29,70 @@ export default domAssigned(class Assignment {
     return this.nodesQuery;
   }
 
-  getString() {
-    let string;
-
-    if (false) {
-      ///
-    } else if (this.value !== null) {
-      const valueString = this.value.getString();
-
-      string = valueString; ///
-    }
-    else if (this.nodeQuery !== null) {
-      const nodeQueryString = this.nodeQuery.getString();
-
-      string = nodeQueryString; ///
-    }
-    else if (this.nodesQuery !== null) {
-      const nodesQueryString = this.nodesQuery.getString();
-
-      string = nodesQueryString;  ///
-    }
-    else if (this.procedureCall !== null) {
-      const procedureCallString = this.procedureCall.getString();
-
-      string = procedureCallString; ///
-    }
-
-    string  ` = ${string}`;
-
-    return string;
-  }
-
   static name = "Assignment";
+
+  static fromNode(node, fileContext) {
+    const { Value } = dom,
+          value = Value.fromNode(node, fileContext),
+          nodeQuery = null,
+          nodesQuery = null,
+          procedureCall = null,
+          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
+          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
+
+    return assigment;
+  }
 
   static fromValue(value) {
     const nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          assigment = new Assignment(value, nodeQuery, nodesQuery, procedureCall);
+          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
+          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assigment;
   }
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromAssignmentNode(assigmentNode) {
     const { Value, NodeQuery, NodesQuery, ProcedureCall } = dom,
-          value = Value.fromAssignmentNode(assigmentNode, context),
-          nodeQuery = NodeQuery.fromAssignmentNode(assigmentNode, context),
-          nodesQuery = NodesQuery.fromAssignmentNode(assigmentNode, context),
-          procedureCall = ProcedureCall.fromAssignmentNode(assigmentNode, context),
-          assigment = new Assignment(value, nodeQuery, nodesQuery, procedureCall);
+          value = Value.fromAssignmentNode(assigmentNode),
+          nodeQuery = NodeQuery.fromAssignmentNode(assigmentNode),
+          nodesQuery = NodesQuery.fromAssignmentNode(assigmentNode),
+          procedureCall = ProcedureCall.fromAssignmentNode(assigmentNode),
+          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
+          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assigment;
   }
 });
+
+function stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall) {
+  let string;
+
+  if (false) {
+    ///
+  } else if (value !== null) {
+    const valueString = value.getString();
+
+    string = valueString; ///
+  }
+  else if (nodeQuery !== null) {
+    const nodeQueryString = nodeQuery.getString();
+
+    string = nodeQueryString; ///
+  }
+  else if (nodesQuery !== null) {
+    const nodesQueryString = nodesQuery.getString();
+
+    string = nodesQueryString;  ///
+  }
+  else if (procedureCall !== null) {
+    const procedureCallString = procedureCall.getString();
+
+    string = procedureCallString; ///
+  }
+
+  string = ` = ${string}`;
+
+  return string;
+}

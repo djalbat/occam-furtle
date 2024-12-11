@@ -2,6 +2,7 @@
 
 import dom from "../dom";
 
+import { NODE_TYPE } from "../types";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
@@ -12,10 +13,15 @@ const valueVariableNodeQuery = nodeQuery("/value/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name");
 
 export default domAssigned(class Variable {
-  constructor(type, name, assignment) {
+  constructor(string, type, name, assignment) {
+    this.string = string;
     this.type = type;
     this.name = name;
     this.assignment = assignment;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getType() {
@@ -28,20 +34,6 @@ export default domAssigned(class Variable {
 
   getAssignment() {
     return this.assignment;
-  }
-
-  getString() {
-    let string;
-
-    string = `${this.type} ${this.name}`;
-
-    if (this.assignment !== null) {
-      const assignmentString = this.assignment.getString();
-
-      string = `${string}${assignmentString}`;
-    }
-
-    return string;
   }
 
   matchType(type) {
@@ -58,7 +50,7 @@ export default domAssigned(class Variable {
 
   static name = "Variable";
 
-  static fromValueNode(valueNode, context) {
+  static fromValueNode(valueNode) {
     let variable = null;
 
     const valueVariableNode = valueVariableNodeQuery(valueNode);
@@ -67,51 +59,56 @@ export default domAssigned(class Variable {
       const variableNode = valueVariableNode, ///
             type = null,
             name = nameFromVariableNode(variableNode),
-            assigment = null;
+            assignment = null,
+            string = stringFromTypeNameAndAssigment(type, name, assignment);
 
-      variable = new Variable(type, name, assigment);
+      variable = new Variable(string, type, name, assignment);
     }
 
     return variable;
   }
 
-  static fromNodeQueryNode(nodeQueryNode, context) {
+  static fromNodeQueryNode(nodeQueryNode) {
     const nodeQueryVariableNode = nodeQueryVariableNodeQuery(nodeQueryNode),
           variableNode = nodeQueryVariableNode, ///
           type = null,
           name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
+          assignment = null,
+          string = stringFromTypeNameAndAssigment(type, name, assignment),
+          variable = new Variable(string, type, name, assignment);
 
     return variable;
   }
 
-  static fromNodesQueryNode(nodesQueryNode, context) {
+  static fromNodesQueryNode(nodesQueryNode) {
     const nodesQueryVariableNode = nodesQueryVariableNodeQuery(nodesQueryNode),
           variableNode = nodesQueryVariableNode, ///
           type = null,
           name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
+          assignment = null,
+          string = stringFromTypeNameAndAssigment(type, name, assignment),
+          variable = new Variable(string, type, name, assignment);
 
     return variable;
   }
 
-  static fromForEachLoopNode(forEachLoopLoopNode, context) {
+  static fromForEachLoopNode(forEachLoopLoopNode) {
     const forEachLoopVariableNode = forEachLoopVariableNodeQuery(forEachLoopLoopNode),
           variableNode = forEachLoopVariableNode, ///
           type = null,
           name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
+          assignment = null,
+          string = stringFromTypeNameAndAssigment(type, name, assignment),
+          variable = new Variable(string, type, name, assignment);
 
     return variable;
   }
 
   static fromVariableNodeAndType(variableNode, type) {
     const name = nameFromVariableNode(variableNode),
-          assigment = null,
-          variable = new Variable(type, name, assigment);
+          assignment = null,
+          string = stringFromTypeNameAndAssigment(type, name, assignment),
+          variable = new Variable(string, type, name, assignment);
 
     return variable;
   }
@@ -120,7 +117,8 @@ export default domAssigned(class Variable {
     const { Assignment } = dom,
           name = nameFromVariableNode(variableNode),
           assignment = Assignment.fromAssignmentNode(assignmentNode),
-          variable = new Variable(type, name, assignment);
+          string = stringFromTypeNameAndAssigment(type, name, assignment),
+          variable = new Variable(string, type, name, assignment);
 
     return variable;
   }
@@ -133,3 +131,18 @@ function nameFromVariableNode(variableNode) {
 
   return name;
 }
+
+function stringFromTypeNameAndAssigment(type, name, assignment) {
+  let string;
+
+  string = `${type} ${name}`;
+
+  if (assignment !== null) {
+    const assignmentString = assignment.getString();
+
+    string = `${string}${assignmentString}`;
+  }
+
+  return string;
+}
+

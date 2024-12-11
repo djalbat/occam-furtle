@@ -13,11 +13,21 @@ const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(number, variable, primitive, stringLiteral) {
+  constructor(string, node, number, variable, primitive, stringLiteral) {
+    this.string = string;
+    this.node = node;
     this.number = number;
     this.variable = variable;
     this.primitive = primitive;
     this.stringLiteral = stringLiteral;
+  }
+
+  getString() {
+    return this.string;
+  }
+
+  getNode() {
+    return this.node;
   }
 
   getNumber() {
@@ -36,41 +46,26 @@ export default domAssigned(class Value {
     return this.stringLiteral;
   }
 
-  getString() {
-    let string;
-
-    if (false) {
-      ///
-    } else if (this.variable !== null) {
-      const variableString = this.variable.getString();
-
-      string = variableString;  ///
-    } else if (this.number !== null) {
-      const numberString = `${this.number}`;
-
-      string = numberString;  ///
-    } else if (this.stringLiteral !== null) {
-      const stringLiteralString = `"${this.stringLiteral}"`;
-
-      string = stringLiteralString; ///
-    } else {
-      const primitiveString = `${this.primitive}`;
-
-      string = primitiveString; ///
-    }
-
-    return string;
-  }
-
   static name = "Value";
 
-  static fromValueNode(valueNode, context) {
-    const value = valueFromValueNode(valueNode, context);
+  static fromNode(node, fileContext) {
+    const string = fileContext.nodeAsString(node),
+          number = null,
+          variable = null,
+          primitive = null,
+          stringLiteral = null,
+          value = new Value(string, node, number, variable, primitive, stringLiteral);
 
     return value;
   }
 
-  static fromConditionNode(conditionNode, context) {
+  static fromValueNode(valueNode) {
+    const value = valueFromValueNode(valueNode);
+
+    return value;
+  }
+
+  static fromConditionNode(conditionNode) {
     let value = null;
 
     const conditionValueNode = conditionValueNodeQuery(conditionNode);
@@ -78,13 +73,13 @@ export default domAssigned(class Value {
     if (conditionValueNode !== null) {
       const valueNode = conditionValueNode; ///
 
-      value = valueFromValueNode(valueNode, context);
+      value = valueFromValueNode(valueNode);
     }
 
     return value;
   }
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromAssignmentNode(assigmentNode) {
     let value = null;
 
     const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
@@ -92,13 +87,13 @@ export default domAssigned(class Value {
     if (assignmentValueNode !== null) {
       const valueNode = assignmentValueNode;  ///
 
-      value = valueFromValueNode(valueNode, context);
+      value = valueFromValueNode(valueNode);
     }
 
     return value;
   }
 
-  static fromReturnStatementNode(returnStatementNode, context) {
+  static fromReturnStatementNode(returnStatementNode) {
     let value = null;
 
     const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode);
@@ -106,20 +101,22 @@ export default domAssigned(class Value {
     if (returnStatementValueNode !== null) {
       const valueNode = returnStatementValueNode; ///
 
-      value = valueFromValueNode(valueNode, context);
+      value = valueFromValueNode(valueNode);
     }
 
     return value;
   }
 });
 
-function valueFromValueNode(valueNode, context) {
+function valueFromValueNode(valueNode) {
   const { Value, Variable } = dom,
+        node = null,
         number = numberFromValueNode(valueNode),
-        variable = Variable.fromValueNode(valueNode, context),
+        variable = Variable.fromValueNode(valueNode),
         primitive = primitiveFromValueNode(valueNode),
         stringLiteral = stringLiteralFromValueNode(valueNode),
-        value = new Value(number, variable, primitive, stringLiteral);
+        string = stringFromNumberVariableStringLiteralAndPrimitive(number, variable, stringLiteral, primitive),
+        value = new Value(string, node, number, variable, primitive, stringLiteral);
 
   return value;
 }
@@ -164,4 +161,30 @@ function stringLiteralFromValueNode(valueNode) {
   }
 
   return stringLiteral;
+}
+
+function stringFromNumberVariableStringLiteralAndPrimitive(number, variable, stringLiteral, primitive) {
+  let string;
+
+  if (false) {
+    ///
+  } else if (number !== null) {
+    const numberString = `${number}`;
+
+    string = numberString;  ///
+  } else if (variable !== null) {
+    const variableString = variable.getString();
+
+    string = variableString;  ///
+  } else if (stringLiteral !== null) {
+    const stringLiteralString = `"${stringLiteral}"`;
+
+    string = stringLiteralString; ///
+  } else {
+    const primitiveString = `${primitive}`;
+
+    string = primitiveString; ///
+  }
+
+  return string;
 }

@@ -9,10 +9,15 @@ const nonsenseNodesQuery = nodesQuery("/forEachLoop/anonymousProcedure/block/non
       parameterNodesQuery = nodesQuery("/forEachLoop/anonymousProcedure/parameter");
 
 export default domAssigned(class AnonymousProcedure {
-  constructor(parameters, nonsensical, block) {
+  constructor(string, parameters, nonsensical, block) {
+    this.string = string;
     this.paramters = parameters;
     this.nonsensical = nonsensical;
     this.block = block;
+  }
+
+  getString() {
+    debugger
   }
 
   getParameters() {
@@ -27,28 +32,25 @@ export default domAssigned(class AnonymousProcedure {
     return this.block;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "AnonymousProcedure";
 
-  static fromForEachLoopNode(forEachLoopNode, context) {
+  static fromForEachLoopNode(forEachLoopNode) {
     const { Block } = dom,
-          parameters = parametersFromForEachLoopNode(forEachLoopNode, context),
-          nonsensical = nonsensicalFromForEachLoopNode(forEachLoopNode, context),
-          block = Block.fromForEachLoopNode(forEachLoopNode, context),
-          anonymousProcedureDeclaration = new AnonymousProcedure(parameters, nonsensical, block);
+          parameters = parametersFromForEachLoopNode(forEachLoopNode),
+          nonsensical = nonsensicalFromForEachLoopNode(forEachLoopNode),
+          block = Block.fromForEachLoopNode(forEachLoopNode),
+          string = null,
+          anonymousProcedureDeclaration = new AnonymousProcedure(string, parameters, nonsensical, block);
 
     return anonymousProcedureDeclaration;
   }
 });
 
-function parametersFromForEachLoopNode(forEachLoopNode, context) {
+function parametersFromForEachLoopNode(forEachLoopNode) {
   const { Parameter } = dom,
         parameterNodes = parameterNodesQuery(forEachLoopNode),
         parameters = parameterNodes.map((parameterNode) => {
-          const parameter = Parameter.fromParameterNode(parameterNode, context);
+          const parameter = Parameter.fromParameterNode(parameterNode);
 
           return parameter;
         });
@@ -56,7 +58,7 @@ function parametersFromForEachLoopNode(forEachLoopNode, context) {
   return parameters;
 }
 
-function nonsensicalFromForEachLoopNode(forEachLoopNode, context) {
+function nonsensicalFromForEachLoopNode(forEachLoopNode) {
   const nonsenseNodes = nonsenseNodesQuery(forEachLoopNode),
         nonsenseNodesLength = nonsenseNodes.length,
         nonsensical = (nonsenseNodesLength > 0);

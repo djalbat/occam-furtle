@@ -12,10 +12,15 @@ const terminalNodeQuery = nodeQuery("/comparison/@*"),
       comparisonNodeQuery = nodeQuery("/condition/comparison");
 
 export default domAssigned(class Comparison {
-  constructor(equalTo, leftValue, rightValue) {
+  constructor(string, equalTo, leftValue, rightValue) {
+    this.string = string;
     this.equalTo = equalTo;
     this.leftValue = leftValue;
     this.rightValue = rightValue;
+  }
+
+  getString() {
+    debugger
   }
 
   getEqualTo() {
@@ -30,13 +35,9 @@ export default domAssigned(class Comparison {
     return this.rightValue;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "Comparison";
 
-  static fromConditionNode(conditionNode, context) {
+  static fromConditionNode(conditionNode) {
     let comparison = null;
 
     const comparisonNode = comparisonNodeQuery(conditionNode);
@@ -46,10 +47,11 @@ export default domAssigned(class Comparison {
             leftValueNode = leftValueNodeQuery(comparisonNode),
             rightValueNode = rightValueNodeQuery(comparisonNode),
             equalTo = equalToFromComparisonNode(comparisonNode),
-            leftValue = Value.fromValueNode(leftValueNode, context),
-            rightValue = Value.fromValueNode(rightValueNode, context);
+            leftValue = Value.fromValueNode(leftValueNode),
+            rightValue = Value.fromValueNode(rightValueNode),
+            string = null;
 
-      comparison = new Comparison(equalTo, leftValue, rightValue);
+      comparison = new Comparison(string, equalTo, leftValue, rightValue);
     }
 
     return comparison;

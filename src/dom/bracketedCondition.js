@@ -9,21 +9,22 @@ const conditionNodeQuery = nodeQuery("/bracketedCondition/condition"),
       bracketedConditionNodeQuery = nodeQuery("/condition/bracketedCondition");
 
 export default domAssigned(class BracketedCondition {
-  constructor(condition) {
+  constructor(string, condition) {
+    this.string = string;
     this.condition = condition;
-  }
-
-  getCondition() {
-    return this.condition;
   }
 
   getString() {
     debugger
   }
 
+  getCondition() {
+    return this.condition;
+  }
+
   static name = "BracketedCondition";
 
-  static fromConditionNode(conditionNode, context) {
+  static fromConditionNode(conditionNode) {
     let bracketedCondition = null;
 
     const bracketedConditionNode = bracketedConditionNodeQuery(conditionNode);
@@ -31,9 +32,10 @@ export default domAssigned(class BracketedCondition {
     if (bracketedConditionNode !== null) {
       const { Condition } = dom,
             conditionNode = conditionNodeQuery(bracketedConditionNode),
-            condition = Condition.fromConditionNode(conditionNode);
+            condition = Condition.fromConditionNode(conditionNode),
+            string = null;
 
-      bracketedCondition = new BracketedCondition(condition);
+      bracketedCondition = new BracketedCondition(string, condition);
     }
 
     return bracketedCondition;

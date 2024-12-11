@@ -12,19 +12,17 @@ const variableNodesQuery = nodesQuery("/variablesDeclaration/variable"),
       variablesDeclarationNodeQuery = nodeQuery("/step/variablesDeclaration");
 
 export default domAssigned(class VariablesDeclaration {
-  constructor(variables) {
+  constructor(string, variables) {
+    this.string = string;
     this.variables = variables;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getVariables() {
     return this.variables;
-  }
-
-  getString() {
-    const variablesString = variablesStringFromVariables(this.variables),
-          string = `${variablesString};`;
-
-    return string;
   }
 
   call(context) {
@@ -37,34 +35,37 @@ export default domAssigned(class VariablesDeclaration {
 
   static name = "VariablesDeclaration";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let variablesDeclaration = null;
 
     const variablesDeclarationNode = variablesDeclarationNodeQuery(stepNode);
 
     if (variablesDeclarationNode !== null) {
       const type = typeFromVariablesDeclarationNode(variablesDeclarationNode),
-            variables = variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode);
+            variables = variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode),
+            string = stringFromVariables(variables);
 
-      variablesDeclaration = new VariablesDeclaration(variables);
+      variablesDeclaration = new VariablesDeclaration(string, variables);
     }
 
     return variablesDeclaration;
   }
 });
 
-function variablesStringFromVariables(variables) {
+function stringFromVariables(variables) {
   const variablesString = variables.reduce((variablesString, variable) => {
-    const variableString = variable.getString();
+          const variableString = variable.getString();
 
-    variablesString = (variablesString === null) ?
-                        variableString :  ///
-                          `${variablesString}, ${variableString}`;
+          variablesString = (variablesString === null) ?
+                              variableString :  ///
+                                `${variablesString}, ${variableString}`;
 
-    return variablesString;
-  }, null);
+          return variablesString;
+        }, null),
+        string = `${variablesString};`;
 
-  return variablesString;
+  return string;
+
 }
 
 function typeFromVariablesDeclarationNode(variablesDeclarationNode) {

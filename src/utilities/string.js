@@ -14,21 +14,11 @@ export function nodeAsString(node, tokens) {
   return string;
 }
 
-export function nodesAsString(nodes, tokens) {
-  const string = nodes.reduce((string, node) => {
-    const nodeString = nodeAsString(node, tokens);
-
-    string = (string === EMPTY_STRING) ?
-               nodeString :
-                `${string},${nodeString}`;
-
-    return string;
-  }, EMPTY_STRING);
-
-  return string;
+export default {
+  nodeAsString
 }
 
-export function tokensAsString(tokens) {
+function tokensAsString(tokens) {
   const string = tokens.reduce((string, token) => {
     const content = token.getContent();
 
@@ -40,7 +30,7 @@ export function tokensAsString(tokens) {
   return string;
 }
 
-export function nodeAsTokens(node, tokens) {
+function nodeAsTokens(node, tokens) {
   const nodeTerminalNode = node.isTerminalNode();
 
   if (nodeTerminalNode) {z

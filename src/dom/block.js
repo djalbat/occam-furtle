@@ -23,12 +23,12 @@ export default domAssigned(class Block {
 
   static name = "Block";
 
-  static fromBlockNode(blockNode, context) {
+  static fromBlockNode(blockNode) {
     let block = null;
 
     if (blockNode !== null) {
       const stepNodes = stepNodesQuery(blockNode),
-            steps = stepsFromStepNodes(stepNodes, context);
+            steps = stepsFromStepNodes(stepNodes);
 
       block = new Block(steps);
     }
@@ -36,21 +36,21 @@ export default domAssigned(class Block {
     return block;
   }
 
-  static fromForEachLoopNode(forEachLoopNode, context) {
+  static fromForEachLoopNode(forEachLoopNode) {
     const forEachLoopBockNode = forEachLoopBlockNodeQuery(forEachLoopNode),
           blockNode = forEachLoopBockNode,  ///
           stepNodes = stepNodesQuery(blockNode),
-          steps = stepsFromStepNodes(stepNodes, context),
+          steps = stepsFromStepNodes(stepNodes),
           block = new Block(steps);
 
     return block;
   }
 });
 
-function stepsFromStepNodes(stepNodes, context) {
+function stepsFromStepNodes(stepNodes) {
   const { Step } = dom,
         steps = stepNodes.map((stepNode) => {
-          const step = Step.fromStepNode(stepNode, context);
+          const step = Step.fromStepNode(stepNode);
 
           return step;
         });

@@ -6,7 +6,8 @@ import { domAssigned } from "../../dom";
 const variablesAssignmentNodeQuery = nodeQuery("/step/variablesAssignment");
 
 export default domAssigned(class VariablesAssignment {
-  constructor() {
+  constructor(string) {
+    this.string = string;
   }
 
   getString() {
@@ -15,7 +16,7 @@ export default domAssigned(class VariablesAssignment {
 
   static name = "VariablesAssignment";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let variablesAssignment = null;
 
     const variablesAssignmentNode = variablesAssignmentNodeQuery(stepNode);

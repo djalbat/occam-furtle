@@ -11,9 +11,14 @@ const nodesQueryNodeQuery = nodeQuery("/assignment/nodesQuery"),
       expressionNodeQuery = nodeQuery("/nodesQuery/expression");
 
 export default domAssigned(class NodesQuery {
-  getString(variable, query) {
+  constructor(string, variable, query) {
+    this.string = string;
     this.variable = variable;
     this.query = query;
+  }
+
+  getString() {
+    debugger
   }
 
   getVariable() {
@@ -26,7 +31,7 @@ export default domAssigned(class NodesQuery {
 
   static name = "NodesQuery";
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromAssignmentNode(assigmentNode) {
     let nodesQuery = null;
 
     const nodesQueryNode = nodesQueryNodeQuery(assigmentNode);
@@ -35,10 +40,11 @@ export default domAssigned(class NodesQuery {
       const { Variable } = dom,
             expressionNode = expressionNodeQuery(nodesQueryNode),
             expression = Expression.fromExpressionNode(expressionNode),
-            variable = Variable.fromNodesQueryNode(nodesQueryNode, context),
-            query = Query.fromExpression(expression);
+            variable = Variable.fromNodesQueryNode(nodesQueryNode),
+            query = Query.fromExpression(expression),
+            string = null;
 
-      nodesQuery = new NodesQuery(variable, query);
+      nodesQuery = new NodesQuery(string, variable, query);
     }
 
     return nodesQuery;

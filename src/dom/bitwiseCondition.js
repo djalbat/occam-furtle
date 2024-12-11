@@ -12,14 +12,19 @@ const terminalNodeQuery = nodeQuery("/bitwiseCondition/@*"),
       bitwiseConditionNodeQuery = nodeQuery("/condition/bitwiseCondition");
 
 export default domAssigned(class BitwiseCondition {
-  constructor(disjoined, leftCondition, rightCondition) {
-    this.disjoined = disjoined;
+  constructor(string, disjoint, leftCondition, rightCondition) {
+    this.string = string;
+    this.disjoint = disjoint;
     this.leftCondition = leftCondition;
     this.rightCondition = rightCondition;
   }
 
-  isDisjoined() {
-    return this.disjoined;
+  getString() {
+    debugger
+  }
+
+  isDisjoint() {
+    return this.disjoint;
   }
 
   getLeftCondition() {
@@ -30,13 +35,9 @@ export default domAssigned(class BitwiseCondition {
     return this.rightCondition;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "BitwiseCondition";
 
-  static fromConditionNode(conditionNode, context) {
+  static fromConditionNode(conditionNode) {
     let bitwiseCondition = null;
 
     const bitwiseConditionNode = bitwiseConditionNodeQuery(conditionNode);
@@ -45,21 +46,22 @@ export default domAssigned(class BitwiseCondition {
       const { Condition } = dom,
             leftConditionNode = leftConditionNodeQuery(bitwiseConditionNode),
             rightConditionNode = rightConditionNodeQuery(bitwiseConditionNode),
-            disjoined = disjoinedFromBitwiseConditionNode(bitwiseConditionNode),
+            disjoint = disjointFromBitwiseConditionNode(bitwiseConditionNode),
             leftCondition = Condition.fromConditionNode(leftConditionNode),
-            rightCondition = Condition.fromConditionNode(rightConditionNode);
+            rightCondition = Condition.fromConditionNode(rightConditionNode),
+            string = null;
 
-      bitwiseCondition = new BitwiseCondition(disjoined, leftCondition, rightCondition);
+      bitwiseCondition = new BitwiseCondition(string, disjoint, leftCondition, rightCondition);
     }
 
     return bitwiseCondition;
   }
 });
 
-function disjoinedFromBitwiseConditionNode(bitwiseConditionNode) {
+function disjointFromBitwiseConditionNode(bitwiseConditionNode) {
   const terminalNode = terminalNodeQuery(bitwiseConditionNode),
         terminalNodeContent = terminalNode.getContent(),
-        disjoined = (terminalNodeContent === DISJUNCTION);
+        disjoint = (terminalNodeContent === DISJUNCTION);
 
-  return disjoined;
+  return disjoint;
 }

@@ -7,9 +7,14 @@ const nameTerminalNodeQuery = nodeQuery("/parameter/@name"),
       typeTerminalNodeQuery = nodeQuery("/parameter/@type");
 
 export default domAssigned(class Parameter {
-  constructor(type, name) {
+  constructor(string, type, name) {
+    this.string = string;
     this.type = type;
     this.name = name;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getType() {
@@ -20,12 +25,6 @@ export default domAssigned(class Parameter {
     return this.name;
   }
 
-  getString() {
-    const string = `${this.type} ${this.name}`;
-
-    return string;
-  }
-
   matchType(type) {
     const typeMatches = (this.type === type);
 
@@ -34,10 +33,11 @@ export default domAssigned(class Parameter {
 
   static name = "Parameter";
 
-  static fromParameterNode(parameterNode, context) {
+  static fromParameterNode(parameterNode) {
     const name = nameFromParameterNode(parameterNode),
           type = typeFromParameterNode(parameterNode),
-          parameter = new Parameter(name, type);
+          string = stringFromTypeAndName(type, name),
+          parameter = new Parameter(string, name, type);
 
     return parameter;
   }
@@ -59,3 +59,10 @@ function typeFromParameterNode(parameterNode) {
 
   return type;
 }
+
+function stringFromTypeAndName(type, name) {
+  const string = `${type} ${name}`;
+
+  return string;
+}
+

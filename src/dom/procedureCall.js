@@ -9,9 +9,14 @@ const valueNodesQuery = nodesQuery("/assignment/procedureCall/value"),
       procedureCallNodeQuery = nodeQuery("/assignment/procedureCall");
 
 export default domAssigned(class ProcedureCall {
-  constructor(reference, values) {
+  constructor(string, reference, values) {
+    this.string = string;
     this.reference = reference;
     this.values = values;
+  }
+
+  getString() {
+    debugger
   }
 
   getReference() {
@@ -22,30 +27,27 @@ export default domAssigned(class ProcedureCall {
     return this.values;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "ProcedureCall";
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromAssignmentNode(assigmentNode) {
     let procedureCall = null;
 
     const procedureCallNode = procedureCallNodeQuery(assigmentNode);
 
     if (procedureCallNode !== null) {
       const { Reference } = dom,
-            reference = Reference.fromAssignmentNode(assigmentNode, context),
-            values = valuesFromAssignmentNode(assigmentNode, context);
+            reference = Reference.fromAssignmentNode(assigmentNode),
+            values = valuesFromAssignmentNode(assigmentNode),
+            string = null;
 
-      procedureCall = new ProcedureCall(reference, values);
+      procedureCall = new ProcedureCall(string, reference, values);
     }
 
     return procedureCall;
   }
 });
 
-function valuesFromAssignmentNode(assigmentNode, context) {
+function valuesFromAssignmentNode(assigmentNode) {
   const { Value } = dom,
         valueNodes = valueNodesQuery(assigmentNode),
         values = valueNodes.map((valueNode) => {

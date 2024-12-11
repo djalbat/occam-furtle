@@ -21,21 +21,17 @@ export default domAssigned(class ForEachLoop {
     return this.anonymousProcedure;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "ForEachLoop";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let forEachLoop = null;
 
     const forEachLoopNode = forEachLoopNodeQuery(stepNode);
 
     if (forEachLoopNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
-            variable = Variable.fromForEachLoopNode(forEachLoopNode, context),
-            anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode, context);
+            variable = Variable.fromForEachLoopNode(forEachLoopNode),
+            anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode);
 
       forEachLoop = new ForEachLoop(variable, anonymousProcedure);
     }

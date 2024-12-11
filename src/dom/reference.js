@@ -23,14 +23,14 @@ export default domAssigned(class Reference {
 
   static name = "Reference";
 
-  static fromReferenceNode(referenceNode, context) {
+  static fromReferenceNode(referenceNode) {
     const name = nameFromReferenceNode(referenceNode),
           reference = new Reference(name);
 
     return reference;
   }
 
-  static fromAssignmentNode(assignmentNode, context) {
+  static fromAssignmentNode(assignmentNode) {
     const assignmentProcedureCallReferenceNod = assignmentProcedureCallReferenceNodeQuery(assignmentNode),
           referenceNode = assignmentProcedureCallReferenceNod,
           name = nameFromReferenceNode(referenceNode),

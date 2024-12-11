@@ -10,9 +10,14 @@ const variableNodesQuery = nodesQuery("/arrayAssignment/variable"),
       arrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
 
 export default domAssigned(class ArrayAssigment {
-  constructor(offset, variables) {
+  constructor(string, offset, variables) {
+    this.string = string;
     this.offset = offset;
     this.variables = variables;
+  }
+
+  getString() {
+    debugger
   }
 
   getOffset() {
@@ -23,13 +28,9 @@ export default domAssigned(class ArrayAssigment {
     return this.variables;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "ArrayAssignment";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let arrayAssignment = null;
 
     const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
@@ -38,10 +39,11 @@ export default domAssigned(class ArrayAssigment {
       const typeTerminalNodes = typeTerminalNodesQuery(arrayAssignmentNode),
             variableNodes = variableNodesQuery(arrayAssignmentNode),
             types = typesFromTypeTerminalNodes(typeTerminalNodes),
+            string = null,
             offset = offsetFromArrayAssignmentNode(arrayAssignmentNode),
             variables = variablesFromVariableNodesAndTypes(variableNodes, types);
 
-      arrayAssignment = new ArrayAssigment(offset, variables);
+      arrayAssignment = new ArrayAssigment(string, offset, variables);
     }
 
     return arrayAssignment;

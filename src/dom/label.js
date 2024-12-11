@@ -29,7 +29,7 @@ export default domAssigned(class Label {
 
   static name = "Label";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode) {
     const labelNode = labelNodeQuery(procedureDeclarationNode),
           name = nameFromLabelNode(labelNode),
           label = new Label(name);

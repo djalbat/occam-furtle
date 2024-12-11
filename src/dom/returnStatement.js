@@ -8,30 +8,32 @@ import { domAssigned } from "../dom";
 const returnStatementNodeQuery = nodeQuery("/procedureDeclaration/returnBlock/returnStatement");
 
 export default domAssigned(class ReturnStatement {
-  constructor(value) {
+  constructor(string, value) {
+    this.string = string;
     this.value = value;
-  }
-
-  getValue() {
-    return this.value;
   }
 
   getString() {
     debugger
   }
 
+  getValue() {
+    return this.value;
+  }
+
   static name = "ReturnStatement";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode) {
     let returnStatement = null;
 
     const returnStatementNode = returnStatementNodeQuery(procedureDeclarationNode);
 
     if (returnStatementNode !== null) {
       const { Value } = dom,
-            value = Value.fromReturnStatementNode(returnStatementNode, context);
+            value = Value.fromReturnStatementNode(returnStatementNode),
+            string = null;
 
-      returnStatement = new ReturnStatement(value);
+      returnStatement = new ReturnStatement(string, value);
     }
 
     return returnStatement;

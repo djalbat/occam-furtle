@@ -28,13 +28,9 @@ export default domAssigned(class ConditionalBlock {
     return this.elseBlock;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "ConditionalBlock";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let conditionalBlock = null;
 
     const conditionalBlockNode = conditionalBlockNodeQuery(stepNode);
@@ -43,9 +39,9 @@ export default domAssigned(class ConditionalBlock {
       const { Block, Condition } = dom,
             conditionBlockNode = conditionBlockNodeQuery(conditionalBlockNode),
             elseBlockNode = elseBlockNodeQuery(conditionalBlockNode),
-            condition = Condition.fromConditionalBlockNode(conditionalBlockNode, context),
-            conditionBlock = Block.fromBlockNode(conditionBlockNode, context),
-            elseBlock = Block.fromBlockNode(elseBlockNode, context);
+            condition = Condition.fromConditionalBlockNode(conditionalBlockNode),
+            conditionBlock = Block.fromBlockNode(conditionBlockNode),
+            elseBlock = Block.fromBlockNode(elseBlockNode);
 
       conditionalBlock = new ConditionalBlock(condition, conditionBlock, elseBlock);
     }

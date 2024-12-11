@@ -19,8 +19,7 @@ export default domAssigned(class ProcedureDeclaration {
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, fileContext) {
     const { Procedure } = dom,
-          context = fileContext,  ///
-          procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode),
           procedureDeclaration = new ProcedureDeclaration(procedure);
 
     return procedureDeclaration;

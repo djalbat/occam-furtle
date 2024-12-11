@@ -28,4 +28,8 @@ import VariablesAssignment from "./dom/assignment/variables";
 import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";
 
+export { default as Value } from "./dom/value";
+export { default as Exception } from "./exception";
 export { default as FileContext } from "./context/file";
+export { default as stringUtilities } from "./utilities/string";
+

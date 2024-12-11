@@ -10,21 +10,22 @@ const variableNodesQuery = nodesQuery("/objectAssignment/variable"),
       objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default domAssigned(class ObjectAssigment {
-  constructor(variables) {
+  constructor(string, variables) {
+    this.string = string;
     this.variables = variables;
-  }
-
-  getVariables() {
-    return this.variables;
   }
 
   getString() {
     debugger
   }
 
+  getVariables() {
+    return this.variables;
+  }
+
   static name = "ObjectAssigment";
 
-  static fromStepNode(stepNode, context) {
+  static fromStepNode(stepNode) {
     let objectAssignment = null;
 
     const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
@@ -33,9 +34,10 @@ export default domAssigned(class ObjectAssigment {
       const typeTerminalNodes = typeTerminalNodesQuery(objectAssignmentNode),
             variableNodes = variableNodesQuery(objectAssignmentNode),
             types = typesFromTypeTerminalNodes(typeTerminalNodes),
+            string = null,
             variables = variablesFromVariableNodesAndTypes(variableNodes, types);
 
-      objectAssignment = new ObjectAssigment(variables);
+      objectAssignment = new ObjectAssigment(string, variables);
     }
 
     return objectAssignment;
