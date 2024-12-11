@@ -85,44 +85,22 @@ export default domAssigned(class Procedure {
 
   static name = "Procedure";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const { Label, ReturnBlock } = dom,
-          type = typeFromProcedureDeclarationNode(procedureDeclarationNode),
-          label = Label.fromProcedureDeclarationNode(procedureDeclarationNode),
-          parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode),
-          nonsensical = nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode),
-          returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode),
-          string = stringFromTypeLabelAndParameters(type, label, parameters),
+          node = procedureDeclarationNode,  ///
+          string = context.nodeAsString(node),
+          type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          nonsensical = nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           procedureDeclaration = new Procedure(string, type, label, parameters, nonsensical, returnBlock);
 
     return procedureDeclaration;
   }
 });
 
-function parametersStringFromParameters(parameters) {
-  const parametersString = parameters.reduce((parametersString, parameter) => {
-    const parameterString = parameter.getString();
-
-    parametersString = (parametersString === null) ?
-                         parameterString : ///
-                          `${parametersString} ,${parameterString}`;
-
-    return parametersString;
-  }, null);
-
-  return parametersString;
-}
-
-function stringFromTypeLabelAndParameters(type, label, parameters) {
-  const typeString = type, ///
-        labelString = label.getString(),
-        parametersString = parametersStringFromParameters(parameters),
-        string = `${typeString} ${labelString}(${parametersString}) { ... }`;
-
-  return string;
-}
-
-function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
+function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
         typeTerminalNodeContent = typeTerminalNode.getContent(),
         type = typeTerminalNodeContent; ///
@@ -130,11 +108,11 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode) {
   return type;
 }
 
-function parametersFromProcedureDeclarationNode(procedureDeclarationNode) {
+function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const { Parameter } = dom,
         parameterNodes = parameterNodesQuery(procedureDeclarationNode),
         parameters = parameterNodes.map((parameterNode) => {
-          const parameter = Parameter.fromParameterNode(parameterNode);
+          const parameter = Parameter.fromParameterNode(parameterNode, context);
 
           return parameter;
         });
@@ -142,7 +120,7 @@ function parametersFromProcedureDeclarationNode(procedureDeclarationNode) {
   return parameters;
 }
 
-function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode) {
+function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const nonsenseNodes = nonsenseNodesQuery(procedureDeclarationNode),
         nonsenseNodesLength = nonsenseNodes.length,
         nonsensical = (nonsenseNodesLength > 0);

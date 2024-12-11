@@ -48,8 +48,8 @@ export default domAssigned(class Value {
 
   static name = "Value";
 
-  static fromNode(node, fileContext) {
-    const string = fileContext.nodeAsString(node),
+  static fromNode(node, context) {
+    const string = context.nodeAsString(node),
           number = null,
           variable = null,
           primitive = null,
@@ -59,13 +59,13 @@ export default domAssigned(class Value {
     return value;
   }
 
-  static fromValueNode(valueNode) {
-    const value = valueFromValueNode(valueNode);
+  static fromValueNode(valueNode, context) {
+    const value = valueFromValueNode(valueNode, context);
 
     return value;
   }
 
-  static fromConditionNode(conditionNode) {
+  static fromConditionNode(conditionNode, context) {
     let value = null;
 
     const conditionValueNode = conditionValueNodeQuery(conditionNode);
@@ -73,13 +73,13 @@ export default domAssigned(class Value {
     if (conditionValueNode !== null) {
       const valueNode = conditionValueNode; ///
 
-      value = valueFromValueNode(valueNode);
+      value = valueFromValueNode(valueNode, context);
     }
 
     return value;
   }
 
-  static fromAssignmentNode(assigmentNode) {
+  static fromAssignmentNode(assigmentNode, context) {
     let value = null;
 
     const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
@@ -87,13 +87,13 @@ export default domAssigned(class Value {
     if (assignmentValueNode !== null) {
       const valueNode = assignmentValueNode;  ///
 
-      value = valueFromValueNode(valueNode);
+      value = valueFromValueNode(valueNode, context);
     }
 
     return value;
   }
 
-  static fromReturnStatementNode(returnStatementNode) {
+  static fromReturnStatementNode(returnStatementNode, context) {
     let value = null;
 
     const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode);
@@ -101,27 +101,27 @@ export default domAssigned(class Value {
     if (returnStatementValueNode !== null) {
       const valueNode = returnStatementValueNode; ///
 
-      value = valueFromValueNode(valueNode);
+      value = valueFromValueNode(valueNode, context);
     }
 
     return value;
   }
 });
 
-function valueFromValueNode(valueNode) {
+function valueFromValueNode(valueNode, context) {
   const { Value, Variable } = dom,
-        node = null,
-        number = numberFromValueNode(valueNode),
-        variable = Variable.fromValueNode(valueNode),
-        primitive = primitiveFromValueNode(valueNode),
-        stringLiteral = stringLiteralFromValueNode(valueNode),
-        string = stringFromNumberVariableStringLiteralAndPrimitive(number, variable, stringLiteral, primitive),
+        node = valueNode, ///
+        string = context.nodeAsString(node),
+        number = numberFromValueNode(valueNode, context),
+        variable = Variable.fromValueNode(valueNode, context),
+        primitive = primitiveFromValueNode(valueNode, context),
+        stringLiteral = stringLiteralFromValueNode(valueNode, context),
         value = new Value(string, node, number, variable, primitive, stringLiteral);
 
   return value;
 }
 
-function numberFromValueNode(valueNode) {
+function numberFromValueNode(valueNode, context) {
   let number = null;
 
   const numberTerminalNode = numberTerminalNodeQuery(valueNode);
@@ -135,7 +135,7 @@ function numberFromValueNode(valueNode) {
   return number;
 }
 
-function primitiveFromValueNode(valueNode) {
+function primitiveFromValueNode(valueNode, context) {
   let primitive = null;
 
   const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
@@ -149,7 +149,7 @@ function primitiveFromValueNode(valueNode) {
   return primitive;
 }
 
-function stringLiteralFromValueNode(valueNode) {
+function stringLiteralFromValueNode(valueNode, context) {
   let stringLiteral = null;
 
   const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
@@ -161,30 +161,4 @@ function stringLiteralFromValueNode(valueNode) {
   }
 
   return stringLiteral;
-}
-
-function stringFromNumberVariableStringLiteralAndPrimitive(number, variable, stringLiteral, primitive) {
-  let string;
-
-  if (false) {
-    ///
-  } else if (number !== null) {
-    const numberString = `${number}`;
-
-    string = numberString;  ///
-  } else if (variable !== null) {
-    const variableString = variable.getString();
-
-    string = variableString;  ///
-  } else if (stringLiteral !== null) {
-    const stringLiteralString = `"${stringLiteral}"`;
-
-    string = stringLiteralString; ///
-  } else {
-    const primitiveString = `${primitive}`;
-
-    string = primitiveString; ///
-  }
-
-  return string;
 }

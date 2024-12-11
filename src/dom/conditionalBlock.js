@@ -10,10 +10,15 @@ const elseBlockNodeQuery = nodeQuery("/conditionalBlock/block[1]"),
       conditionalBlockNodeQuery = nodeQuery("/step/conditionalBlock");
 
 export default domAssigned(class ConditionalBlock {
-  constructor(condition, conditionBlock, elseBlock) {
+  constructor(string, condition, conditionBlock, elseBlock) {
+    this.string = string;
     this.condition = condition;
     this.conditionBlock = conditionBlock;
     this.elseBlock = elseBlock;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getCondition() {
@@ -30,20 +35,22 @@ export default domAssigned(class ConditionalBlock {
 
   static name = "ConditionalBlock";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let conditionalBlock = null;
 
     const conditionalBlockNode = conditionalBlockNodeQuery(stepNode);
 
     if (conditionalBlockNode !== null) {
       const { Block, Condition } = dom,
+            node = conditionalBlockNode,  ///
+            string = context.nodeAsString(node),
             conditionBlockNode = conditionBlockNodeQuery(conditionalBlockNode),
             elseBlockNode = elseBlockNodeQuery(conditionalBlockNode),
-            condition = Condition.fromConditionalBlockNode(conditionalBlockNode),
-            conditionBlock = Block.fromBlockNode(conditionBlockNode),
-            elseBlock = Block.fromBlockNode(elseBlockNode);
+            condition = Condition.fromConditionalBlockNode(conditionalBlockNode, context),
+            conditionBlock = Block.fromBlockNode(conditionBlockNode, context),
+            elseBlock = Block.fromBlockNode(elseBlockNode, context);
 
-      conditionalBlock = new ConditionalBlock(condition, conditionBlock, elseBlock);
+      conditionalBlock = new ConditionalBlock(string, condition, conditionBlock, elseBlock);
     }
 
     return conditionalBlock;

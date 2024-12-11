@@ -15,7 +15,7 @@ export default domAssigned(class BracketedCondition {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   getCondition() {
@@ -24,16 +24,17 @@ export default domAssigned(class BracketedCondition {
 
   static name = "BracketedCondition";
 
-  static fromConditionNode(conditionNode) {
+  static fromConditionNode(conditionNode, context) {
     let bracketedCondition = null;
 
     const bracketedConditionNode = bracketedConditionNodeQuery(conditionNode);
 
     if (bracketedConditionNode !== null) {
       const { Condition } = dom,
+            node = bracketedConditionNode,  ///
+            string = context.nodeAsString(node),
             conditionNode = conditionNodeQuery(bracketedConditionNode),
-            condition = Condition.fromConditionNode(conditionNode),
-            string = null;
+            condition = Condition.fromConditionNode(conditionNode, context);
 
       bracketedCondition = new BracketedCondition(string, condition);
     }

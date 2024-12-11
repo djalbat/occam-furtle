@@ -5,13 +5,18 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 
 export default domAssigned(class Step {
-  constructor(forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration) {
+  constructor(string, forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration) {
+    this.string = string;
     this.forEachLoop = forEachLoop;
     this.arrayAssignment = arrayAssignment;
     this.conditionalBlock = conditionalBlock;
     this.objectAssigment = objectAssigment;
     this.variableAssignment = variableAssignment;
     this.variablesDeclaration = variablesDeclaration;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getForEachLoop() {
@@ -58,15 +63,17 @@ export default domAssigned(class Step {
 
   static name = "Step";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     const { ForEachLoop, ArrayAssignment, ConditionalBlock, ObjectAssigment, VariablesAssignment, VariablesDeclaration } = dom,
-          forEachLoop = ForEachLoop.fromStepNode(stepNode),
-          arrayAssignment = ArrayAssignment.fromStepNode(stepNode),
-          conditionalBlock = ConditionalBlock.fromStepNode(stepNode),
-          objectAssigment = ObjectAssigment.fromStepNode(stepNode),
-          variableAssignment = VariablesAssignment.fromStepNode(stepNode),
-          variablesDeclaration = VariablesDeclaration.fromStepNode(stepNode),
-          step = new Step(forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration);
+          node = stepNode,  ///
+          string = context.nodeAsString(node),
+          forEachLoop = ForEachLoop.fromStepNode(stepNode, context),
+          arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
+          conditionalBlock = ConditionalBlock.fromStepNode(stepNode, context),
+          objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
+          variableAssignment = VariablesAssignment.fromStepNode(stepNode, context),
+          variablesDeclaration = VariablesDeclaration.fromStepNode(stepNode, context),
+          step = new Step(string, forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration);
 
     return step;
   }

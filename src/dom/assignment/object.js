@@ -16,7 +16,7 @@ export default domAssigned(class ObjectAssigment {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   getVariables() {
@@ -25,7 +25,7 @@ export default domAssigned(class ObjectAssigment {
 
   static name = "ObjectAssigment";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let objectAssignment = null;
 
     const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
@@ -33,9 +33,10 @@ export default domAssigned(class ObjectAssigment {
     if (objectAssignmentNode !== null) {
       const typeTerminalNodes = typeTerminalNodesQuery(objectAssignmentNode),
             variableNodes = variableNodesQuery(objectAssignmentNode),
-            types = typesFromTypeTerminalNodes(typeTerminalNodes),
-            string = null,
-            variables = variablesFromVariableNodesAndTypes(variableNodes, types);
+            types = typesFromTypeTerminalNodes(typeTerminalNodes, context),
+            node = objectAssignmentNode,  ///
+            string = context.nodeAsString(node),
+            variables = variablesFromVariableNodesAndTypes(variableNodes, types, context);
 
       objectAssignment = new ObjectAssigment(string, variables);
     }
@@ -44,7 +45,7 @@ export default domAssigned(class ObjectAssigment {
   }
 });
 
-export function typesFromTypeTerminalNodes(typeTerminalNodes) {
+export function typesFromTypeTerminalNodes(typeTerminalNodes, context) {
   const types = typeTerminalNodes.map((typeTerminalNode) => {
           const typeTerminalNodeContent = typeTerminalNode.getContent(),
                 type = typeTerminalNodeContent; ///
@@ -55,11 +56,11 @@ export function typesFromTypeTerminalNodes(typeTerminalNodes) {
   return types;
 }
 
-export function variablesFromVariableNodesAndTypes(variableNodes, types) {
+export function variablesFromVariableNodesAndTypes(variableNodes, types, context) {
   const { Variable } = dom,
         variables = variableNodes.map((variableNode, index) => {
           const type = types[index],
-                variable = Variable.fromVariableNodeAndType(variableNode, type);
+                variable = Variable.fromVariableNodeAndType(variableNode, type, context);
 
           return variable;
         });

@@ -9,48 +9,53 @@ const stepNodesQuery = nodesQuery("/block/step"),
       forEachLoopBlockNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/block");
 
 export default domAssigned(class Block {
-  constructor(steps) {
+  constructor(string, steps) {
+    this.string = string;
     this.steps = steps;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getSteps() {
     return this.steps;
   }
 
-  getString() {
-    debugger
-  }
-
   static name = "Block";
 
-  static fromBlockNode(blockNode) {
+  static fromBlockNode(blockNode, context) {
     let block = null;
 
     if (blockNode !== null) {
-      const stepNodes = stepNodesQuery(blockNode),
-            steps = stepsFromStepNodes(stepNodes);
+      const node = blockNode, ///
+            string = context.nodeAsString(node),
+            stepNodes = stepNodesQuery(blockNode),
+            steps = stepsFromStepNodes(stepNodes, context);
 
-      block = new Block(steps);
+      block = new Block(string, steps);
     }
 
     return block;
   }
 
-  static fromForEachLoopNode(forEachLoopNode) {
+  static fromForEachLoopNode(forEachLoopNode, context) {
     const forEachLoopBockNode = forEachLoopBlockNodeQuery(forEachLoopNode),
           blockNode = forEachLoopBockNode,  ///
           stepNodes = stepNodesQuery(blockNode),
-          steps = stepsFromStepNodes(stepNodes),
-          block = new Block(steps);
+          node = blockNode, ///
+          string = context.nodeAsString(node),
+          steps = stepsFromStepNodes(stepNodes, context),
+          block = new Block(string, steps);
 
     return block;
   }
 });
 
-function stepsFromStepNodes(stepNodes) {
+function stepsFromStepNodes(stepNodes, context) {
   const { Step } = dom,
         steps = stepNodes.map((stepNode) => {
-          const step = Step.fromStepNode(stepNode);
+          const step = Step.fromStepNode(stepNode, context);
 
           return step;
         });

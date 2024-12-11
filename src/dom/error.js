@@ -13,9 +13,9 @@ export default domAssigned(class Error {
 
   static name = "Error";
 
-  static fromErrorNode(errorNode, fileContext) {
+  static fromErrorNode(errorNode, context) {
     const node = errorNode, ///
-          string = fileContext.nodeAsString(node),
+          string = context.nodeAsString(node),
           error = new Error(string);
 
     return error;

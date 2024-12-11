@@ -8,9 +8,14 @@ import { domAssigned } from "../dom";
 const forEachLoopNodeQuery = nodeQuery("/step/forEachLoop");
 
 export default domAssigned(class ForEachLoop {
-  constructor(variable, anonymousProcedure) {
+  constructor(string, variable, anonymousProcedure) {
+    this.string = string;
     this.variable = variable;
     this.anonymousProcedure = anonymousProcedure;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getVariable() {
@@ -23,17 +28,19 @@ export default domAssigned(class ForEachLoop {
 
   static name = "ForEachLoop";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let forEachLoop = null;
 
     const forEachLoopNode = forEachLoopNodeQuery(stepNode);
 
     if (forEachLoopNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
-            variable = Variable.fromForEachLoopNode(forEachLoopNode),
-            anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode);
+            node = forEachLoopNode, ///
+            string = context.nodeAsString(node),  ///
+            variable = Variable.fromForEachLoopNode(forEachLoopNode, context),
+            anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode, context);
 
-      forEachLoop = new ForEachLoop(variable, anonymousProcedure);
+      forEachLoop = new ForEachLoop(string, variable, anonymousProcedure);
     }
 
     return forEachLoop;

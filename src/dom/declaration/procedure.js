@@ -5,22 +5,27 @@ import dom from "../../dom";
 import { domAssigned } from "../../dom";
 
 export default domAssigned(class ProcedureDeclaration {
-  constructor(procedure) {
+  constructor(string, procedure) {
+    this.string = string;
     this.procedure = procedure;
+  }
+
+  getString() {
+    return this.string;
   }
 
   getProcedure() {
     return this.procedure;
   }
 
-  getString() { return this.procedure.getString(); }
-
   static name = "ProcedureDeclaration";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode, fileContext) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const { Procedure } = dom,
-          procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode),
-          procedureDeclaration = new ProcedureDeclaration(procedure);
+          node = procedureDeclarationNode,  ///
+          string = context.nodeAsString(node),
+          procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          procedureDeclaration = new ProcedureDeclaration(string, procedure);
 
     return procedureDeclaration;
   }

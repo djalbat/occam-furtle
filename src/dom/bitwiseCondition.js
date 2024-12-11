@@ -37,19 +37,20 @@ export default domAssigned(class BitwiseCondition {
 
   static name = "BitwiseCondition";
 
-  static fromConditionNode(conditionNode) {
+  static fromConditionNode(conditionNode, context) {
     let bitwiseCondition = null;
 
     const bitwiseConditionNode = bitwiseConditionNodeQuery(conditionNode);
 
     if (bitwiseConditionNode !== null) {
       const { Condition } = dom,
+            node = bitwiseConditionNode,  //
+            string = context.nodeAsString(node),
             leftConditionNode = leftConditionNodeQuery(bitwiseConditionNode),
             rightConditionNode = rightConditionNodeQuery(bitwiseConditionNode),
-            disjoint = disjointFromBitwiseConditionNode(bitwiseConditionNode),
-            leftCondition = Condition.fromConditionNode(leftConditionNode),
-            rightCondition = Condition.fromConditionNode(rightConditionNode),
-            string = null;
+            disjoint = disjointFromBitwiseConditionNode(bitwiseConditionNode, context),
+            leftCondition = Condition.fromConditionNode(leftConditionNode, context),
+            rightCondition = Condition.fromConditionNode(rightConditionNode, context);
 
       bitwiseCondition = new BitwiseCondition(string, disjoint, leftCondition, rightCondition);
     }
@@ -58,7 +59,7 @@ export default domAssigned(class BitwiseCondition {
   }
 });
 
-function disjointFromBitwiseConditionNode(bitwiseConditionNode) {
+function disjointFromBitwiseConditionNode(bitwiseConditionNode, context) {
   const terminalNode = terminalNodeQuery(bitwiseConditionNode),
         terminalNodeContent = terminalNode.getContent(),
         disjoint = (terminalNodeContent === DISJUNCTION);

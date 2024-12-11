@@ -14,8 +14,23 @@ export function nodeAsString(node, tokens) {
   return string;
 }
 
+export function nodesAsString(nodes, tokens) {
+  const string = nodes.reduce((string, node) => {
+    const nodeString = nodeAsString(node, tokens);
+
+    string = (string === EMPTY_STRING) ?
+               nodeString :
+                `${string},${nodeString}`;
+
+    return string;
+  }, EMPTY_STRING);
+
+  return string;
+}
+
 export default {
-  nodeAsString
+  nodeAsString,
+  nodesAsString
 }
 
 function tokensAsString(tokens) {

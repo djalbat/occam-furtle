@@ -17,9 +17,10 @@ const nominalLexer = nominalLexerFromNothing(),
 
 export function valuesFromNothing() {
   const fileContext = fileContextFromNothing(),
+        context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext),
         values = nodes.map((node) => {
-          const value = Value.fromNode(node, fileContext);
+          const value = Value.fromNode(node, context);
 
           return value;
         });

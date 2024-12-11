@@ -17,7 +17,7 @@ export default domAssigned(class AnonymousProcedure {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   getParameters() {
@@ -34,23 +34,24 @@ export default domAssigned(class AnonymousProcedure {
 
   static name = "AnonymousProcedure";
 
-  static fromForEachLoopNode(forEachLoopNode) {
+  static fromForEachLoopNode(forEachLoopNode, context) {
     const { Block } = dom,
-          parameters = parametersFromForEachLoopNode(forEachLoopNode),
-          nonsensical = nonsensicalFromForEachLoopNode(forEachLoopNode),
-          block = Block.fromForEachLoopNode(forEachLoopNode),
-          string = null,
+          node = forEachLoopNode, ///
+          string = context.nodeAsString(node),
+          parameters = parametersFromForEachLoopNode(forEachLoopNode, context),
+          nonsensical = nonsensicalFromForEachLoopNode(forEachLoopNode, context),
+          block = Block.fromForEachLoopNode(forEachLoopNode, context),
           anonymousProcedureDeclaration = new AnonymousProcedure(string, parameters, nonsensical, block);
 
     return anonymousProcedureDeclaration;
   }
 });
 
-function parametersFromForEachLoopNode(forEachLoopNode) {
+function parametersFromForEachLoopNode(forEachLoopNode, context) {
   const { Parameter } = dom,
         parameterNodes = parameterNodesQuery(forEachLoopNode),
         parameters = parameterNodes.map((parameterNode) => {
-          const parameter = Parameter.fromParameterNode(parameterNode);
+          const parameter = Parameter.fromParameterNode(parameterNode, context);
 
           return parameter;
         });
@@ -58,7 +59,7 @@ function parametersFromForEachLoopNode(forEachLoopNode) {
   return parameters;
 }
 
-function nonsensicalFromForEachLoopNode(forEachLoopNode) {
+function nonsensicalFromForEachLoopNode(forEachLoopNode, context) {
   const nonsenseNodes = nonsenseNodesQuery(forEachLoopNode),
         nonsenseNodesLength = nonsenseNodes.length,
         nonsensical = (nonsenseNodesLength > 0);

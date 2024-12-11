@@ -146,13 +146,13 @@ export default class FileContext {
   }
 
   addProcedures(node) {
-    const fileContext = this; ///
+    const context = this; ///
 
     const { ProcedureDeclaration } = dom,
           procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
 
     procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
-      const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, fileContext),
+      const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, context),
             procedure = procedureDeclaration.getProcedure();
 
       this.procedures.push(procedure);

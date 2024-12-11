@@ -11,17 +11,20 @@ export default domAssigned(class VariablesAssignment {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   static name = "VariablesAssignment";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let variablesAssignment = null;
 
     const variablesAssignmentNode = variablesAssignmentNodeQuery(stepNode);
 
     if (variablesAssignmentNode !== null) {
+      const node = variablesAssignmentNode, ///
+            string = context.nodeAsString(node);
+
       debugger
     }
 

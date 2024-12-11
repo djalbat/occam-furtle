@@ -33,18 +33,18 @@ export default domAssigned(class Parameter {
 
   static name = "Parameter";
 
-  static fromParameterNode(parameterNode) {
-    const name = nameFromParameterNode(parameterNode),
-          type = typeFromParameterNode(parameterNode),
-          string = stringFromTypeAndName(type, name),
+  static fromParameterNode(parameterNode, context) {
+    const name = nameFromParameterNode(parameterNode, context),
+          type = typeFromParameterNode(parameterNode, context),
+          node = parameterNode, //
+          string = context.nodeAsString(node),
           parameter = new Parameter(string, name, type);
 
     return parameter;
   }
 });
 
-
-function nameFromParameterNode(parameterNode) {
+function nameFromParameterNode(parameterNode, context) {
   const nameTerminalNode = nameTerminalNodeQuery(parameterNode),
         nameTerminalNodeContent = nameTerminalNode.getContent(),
         name = nameTerminalNodeContent; ///
@@ -52,17 +52,10 @@ function nameFromParameterNode(parameterNode) {
   return name;
 }
 
-function typeFromParameterNode(parameterNode) {
+function typeFromParameterNode(parameterNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(parameterNode),
         typeTerminalNodeContent = typeTerminalNode.getContent(),
         type = typeTerminalNodeContent; ///
 
   return type;
 }
-
-function stringFromTypeAndName(type, name) {
-  const string = `${type} ${name}`;
-
-  return string;
-}
-

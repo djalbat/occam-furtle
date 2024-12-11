@@ -31,68 +31,45 @@ export default domAssigned(class Assignment {
 
   static name = "Assignment";
 
-  static fromNode(node, fileContext) {
+  static fromNode(node, context) {
     const { Value } = dom,
-          value = Value.fromNode(node, fileContext),
+          value = Value.fromNode(node, context),
+          string = stringFromValue(value),
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
           assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assigment;
   }
 
-  static fromValue(value) {
+  static fromValue(value, context) {
     const nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
+          string = stringFromValue(value),
           assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assigment;
   }
 
-  static fromAssignmentNode(assigmentNode) {
+  static fromAssignmentNode(assigmentNode, context) {
     const { Value, NodeQuery, NodesQuery, ProcedureCall } = dom,
-          value = Value.fromAssignmentNode(assigmentNode),
-          nodeQuery = NodeQuery.fromAssignmentNode(assigmentNode),
-          nodesQuery = NodesQuery.fromAssignmentNode(assigmentNode),
-          procedureCall = ProcedureCall.fromAssignmentNode(assigmentNode),
-          string = stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall),
+          node = assigmentNode, ///
+          string = context.nodeAsString(node),
+          value = Value.fromAssignmentNode(assigmentNode, context),
+          nodeQuery = NodeQuery.fromAssignmentNode(assigmentNode, context),
+          nodesQuery = NodesQuery.fromAssignmentNode(assigmentNode, context),
+          procedureCall = ProcedureCall.fromAssignmentNode(assigmentNode, context),
           assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assigment;
   }
 });
 
-function stringFromValueNodeQueryNodesQueryOrProcedureCall(value, nodeQuery, nodesQuery, procedureCall) {
-  let string;
-
-  if (false) {
-    ///
-  } else if (value !== null) {
-    const valueString = value.getString();
-
-    string = valueString; ///
-  }
-  else if (nodeQuery !== null) {
-    const nodeQueryString = nodeQuery.getString();
-
-    string = nodeQueryString; ///
-  }
-  else if (nodesQuery !== null) {
-    const nodesQueryString = nodesQuery.getString();
-
-    string = nodesQueryString;  ///
-  }
-  else if (procedureCall !== null) {
-    const procedureCallString = procedureCall.getString();
-
-    string = procedureCallString; ///
-  }
-
-  string = ` = ${string}`;
+function stringFromValue(value) {
+  const valueString = value.getString(),
+        string = `= ${valueString}`;
 
   return string;
 }

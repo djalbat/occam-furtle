@@ -14,7 +14,7 @@ export default domAssigned(class ReturnStatement {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   getValue() {
@@ -23,15 +23,16 @@ export default domAssigned(class ReturnStatement {
 
   static name = "ReturnStatement";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode) {
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     let returnStatement = null;
 
     const returnStatementNode = returnStatementNodeQuery(procedureDeclarationNode);
 
     if (returnStatementNode !== null) {
       const { Value } = dom,
-            value = Value.fromReturnStatementNode(returnStatementNode),
-            string = null;
+            node = returnStatementNode, ///
+            string = context.nodeAsString(node),
+            value = Value.fromReturnStatementNode(returnStatementNode, context);
 
       returnStatement = new ReturnStatement(string, value);
     }

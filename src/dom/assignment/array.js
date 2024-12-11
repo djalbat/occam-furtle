@@ -17,7 +17,7 @@ export default domAssigned(class ArrayAssigment {
   }
 
   getString() {
-    debugger
+    return this.string;
   }
 
   getOffset() {
@@ -30,7 +30,7 @@ export default domAssigned(class ArrayAssigment {
 
   static name = "ArrayAssignment";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let arrayAssignment = null;
 
     const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
@@ -38,10 +38,11 @@ export default domAssigned(class ArrayAssigment {
     if (arrayAssignmentNode !== null) {
       const typeTerminalNodes = typeTerminalNodesQuery(arrayAssignmentNode),
             variableNodes = variableNodesQuery(arrayAssignmentNode),
-            types = typesFromTypeTerminalNodes(typeTerminalNodes),
-            string = null,
-            offset = offsetFromArrayAssignmentNode(arrayAssignmentNode),
-            variables = variablesFromVariableNodesAndTypes(variableNodes, types);
+            types = typesFromTypeTerminalNodes(typeTerminalNodes, context),
+            node = arrayAssignmentNode,  ///
+            string = context.nodeAsString(node),
+            offset = offsetFromArrayAssignmentNode(arrayAssignmentNode, context),
+            variables = variablesFromVariableNodesAndTypes(variableNodes, types, context);
 
       arrayAssignment = new ArrayAssigment(string, offset, variables);
     }
@@ -50,7 +51,7 @@ export default domAssigned(class ArrayAssigment {
   }
 });
 
-function offsetFromArrayAssignmentNode(arrayAssignmentNode) {
+function offsetFromArrayAssignmentNode(arrayAssignmentNode, context) {
   const dummyVariableNodes = dummyVariableNodesQuery(arrayAssignmentNode),
         dummyVariableNodesLength = dummyVariableNodes.length,
         offset = dummyVariableNodesLength;  ///

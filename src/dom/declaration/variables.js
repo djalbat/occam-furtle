@@ -35,15 +35,16 @@ export default domAssigned(class VariablesDeclaration {
 
   static name = "VariablesDeclaration";
 
-  static fromStepNode(stepNode) {
+  static fromStepNode(stepNode, context) {
     let variablesDeclaration = null;
 
     const variablesDeclarationNode = variablesDeclarationNodeQuery(stepNode);
 
     if (variablesDeclarationNode !== null) {
-      const type = typeFromVariablesDeclarationNode(variablesDeclarationNode),
-            variables = variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode),
-            string = stringFromVariables(variables);
+      const node = variablesDeclarationNode,  ////
+            string = context.nodeAsString(node),
+            type = typeFromVariablesDeclarationNode(variablesDeclarationNode, context),
+            variables = variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode, context);
 
       variablesDeclaration = new VariablesDeclaration(string, variables);
     }
@@ -52,23 +53,7 @@ export default domAssigned(class VariablesDeclaration {
   }
 });
 
-function stringFromVariables(variables) {
-  const variablesString = variables.reduce((variablesString, variable) => {
-          const variableString = variable.getString();
-
-          variablesString = (variablesString === null) ?
-                              variableString :  ///
-                                `${variablesString}, ${variableString}`;
-
-          return variablesString;
-        }, null),
-        string = `${variablesString};`;
-
-  return string;
-
-}
-
-function typeFromVariablesDeclarationNode(variablesDeclarationNode) {
+function typeFromVariablesDeclarationNode(variablesDeclarationNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(variablesDeclarationNode),
         typeTerminalNodeContent = typeTerminalNode.getContent(),
         type = typeTerminalNodeContent; ///
@@ -76,13 +61,13 @@ function typeFromVariablesDeclarationNode(variablesDeclarationNode) {
   return type;
 }
 
-function variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode) {
+function variablesFromTypeAndVariablesDeclarationNode(type, variablesDeclarationNode, context) {
   const variableNodes = variableNodesQuery(variablesDeclarationNode),
         assignmentNodes = assignmentNodesQuery(variablesDeclarationNode),
         variables = variableNodes.map((variableNode) => {
           const { Variable } = dom,
                 assignmentNode = findSiblingNode(assignmentNodes, variableNode, variablesDeclarationNode),
-                variable = Variable.fromTypeVariableNodeAndAssignmentNode(type, variableNode, assignmentNode);
+                variable = Variable.fromTypeVariableNodeAndAssignmentNode(type, variableNode, assignmentNode, context);
 
           return variable;
         });
