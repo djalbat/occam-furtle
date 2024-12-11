@@ -8,7 +8,6 @@ import { BOOLEAN_TYPE } from "../types";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
-      parameterNodesQuery = nodesQuery("/procedureDeclaration/parameter"),
       typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
@@ -52,31 +51,12 @@ export default domAssigned(class Procedure {
     return boolean;
   }
 
-  matchParameters(parameters) {
-    const parametersA = parameters, ///
-          parametersB = this.parameters,  ///
-          parametersALength = parametersA.length,
-          parametersBLength = parametersB.length,
-          parametersMatch = (parametersALength === parametersBLength);
-
-    return parametersMatch;
-  }
-
-  matchMetavariableName(metavariableName) { return this.label.matchMetavariableName(metavariableName); }
-
   call(values, context) {
     const procedureString = this.getString();
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    const valuesMatchParameters =
-
-    this.parameters.forEach((parameter, index) => {
-      const node = nodes[index],
-            value = node; ///
-
-      parameter.setValue(value);
-    });
+    this.parameters.matchValues(values, context);
 
     const blockContext = BlockContext.fromParameters(this.parameters, context);
 
@@ -88,12 +68,12 @@ export default domAssigned(class Procedure {
   static name = "Procedure";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const { Label, ReturnBlock } = dom,
+    const { Label, ReturnBlock, Parameters } = dom,
           node = procedureDeclarationNode,  ///
           string = context.nodeAsString(node),
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
+          parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           nonsensical = nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context),
           returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           procedureDeclaration = new Procedure(string, type, label, parameters, nonsensical, returnBlock);
@@ -108,18 +88,6 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
         type = typeTerminalNodeContent; ///
 
   return type;
-}
-
-function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Parameter } = dom,
-        parameterNodes = parameterNodesQuery(procedureDeclarationNode),
-        parameters = parameterNodes.map((parameterNode) => {
-          const parameter = Parameter.fromParameterNode(parameterNode, context);
-
-          return parameter;
-        });
-
-  return parameters;
 }
 
 function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context) {

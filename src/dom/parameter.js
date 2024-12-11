@@ -1,5 +1,7 @@
 "use strict";
 
+import Exception from "../exception";
+
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
@@ -7,28 +9,40 @@ const nameTerminalNodeQuery = nodeQuery("/parameter/@name"),
       typeTerminalNodeQuery = nodeQuery("/parameter/@type");
 
 export default domAssigned(class Parameter {
-  constructor(string, type, name) {
+  constructor(string, name, type) {
     this.string = string;
-    this.type = type;
     this.name = name;
+    this.type = type;
   }
 
   getString() {
     return this.string;
   }
 
-  getType() {
-    return this.type;
-  }
-
   getName() {
     return this.name;
   }
 
-  matchType(type) {
-    const typeMatches = (this.type === type);
+  getType() {
+    return this.type;
+  }
 
-    return typeMatches;
+  matchValue(value, context) {
+    const valueString = value.getString(),
+          parameterString = this.getString();
+
+    context.trace(`Matching the '${valueString}' value against the '${parameterString}' parameter...`);
+
+    const valueType = value.getType();
+
+    if (this.type !== valueType) {
+      const message = `The types of the '${valueString}' value and '${parameterString}' parameter do not match.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    context.debug(`...matched the '${valueString}' value against the '${parameterString}' parameter.`);
   }
 
   static name = "Parameter";

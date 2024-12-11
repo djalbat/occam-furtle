@@ -1,7 +1,7 @@
 "use strict";
 
-import { Value } from "../../index"; ///
 import { Query } from "occam-query";
+import { Values } from "../../index"; ///
 import { arrayUtilities } from "necessary";
 
 import FileContext from "../context/file";
@@ -19,11 +19,7 @@ export function valuesFromNothing() {
   const fileContext = fileContextFromNothing(),
         context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext),
-        values = nodes.map((node) => {
-          const value = Value.fromNode(node, context);
-
-          return value;
-        });
+        values = Values.fromNodes(nodes, context);
 
   return values;
 }

@@ -1,5 +1,6 @@
 "use strict";
 
+export const NULL_TYPE = "Node";
 export const NODE_TYPE = "Node";
 export const NODES_TYPE = "Nodes";
 export const STRING_TYPE = "String";

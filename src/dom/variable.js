@@ -35,12 +35,6 @@ export default domAssigned(class Variable {
     return this.assignment;
   }
 
-  matchType(type) {
-    const typeMatches = (this.type === type);
-
-    return typeMatches;
-  }
-
   setValue(value) {
     const { Assignment } = dom;
 

@@ -4,6 +4,8 @@ import dom from "../dom";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { NULL, TRUE, FALSE } from "../constants";
+import { NODE_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
@@ -44,6 +46,39 @@ export default domAssigned(class Value {
 
   getStringLiteral() {
     return this.stringLiteral;
+  }
+
+  getType() {
+    let type;
+
+    if (false) {
+      ///
+    } else if (this.node !== null) {
+      type = NODE_TYPE;
+    } else if (this.number !== null) {
+      type = NUMBER_TYPE;
+    } else if (this.variable !== null) {
+      type = this.variable.getType();
+    } else if (this.stringLiteral !== null) {
+      type = STRING_TYPE;
+    } else {
+      switch (this.primitive) {
+        case null: {
+          type = NULL_TYPE;
+
+          break;
+        }
+
+        case true:
+        case false: {
+          type = BOOLEAN_TYPE;
+
+          break;
+        }
+      }
+    }
+
+    return type;
   }
 
   static name = "Value";
@@ -136,12 +171,32 @@ function numberFromValueNode(valueNode, context) {
 }
 
 function primitiveFromValueNode(valueNode, context) {
-  let primitive = null;
+  let primitive;
 
   const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
 
   if (primitiveTerminalNode !== null) {
     const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
+
+    switch (primitiveTerminalNodeContent) {
+      case NULL: {
+        primitive = null;
+
+        break;
+      }
+
+      case TRUE: {
+        primitive = true;
+
+        break;
+      }
+
+      case FALSE: {
+        primitive = false;
+
+        break;
+      }
+    }
 
     primitive = primitiveTerminalNodeContent; ///
   }
