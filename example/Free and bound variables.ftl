@@ -15,7 +15,7 @@ Boolean isVariableBound(Node termNode, Node statementNode) {
 
   String variableName = variableNameFromTermNode(termNode);
 
-  If (variableName != null) {
+  If (variableName != "") {
     Nodes statementNodes = nodesQuery(statementNode, //statement);
 
     ForEach(statementNodes, (Node statementNode) {
@@ -31,7 +31,7 @@ Boolean isVariableBound(Node termNode, Node statementNode) {
 }
 
 String variableNameFromTermNode(Node termNode) {
-  String variableName = null;
+  String variableName = "";
 
   Node variableNameTerminalNode = nodeQuery(termNode, /term/variable/@name);
 
@@ -45,7 +45,7 @@ String variableNameFromTermNode(Node termNode) {
 }
 
 String boundVariableNameFromStatementNode(Node statementNode) {
-  String boundVariableName = null;
+  String boundVariableName = "";
 
   ( Nodes childNodes ) = statementNode;
 

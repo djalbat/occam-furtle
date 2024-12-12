@@ -1,6 +1,7 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
@@ -68,6 +69,27 @@ export default domAssigned(class Value {
     return type;
   }
 
+  call(context) {
+    const valueString = this.string;  ///
+
+    context.trace(`Calling the '${valueString}' value...`);
+
+    const value = (this.variable !== null) ?
+                     this.variable.call(context) :
+                       this;  ///
+
+    if (value === null) {
+      const message = `The '${valueString}; value is not set.'`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    context.debug(`...called the '${valueString}' value.`);
+
+    return value;
+  }
+
   static name = "Value";
 
   static fromNode(node, context) {
@@ -132,15 +154,22 @@ export default domAssigned(class Value {
 
 function valueFromValueNode(valueNode, context) {
   const { Value, Variable } = dom,
-        node = valueNode, ///
-        string = context.nodeAsString(node),
+        valueString = context.nodeAsString(valueNode),
+        string = valueString, ///
         variable = Variable.fromValueNode(valueNode, context),
+        node = nodeFromValueNode(valueNode, context),
         number = numberFromValueNode(valueNode, context),
         boolean = booleanFromValueNode(valueNode, context),
         stringLiteral = stringLiteralFromValueNode(valueNode, context),
         value = new Value(string, variable, node, number, boolean, stringLiteral);
 
   return value;
+}
+
+function nodeFromValueNode(valueNode, context) {
+  const node = null;  ///
+
+  return node;
 }
 
 function numberFromValueNode(valueNode, context) {

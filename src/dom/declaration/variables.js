@@ -26,11 +26,17 @@ export default domAssigned(class VariablesDeclaration {
   }
 
   call(context) {
-    const variablesDeclarationString = this.getString();
+    const variablesDeclarationString = this.string; ///
 
-    context.trace(`Calling the '${variablesDeclarationString}' variables declaration`);
+    context.trace(`Calling the '${variablesDeclarationString}' variables declaration...`);
 
-    debugger
+    this.variables.forEach((variable) => {
+      variable.assign(context);
+
+      context.addVariable(variable);
+    });
+
+    context.debug(`...called the '${variablesDeclarationString}' variables declaration.`);
   }
 
   static name = "VariablesDeclaration";

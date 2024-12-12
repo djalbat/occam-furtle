@@ -29,6 +29,24 @@ export default domAssigned(class Assignment {
     return this.nodesQuery;
   }
 
+  call(context) {
+    let value;
+
+    if (false) {
+      ///
+    } else if (this.procedureCall !== null) {
+      value = this.procedureCall.call(context);
+    } else if (this.nodesQuery !== null) {
+      value = this.nodesQuery.call(context);
+    } else if (this.nodeQuery !== null) {
+      value = this.nodeQuery.call(context);
+    } else {
+      value = this.value;
+    }
+
+    return value;
+  }
+
   static name = "Assignment";
 
   static fromNode(node, context) {

@@ -51,14 +51,13 @@ export default domAssigned(class Procedure {
     return boolean;
   }
 
+  matchName(name) { return this.label.matchName(name); }
+
   call(values, context) {
-    const procedureString = this.getString();
-
-    context.trace(`Calling the '${procedureString}' procedure...`);
-
     this.parameters.matchValues(values, context);
 
-    const blockContext = BlockContext.fromParameters(this.parameters, context);
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
+          blockContext = BlockContext.fromVariables(variables, context);
 
     context = blockContext; ///
 
@@ -81,6 +80,18 @@ export default domAssigned(class Procedure {
     return procedureDeclaration;
   }
 });
+
+function variablesFromValuesAndParameters(values, parameters, context) {
+  const variables = values.mapValue((value, index) => {
+    const { Variable } = dom,
+          parameter = parameters.getParameter(index),
+          variable = Variable.fromValueAndParameter(value, parameter, context);
+
+    return variable;
+  });
+
+  return variables;
+}
 
 function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),

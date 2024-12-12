@@ -48,7 +48,7 @@ function tokensAsString(tokens) {
 function nodeAsTokens(node, tokens) {
   const nodeTerminalNode = node.isTerminalNode();
 
-  if (nodeTerminalNode) {z
+  if (nodeTerminalNode) {
     const terminalNode = node;  ///
 
     tokens = terminalNodeAsTokens(terminalNode, tokens);

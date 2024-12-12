@@ -2,10 +2,11 @@
 
 import dom from "../dom";
 
-import { nodesQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const valueNodesQuery = nodesQuery("/values/value");
+const valuesNodeQuery = nodeQuery("/assignment/procedureCall/values"),
+      valueNodesQuery = nodesQuery("/values/value");
 
 export default domAssigned(class Values {
   constructor(string, array) {
@@ -33,6 +34,8 @@ export default domAssigned(class Values {
     return value;
   }
 
+  mapValue(callback) { return this.array.map(callback); }
+
   static name = "Values";
 
   static fromNodes(nodes, context) {
@@ -43,16 +46,30 @@ export default domAssigned(class Values {
     return values;
   }
 
+  static fromArray(array, context) {
+    const string = stringFromArray(array, context),
+          values = new Values(string, array);
+
+    return values;
+  }
+
   static fromValuesNode(valuesNode, context) {
     let values = null;
 
     if (valuesNode !== null) {
-      const node = valuesNode, ///
-            string = context.nodeAsString(node),
-            valueNodes = valueNodesQuery(valuesNode),
-            array = arrayFromValueNodes(valueNodes, context);
+      values = valuesFromValuesNode(valuesNode, context);
+    }
 
-      values = new Values(string, array);
+    return values;
+  }
+
+  static fromAssignmentNode(assignmentNode, context) {
+    let values = null;
+
+    const valuesNode = valuesNodeQuery(assignmentNode);
+
+    if (valuesNode !== null) {
+      values = valuesFromValuesNode(valuesNode, context);
     }
 
     return values;
@@ -94,4 +111,15 @@ function arrayFromValueNodes(valueNodes, context) {
         });
 
   return array;
+}
+
+function valuesFromValuesNode(valuesNode, context) {
+  const { Values } = dom,
+        node = valuesNode, ///
+        string = context.nodeAsString(node),
+        valueNodes = valueNodesQuery(valuesNode),
+        array = arrayFromValueNodes(valueNodes, context),
+        values = new Values(string, array);
+
+  return values;
 }

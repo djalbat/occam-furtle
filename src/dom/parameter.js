@@ -29,7 +29,7 @@ export default domAssigned(class Parameter {
 
   matchValue(value, context) {
     const valueString = value.getString(),
-          parameterString = this.getString();
+          parameterString = this.string;  ///
 
     context.trace(`Matching the '${valueString}' value against the '${parameterString}' parameter...`);
 

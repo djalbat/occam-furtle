@@ -1,6 +1,7 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
@@ -12,10 +13,11 @@ const valueVariableNodeQuery = nodeQuery("/value/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name");
 
 export default domAssigned(class Variable {
-  constructor(string, type, name, assignment) {
+  constructor(string, type, name, value, assignment) {
     this.string = string;
     this.type = type;
     this.name = name;
+    this.value = value;
     this.assignment = assignment;
   }
 
@@ -31,14 +33,66 @@ export default domAssigned(class Variable {
     return this.name;
   }
 
+  getValue() {
+    return this.value;
+  }
+
   getAssignment() {
     return this.assignment;
   }
 
-  setValue(value) {
-    const { Assignment } = dom;
+  matchVariableName(variableName) {
+    const nameMatches = (this.name === variableName);
 
-    this.assignment = Assignment.fromValue(value);
+    return nameMatches;
+  }
+
+  assign(context) {
+    const variableString = this.string; ///
+
+    if (this.assignment === null) {
+      context.debug(`The '${variableString}' variable has not been assigned a value.`);
+
+      return;
+    }
+
+    context.trace(`Assigning the '${variableString}' variable a value...`);
+
+    const value = this.assignment.call(context),
+          type = value.getType();
+
+    if (this.type !== type) {
+      const message = `The '${variableString} variable's '${this.type}' type does not match the assigned value's '${type}' type.'`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    this.value = value;
+
+    context.debug(`...assigned the '${variableString}' variable a value.`);
+  }
+
+  call(context) {
+    const variableString = this.string; ///
+
+    context.trace(`Calling the '${variableString}' variable...`);
+
+    const variableName = this.name, ///
+          variable = context.findVariableByVariableName(variableName);
+
+    if (variable === null) {
+      const message = `The '${variableString}; variable cannot be found.'`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const value = variable.getValue();
+
+    context.debug(`...called the '${variableString}' variable.`);
+
+    return value;
   }
 
   static name = "Variable";
@@ -81,12 +135,23 @@ export default domAssigned(class Variable {
     return variable;
   }
 
+  static fromValueAndParameter(value, parameter, context) {
+    const type = parameter.getType(),
+          name = parameter.getName(),
+          string = name,  ///
+          assignment = null,
+          variable = new Variable(string, type, name, value, assignment);
+
+    return variable;
+  }
+
   static fromVariableNodeAndType(variableNode, type, context) {
     const node = variableNode,  ///
           string = context.nodeAsString(node),
           name = nameFromVariableNode(variableNode),
+          value = null,
           assignment = null,
-          variable = new Variable(string, type, name, assignment);
+          variable = new Variable(string, type, name, value, assignment);
 
     return variable;
   }
@@ -96,8 +161,9 @@ export default domAssigned(class Variable {
           node = variableNode,  ///
           string = context.nodeAsString(node),
           name = nameFromVariableNode(variableNode),
+          value = null,
           assignment = Assignment.fromAssignmentNode(assignmentNode, context),
-          variable = new Variable(string, type, name, assignment);
+          variable = new Variable(string, type, name, value, assignment);
 
     return variable;
   }
@@ -109,8 +175,9 @@ function variableFromVariableNode(variableNode, context) {
         string = context.nodeAsString(node),
         type = null,
         name = nameFromVariableNode(variableNode),
+        value = null,
         assignment = null,
-        variable = new Variable(string, type, name, assignment);
+        variable = new Variable(string, type, name, value, assignment);
 
   return variable;
 }

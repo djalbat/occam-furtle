@@ -91,12 +91,6 @@ export default class FileContext {
     return theorems;
   }
 
-  getVariables(includeRelease = true) {
-    const variables = [];
-
-    return variables;
-  }
-
   getProcedures(includeRelease = true) {
     return this.procedures;
   }
@@ -137,12 +131,26 @@ export default class FileContext {
     return metavariables;
   }
 
+  getVariables() {
+    const variables = [];
+
+    return variables;
+  }
+
   findFile(filePath) { return this.releaseContext.findFile(filePath); }
 
-  nodeAsString(node) {
-    const string = nodeAsString(node, this.tokens);
+  findProcedureByReference(reference) {
+    const procedures = this.getProcedures(),
+          name = reference.getName(),
+          procedure = procedures.find((procedure) => {
+            const nameMatches = procedure.matchName(name);
 
-    return string;
+            if (nameMatches) {
+              return true;
+            }
+          }) || null;
+
+    return procedure;
   }
 
   addProcedures(node) {
@@ -157,6 +165,12 @@ export default class FileContext {
 
       this.procedures.push(procedure);
     });
+  }
+
+  nodeAsString(node) {
+    const string = nodeAsString(node, this.tokens);
+
+    return string;
   }
 
   trace(message) { this.releaseContext.trace(message, this.filePath); }

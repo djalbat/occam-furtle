@@ -29,11 +29,17 @@ export default domAssigned(class Parameters {
     return length;
   }
 
+  getParameter(index) {
+    const parameter = this.array[index] || null;
+
+    return parameter;
+  }
+
   forEachParameter(callback) { this.array.forEach(callback); }
 
   matchValues(values, context) {
     const valuesString = values.getString(),
-          parametersString = this.getString();
+          parametersString = this.string; ///
 
     context.trace(`Matching the '${valuesString}' values against the '${parametersString}' parameters...`);
 

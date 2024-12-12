@@ -1,11 +1,16 @@
 "use strict";
 
+import { arrayUtilities } from "necessary";
 import { Query, Expression } from "occam-query";
 
 import dom from "../../dom";
+import Exception from "../../exception";
 
+import { NODE_TYPE } from "../../types";
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
+
+const { first } = arrayUtilities;
 
 const nodeQueryNodeQuery = nodeQuery("/assignment/nodeQuery"),
       expressionNodeQuery = nodeQuery("/nodeQuery/expression");
@@ -27,6 +32,69 @@ export default domAssigned(class NodeQuery {
 
   getQuery() {
     return this.query;
+  }
+
+  call(context) {
+    let value;
+
+    const nodeQueryString = this.string;  ///
+
+    context.trace(`Calling the '${nodeQueryString}' node query...`);
+
+    value = this.variable.call(context);
+
+    if (value === null) {
+      const variableString = this.variable.getString(),
+            message = `The '${variableString}' variable has not been assigned a value.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const valueType = value.getType(),
+          valueTypeNodeType = (valueType === NODE_TYPE);
+
+    if (!valueTypeNodeType) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be 'Node'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const valueNode = value.getNode();
+
+    if (valueNode === null) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's node is null.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    let node;
+
+    node = valueNode; ///
+
+    const nodes = this.query.execute(node),
+          nodesLength = nodes.length;
+
+    if (nodesLength !== 1) {
+      const message = `The length of the returned nodes is ${nodesLength} when it should be 1.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const firstNode = first(nodes);
+
+    node = firstNode; ///
+
+    const { Value } = dom;
+
+    value = Value.fromNode(node, context);
+
+    return value;
   }
 
   static name = "NodeQuery";

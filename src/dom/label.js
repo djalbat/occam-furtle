@@ -20,10 +20,10 @@ export default domAssigned(class Label {
     return this.name;
   }
 
-  matchMetavariableName(metavariableName) {
-    const metavariableNameMatches = (metavariableName === this.name);
+  matchName(name) {
+    const nameMatches = (name === this.name);
 
-    return metavariableNameMatches;
+    return nameMatches;
   }
 
   static name = "Label";
