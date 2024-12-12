@@ -36,6 +36,34 @@ export default domAssigned(class Condition {
     return this.bracketedCondition;
   }
 
+  call(context) {
+    let value;
+
+    const conditionString = this.string;
+
+    context.trace(`Calling the '${conditionString}' condition...`);
+
+    if (this.value !== null) {
+      value = this.value.call(context);
+    }
+
+    if (this.comparison !== null) {
+      value = this.comparison.call(context);
+    }
+
+    if (this.bitwiseCondition !== null) {
+      value = this.bitwiseCondition.call(context);
+    }
+
+    if (this.bracketedCondition !== null) {
+      value = this.bitwiseCondition.call(context);
+    }
+
+    context.debug(`...called the '${conditionString}' condition.`);
+
+    return value;
+  }
+
   static name = "Condition";
 
   static fromConditionNode(conditionNode, context) {

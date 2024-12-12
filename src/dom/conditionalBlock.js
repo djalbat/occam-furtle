@@ -33,6 +33,25 @@ export default domAssigned(class ConditionalBlock {
     return this.elseBlock;
   }
 
+  call(context) {
+    const conditionalBlockString = this.string;
+
+    context.trace(`Calling the '${conditionalBlockString}' conditional block...`);
+
+    const value = this.condition.call(context),
+          boolean = value.getBoolean();
+
+    if (boolean) {
+      this.conditionBlock.call(context);
+    } else {
+      if (this.elseBlock !== null) {
+        this.elseBlock.call(context);
+      }
+    }
+
+    context.debug(`...called the '${conditionalBlockString}' conditional block.`);
+  }
+
   static name = "ConditionalBlock";
 
   static fromStepNode(stepNode, context) {

@@ -70,13 +70,15 @@ export default domAssigned(class Value {
   }
 
   call(context) {
+    let value;
+
     const valueString = this.string;  ///
 
     context.trace(`Calling the '${valueString}' value...`);
 
-    const value = (this.variable !== null) ?
-                     this.variable.call(context) :
-                       this;  ///
+    value = (this.variable !== null) ?
+               this.variable.call(context) :
+                 this;  ///
 
     if (value === null) {
       const message = `The '${valueString}; value is not set.'`,
@@ -90,6 +92,36 @@ export default domAssigned(class Value {
     return value;
   }
 
+  isEqualTo(value) {
+    let equalTo;
+
+    if (false) {
+      ///
+    } else if (this.stringLiteral !== null) {
+      const stringLiteral = value.getStringLiteral();
+
+      equalTo = (this.stringLiteral === stringLiteral);
+    } else if (this.boolean !== null) {
+      const boolean = value.getBoolean();
+
+      equalTo = (this.boolean === boolean);
+    } else if (this.number !== null) {
+      const number = value.getNumber();
+
+      equalTo = (this.number === number);
+    } else {
+      const node = value.getNode();
+
+      if ((this.node === null) || (node === null)) {
+        equalTo = (this.node === node);
+      } else {
+        equalTo = this.node.isEqualTo(node);
+      }
+    }
+
+    return equalTo;
+  }
+
   static name = "Value";
 
   static fromNode(node, context) {
@@ -97,6 +129,17 @@ export default domAssigned(class Value {
           variable = null,
           number = null,
           boolean = null,
+          stringLiteral = null,
+          value = new Value(string, variable, node, number, boolean, stringLiteral);
+
+    return value;
+  }
+
+  static fromBoolean(boolean, context) {
+    const string = `${boolean}`,
+          node = null,
+          variable = null,
+          number = null,
           stringLiteral = null,
           value = new Value(string, variable, node, number, boolean, stringLiteral);
 

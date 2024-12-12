@@ -1,6 +1,7 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { EQUAL_TO } from "../constants";
 import { nodeQuery } from "../utilities/query";
@@ -12,9 +13,9 @@ const terminalNodeQuery = nodeQuery("/comparison/@*"),
       comparisonNodeQuery = nodeQuery("/condition/comparison");
 
 export default domAssigned(class Comparison {
-  constructor(string, equalTo, leftValue, rightValue) {
+  constructor(string, negated, leftValue, rightValue) {
     this.string = string;
-    this.equalTo = equalTo;
+    this.negated = negated;
     this.leftValue = leftValue;
     this.rightValue = rightValue;
   }
@@ -23,8 +24,8 @@ export default domAssigned(class Comparison {
     return this.string;
   }
 
-  getEqualTo() {
-    return this.equalTo;
+  isNegated() {
+    return this.negated;
   }
 
   getLeftValue() {
@@ -33,6 +34,44 @@ export default domAssigned(class Comparison {
 
   getRightValue() {
     return this.rightValue;
+  }
+
+  call(context) {
+    let value;
+
+    const comparisonString = this.string; ///
+
+    context.trace(`Calling the '${comparisonString}' comparison...`);
+
+    const leftValue = this.leftValue.call(context),
+          rightValue = this.rightValue.call(context),
+          leftValueType = leftValue.getType(),
+          rightValueType = rightValue.getType();
+
+    if (leftValueType !== rightValueType) {
+      const leftValueString = leftValue.getString(),
+            rightValueString = rightValue.getString(),
+            message = `The '${leftValueString}' left value's type is '${leftValueType}' whereas the '${rightValueString}' right value's type is '${rightValueType}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
+
+    let boolean = leftValueEqualToRightValue; ///
+
+    if (this.negated) {
+      boolean = !boolean; ///
+    }
+
+    const { Value } = dom;
+
+    value = Value.fromBoolean(boolean, context);
+
+    context.debug(`...called the '${comparisonString}' comparison.`);
+
+    return value;
   }
 
   static name = "Comparison";
@@ -48,21 +87,21 @@ export default domAssigned(class Comparison {
             string = context.nodeAsString(node),
             leftValueNode = leftValueNodeQuery(comparisonNode),
             rightValueNode = rightValueNodeQuery(comparisonNode),
-            equalTo = equalToFromComparisonNode(comparisonNode, context),
+            negated = negatedFromComparisonNode(comparisonNode, context),
             leftValue = Value.fromValueNode(leftValueNode, context),
             rightValue = Value.fromValueNode(rightValueNode, context);
 
-      comparison = new Comparison(string, equalTo, leftValue, rightValue);
+      comparison = new Comparison(string, negated, leftValue, rightValue);
     }
 
     return comparison;
   }
 });
 
-function equalToFromComparisonNode(comparisonNode) {
+function negatedFromComparisonNode(comparisonNode) {
   const terminalNode = terminalNodeQuery(comparisonNode),
         terminalNodeContent = terminalNode.getContent(),
-        equalTo = (terminalNodeContent === EQUAL_TO);
+        negated = (terminalNodeContent !== EQUAL_TO);
 
-  return equalTo;
+  return negated;
 }

@@ -43,14 +43,6 @@ export default domAssigned(class NodeQuery {
 
     value = this.variable.call(context);
 
-    if (value === null) {
-      const variableString = this.variable.getString(),
-            message = `The '${variableString}' variable has not been assigned a value.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
-
     const valueType = value.getType(),
           valueTypeNodeType = (valueType === NODE_TYPE);
 

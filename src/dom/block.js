@@ -22,6 +22,12 @@ export default domAssigned(class Block {
     return this.steps;
   }
 
+  call(context) {
+    this.steps.forEach((step) => {
+      step.call(context);
+    });
+  }
+
   static name = "Block";
 
   static fromBlockNode(blockNode, context) {

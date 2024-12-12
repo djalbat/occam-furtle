@@ -23,6 +23,10 @@ export default domAssigned(class ObjectAssigment {
     return this.variables;
   }
 
+  call(context) {
+
+  }
+
   static name = "ObjectAssigment";
 
   static fromStepNode(stepNode, context) {
