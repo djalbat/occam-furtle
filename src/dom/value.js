@@ -4,7 +4,7 @@ import dom from "../dom";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-import { NULL, TRUE, FALSE } from "../constants";
+import { TRUE, FALSE } from "../constants";
 import { NODE_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const numberTerminalNodeQuery = nodeQuery("/value/@number"),
@@ -15,17 +15,21 @@ const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(string, node, number, variable, primitive, stringLiteral) {
+  constructor(string, variable, node, number, boolean, stringLiteral) {
     this.string = string;
+    this.variable = variable;
     this.node = node;
     this.number = number;
-    this.variable = variable;
-    this.primitive = primitive;
+    this.boolean = boolean;
     this.stringLiteral = stringLiteral;
   }
 
   getString() {
     return this.string;
+  }
+
+  getVariable() {
+    return this.variable;
   }
 
   getNode() {
@@ -36,16 +40,12 @@ export default domAssigned(class Value {
     return this.number;
   }
 
-  getVariable() {
-    return this.variable;
-  }
-
-  getPrimitive() {
-    return this.primitive;
-  }
-
   getStringLiteral() {
     return this.stringLiteral;
+  }
+
+  getBoolean() {
+    return this.boolean;
   }
 
   getType() {
@@ -53,29 +53,16 @@ export default domAssigned(class Value {
 
     if (false) {
       ///
-    } else if (this.node !== null) {
-      type = NODE_TYPE;
-    } else if (this.number !== null) {
-      type = NUMBER_TYPE;
     } else if (this.variable !== null) {
       type = this.variable.getType();
+    } else if (this.number !== null) {
+      type = NUMBER_TYPE;
+    } else if (this.boolean !== null) {
+      type = BOOLEAN_TYPE;
     } else if (this.stringLiteral !== null) {
       type = STRING_TYPE;
     } else {
-      switch (this.primitive) {
-        case null: {
-          type = NULL_TYPE;
-
-          break;
-        }
-
-        case true:
-        case false: {
-          type = BOOLEAN_TYPE;
-
-          break;
-        }
-      }
+      type = NODE_TYPE;
     }
 
     return type;
@@ -85,11 +72,11 @@ export default domAssigned(class Value {
 
   static fromNode(node, context) {
     const string = context.nodeAsString(node),
-          number = null,
           variable = null,
-          primitive = null,
+          number = null,
+          boolean = null,
           stringLiteral = null,
-          value = new Value(string, node, number, variable, primitive, stringLiteral);
+          value = new Value(string, variable, node, number, boolean, stringLiteral);
 
     return value;
   }
@@ -147,11 +134,11 @@ function valueFromValueNode(valueNode, context) {
   const { Value, Variable } = dom,
         node = valueNode, ///
         string = context.nodeAsString(node),
-        number = numberFromValueNode(valueNode, context),
         variable = Variable.fromValueNode(valueNode, context),
-        primitive = primitiveFromValueNode(valueNode, context),
+        number = numberFromValueNode(valueNode, context),
+        boolean = booleanFromValueNode(valueNode, context),
         stringLiteral = stringLiteralFromValueNode(valueNode, context),
-        value = new Value(string, node, number, variable, primitive, stringLiteral);
+        value = new Value(string, variable, node, number, boolean, stringLiteral);
 
   return value;
 }
@@ -164,14 +151,14 @@ function numberFromValueNode(valueNode, context) {
   if (numberTerminalNode !== null) {
     const numberTerminalNodeContent = numberTerminalNode.getContent();
 
-    number = numberTerminalNodeContent; ///
+    number = Number(numberTerminalNodeContent);
   }
 
   return number;
 }
 
-function primitiveFromValueNode(valueNode, context) {
-  let primitive;
+function booleanFromValueNode(valueNode, context) {
+  let boolean = null;
 
   const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
 
@@ -179,29 +166,21 @@ function primitiveFromValueNode(valueNode, context) {
     const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
 
     switch (primitiveTerminalNodeContent) {
-      case NULL: {
-        primitive = null;
-
-        break;
-      }
-
       case TRUE: {
-        primitive = true;
+        boolean = true;
 
         break;
       }
 
       case FALSE: {
-        primitive = false;
+        boolean = false;
 
         break;
       }
     }
-
-    primitive = primitiveTerminalNodeContent; ///
   }
 
-  return primitive;
+  return boolean;
 }
 
 function stringLiteralFromValueNode(valueNode, context) {

@@ -1,6 +1,5 @@
 "use strict";
 
-export const NULL = "null";
 export const TRUE = "true";
 export const FALSE = "false";
 export const FUNCTION = "function";
