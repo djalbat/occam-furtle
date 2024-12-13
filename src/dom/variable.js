@@ -58,7 +58,7 @@ export default domAssigned(class Variable {
 
     context.trace(`Assigning the '${variableString}' variable a value...`);
 
-    const value = this.assignment.call(context),
+    const value = this.assignment.resolve(context),
           type = value.getType();
 
     if (this.type !== type) {
@@ -73,10 +73,10 @@ export default domAssigned(class Variable {
     context.debug(`...assigned the '${variableString}' variable a value.`);
   }
 
-  call(context) {
+  resolve(context) {
     const variableString = this.string; ///
 
-    context.trace(`Calling the '${variableString}' variable...`);
+    context.trace(`Resolving the '${variableString}' variable...`);
 
     const variableName = this.name, ///
           variable = context.findVariableByVariableName(variableName);
@@ -90,7 +90,7 @@ export default domAssigned(class Variable {
 
     const value = variable.getValue();
 
-    context.debug(`...called the '${variableString}' variable.`);
+    context.debug(`...resolved the '${variableString}' variable.`);
 
     return value;
   }

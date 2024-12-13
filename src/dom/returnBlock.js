@@ -26,9 +26,9 @@ export default domAssigned(class ReturnBlock {
     return this.returnStatement;
   }
 
-  call(context) {
+  resolve(context) {
     this.steps.forEach((step) => {
-      step.call(context);
+      step.resolve(context);
     });
   }
 

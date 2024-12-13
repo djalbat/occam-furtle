@@ -22,9 +22,9 @@ export default domAssigned(class Block {
     return this.steps;
   }
 
-  call(context) {
+  resolve(context) {
     this.steps.forEach((step) => {
-      step.call(context);
+      step.resolve(context);
     });
   }
 

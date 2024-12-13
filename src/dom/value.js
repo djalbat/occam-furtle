@@ -69,15 +69,15 @@ export default domAssigned(class Value {
     return type;
   }
 
-  call(context) {
+  resolve(context) {
     let value;
 
     const valueString = this.string;  ///
 
-    context.trace(`Calling the '${valueString}' value...`);
+    context.trace(`Resolving the '${valueString}' value...`);
 
     value = (this.variable !== null) ?
-               this.variable.call(context) :
+               this.variable.resolve(context) :
                  this;  ///
 
     if (value === null) {
@@ -87,7 +87,7 @@ export default domAssigned(class Value {
       throw exception;
     }
 
-    context.debug(`...called the '${valueString}' value.`);
+    context.debug(`...resolved the '${valueString}' value.`);
 
     return value;
   }

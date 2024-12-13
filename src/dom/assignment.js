@@ -29,17 +29,17 @@ export default domAssigned(class Assignment {
     return this.nodesQuery;
   }
 
-  call(context) {
+  resolve(context) {
     let value;
 
     if (false) {
       ///
     } else if (this.procedureCall !== null) {
-      value = this.procedureCall.call(context);
+      value = this.procedureCall.resolve(context);
     } else if (this.nodesQuery !== null) {
-      value = this.nodesQuery.call(context);
+      value = this.nodesQuery.resolve(context);
     } else if (this.nodeQuery !== null) {
-      value = this.nodeQuery.call(context);
+      value = this.nodeQuery.resolve(context);
     } else {
       value = this.value;
     }

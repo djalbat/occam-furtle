@@ -27,7 +27,7 @@ export default domAssigned(class ProcedureCall {
     return this.values;
   }
 
-  call(context) {
+  resolve(context) {
     const procedureCallString = this.string;  ///
 
     context.trace(`Calling the '${procedureCallString}' procedure...`);
@@ -42,7 +42,7 @@ export default domAssigned(class ProcedureCall {
       throw exception;
     }
 
-    const values = callValues(this.values, context);
+    const values = this.values.resolve(context);
 
     procedure.call(values, context);
 
@@ -69,16 +69,3 @@ export default domAssigned(class ProcedureCall {
     return procedureCall;
   }
 });
-
-function callValues(values, context) {
-  const { Values } = dom,
-        array = values.mapValue((value) => {
-          value = value.call(context);
-
-          return value;
-        });
-
-  values = Values.fromArray(array); ///
-
-  return values;
-}

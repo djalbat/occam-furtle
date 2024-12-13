@@ -61,7 +61,7 @@ export default domAssigned(class Procedure {
 
     context = blockContext; ///
 
-    const value = this.returnBlock.call(context);
+    const value = this.returnBlock.resolve(context);
   }
 
   static name = "Procedure";

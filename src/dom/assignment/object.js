@@ -23,8 +23,15 @@ export default domAssigned(class ObjectAssigment {
     return this.variables;
   }
 
-  call(context) {
+  resolve(context) {
+    const objectAssignmentString = this.string; ///
 
+    context.trace(`Resolving the '${objectAssignmentString}' object assignment...`);
+
+
+
+
+    context.debug(`...resolved the '${objectAssignmentString}' object assignment.`);
   }
 
   static name = "ObjectAssigment";

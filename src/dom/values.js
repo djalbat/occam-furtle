@@ -36,6 +36,17 @@ export default domAssigned(class Values {
 
   mapValue(callback) { return this.array.map(callback); }
 
+  resolve(context) {
+    const array = this.mapValue((value) => {
+            value = value.resolve(context);
+
+            return value;
+          }),
+          values = Values.fromArray(array); ///
+
+    return values;
+  }
+
   static name = "Values";
 
   static fromNodes(nodes, context) {

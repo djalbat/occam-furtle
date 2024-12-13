@@ -33,23 +33,23 @@ export default domAssigned(class ConditionalBlock {
     return this.elseBlock;
   }
 
-  call(context) {
+  resolve(context) {
     const conditionalBlockString = this.string;
 
-    context.trace(`Calling the '${conditionalBlockString}' conditional block...`);
+    context.trace(`Resolving the '${conditionalBlockString}' conditional block...`);
 
-    const value = this.condition.call(context),
+    const value = this.condition.resolve(context),
           boolean = value.getBoolean();
 
     if (boolean) {
-      this.conditionBlock.call(context);
+      this.conditionBlock.resolve(context);
     } else {
       if (this.elseBlock !== null) {
-        this.elseBlock.call(context);
+        this.elseBlock.resolve(context);
       }
     }
 
-    context.debug(`...called the '${conditionalBlockString}' conditional block.`);
+    context.debug(`...resolved the '${conditionalBlockString}' conditional block.`);
   }
 
   static name = "ConditionalBlock";

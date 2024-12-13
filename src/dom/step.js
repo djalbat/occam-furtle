@@ -43,29 +43,29 @@ export default domAssigned(class Step {
     return this.variablesDeclaration;
   }
 
-  call(context) {
+  resolve(context) {
     if (this.forEachLoop !== null) {
-      this.forEachLoop.call(context);
+      this.forEachLoop.resolve(context);
     }
 
     if (this.arrayAssignment !== null) {
-      this.arrayAssignment.call(context);
+      this.arrayAssignment.resolve(context);
     }
 
     if (this.conditionalBlock !== null) {
-      this.conditionalBlock.call(context);
+      this.conditionalBlock.resolve(context);
     }
 
     if (this.objectAssigment !== null) {
-      this.objectAssigment.call(context);
+      this.objectAssigment.resolve(context);
     }
 
     if (this.variableAssignment !== null) {
-      this.variableAssignment.call(context);
+      this.variableAssignment.resolve(context);
     }
 
     if (this.variablesDeclaration !== null) {
-      this.variablesDeclaration.call(context);
+      this.variablesDeclaration.resolve(context);
     }
   }
 
