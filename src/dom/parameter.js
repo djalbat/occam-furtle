@@ -2,10 +2,11 @@
 
 import Exception from "../exception";
 
-import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const nameTerminalNodeQuery = nodeQuery("/parameter/@name"),
+const terminalNodesQuery = nodesQuery("/parameter/@*"),
+      nameTerminalNodeQuery = nodeQuery("/parameter/@name"),
       typeTerminalNodeQuery = nodeQuery("/parameter/@type");
 
 export default domAssigned(class Parameter {
@@ -48,11 +49,19 @@ export default domAssigned(class Parameter {
   static name = "Parameter";
 
   static fromParameterNode(parameterNode, context) {
-    const name = nameFromParameterNode(parameterNode, context),
-          type = typeFromParameterNode(parameterNode, context),
-          node = parameterNode, //
-          string = context.nodeAsString(node),
-          parameter = new Parameter(string, name, type);
+    let parameter = null;
+
+    const terminalNodes = terminalNodesQuery(parameterNode),
+          terminalNodesLength = terminalNodes.length;
+
+    if (terminalNodesLength === 2) {
+      const name = nameFromParameterNode(parameterNode, context),
+            type = typeFromParameterNode(parameterNode, context),
+            node = parameterNode, //
+            string = context.nodeAsString(node);
+
+      parameter = new Parameter(string, name, type);
+    }
 
     return parameter;
   }

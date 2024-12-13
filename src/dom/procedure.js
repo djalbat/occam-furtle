@@ -82,12 +82,17 @@ export default domAssigned(class Procedure {
 });
 
 function variablesFromValuesAndParameters(values, parameters, context) {
-  const variables = values.mapValue((value, index) => {
-    const { Variable } = dom,
-          parameter = parameters.getParameter(index),
-          variable = Variable.fromValueAndParameter(value, parameter, context);
+  const variables = [];
 
-    return variable;
+  values.forEachValue((value, index) => {
+    const { Variable } = dom,
+          parameter = parameters.getParameter(index);
+
+    if (parameter !== null) {
+      const variable = Variable.fromValueAndParameter(value, parameter, context);
+
+      variables.push(variable);
+    }
   });
 
   return variables;

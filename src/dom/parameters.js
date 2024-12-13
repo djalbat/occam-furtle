@@ -7,6 +7,8 @@ import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const parameterNodesQuery = nodesQuery("/parameters/parameter"),
+      arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
+      objectAssignmentParametersNodeQuery = nodeQuery("/objectAssignment/parameters"),
       procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
 
 export default domAssigned(class Parameters {
@@ -54,15 +56,41 @@ export default domAssigned(class Parameters {
     }
 
     this.forEachParameter((parameter, index) => {
-      const value = values.getValue(index);
+      if (parameter !== null) {
+        const value = values.getValue(index);
 
-      parameter.matchValue(value, context);
+        parameter.matchValue(value, context);
+      }
     });
 
     context.debug(`...matched the '${valuesString}' values against the '${parametersString}' parameters.`);
   }
 
   static name = "Parameters";
+
+  static fromArrayAssignmentNode(arrayAssignmentNode, context) {
+    const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
+          parametersNode = arrayAssignmentParametersNode,  ///
+          node = parametersNode,  ///
+          string = context.nodeAsString(node),
+          parameterNodes = parameterNodesQuery(parametersNode),
+          array = arrayFromParameterNodes(parameterNodes, context),
+          parameters = new Parameters(string, array);
+
+    return parameters;
+  }
+
+  static fromObjectAssignmentNode(objectAssignmentNode, context) {
+    const objectAssignmentParametersNode = objectAssignmentParametersNodeQuery(objectAssignmentNode),
+          parametersNode = objectAssignmentParametersNode,  ///
+          node = parametersNode,  ///
+          string = context.nodeAsString(node),
+          parameterNodes = parameterNodesQuery(parametersNode),
+          array = arrayFromParameterNodes(parameterNodes, context),
+          parameters = new Parameters(string, array);
+
+    return parameters;
+  }
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     let parameters = null;

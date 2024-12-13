@@ -2,25 +2,23 @@
 
 import dom from "../../dom";
 
+import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
 
-const variableNodesQuery = nodesQuery("/objectAssignment/variable"),
-      typeTerminalNodesQuery = nodesQuery("/objectAssignment/@type"),
-      objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
+const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default domAssigned(class ObjectAssigment {
-  constructor(string, variables) {
+  constructor(string, parameters) {
     this.string = string;
-    this.variables = variables;
+    this.parameters = parameters;
   }
 
   getString() {
     return this.string;
   }
 
-  getVariables() {
-    return this.variables;
+  getParameters() {
+    return this.parameters;
   }
 
   resolve(context) {
@@ -42,39 +40,14 @@ export default domAssigned(class ObjectAssigment {
     const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
 
     if (objectAssignmentNode !== null) {
-      const typeTerminalNodes = typeTerminalNodesQuery(objectAssignmentNode),
-            variableNodes = variableNodesQuery(objectAssignmentNode),
-            types = typesFromTypeTerminalNodes(typeTerminalNodes, context),
+      const { Parameters, } = dom,
             node = objectAssignmentNode,  ///
             string = context.nodeAsString(node),
-            variables = variablesFromVariableNodesAndTypes(variableNodes, types, context);
+            parameters = Parameters.fromObjectAssignmentNode(objectAssignmentNode, context);
 
-      objectAssignment = new ObjectAssigment(string, variables);
+      objectAssignment = new ObjectAssigment(string, parameters);
     }
 
     return objectAssignment;
   }
 });
-
-export function typesFromTypeTerminalNodes(typeTerminalNodes, context) {
-  const types = typeTerminalNodes.map((typeTerminalNode) => {
-          const typeTerminalNodeContent = typeTerminalNode.getContent(),
-                type = typeTerminalNodeContent; ///
-
-          return type;
-        });
-
-  return types;
-}
-
-export function variablesFromVariableNodesAndTypes(variableNodes, types, context) {
-  const { Variable } = dom,
-        variables = variableNodes.map((variableNode, index) => {
-          const type = types[index],
-                variable = Variable.fromVariableNodeAndType(variableNode, type, context);
-
-          return variable;
-        });
-
-  return variables;
-}

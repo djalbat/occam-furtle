@@ -36,6 +36,8 @@ export default domAssigned(class Values {
 
   mapValue(callback) { return this.array.map(callback); }
 
+  forEachValue(callback) { this.array.forEach(callback); }
+
   resolve(context) {
     const array = this.mapValue((value) => {
             value = value.resolve(context);
