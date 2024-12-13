@@ -152,6 +152,17 @@ export default domAssigned(class Value {
     return value;
   }
 
+  static fromStringLiteral(stringLiteral, context) {
+    const string = stringLiteral, ///
+          node = null,
+          variable = null,
+          number = null,
+          boolean = null,
+          value = new Value(string, variable, node, number, boolean, stringLiteral);
+
+    return value;
+  }
+
   static fromConditionNode(conditionNode, context) {
     let value = null;
 

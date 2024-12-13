@@ -46,7 +46,37 @@ export default domAssigned(class Parameter {
     context.debug(`...matched the '${valueString}' value against the '${parameterString}' parameter.`);
   }
 
+  matchParameter(parameter, context) {
+    let parameterMatches;
+
+    const parameterA = this,  ///
+          parameterB = parameter; ///
+
+    const parameterAString = parameterA.getString(),
+          parameterBString = parameterB.getString();
+
+    context.trace(`Matching the '${parameterAString}' parameter against the '${parameterBString}' parameter...`);
+
+    const name = parameter.getName(),
+          type = parameter.getType();
+
+    parameterMatches = ((this.name === name) && (this.type === type));
+
+    if (parameterMatches) {
+      context.debug(`...matched the '${parameterAString}' parameter against the '${parameterBString}' parameter.`);
+    }
+
+    return parameterMatches;
+  }
+
   static name = "Parameter";
+
+  static fromNameAndType(name, type, context) {
+    const string = stringFromNameAndType(name, type, context),
+          parameter = new Parameter(string, name, type);
+
+    return parameter;
+  }
 
   static fromParameterNode(parameterNode, context) {
     let parameter = null;
@@ -66,6 +96,12 @@ export default domAssigned(class Parameter {
     return parameter;
   }
 });
+
+function stringFromNameAndType(name, type) {
+  const string = `${type} ${name}`;
+
+  return string;
+}
 
 function nameFromParameterNode(parameterNode, context) {
   const nameTerminalNode = nameTerminalNodeQuery(parameterNode),

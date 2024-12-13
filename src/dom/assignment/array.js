@@ -8,13 +8,18 @@ import { domAssigned } from "../../dom";
 const arrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
 
 export default domAssigned(class ArrayAssigment {
-  constructor(string, parameters) {
+  constructor(string, variable, parameters) {
     this.string = string;
+    this.variable = variable;
     this.parameters = parameters;
   }
 
   getString() {
     return this.string;
+  }
+
+  getVariable() {
+    return this.variable;
   }
 
   getVariables() {
@@ -29,12 +34,13 @@ export default domAssigned(class ArrayAssigment {
     const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
 
     if (arrayAssignmentNode !== null) {
-      const { Parameters } = dom,
+      const { Variable, Parameters } = dom,
             node = arrayAssignmentNode,  ///
             string = context.nodeAsString(node),
+            variable = Variable.fromArrayAssignmentNode(arrayAssignmentNode, context),
             parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context);
 
-      arrayAssignment = new ArrayAssigment(string, parameters);
+      arrayAssignment = new ArrayAssigment(string, variable, parameters);
     }
 
     return arrayAssignment;

@@ -43,12 +43,11 @@ export default domAssigned(class NodeQuery {
 
     value = this.variable.resolve(context);
 
-    const valueType = value.getType(),
-          valueTypeNodeType = (valueType === NODE_TYPE);
+    const valueType = value.getType();
 
-    if (!valueTypeNodeType) {
+    if (valueType !== NODE_TYPE) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be 'Node'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

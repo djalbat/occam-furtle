@@ -10,7 +10,9 @@ const valueVariableNodeQuery = nodeQuery("/value/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       forEachLoopVariableNodeQuery = nodeQuery("/forEachLoop/variable"),
-      variableNameTerminalNodeQuery = nodeQuery("/variable/@name");
+      variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
+      arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
+      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable");
 
 export default domAssigned(class Variable {
   constructor(string, type, name, value, assignment) {
@@ -152,6 +154,22 @@ export default domAssigned(class Variable {
           value = null,
           assignment = null,
           variable = new Variable(string, type, name, value, assignment);
+
+    return variable;
+  }
+
+  static fromArrayAssignmentNode(arrayAssignmentNode, context) {
+    const arrayAssignmentVariableNode = arrayAssignmentVariableNodeQuery(arrayAssignmentNode),
+          variableNode = arrayAssignmentVariableNode, ///
+          variable = variableFromVariableNode(variableNode, context);
+
+    return variable;
+  }
+
+  static fromObjectAssignmentNode(objectAssignmentNode, context) {
+    const objectAssignmentVariableNode = objectAssignmentVariableNodeQuery(objectAssignmentNode),
+          variableNode = objectAssignmentVariableNode, ///
+          variable = variableFromVariableNode(variableNode, context);
 
     return variable;
   }

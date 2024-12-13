@@ -37,6 +37,8 @@ export default domAssigned(class Parameters {
     return parameter;
   }
 
+  someParameter(callback) { return this.array.some(callback); }
+
   forEachParameter(callback) { this.array.forEach(callback); }
 
   matchValues(values, context) {
@@ -66,7 +68,49 @@ export default domAssigned(class Parameters {
     context.debug(`...matched the '${valuesString}' values against the '${parametersString}' parameters.`);
   }
 
+  matchParameter(parameter, context) {
+    const parameterString = parameter.getString(),
+          parametersString = this.string; ///
+
+    context.trace(`Matching the '${parameterString}' parameter against the '${parametersString}' parameters...`);
+
+    const parameterA = parameter, ///
+          parameterMatches = this.someParameter((parameter) => {
+            if (parameter !== null) {
+              const parameterB = parameter, ///
+                    parameterBMatchesParameterA = parameterA.matchParameter(parameterB, context);
+
+              if (parameterBMatchesParameterA) {
+                return true;
+              }
+            }
+          });
+
+    if (!parameterMatches) {
+      const message = `The '${parameterString}' parameter does not match any of the '${parametersString}' parameters.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    context.debug(`...matched the '${parameterString}' parameter against the '${parametersString}' parameters.`);
+  }
+
   static name = "Parameters";
+
+  static fromNamesAndTypes(names, types, context) {
+    const array = names.map((name, index) => {
+            const { Parameter } = dom,
+                  type = types[index],
+                  parameter = Parameter.fromNameAndType(name, type, context);
+
+            return parameter;
+          }),
+          string = stringFromArray(array, context),
+          parameters = new Parameters(string, array);
+
+    return parameters;
+  }
 
   static fromArrayAssignmentNode(arrayAssignmentNode, context) {
     const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
@@ -110,6 +154,21 @@ export default domAssigned(class Parameters {
     return parameters;
   }
 });
+
+function stringFromArray(array, context) {
+  const parametersString = array.reduce((parametersString, parameter) => {
+          const parameterString = parameter.getString();
+
+          parametersString = (parametersString === null) ?
+                               parameterString :
+                                `${parametersString}, ${parameterString}`;
+
+          return parametersString;
+        }, null),
+        string = parametersString;  ///
+
+  return string;
+}
 
 function arrayFromParameterNodes(parameterNodes, context) {
   const { Parameter } = dom,
