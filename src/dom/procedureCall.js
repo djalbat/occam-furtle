@@ -30,23 +30,23 @@ export default domAssigned(class ProcedureCall {
   resolve(context) {
     const procedureCallString = this.string;  ///
 
-    context.trace(`Calling the '${procedureCallString}' procedure...`);
+    context.trace(`Resolving the '${procedureCallString}' procedure call...`);
 
-    const procedure = context.findProcedureByReference(this.reference);
+    const procedurePresent = context.isProcedurePresentByReference(this.reference);
 
-    if (procedure === null) {
-      const referenceString = this.reference.getString(),
-            message = `The '${referenceString} procedure cannot be found.'`,
+    if (!procedurePresent) {
+      const message = `The '${procedureCallString} procedure is not present.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const values = this.values.resolve(context);
+    const procedure = context.findProcedureByReference(this.reference),
+          values = this.values.resolve(context);
 
     procedure.call(values, context);
 
-    context.debug(`...called the '${procedureCallString}' procedure.`);
+    context.debug(`...resolved the '${procedureCallString}' procedure call.`);
   }
 
   static name = "ProcedureCall";

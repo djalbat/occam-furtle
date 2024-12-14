@@ -1,8 +1,12 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
+import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+
+const assignmentNodeQuery = nodeQuery("/variableAssignment/assignment");
 
 export default domAssigned(class Assignment {
   constructor(string, value, nodeQuery, nodesQuery, procedureCall) {
@@ -32,6 +36,10 @@ export default domAssigned(class Assignment {
   resolve(context) {
     let value;
 
+    const assignmentString = this.string; ///
+
+    context.trace(`Resolving the '${assignmentString}' assignment...`);
+
     if (false) {
       ///
     } else if (this.procedureCall !== null) {
@@ -43,6 +51,16 @@ export default domAssigned(class Assignment {
     } else {
       value = this.value;
     }
+
+    if (value === null) {
+      const assignmentString = this.string, ///
+            message = `The '${assignmentString}' assigment cannot be resolved.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    context.debug(`...resolved the '${assignmentString}' assignment.`);
 
     return value;
   }
@@ -56,9 +74,9 @@ export default domAssigned(class Assignment {
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
+          assignment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
-    return assigment;
+    return assignment;
   }
 
   static fromValue(value, context) {
@@ -66,22 +84,22 @@ export default domAssigned(class Assignment {
           nodesQuery = null,
           procedureCall = null,
           string = stringFromValue(value),
-          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
+          assignment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
-    return assigment;
+    return assignment;
   }
 
-  static fromAssignmentNode(assigmentNode, context) {
-    const { Value, NodeQuery, NodesQuery, ProcedureCall } = dom,
-          node = assigmentNode, ///
-          string = context.nodeAsString(node),
-          value = Value.fromAssignmentNode(assigmentNode, context),
-          nodeQuery = NodeQuery.fromAssignmentNode(assigmentNode, context),
-          nodesQuery = NodesQuery.fromAssignmentNode(assigmentNode, context),
-          procedureCall = ProcedureCall.fromAssignmentNode(assigmentNode, context),
-          assigment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
+  static fromAssignmentNode(assignmentNode, context) {
+    const assignment = assignmentFromAssignmentNode(assignmentNode, context);
 
-    return assigment;
+    return assignment;
+  }
+
+  static fromVariableAssignmentNode(variableAssignmentNode, context) {
+    const assignmentNode = assignmentNodeQuery(variableAssignmentNode),
+          assignment = assignmentFromAssignmentNode(assignmentNode, context);
+
+    return assignment;
   }
 });
 
@@ -90,4 +108,17 @@ function stringFromValue(value) {
         string = `= ${valueString}`;
 
   return string;
+}
+
+function assignmentFromAssignmentNode(assignmentNode, context) {
+  const { Assignment, Value, NodeQuery, NodesQuery, ProcedureCall } = dom,
+        node = assignmentNode, ///
+        string = context.nodeAsString(node),
+        value = Value.fromAssignmentNode(assignmentNode, context),
+        nodeQuery = NodeQuery.fromAssignmentNode(assignmentNode, context),
+        nodesQuery = NodesQuery.fromAssignmentNode(assignmentNode, context),
+        procedureCall = ProcedureCall.fromAssignmentNode(assignmentNode, context),
+        assignment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
+
+  return assignment;
 }

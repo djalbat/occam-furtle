@@ -43,25 +43,33 @@ export default class BlockContext {
     return variable;
   }
 
+  isProcedurePresentByReference(reference) {
+    const procedure = this.findProcedureByReference(reference),
+          procedurePresent = (procedure !== null);
+
+    return procedurePresent;
+  }
+
+  isVariablePresentByVariableName(variableName) {
+    const variable = this.findVariableByVariableName(variableName),
+          variablePresent = (variable !== null);
+
+    return variablePresent;
+  }
+
   addVariable(variable) {
-    const variableA = variable; ///
+    const variableName = variable.getName(),
+          variableString = variable.getString(),
+          variablePresent = this.isVariablePresentByVariableName(variableName);
 
-    this.variables.forEach((variable) => {
-      const variableB = variable, ///
-            variableAName = variableA.getName(),
-            variableANameMatchesVariableBName = variableB.matchVariableName(variableAName);
+    if (variablePresent) {
+      const message = `The '${variableString}' variable is already present.'`,
+            exception = Exception.fromMessage(message);
 
-      if (variableANameMatchesVariableBName) {
-        const variableString = variable.getString(),
-              message = `The '${variableString}' variable is already in the context.'`,
-              exception = Exception.fromMessage(message);
+      throw exception;
+    }
 
-        throw exception;
-      }
-    });
-
-    const context = this,
-          variableString = variable.getString();
+    const context = this;
 
     context.trace(`Added the '${variableString}' variable to the context.`);
 

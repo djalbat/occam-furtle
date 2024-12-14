@@ -31,9 +31,9 @@ export default domAssigned(class VariablesDeclaration {
     context.trace(`Resolving the '${variablesDeclarationString}' variables declaration...`);
 
     this.variables.forEach((variable) => {
-      variable.assign(context);
-
       context.addVariable(variable);
+
+      variable.assign(context);
     });
 
     context.debug(`...resolved the '${variablesDeclarationString}' variables declaration.`);

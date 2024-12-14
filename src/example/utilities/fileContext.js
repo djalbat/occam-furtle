@@ -1,31 +1,17 @@
 "use strict";
 
-import { File } from "occam-entities";
-import { FileContext } from "../../index";  ///
-import { fileSystemUtilities } from "necessary";
+import FileContext from "../context/file";
 
-import { ReleaseContext } from "../context/release";
+import { nominalLexerFromNothing, nominalParserFromNothing } from "../utilities/nominal";
 
-const { readFile } = fileSystemUtilities;
+const nominalLexer = nominalLexerFromNothing(),
+      nominalParser = nominalParserFromNothing();
 
 export function fileContextFromNothing() {
-  const file = fileFromNothing(),
-        releaseContext = ReleaseContext.fromFile(file),
-        fileContext = FileContext.fromFile(file, releaseContext);
-
-  fileContext.verify();
+  const content = `∀n n = n`,
+        tokens = nominalLexer.tokenise(content),
+        node = nominalParser.parse(tokens),
+        fileContext = FileContext.fromNodeAndTokens(node, tokens);
 
   return fileContext;
 }
-
-function fileFromNothing() {
-  const filePath = "example/Free and bound variables.ftl",
-        fileContent = readFile(filePath),
-        path = filePath,  ///
-        content = fileContent,  ///
-        released = false,
-        file = File.fromPathContentAndReleased(path, content, released);
-
-  return file;
-}
-

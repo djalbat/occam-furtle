@@ -12,7 +12,8 @@ const valueVariableNodeQuery = nodeQuery("/value/variable"),
       forEachLoopVariableNodeQuery = nodeQuery("/forEachLoop/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
-      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable");
+      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
+      variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
 
 export default domAssigned(class Variable {
   constructor(string, type, name, value, assignment) {
@@ -43,6 +44,26 @@ export default domAssigned(class Variable {
     return this.assignment;
   }
 
+  setString(string) {
+    this.string = string;
+  }
+
+  setType(type) {
+    this.type = type;
+  }
+
+  setName(name) {
+    this.name = name;
+  }
+
+  setValue(value) {
+    this.value = value;
+  }
+
+  setAssignment(assignment) {
+    this.assignment = assignment;
+  }
+
   matchVariableName(variableName) {
     const nameMatches = (this.name === variableName);
 
@@ -50,27 +71,36 @@ export default domAssigned(class Variable {
   }
 
   assign(context) {
-    const variableString = this.string; ///
-
     if (this.assignment === null) {
-      context.debug(`The '${variableString}' variable has not been assigned a value.`);
-
       return;
     }
 
+    const variableName = this.name, ///
+          variableString = this.string, ///
+          variablePresent = context.isVariablePresentByVariableName(variableName);
+
     context.trace(`Assigning the '${variableString}' variable a value...`);
 
-    const value = this.assignment.resolve(context),
-          type = value.getType();
-
-    if (this.type !== type) {
-      const message = `The '${variableString} variable's '${this.type}' type does not match the assigned value's '${type}' type.'`,
+    if (!variablePresent) {
+      const message = `The '${variableString}' variable is not present.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.value = value;
+    const value = this.assignment.resolve(context),
+          variable = context.findVariableByVariableName(variableName),
+          valueType = value.getType(),
+          variableType = variable.getType();
+
+    if (valueType !== variableType) {
+      const message = `The '${variableString} variable's '${variableType}' type does not match the assigned value's '${valueType}' type.'`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    variable.setValue(value);
 
     context.debug(`...assigned the '${variableString}' variable a value.`);
   }
@@ -81,16 +111,17 @@ export default domAssigned(class Variable {
     context.trace(`Resolving the '${variableString}' variable...`);
 
     const variableName = this.name, ///
-          variable = context.findVariableByVariableName(variableName);
+          variablePresent = context.isVariablePresentByVariableName(variableName);
 
-    if (variable === null) {
-      const message = `The '${variableString}; variable cannot be found.'`,
+    if (!variablePresent) {
+      const message = `The '${variableString}; variable is not present.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const value = variable.getValue();
+    const variable = context.findVariableByVariableName(variableName),
+          value = variable.getValue();
 
     context.debug(`...resolved the '${variableString}' variable.`);
 
@@ -170,6 +201,21 @@ export default domAssigned(class Variable {
     const objectAssignmentVariableNode = objectAssignmentVariableNodeQuery(objectAssignmentNode),
           variableNode = objectAssignmentVariableNode, ///
           variable = variableFromVariableNode(variableNode, context);
+
+    return variable;
+  }
+
+  static fromVariableAssignmentNode(variableAssignmentNode, context) {
+    const { Assignment } = dom,
+          variableAssignmentVariableNode = variableAssignmentVariableNodeQuery(variableAssignmentNode),
+          variableNode = variableAssignmentVariableNode, ///
+          node = variableNode,  ///
+          string = context.nodeAsString(node),
+          type = null,
+          name = nameFromVariableNode(variableNode),
+          value = null,
+          assignment = Assignment.fromVariableAssignmentNode(variableAssignmentNode, context),
+          variable = new Variable(string, type, name, value, assignment);
 
     return variable;
   }

@@ -69,6 +69,26 @@ export default domAssigned(class Value {
     return type;
   }
 
+  asString(context) {
+    let string;
+
+    if (false) {
+      ///
+    } else if (this.variable !== null) {
+      string = null;
+    } else if (this.number !== null) {
+      string = `${this.number}`;
+    } else if (this.boolean !== null) {
+      string = `${this.boolean}`;
+    } else if (this.stringLiteral !== null) {
+      string = `${this.stringLiteral}`;
+    } else {
+      string = context.nodeAsString(this.node);
+    }
+
+    return string;
+  }
+
   resolve(context) {
     let value;
 
@@ -80,14 +100,9 @@ export default domAssigned(class Value {
                this.variable.resolve(context) :
                  this;  ///
 
-    if (value === null) {
-      const message = `The '${valueString}; value is not set.'`,
-            exception = Exception.fromMessage(message);
+    const string = value.asString(context); ///
 
-      throw exception;
-    }
-
-    context.debug(`...resolved the '${valueString}' value.`);
+    context.debug(`...resolved the '${valueString}' value to '${string}'.`);
 
     return value;
   }

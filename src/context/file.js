@@ -1,5 +1,6 @@
 "use strict";
 
+import { arrayUtilities } from "necessary";
 import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
 import dom from "../dom";
@@ -7,7 +8,8 @@ import dom from "../dom";
 import { nodesQuery } from "../utilities/query";
 import { nodeAsString } from "../utilities/string";
 
-const { furtleLexerFromNothing } = lexersUtilities,
+const { push } = arrayUtilities,
+      { furtleLexerFromNothing } = lexersUtilities,
       { furtleParserFromNothing } = parsersUtilities;
 
 const furtleLexer = furtleLexerFromNothing(),
@@ -92,7 +94,15 @@ export default class FileContext {
   }
 
   getProcedures(includeRelease = true) {
-    return this.procedures;
+    const procedures = [];
+
+    if (includeRelease) {
+      const releaseContextProcedures = this.releaseContext.getProcedures();
+
+      push(procedures, releaseContextProcedures);
+    }
+
+    return procedures;
   }
 
   getMetaLemmas(includeRelease = true) {

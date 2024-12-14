@@ -2,13 +2,20 @@
 
 import "./index";
 
-import { valuesFromNothing } from "./example/utilities/values";
+import { valuesFromFileContext } from "./example/utilities/values";
 import { fileContextFromNothing } from "./example/utilities/fileContext";
-import { procedureFromFileContext } from "./example/utilities/procedure";
+import { releaseContextFromNothing } from "./example/utilities/releaseContext";
+import { procedureFromReleaseContext } from "./example/utilities/procedure";
 
-const values = valuesFromNothing(),
-      fileContext = fileContextFromNothing(),
-      procedure = procedureFromFileContext(fileContext),
+let fileContext;
+
+const releaseContext = releaseContextFromNothing(),
+      fileContext = fileContextFromNothing();
+
+releaseContext.addFileContext(fileContext);
+
+const procedure = procedureFromReleaseContext(releaseContext),
+      values = valuesFromFileContext(fileContext),
       context = fileContext;  ///
 
 procedure.call(values, context);
