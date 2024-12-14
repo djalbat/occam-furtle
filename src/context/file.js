@@ -96,6 +96,8 @@ export default class FileContext {
   getProcedures(includeRelease = true) {
     const procedures = [];
 
+    push(procedures, this.procedures);
+
     if (includeRelease) {
       const releaseContextProcedures = this.releaseContext.getProcedures();
 
@@ -149,19 +151,9 @@ export default class FileContext {
 
   findFile(filePath) { return this.releaseContext.findFile(filePath); }
 
-  findProcedureByReference(reference) {
-    const procedures = this.getProcedures(),
-          name = reference.getName(),
-          procedure = procedures.find((procedure) => {
-            const nameMatches = procedure.matchName(name);
+  findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }
 
-            if (nameMatches) {
-              return true;
-            }
-          }) || null;
-
-    return procedure;
-  }
+  isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }
 
   addProcedures(node) {
     const context = this; ///

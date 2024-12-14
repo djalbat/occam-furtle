@@ -2,22 +2,25 @@
 
 import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
 
+import FileContext from "../context/file";
+
 import { combinedCustomGrammarFromNothing } from "../utilities/grammar";
 
 const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
       { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
 
-const combinedCustomGrammar = combinedCustomGrammarFromNothing();
+export function nominalFileContextFromReleaseContext(releaseContext) {
+  const content = `∀n n = n`,
+        startRuleName = "statement",
+        combinedCustomGrammar = combinedCustomGrammarFromNothing(),
+        nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar),
+        nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar),
+        lexer = nominalLexer, ///
+        parser = nominalParser, ///
+        tokens = lexer.tokenise(content),
+        node = parser.parse(tokens),
+        fileContext = FileContext.fromNodeAndTokens(node, tokens, releaseContext),
+        nominalFileContext = fileContext;  ///
 
-export function nominalLexerFromNothing() {
-  const nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar);
-
-  return nominalLexer;
-}
-
-export function nominalParserFromNothing() {
-  const startRuleName = "statement",
-        nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar);
-
-  return nominalParser;
+  return nominalFileContext;
 }

@@ -2,20 +2,28 @@
 
 import "./index";
 
+import { ReleaseContext } from "./example/context/release";
+
+import { furtleFileFromNothing } from "./example/utilities/furtle";
 import { valuesFromFileContext } from "./example/utilities/values";
-import { fileContextFromNothing } from "./example/utilities/fileContext";
-import { releaseContextFromNothing } from "./example/utilities/releaseContext";
 import { procedureFromReleaseContext } from "./example/utilities/procedure";
+import { nominalFileContextFromReleaseContext } from "./example/utilities/nominal";
 
-let fileContext;
+const releaseContext = ReleaseContext.fromNothing(),
+      furtleFile = furtleFileFromNothing(),
+      file = furtleFile;  ///
 
-const releaseContext = releaseContextFromNothing(),
-      fileContext = fileContextFromNothing();
+releaseContext.addFile(file);
+
+const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext),
+      fileContext = nominalFileContext, ///
+      values = valuesFromFileContext(fileContext);
 
 releaseContext.addFileContext(fileContext);
 
+releaseContext.verify();
+
 const procedure = procedureFromReleaseContext(releaseContext),
-      values = valuesFromFileContext(fileContext),
       context = fileContext;  ///
 
 procedure.call(values, context);

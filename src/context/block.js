@@ -30,6 +30,8 @@ export default class BlockContext {
 
   findProcedureByReference(reference) { return this.context.findProcedureByReference(reference); }
 
+  isProcedurePresentByReference(reference) { return this.context.isProcedurePresentByReference(reference); }
+
   findVariableByVariableName(variableName) {
     const variables = this.getVariables(),
           variable = variables.find((variable) => {
@@ -41,13 +43,6 @@ export default class BlockContext {
           }) || null;
 
     return variable;
-  }
-
-  isProcedurePresentByReference(reference) {
-    const procedure = this.findProcedureByReference(reference),
-          procedurePresent = (procedure !== null);
-
-    return procedurePresent;
   }
 
   isVariablePresentByVariableName(variableName) {

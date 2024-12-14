@@ -1,5 +1,6 @@
 "use strict";
 
+import { FileContext } from "../../index";  ///
 import { arrayUtilities } from "necessary";
 
 const { push } = arrayUtilities;
@@ -18,6 +19,14 @@ export class ReleaseContext {
     return this.fileContexts;
   }
 
+  addFile(file) {
+    this.files.push(file);
+  }
+
+  addFileContext(fileContext) {
+    this.fileContexts.push(fileContext);
+  }
+
   getProcedures(includeDependencies = true) {
     const procedures = [];
 
@@ -33,14 +42,35 @@ export class ReleaseContext {
 
   findFile(filePath) {
     const file = this.files.find((file) => {
-      const filePathMatches = file.matchFilePath()
-    })
+      const filePathMatches = file.matchFilePath(filePath);
+
+      if (filePathMatches) {
+        return true;
+      }
+    }) || null;
 
     return file;
   }
 
-  addFileContext(fileContext) {
-    this.fileContexts.push(fileContext);
+  findProcedureByReference(reference) {
+    const procedures = this.getProcedures(),
+          name = reference.getName(),
+          procedure = procedures.find((procedure) => {
+            const nameMatches = procedure.matchName(name);
+
+            if (nameMatches) {
+              return true;
+            }
+          }) || null;
+
+    return procedure;
+  }
+
+  isProcedurePresentByReference(reference) {
+    const procedure = this.findProcedureByReference(reference),
+          procedurePresent = (procedure !== null);
+
+    return procedurePresent;
   }
 
   trace(message) { console.log(message); }
@@ -52,4 +82,24 @@ export class ReleaseContext {
   warning(message) { console.log(message); }
 
   error(message) { console.log(message); }
+
+  verify() {
+    const releaseContext = this;
+
+    this.files.forEach((file) => {
+      const fileContext = FileContext.fromFile(file, releaseContext);
+
+      fileContext.verify();
+
+      this.fileContexts.push(fileContext);
+    });
+  }
+
+  static fromNothing() {
+    const files = [],
+          fileContexts = [],
+          releaseContext = new ReleaseContext(files, fileContexts);
+
+    return releaseContext;
+  }
 }

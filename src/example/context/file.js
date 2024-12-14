@@ -1,13 +1,18 @@
 "use strict";
 
-import { stringUtilities } from "../../index";
+import { stringUtilities } from "../../index";  ///
 
 const { nodeAsString } = stringUtilities;
 
 export default class FileContext {
-  constructor(node, tokens) {
+  constructor(releaseContext, node, tokens) {
+    this.releaseContext = releaseContext;
     this.node = node;
     this.tokens = tokens;
+  }
+
+  getReleaseContext() {
+    return this.releaseContext;
   }
 
   getNode() {
@@ -24,19 +29,15 @@ export default class FileContext {
     return variables;
   }
 
-  findProcedureByReference(reference) {
-    const procedures = this.getProcedures(),
-          name = reference.getName(),
-          procedure = procedures.find((procedure) => {
-            const nameMatches = procedure.matchName(name);
+  getProcedures() {
+    const procedures = [];
 
-            if (nameMatches) {
-              return true;
-            }
-          }) || null;
-
-    return procedure;
+    return procedures;
   }
+
+  findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }
+
+  isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }
 
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
@@ -44,18 +45,18 @@ export default class FileContext {
     return string;
   }
 
-  trace(message) { console.log(message); }
+  trace(message) { this.releaseContext.trace(message, this.filePath); }
 
-  debug(message) { console.log(message); }
+  debug(message) { this.releaseContext.debug(message, this.filePath); }
 
-  info(message) { console.log(message); }
+  info(message) { this.releaseContext.info(message, this.filePath); }
 
-  warning(message) { console.log(message); }
+  warning(message) { this.releaseContext.warning(message, this.filePath); }
 
-  error(message) { console.log(message); }
+  error(message) { this.releaseContext.error(message, this.filePath); }
 
-  static fromNodeAndTokens(node, tokens) {
-    const fileContext = new FileContext(node, tokens);
+  static fromNodeAndTokens(node, tokens, releaseContext) {
+    const fileContext = new FileContext(releaseContext, node, tokens);
 
     return fileContext;
   }

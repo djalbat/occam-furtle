@@ -31,7 +31,7 @@ export function nodesAsString(nodes, tokens) {
 export default {
   nodeAsString,
   nodesAsString
-}
+};
 
 function tokensAsString(tokens) {
   const string = tokens.reduce((string, token) => {
