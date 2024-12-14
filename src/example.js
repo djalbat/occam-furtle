@@ -15,13 +15,13 @@ const releaseContext = ReleaseContext.fromNothing(),
 
 releaseContext.addFile(file);
 
+releaseContext.verify();
+
 const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext),
       fileContext = nominalFileContext, ///
       values = valuesFromFileContext(fileContext);
 
 releaseContext.addFileContext(fileContext);
-
-releaseContext.verify();
 
 const procedure = procedureFromReleaseContext(releaseContext),
       context = fileContext;  ///
