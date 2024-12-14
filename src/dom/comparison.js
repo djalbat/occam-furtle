@@ -49,9 +49,9 @@ export default domAssigned(class Comparison {
           rightValueType = rightValue.getType();
 
     if (leftValueType !== rightValueType) {
-      const leftValueString = leftValue.getString(),
-            rightValueString = rightValue.getString(),
-            message = `The '${leftValueString}' left value's type is '${leftValueType}' whereas the '${rightValueString}' right value's type is '${rightValueType}'.`,
+      const leftValueString = leftValue.asString(context),
+            rightValueString = rightValue.asString(context),
+            message = `The ${leftValueString} left value's type is '${leftValueType}' whereas the ${rightValueString} right value's type is '${rightValueType}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

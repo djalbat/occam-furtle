@@ -6,7 +6,7 @@ import { lexersUtilities, parsersUtilities } from "occam-grammars";
 import dom from "../dom";
 
 import { nodesQuery } from "../utilities/query";
-import { nodeAsString } from "../utilities/string";
+import { nodeAsString, nodesAsString } from "../utilities/string";
 
 const { push } = arrayUtilities,
       { furtleLexerFromNothing } = lexersUtilities,
@@ -177,6 +177,12 @@ export default class FileContext {
 
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
+
+    return string;
+  }
+
+  nodesAsString(nodes) {
+    const string = nodesAsString(nodes, this.tokens);
 
     return string;
   }

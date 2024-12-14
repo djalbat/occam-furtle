@@ -6,6 +6,7 @@ import BlockContext from "../context/block";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 import { nodeQuery, nodesQuery } from "../utilities/query";
+import Exception from "../exception";
 
 const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
       nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
@@ -71,11 +72,22 @@ export default domAssigned(class Procedure {
 
     context = blockContext; ///
 
-    const value = this.returnBlock.resolve(context);
+    const value = this.returnBlock.resolve(context),
+          valueType = value.getType();
+
+    if (this.type !== valueType) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     context = fileContext;  ///
 
     context.debug(`...called the '${procedureString}' procedure.`);
+
+    return value;
   }
 
   static name = "Procedure";

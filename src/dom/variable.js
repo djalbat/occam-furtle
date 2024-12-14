@@ -104,7 +104,7 @@ export default domAssigned(class Variable {
 
     const valueString = value.asString(context);
 
-    context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
+    context.debug(`...assigned the ${valueString} value to the '${variableString}' variable.`);
   }
 
   resolve(context) {
@@ -123,9 +123,10 @@ export default domAssigned(class Variable {
     }
 
     const variable = context.findVariableByVariableName(variableName),
-          value = variable.getValue();
+          value = variable.getValue(),
+          valueString = value.asString(context);
 
-    context.debug(`...resolved the '${variableString}' variable.`);
+    context.debug(`...resolved the '${variableString}' variable to the ${valueString} value.`);
 
     return value;
   }

@@ -46,8 +46,8 @@ export default domAssigned(class NodeQuery {
     const valueType = value.getType();
 
     if (valueType !== NODE_TYPE) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NODE_TYPE}'.`,
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -56,8 +56,8 @@ export default domAssigned(class NodeQuery {
     const valueNode = value.getNode();
 
     if (valueNode === null) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's node is null.`,
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

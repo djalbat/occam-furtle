@@ -39,8 +39,8 @@ export default domAssigned(class ObjectAssigment {
           valueType = value.getType();
 
     if (valueType !== NODE_TYPE) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NODE_TYPE}'.`,
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -58,10 +58,10 @@ export default domAssigned(class ObjectAssigment {
   }
 
   resolveParameter(parameter, value, context) {
-    const valueString = value.getString(),
+    const valueString = value.asString(context),
           parameterString = parameter.getString();
 
-    context.trace(`Resolving the '${parameterString}' parameter against the '${valueString}' value...`);
+    context.trace(`Resolving the '${parameterString}' parameter against the ${valueString} value...`);
 
     const node = value.getNode(),
           name = parameter.getName();
@@ -81,8 +81,8 @@ export default domAssigned(class ObjectAssigment {
         const nodeTerminalNode = node.isTerminalNode();
 
         if (!nodeTerminalNode) {
-          const valueString = value.getString(),
-                message = `The '${valueString}' value's node must be terminal.`,
+          const valueString = value.asString(context),
+                message = `The ${valueString} value's node must be terminal.`,
                 exception = Exception.fromMessage(message);
 
           throw exception;
@@ -91,8 +91,8 @@ export default domAssigned(class ObjectAssigment {
         const { Value, Variable, Assignment } = dom,
               terminalNode = node,  ///
               content = terminalNode.getContent(),
-              stringLiteral = content,  ///
-              value = Value.fromStringLiteral(stringLiteral, context),
+              string = content,  ///
+              value = Value.fromString(string, context),
               assignment = Assignment.fromValue(value, context),
               variable = Variable.fromParameterAndAssignment(parameter, assignment);
 

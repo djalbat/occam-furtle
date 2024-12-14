@@ -75,6 +75,8 @@ export default class BlockContext {
 
   nodeAsString(node) { return this.context.nodeAsString(node); }
 
+  nodesAsString(node) { return this.context.nodesAsString(node); }
+
   trace(message) { this.context.trace(message); }
 
   debug(message) { this.context.debug(message); }

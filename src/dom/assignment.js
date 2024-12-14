@@ -70,7 +70,7 @@ export default domAssigned(class Assignment {
   static fromNode(node, context) {
     const { Value } = dom,
           value = Value.fromNode(node, context),
-          string = stringFromValue(value),
+          string = stringFromValue(value, context),
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
@@ -83,7 +83,7 @@ export default domAssigned(class Assignment {
     const nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          string = stringFromValue(value),
+          string = stringFromValue(value, context),
           assignment = new Assignment(string, value, nodeQuery, nodesQuery, procedureCall);
 
     return assignment;
@@ -103,8 +103,8 @@ export default domAssigned(class Assignment {
   }
 });
 
-function stringFromValue(value) {
-  const valueString = value.getString(),
+function stringFromValue(value, context) {
+  const valueString = value.asString(context),
         string = `= ${valueString}`;
 
   return string;

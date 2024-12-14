@@ -1,11 +1,15 @@
 "use strict";
 
+import { arrayUtilities } from "necessary";
+
 import dom from "../dom";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { NULL, TRUE, FALSE } from "../constants";
-import { NODE_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
+import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
+
+const { match } = arrayUtilities;
 
 const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
@@ -15,37 +19,37 @@ const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(string, variable, node, number, boolean, stringLiteral) {
-    this.string = string;
-    this.variable = variable;
+  constructor(node, nodes, number, string, boolean, variable) {
     this.node = node;
+    this.nodes = nodes;
     this.number = number;
+    this.string = string;
     this.boolean = boolean;
-    this.stringLiteral = stringLiteral;
-  }
-
-  getString() {
-    return this.string;
-  }
-
-  getVariable() {
-    return this.variable;
+    this.variable = variable;
   }
 
   getNode() {
     return this.node;
   }
 
+  getNodes() {
+    return this.nodes;
+  }
+
   getNumber() {
     return this.number;
   }
 
-  getStringLiteral() {
-    return this.stringLiteral;
+  getString() {
+    return this.string;
   }
 
   getBoolean() {
     return this.boolean;
+  }
+
+  getVariable() {
+    return this.variable;
   }
 
   getType() {
@@ -53,14 +57,16 @@ export default domAssigned(class Value {
 
     if (false) {
       ///
-    } else if (this.variable !== null) {
-      type = this.variable.getType();
+    } else if (this.nodes !== null) {
+      type = NODES_TYPE;
     } else if (this.number !== null) {
       type = NUMBER_TYPE;
+    } else if (this.string !== null) {
+      type = STRING_TYPE;
     } else if (this.boolean !== null) {
       type = BOOLEAN_TYPE;
-    } else if (this.stringLiteral !== null) {
-      type = STRING_TYPE;
+    } else if (this.variable !== null) {
+      type = this.variable.getType();
     } else {
       type = NODE_TYPE;
     }
@@ -73,37 +79,35 @@ export default domAssigned(class Value {
 
     if (false) {
       ///
-    } else if (this.variable !== null) {
-      string = null;
+    } else if (this.nodes !== null) {
+      const nodesString = context.nodesAsString(this.nodes);
+
+      string = `'${nodesString}'`;
     } else if (this.number !== null) {
       string = `${this.number}`;
+    } else if (this.string !== null) {
+      string = `"${this.string}"`;
     } else if (this.boolean !== null) {
-      string = `${this.boolean}`;
-    } else if (this.stringLiteral !== null) {
-      string = `${this.stringLiteral}`;
+      string = `'${this.boolean}'`;
+    } else if (this.variable !== null) {
+      string = null;
     } else {
-      string = (this.node === null) ?
-                  NULL :
-                    context.nodeAsString(this.node);
+      const nodeString  = (this.node === null) ?
+                            NULL :
+                              context.nodeAsString(this.node);
+
+      string = `'${nodeString}'`;
     }
 
     return string;
   }
 
   resolve(context) {
-    let value;
+    let value = this; ///
 
-    const valueString = this.string;  ///
-
-    context.trace(`Resolving the '${valueString}' value...`);
-
-    value = (this.variable !== null) ?
-               this.variable.resolve(context) :
-                 this;  ///
-
-    const string = value.asString(context); ///
-
-    context.debug(`...resolved the '${valueString}' value to '${string}'.`);
+    if (this.variable !== null) {
+      value = this.variable.resolve(context);
+    }
 
     return value;
   }
@@ -113,26 +117,28 @@ export default domAssigned(class Value {
 
     if (false) {
       ///
-    } else if (this.stringLiteral !== null) {
-      const stringLiteral = value.getStringLiteral();
+    } else if (this.nodes !== null) {
+      const nodes = value.getNode(),
+            nodesMatch = matchNodes(this.nodes, nodes);
 
-      equalTo = (this.stringLiteral === stringLiteral);
-    } else if (this.boolean !== null) {
-      const boolean = value.getBoolean();
-
-      equalTo = (this.boolean === boolean);
+      equalTo = nodesMatch;
     } else if (this.number !== null) {
       const number = value.getNumber();
 
       equalTo = (this.number === number);
-    } else {
-      const node = value.getNode();
+    } else if (this.string !== null) {
+      const string = value.getString();
 
-      if ((this.node === null) || (node === null)) {
-        equalTo = (this.node === node);
-      } else {
-        equalTo = this.node.isEqualTo(node);
-      }
+      equalTo = (this.string === string);
+    } else if (this.boolean !== null) {
+      const boolean = value.getBoolean();
+
+      equalTo = (this.boolean === boolean);
+    } else {
+      const node = value.getNode(),
+            nodeMatches = matchNode(this.node, node);
+
+      equalTo = nodeMatches;
     }
 
     return equalTo;
@@ -141,40 +147,40 @@ export default domAssigned(class Value {
   static name = "Value";
 
   static fromNode(node, context) {
-    const string = context.nodeAsString(node),
+    const nodes = null,
+          number = null,
+          string = null,
+          boolean = null,
           variable = null,
+          value = new Value(node, nodes, number, string, boolean, variable);
+
+    return value;
+  }
+
+  static fromString(string, context) {
+    const node = null,
+          nodes = null,
           number = null,
           boolean = null,
-          stringLiteral = null,
-          value = new Value(string, variable, node, number, boolean, stringLiteral);
+          variable = null,
+          value = new Value(node, nodes, number, string, boolean, variable);
 
     return value;
   }
 
   static fromBoolean(boolean, context) {
-    const string = `${boolean}`,
-          node = null,
-          variable = null,
+    const node = null,
+          nodes = null,
           number = null,
-          stringLiteral = null,
-          value = new Value(string, variable, node, number, boolean, stringLiteral);
+          string = null,
+          variable = null,
+          value = new Value(node, nodes, number, string, boolean, variable);
 
     return value;
   }
 
   static fromValueNode(valueNode, context) {
     const value = valueFromValueNode(valueNode, context);
-
-    return value;
-  }
-
-  static fromStringLiteral(stringLiteral, context) {
-    const string = stringLiteral, ///
-          node = null,
-          variable = null,
-          number = null,
-          boolean = null,
-          value = new Value(string, variable, node, number, boolean, stringLiteral);
 
     return value;
   }
@@ -222,16 +228,47 @@ export default domAssigned(class Value {
   }
 });
 
+function matchNode(nodeA, nodeB) {
+  let nodeMatches;
+
+  if ((nodeA === null) || (nodeB === null)) {
+    nodeMatches = (nodeA === nodeB);
+  } else {
+    const nodeAEqualToNodeA = nodeA.isEqualTo(nodeB);
+
+    nodeMatches = nodeAEqualToNodeA;  ///
+  }
+
+  return nodeMatches;
+}
+
+function matchNodes(nodesA, nodesB) {
+  let nodesMatch;
+
+  if ((nodesA === null) || (nodesB === null)) {
+    nodesMatch = (nodesA === nodesB);
+  } else {
+    nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
+      const nodeMatches = matchNode(nodeA, nodeB);
+
+      if (nodeMatches) {
+        return true;
+      }
+    });
+  }
+
+  return nodesMatch;
+}
+
 function valueFromValueNode(valueNode, context) {
   const { Value, Variable } = dom,
-        valueString = context.nodeAsString(valueNode),
-        string = valueString, ///
-        variable = Variable.fromValueNode(valueNode, context),
         node = nodeFromValueNode(valueNode, context),
+        nodes = nodesFromValueNode(valueNode, context),
         number = numberFromValueNode(valueNode, context),
+        string = stringFromValueNode(valueNode, context),
         boolean = booleanFromValueNode(valueNode, context),
-        stringLiteral = stringLiteralFromValueNode(valueNode, context),
-        value = new Value(string, variable, node, number, boolean, stringLiteral);
+        variable = Variable.fromValueNode(valueNode, context),
+        value = new Value(node, nodes, number, string, boolean, variable);
 
   return value;
 }
@@ -240,6 +277,12 @@ function nodeFromValueNode(valueNode, context) {
   const node = null;  ///
 
   return node;
+}
+
+function nodesFromValueNode(valueNode, context) {
+  const nodes = null;  ///
+
+  return nodes;
 }
 
 function numberFromValueNode(valueNode, context) {
@@ -254,6 +297,20 @@ function numberFromValueNode(valueNode, context) {
   }
 
   return number;
+}
+
+function stringFromValueNode(valueNode, context) {
+  let string = null;
+
+  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
+
+  if (stringLiteralTerminalNode !== null) {
+    const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent();
+
+    string = stringLiteralTerminalNodeContent; ///
+  }
+
+  return string;
 }
 
 function booleanFromValueNode(valueNode, context) {
@@ -280,18 +337,4 @@ function booleanFromValueNode(valueNode, context) {
   }
 
   return boolean;
-}
-
-function stringLiteralFromValueNode(valueNode, context) {
-  let stringLiteral = null;
-
-  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
-
-  if (stringLiteralTerminalNode !== null) {
-    const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent();
-
-    stringLiteral = stringLiteralTerminalNodeContent; ///
-  }
-
-  return stringLiteral;
 }

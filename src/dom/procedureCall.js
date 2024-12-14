@@ -43,11 +43,12 @@ export default domAssigned(class ProcedureCall {
 
     const fileContext = context.getFileContext(),
           procedure = context.findProcedureByReference(this.reference),
-          values = this.values.resolve(context);
-
-    procedure.call(values, fileContext);
+          values = this.values.resolve(context),
+          value = procedure.call(values, fileContext);
 
     context.debug(`...resolved the '${procedureCallString}' procedure call.`);
+
+    return value;
   }
 
   static name = "ProcedureCall";

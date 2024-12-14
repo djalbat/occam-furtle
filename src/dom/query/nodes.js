@@ -3,8 +3,10 @@
 import { Query, Expression } from "occam-query";
 
 import dom from "../../dom";
+import Exception from "../../exception";
 
 import { nodeQuery } from "../../utilities/query";
+import { NODE_TYPE } from "../../types";
 import { domAssigned } from "../../dom";
 
 const nodesQueryNodeQuery = nodeQuery("/assignment/nodesQuery"),
@@ -27,6 +29,50 @@ export default domAssigned(class NodesQuery {
 
   getQuery() {
     return this.query;
+  }
+
+  resolve(context) {
+    let value;
+
+    const nodesQueryString = this.string;  ///
+
+    context.trace(`Resolving the '${nodesQueryString}' nodes query...`);
+
+    value = this.variable.resolve(context);
+
+    const valueType = value.getType();
+
+    if (valueType !== NODE_TYPE) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type should be '${NODE_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const valueNode = value.getNode();
+
+    if (valueNode === null) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's node is null.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    let node;
+
+    node = valueNode; ///
+
+    const nodes = this.query.execute(node);
+
+    const { Value } = dom;
+
+    value = Value.fromNode(node, context);
+
+    context.debug(`...resolved the '${nodesQueryString}' nodes query.`);
+
+    return value;
   }
 
   static name = "NodesQuery";

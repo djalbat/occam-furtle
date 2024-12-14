@@ -44,7 +44,7 @@ export default domAssigned(class Values {
 
             return value;
           }),
-          values = Values.fromArray(array); ///
+          values = Values.fromArray(array, context); ///
 
     return values;
   }
@@ -102,7 +102,7 @@ function arrayFromNodes(nodes, context) {
 
 function stringFromArray(array, context) {
   const valuesString = array.reduce((valuesString, value) => {
-          const valueString = value.getString();
+          const valueString = value.asString(context);
 
           valuesString = (valuesString === null) ?
                            valueString :

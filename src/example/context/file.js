@@ -2,7 +2,7 @@
 
 import { stringUtilities } from "../../index";  ///
 
-const { nodeAsString } = stringUtilities;
+const { nodeAsString, nodesAsString } = stringUtilities;
 
 export default class FileContext {
   constructor(releaseContext, node, tokens) {
@@ -47,6 +47,12 @@ export default class FileContext {
 
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
+
+    return string;
+  }
+
+  nodesAsString(nodes) {
+    const string = nodesAsString(nodes, this.tokens);
 
     return string;
   }

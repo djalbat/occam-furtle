@@ -29,21 +29,21 @@ export default domAssigned(class Parameter {
   }
 
   matchValue(value, context) {
-    const valueString = value.getString(),
+    const valueString = value.asString(context),
           parameterString = this.string;  ///
 
-    context.trace(`Matching the '${valueString}' value against the '${parameterString}' parameter...`);
+    context.trace(`Matching the ${valueString} value against the '${parameterString}' parameter...`);
 
     const valueType = value.getType();
 
     if (this.type !== valueType) {
-      const message = `The types of the '${valueString}' value and '${parameterString}' parameter do not match.`,
+      const message = `The ${valueString} value's '${valueType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the '${valueString}' value against the '${parameterString}' parameter.`);
+    context.debug(`...matched the ${valueString} value against the '${parameterString}' parameter.`);
   }
 
   matchParameter(parameter, context) {
