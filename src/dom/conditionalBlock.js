@@ -5,7 +5,8 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const elseBlockNodeQuery = nodeQuery("/conditionalBlock/block[1]"),
+const conditionNodeQuery = nodeQuery("/conditionalBlock/condition"),
+      elseBlockNodeQuery = nodeQuery("/conditionalBlock/block[1]"),
       conditionBlockNodeQuery = nodeQuery("/conditionalBlock/block[0]"),
       conditionalBlockNodeQuery = nodeQuery("/step/conditionalBlock");
 
@@ -61,8 +62,7 @@ export default domAssigned(class ConditionalBlock {
 
     if (conditionalBlockNode !== null) {
       const { Block, Condition } = dom,
-            node = conditionalBlockNode,  ///
-            string = context.nodeAsString(node),
+            string = stringFromConditionalBlockNode(conditionalBlockNode, context),
             conditionBlockNode = conditionBlockNodeQuery(conditionalBlockNode),
             elseBlockNode = elseBlockNodeQuery(conditionalBlockNode),
             condition = Condition.fromConditionalBlockNode(conditionalBlockNode, context),
@@ -75,3 +75,20 @@ export default domAssigned(class ConditionalBlock {
     return conditionalBlock;
   }
 });
+
+function stringFromConditionalBlockNode(conditionalBlockNode, context) {
+  let string;
+
+  const conditionNode = conditionNodeQuery(conditionalBlockNode),
+        conditionString = context.nodeAsString(conditionNode);
+
+  string = `If (${conditionString}) { ... }`;
+
+  const elseBlockNode = elseBlockNodeQuery(conditionalBlockNode);
+
+  if (elseBlockNode !== null) {
+    string = `${string} Else { ... }`;
+  }
+
+  return string;
+}

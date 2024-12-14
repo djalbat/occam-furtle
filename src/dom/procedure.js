@@ -7,7 +7,9 @@ import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
+const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
+      nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
+      parameterNodeQuery = nodeQuery("/procedureDeclaration/parameters"),
       typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
@@ -53,7 +55,15 @@ export default domAssigned(class Procedure {
 
   matchName(name) { return this.label.matchName(name); }
 
-  call(values, context) {
+  call(values, fileContext) {
+    let context;
+
+    context = fileContext;  ///
+
+    const procedureString = this.string;
+
+    context.trace(`Calling the '${procedureString}' procedure...`);
+
     this.parameters.matchValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
@@ -62,14 +72,17 @@ export default domAssigned(class Procedure {
     context = blockContext; ///
 
     const value = this.returnBlock.resolve(context);
+
+    context = fileContext;  ///
+
+    context.debug(`...called the '${procedureString}' procedure.`);
   }
 
   static name = "Procedure";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const { Label, ReturnBlock, Parameters } = dom,
-          node = procedureDeclarationNode,  ///
-          string = context.nodeAsString(node),
+          string = stringFromProcedureDeclarationNode(procedureDeclarationNode, context),
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
@@ -104,6 +117,19 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
         type = typeTerminalNodeContent; ///
 
   return type;
+}
+
+function stringFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const labelNode = labelNodeQuery(procedureDeclarationNode),
+        parametersNode = parameterNodeQuery(procedureDeclarationNode),
+        typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
+        typeNode = typeTerminalNode,  ///
+        typeString = context.nodeAsString(typeNode),
+        labelString = context.nodeAsString(labelNode),
+        parametersString = context.nodeAsString(parametersNode),
+        string = `${typeString} ${labelString}(${parametersString}) { ... }`;
+
+  return string;
 }
 
 function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context) {

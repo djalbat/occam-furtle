@@ -46,55 +46,67 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
+    nodeParameters.matchParameters(this.parameters, context);
+
     this.parameters.forEachParameter((parameter) => {
       if (parameter !== null) {
-        nodeParameters.matchParameter(parameter, context);
-
-        const node = value.getNode(),
-              name = parameter.getName();
-
-        switch (name) {
-          case CONTENT_PARAMETER_NAME: {
-            const type = parameter.getType();
-
-            if (type !== STRING_TYPE) {
-              const parameterString = parameter.getString(),
-                    message = `The '${parameterString}' parameter's type should be '${STRING_TYPE}'.`,
-                    exception = Exception.fromMessage(message);
-
-              throw exception;
-            }
-
-            const nodeTerminalNode = node.isTerminalNode();
-
-            if (!nodeTerminalNode) {
-              const valueString = value.getString(),
-                    message = `The '${valueString}' value's node must be terminal.`,
-                    exception = Exception.fromMessage(message);
-
-              throw exception;
-            }
-
-            const { Value, Variable } = dom,
-                  terminalNode = node,  ///
-                  content = terminalNode.getContent(),
-                  stringLiteral = content,  ///
-                  value = Value.fromStringLiteral(stringLiteral, context),
-                  variable = Variable.fromValueAndParameter(value, parameter);
-
-            context.addVariable(variable);
-
-            break;
-          }
-
-          default: {
-            debugger
-          }
-        }
+        this.resolveParameter(parameter, value, context);
       }
     });
 
     context.debug(`...resolved the '${objectAssignmentString}' object assignment.`);
+  }
+
+  resolveParameter(parameter, value, context) {
+    const valueString = value.getString(),
+          parameterString = parameter.getString();
+
+    context.trace(`Resolving the '${parameterString}' parameter against the '${valueString}' value...`);
+
+    const node = value.getNode(),
+          name = parameter.getName();
+
+    switch (name) {
+      case CONTENT_PARAMETER_NAME: {
+        const type = parameter.getType();
+
+        if (type !== STRING_TYPE) {
+          const parameterString = parameter.getString(),
+                message = `The '${parameterString}' parameter's type should be '${STRING_TYPE}'.`,
+                exception = Exception.fromMessage(message);
+
+          throw exception;
+        }
+
+        const nodeTerminalNode = node.isTerminalNode();
+
+        if (!nodeTerminalNode) {
+          const valueString = value.getString(),
+                message = `The '${valueString}' value's node must be terminal.`,
+                exception = Exception.fromMessage(message);
+
+          throw exception;
+        }
+
+        const { Value, Variable, Assignment } = dom,
+              terminalNode = node,  ///
+              content = terminalNode.getContent(),
+              stringLiteral = content,  ///
+              value = Value.fromStringLiteral(stringLiteral, context),
+              assignment = Assignment.fromValue(value, context),
+              variable = Variable.fromParameterAndAssignment(parameter, assignment);
+
+        context.addVariable(variable);
+
+        variable.assign(context);
+
+        break;
+      }
+
+      default: {
+        debugger
+      }
+    }
   }
 
   static name = "ObjectAssigment";

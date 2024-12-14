@@ -79,7 +79,7 @@ export default domAssigned(class Variable {
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName);
 
-    context.trace(`Assigning the '${variableString}' variable a value...`);
+    context.trace(`Assigning a value to the '${variableString}' variable...`);
 
     if (!variablePresent) {
       const message = `The '${variableString}' variable is not present.`,
@@ -102,7 +102,9 @@ export default domAssigned(class Variable {
 
     variable.setValue(value);
 
-    context.debug(`...assigned the '${variableString}' variable a value.`);
+    const valueString = value.asString(context);
+
+    context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
   }
 
   resolve(context) {
@@ -201,6 +203,16 @@ export default domAssigned(class Variable {
     const objectAssignmentVariableNode = objectAssignmentVariableNodeQuery(objectAssignmentNode),
           variableNode = objectAssignmentVariableNode, ///
           variable = variableFromVariableNode(variableNode, context);
+
+    return variable;
+  }
+
+  static fromParameterAndAssignment(parameter, assignment, context) {
+    const type = parameter.getType(),
+          name = parameter.getName(),
+          value = null,
+          string = name,  ///
+          variable = new Variable(string, type, name, value, assignment);
 
     return variable;
   }

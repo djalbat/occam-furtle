@@ -49,7 +49,7 @@ export default domAssigned(class Assignment {
     } else if (this.nodeQuery !== null) {
       value = this.nodeQuery.resolve(context);
     } else {
-      value = this.value;
+      value = this.value.resolve(context);
     }
 
     if (value === null) {

@@ -1,11 +1,10 @@
 "use strict";
 
 import dom from "../dom";
-import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-import { TRUE, FALSE } from "../constants";
+import { NULL, TRUE, FALSE } from "../constants";
 import { NODE_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const numberTerminalNodeQuery = nodeQuery("/value/@number"),
@@ -83,7 +82,9 @@ export default domAssigned(class Value {
     } else if (this.stringLiteral !== null) {
       string = `${this.stringLiteral}`;
     } else {
-      string = context.nodeAsString(this.node);
+      string = (this.node === null) ?
+                  NULL :
+                    context.nodeAsString(this.node);
     }
 
     return string;

@@ -96,6 +96,14 @@ export default domAssigned(class Parameters {
     context.debug(`...matched the '${parameterString}' parameter against the '${parametersString}' parameters.`);
   }
 
+  matchParameters(parameters, context) {
+    parameters.forEachParameter((parameter) => {
+      if (parameter !== null) {
+        this.matchParameter(parameter, context);
+      }
+    });
+  }
+
   static name = "Parameters";
 
   static fromNamesAndTypes(names, types, context) {

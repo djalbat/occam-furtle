@@ -41,10 +41,11 @@ export default domAssigned(class ProcedureCall {
       throw exception;
     }
 
-    const procedure = context.findProcedureByReference(this.reference),
+    const fileContext = context.getFileContext(),
+          procedure = context.findProcedureByReference(this.reference),
           values = this.values.resolve(context);
 
-    procedure.call(values, context);
+    procedure.call(values, fileContext);
 
     context.debug(`...resolved the '${procedureCallString}' procedure call.`);
   }

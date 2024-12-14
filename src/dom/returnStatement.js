@@ -21,6 +21,16 @@ export default domAssigned(class ReturnStatement {
     return this.value;
   }
 
+  resolve(context) {
+    const returnStatementString = this.string;
+
+    context.trace(`Resolving the '${returnStatementString}' return statement...`);
+
+    debugger
+
+    context.debug(`...resolved the '${returnStatementString}' return statement.`);
+  }
+
   static name = "ReturnStatement";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {

@@ -27,9 +27,17 @@ export default domAssigned(class ReturnBlock {
   }
 
   resolve(context) {
+    let value = null;
+
     this.steps.forEach((step) => {
       step.resolve(context);
     });
+
+    if (this.returnStatement !== null) {
+      value = this.returnStatement.resolve(context);
+    }
+
+    return value;
   }
 
   static name = "ReturnBlock";

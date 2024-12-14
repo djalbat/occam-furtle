@@ -26,8 +26,6 @@ export default domAssigned(class VariableAssignment {
 
     context.trace(`Resolving the '${variableAssignmentString}' variable assignment...`);
 
-    this.variable.resolve(context);
-
     this.variable.assign(context);
 
     context.debug(`...resolved the '${variableAssignmentString}' variable assignment.`);

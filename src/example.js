@@ -23,7 +23,6 @@ const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext),
 
 releaseContext.addFileContext(fileContext);
 
-const procedure = procedureFromReleaseContext(releaseContext),
-      context = fileContext;  ///
+const procedure = procedureFromReleaseContext(releaseContext);
 
-procedure.call(values, context);
+procedure.call(values, fileContext);
