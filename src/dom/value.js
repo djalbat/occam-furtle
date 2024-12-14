@@ -157,6 +157,17 @@ export default domAssigned(class Value {
     return value;
   }
 
+  static fromNodes(nodes, context) {
+    const node = null,
+          number = null,
+          string = null,
+          boolean = null,
+          variable = null,
+          value = new Value(node, nodes, number, string, boolean, variable);
+
+    return value;
+  }
+
   static fromString(string, context) {
     const node = null,
           nodes = null,

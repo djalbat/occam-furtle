@@ -26,6 +26,10 @@ export default domAssigned(class ForEachLoop {
     return this.anonymousProcedure;
   }
 
+  resolve(context) {
+    debugger
+  }
+
   static name = "ForEachLoop";
 
   static fromStepNode(stepNode, context) {

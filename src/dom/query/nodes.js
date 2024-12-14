@@ -68,7 +68,7 @@ export default domAssigned(class NodesQuery {
 
     const { Value } = dom;
 
-    value = Value.fromNode(node, context);
+    value = Value.fromNodes(nodes, context);
 
     context.debug(`...resolved the '${nodesQueryString}' nodes query.`);
 
