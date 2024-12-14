@@ -22,13 +22,17 @@ export default domAssigned(class ReturnStatement {
   }
 
   resolve(context) {
+    let value;
+
     const returnStatementString = this.string;
 
     context.trace(`Resolving the '${returnStatementString}' return statement...`);
 
-    debugger
+    value = this.value.resolve(context);
 
     context.debug(`...resolved the '${returnStatementString}' return statement.`);
+
+    return value;
   }
 
   static name = "ReturnStatement";
