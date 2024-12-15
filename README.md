@@ -6,7 +6,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Examples](#examples)
+- [Example](#example)
 - [Building](#building)
 - [Contact](#contact)
 
@@ -20,7 +20,7 @@ Rule (FreeVariable)
   Premise
     @isVariableFree(u, P)
   Conclusion
-    u free in P
+    u is free in P
 ```
 
 ...and looks as follows:
@@ -40,7 +40,7 @@ Boolean isVariableFree(Node termNode, Node statementNode) {
 ```
 
 The above procedure ascertains whether or not the given term's sole variable is bound in the given statement.
-Boundedness is usually defined by induction of the structure of statements, however Occam's custom grammars make this practically unworkable.
+Boundedness is usually defined by induction over the structure of statements, however Occam's custom grammars make this practically unworkable.
 Hence Furtle fulfills this role procedurally, so to speak.
 
 ## Installation
@@ -57,11 +57,9 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
     npm install
 
-You can also run a development server, see the section on building later on.
+## Example
 
-## Examples
-
-Unlike most of Occam's examples this example does not run in the browser, rather directly on Node:
+The example runs directly on Node:
 
 ```
 node example.js
@@ -69,10 +67,6 @@ node example.js
 
 The `Free and bound variables.ftl` file in the `example/` directory can be changed and the example can be rebuilt, see below.
 Obviously one thing to try is changing the value of the `free` variable.
-
-## Usage
-
-...
 
 ## Building
 
