@@ -6,7 +6,8 @@ import Exception from "../exception";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const parameterNodesQuery = nodesQuery("/parameters/parameter"),
+const parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters"),
+      parameterNodesQuery = nodesQuery("/parameters/parameter"),
       arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
       objectAssignmentParametersNodeQuery = nodeQuery("/objectAssignment/parameters"),
       procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
@@ -111,6 +112,21 @@ export default domAssigned(class Parameters {
             const { Parameter } = dom,
                   type = types[index],
                   parameter = Parameter.fromNameAndType(name, type, context);
+
+            return parameter;
+          }),
+          string = stringFromArray(array, context),
+          parameters = new Parameters(string, array);
+
+    return parameters;
+  }
+
+  static fromForEachLoopNode(forEachLoopNode, context) {
+    const { Parameter } = dom,
+          parametersNode = parametersNodeQuery(forEachLoopNode),
+          parameterNodes = parameterNodesQuery(parametersNode),
+          array = parameterNodes.map((parameterNode) => {
+            const parameter = Parameter.fromParameterNode(parameterNode, context);
 
             return parameter;
           }),

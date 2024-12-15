@@ -10,7 +10,7 @@ import Exception from "../exception";
 
 const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
       nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
-      parameterNodeQuery = nodeQuery("/procedureDeclaration/parameters"),
+      parametersNodeQuery = nodeQuery("/procedureDeclaration/parameters"),
       typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
@@ -106,7 +106,7 @@ export default domAssigned(class Procedure {
   }
 });
 
-function variablesFromValuesAndParameters(values, parameters, context) {
+export function variablesFromValuesAndParameters(values, parameters, context) {
   const variables = [];
 
   values.forEachValue((value, index) => {
@@ -133,7 +133,7 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
 
 function stringFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const labelNode = labelNodeQuery(procedureDeclarationNode),
-        parametersNode = parameterNodeQuery(procedureDeclarationNode),
+        parametersNode = parametersNodeQuery(procedureDeclarationNode),
         typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
         typeNode = typeTerminalNode,  ///
         typeString = context.nodeAsString(typeNode),

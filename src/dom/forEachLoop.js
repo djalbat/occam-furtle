@@ -1,11 +1,15 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
+import { NODES_TYPE } from "../types";
 import { domAssigned } from "../dom";
 
-const forEachLoopNodeQuery = nodeQuery("/step/forEachLoop");
+const variableNodeQuery = nodeQuery("/forEachLoop/variable"),
+      parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters"),
+      forEachLoopNodeQuery = nodeQuery("/step/forEachLoop");
 
 export default domAssigned(class ForEachLoop {
   constructor(string, variable, anonymousProcedure) {
@@ -27,7 +31,32 @@ export default domAssigned(class ForEachLoop {
   }
 
   resolve(context) {
-    debugger
+    const forEachLoopString = this.getString();
+
+    context.trace(`Resolving the '${forEachLoopString}' for-each loop...`);
+
+    const value = this.variable.resolve(context),
+          valueType = value.getType();
+
+    if (valueType !== NODES_TYPE) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type should be '${NODES_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const nodes = value.getNodes();
+
+    nodes.forEach((node) => {
+      const { Value, Values } = dom,
+            value = Value.fromNode(node, context),
+            values = Values.fromValue(value, context);
+
+      this.anonymousProcedure.call(values, context);
+    });
+
+    context.trace(`...resolved the '${forEachLoopString}' for-each loop.`);
   }
 
   static name = "ForEachLoop";
@@ -39,8 +68,7 @@ export default domAssigned(class ForEachLoop {
 
     if (forEachLoopNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
-            node = forEachLoopNode, ///
-            string = context.nodeAsString(node),  ///
+            string = stringFromForEachLoopNode(forEachLoopNode, context),
             variable = Variable.fromForEachLoopNode(forEachLoopNode, context),
             anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode, context);
 
@@ -50,3 +78,13 @@ export default domAssigned(class ForEachLoop {
     return forEachLoop;
   }
 });
+
+function stringFromForEachLoopNode(forEachLoopNode, context) {
+  const variableNode = variableNodeQuery(forEachLoopNode),
+        parametersNode = parametersNodeQuery(forEachLoopNode),
+        variableString = context.nodeAsString(variableNode),
+        parametersString = context.nodeAsString(parametersNode),
+        string = `ForEach(${variableString}, (${parametersString}) { ... })`;
+
+  return string;
+}

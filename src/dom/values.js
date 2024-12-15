@@ -66,6 +66,16 @@ export default domAssigned(class Values {
     return values;
   }
 
+  static fromValue(value, context) {
+    const array = [
+            value
+          ],
+          string = stringFromArray(array, context),
+          values = new Values(string, array);
+
+    return values;
+  }
+
   static fromValuesNode(valuesNode, context) {
     let values = null;
 
