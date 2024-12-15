@@ -1,7 +1,7 @@
 "use strict";
 
 import dom from "../../dom";
-import BlockContext from "../../context/block";
+import Exception from "../../exception";
 
 import { domAssigned } from "../../dom";
 import { nodeQuery, nodesQuery } from "../../utilities/query";
@@ -38,6 +38,13 @@ export default domAssigned(class AnonymousProcedure {
     const anonymousProcedureString = this.string; ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
+
+    if (this.nonsensical) {
+      const message = `The '${anonymousProcedureString}' anonymous procedure is nonsensical.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     this.parameters.matchValues(values, context);
 

@@ -65,6 +65,13 @@ export default domAssigned(class Procedure {
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
+    if (this.nonsensical) {
+      const message = `The '${procedureString}' procedure is nonsensical.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
     this.parameters.matchValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
