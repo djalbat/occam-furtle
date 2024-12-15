@@ -6,8 +6,8 @@ import nodeParameters from "../../parameters/node";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { NODE_TYPE, STRING_TYPE } from "../../types";
-import { CONTENT_PARAMETER_NAME } from "../../parameterNames";
+import { NODE_TYPE, NODES_TYPE, STRING_TYPE } from "../../types";
+import { CONTENT_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
 const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
@@ -63,50 +63,97 @@ export default domAssigned(class ObjectAssigment {
 
     context.trace(`Resolving the '${parameterString}' parameter against the ${valueString} value...`);
 
-    const node = value.getNode(),
-          name = parameter.getName();
+    const name = parameter.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        const type = parameter.getType();
-
-        if (type !== STRING_TYPE) {
-          const parameterString = parameter.getString(),
-                message = `The '${parameterString}' parameter's type should be '${STRING_TYPE}'.`,
-                exception = Exception.fromMessage(message);
-
-          throw exception;
-        }
-
-        const nodeTerminalNode = node.isTerminalNode();
-
-        if (!nodeTerminalNode) {
-          const valueString = value.asString(context),
-                message = `The ${valueString} value's node must be terminal.`,
-                exception = Exception.fromMessage(message);
-
-          throw exception;
-        }
-
-        const { Value, Variable, Assignment } = dom,
-              terminalNode = node,  ///
-              content = terminalNode.getContent(),
-              string = content,  ///
-              value = Value.fromString(string, context),
-              assignment = Assignment.fromValue(value, context),
-              variable = Variable.fromParameterAndAssignment(parameter, assignment);
-
-        context.addVariable(variable);
-
-        variable.assign(context);
+        this.resolveContentParameter(parameter, value, context);
 
         break;
       }
 
-      default: {
-        debugger
+      case CHILD_NODES_PARAMETER_NAME: {
+        this.resolveChildNodesParameter(parameter, value, context);
+
+        break;
       }
     }
+
+    context.debug(`...resolved the '${parameterString}' parameter against the ${valueString} value.`);
+  }
+
+  resolveContentParameter(parameter, value, context) {
+    const type = parameter.getType();
+
+    if (type !== STRING_TYPE) {
+      const parameterString = parameter.getString(),
+            message = `The '${parameterString}' parameter's type should be '${STRING_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const node = value.getNode(),
+          nodeTerminalNode = node.isTerminalNode();
+
+    if (!nodeTerminalNode) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's node must be terminal.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const { Value, Variable, Assignment } = dom,
+          terminalNode = node,  ///
+          content = terminalNode.getContent(),
+          string = content;  ///
+
+    value = Value.fromString(string, context);  ///
+
+    const assignment = Assignment.fromValue(value, context),
+          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+
+    context.addVariable(variable);
+
+    variable.assign(context);
+  }
+
+  resolveChildNodesParameter(parameter, value, context) {
+    const type = parameter.getType();
+
+    if (type !== NODES_TYPE) {
+      const parameterString = parameter.getString(),
+            message = `The '${parameterString}' parameter's type should be '${NODES_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const node = value.getNode(),
+          nodeNonTerminalNode = node.isNonTerminalNode();
+
+    if (!nodeNonTerminalNode) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's node must be non-terminal.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const { Value, Variable, Assignment } = dom,
+          nonTerminalNode = node,  ///
+          childNodes = nonTerminalNode.getChildNodes(),
+          nodes = childNodes;  ///
+
+    value = Value.fromNodes(nodes, context);  ///
+
+    const assignment = Assignment.fromValue(value, context),
+          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+
+    context.addVariable(variable);
+
+    variable.assign(context);
   }
 
   static name = "ObjectAssigment";

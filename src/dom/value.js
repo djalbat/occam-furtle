@@ -103,11 +103,9 @@ export default domAssigned(class Value {
   }
 
   resolve(context) {
-    let value = this; ///
-
-    if (this.variable !== null) {
-      value = this.variable.resolve(context);
-    }
+    const value = (this.variable !== null) ?
+                     this.variable.resolve(context) :
+                       this; ///
 
     return value;
   }
