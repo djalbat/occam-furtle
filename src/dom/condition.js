@@ -7,7 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 
-const conditionNodeQuery = nodeQuery("/conditionalBlock/condition");
+const conditionNodeQuery = nodeQuery("/conditionalBlocks/condition");
 
 export default domAssigned(class Condition {
   constructor(string, value, comparison, bitwiseCondition, bracketedCondition) {
@@ -91,9 +91,9 @@ export default domAssigned(class Condition {
     return condition;
   }
 
-  static fromConditionalBlockNode(conditionalBlockNode, context) {
+  static fromConditionalBlocksNode(conditionalBlocksNode, context) {
     const { Value, Comparison, BitwiseCondition, BracketedCondition } = dom,
-          conditionNode = conditionNodeQuery(conditionalBlockNode),
+          conditionNode = conditionNodeQuery(conditionalBlocksNode),
           node = conditionNode, ///
           string = context.nodeAsString(node),
           value = Value.fromConditionNode(conditionNode, context),

@@ -5,12 +5,12 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 
 export default domAssigned(class Step {
-  constructor(string, forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration) {
+  constructor(string, forEachLoop, arrayAssignment, objectAssigment, conditionalBlocks, variableAssignment, variablesDeclaration) {
     this.string = string;
     this.forEachLoop = forEachLoop;
     this.arrayAssignment = arrayAssignment;
-    this.conditionalBlock = conditionalBlock;
     this.objectAssigment = objectAssigment;
+    this.conditionalBlocks = conditionalBlocks;
     this.variableAssignment = variableAssignment;
     this.variablesDeclaration = variablesDeclaration;
   }
@@ -27,12 +27,12 @@ export default domAssigned(class Step {
     return this.arrayAssignment;
   }
 
-  getConditionalBlock() {
-    return this.conditionalBlock;
-  }
-
   getObjectAssigment() {
     return this.objectAssigment;
+  }
+
+  getConditionalBlocks() {
+    return this.conditionalBlocks;
   }
 
   getVariableAssignment() {
@@ -52,12 +52,12 @@ export default domAssigned(class Step {
       this.arrayAssignment.resolve(context);
     }
 
-    if (this.conditionalBlock !== null) {
-      this.conditionalBlock.resolve(context);
-    }
-
     if (this.objectAssigment !== null) {
       this.objectAssigment.resolve(context);
+    }
+
+    if (this.conditionalBlocks !== null) {
+      this.conditionalBlocks.resolve(context);
     }
 
     if (this.variableAssignment !== null) {
@@ -72,16 +72,16 @@ export default domAssigned(class Step {
   static name = "Step";
 
   static fromStepNode(stepNode, context) {
-    const { ForEachLoop, ArrayAssignment, ConditionalBlock, ObjectAssigment, VariableAssignment, VariablesDeclaration } = dom,
+    const { ForEachLoop, ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariableAssignment, VariablesDeclaration } = dom,
           node = stepNode,  ///
           string = context.nodeAsString(node),
           forEachLoop = ForEachLoop.fromStepNode(stepNode, context),
           arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
-          conditionalBlock = ConditionalBlock.fromStepNode(stepNode, context),
           objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
+          conditionalBlocks = ConditionalBlocks.fromStepNode(stepNode, context),
           variableAssignment = VariableAssignment.fromStepNode(stepNode, context),
           variablesDeclaration = VariablesDeclaration.fromStepNode(stepNode, context),
-          step = new Step(string, forEachLoop, arrayAssignment, conditionalBlock, objectAssigment, variableAssignment, variablesDeclaration);
+          step = new Step(string, forEachLoop, arrayAssignment, objectAssigment, conditionalBlocks, variableAssignment, variablesDeclaration);
 
     return step;
   }

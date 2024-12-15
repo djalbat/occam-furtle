@@ -26,7 +26,11 @@ releaseContext.addFileContext(fileContext);
 const procedure = procedureFromReleaseContext(releaseContext);
 
 try {
-  procedure.call(values, fileContext);
+  const value = procedure.call(values, fileContext),
+        boolean = value.getBoolean(),
+        free = boolean; ///
+
+  console.log(free);
 } catch (exception) {
   const message = exception.getMessage();
 

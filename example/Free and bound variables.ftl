@@ -51,17 +51,21 @@ String boundVariableNameFromStatementNode(Node statementNode) {
 
   [ Node firstChildNode ] = childNodes;
 
-  ( String content ) = firstChildNode;
+  ( Boolean terminal ) = firstChildNode;
 
-  If ((content == "∀") || (content == "∃")) {
-    [ _, Node argumentNode ] = childNodes;
+  If (terminal) {
+    ( String content ) = firstChildNode;
 
-    Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable/@name);
+    If ((content == "∀") || (content == "∃")) {
+      [ _, Node argumentNode ] = childNodes;
 
-    If (boundVariableNameTerminalNode != null) {
-      ( String content ) = boundVariableNameTerminalNode;
+      Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable/@name);
 
-      boundVariableName = content;
+      If (boundVariableNameTerminalNode != null) {
+        ( String content ) = boundVariableNameTerminalNode;
+
+        boundVariableName = content;
+      }
     }
   }
 

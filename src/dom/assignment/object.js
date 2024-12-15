@@ -6,8 +6,8 @@ import nodeParameters from "../../parameters/node";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { NODE_TYPE, NODES_TYPE, STRING_TYPE } from "../../types";
-import { CONTENT_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
+import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
+import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
 const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
@@ -72,6 +72,12 @@ export default domAssigned(class ObjectAssigment {
         break;
       }
 
+      case TERMINAL_PARAMETER_NAME: {
+        this.resolveTerminalParameter(parameter, value, context);
+
+        break;
+      }
+
       case CHILD_NODES_PARAMETER_NAME: {
         this.resolveChildNodesParameter(parameter, value, context);
 
@@ -110,6 +116,34 @@ export default domAssigned(class ObjectAssigment {
           string = content;  ///
 
     value = Value.fromString(string, context);  ///
+
+    const assignment = Assignment.fromValue(value, context),
+          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+
+    context.addVariable(variable);
+
+    variable.assign(context);
+  }
+
+  resolveTerminalParameter(parameter, value, context) {
+    const type = parameter.getType();
+
+    if (type !== BOOLEAN_TYPE) {
+      const parameterString = parameter.getString(),
+            message = `The '${parameterString}' parameter's type should be '${BOOLEAN_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const node = value.getNode(),
+          nodeTerminalNode = node.isTerminalNode(),
+          terminal = nodeTerminalNode;  ///
+
+    const { Value, Variable, Assignment } = dom,
+          boolean = terminal; ///
+
+    value = Value.fromBoolean(boolean, context);  ///
 
     const assignment = Assignment.fromValue(value, context),
           variable = Variable.fromParameterAndAssignment(parameter, assignment);
