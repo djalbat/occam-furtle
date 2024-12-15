@@ -6,7 +6,7 @@ import dom from "../dom";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-import { NULL, TRUE, FALSE } from "../constants";
+import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
 import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const { match } = arrayUtilities;
@@ -314,9 +314,10 @@ function stringFromValueNode(valueNode, context) {
   const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
 
   if (stringLiteralTerminalNode !== null) {
-    const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent();
+    const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
+          stringLiteral = stringLiteralTerminalNodeContent; ///
 
-    string = stringLiteralTerminalNodeContent; ///
+    string = stringFromStringLiteral(stringLiteral, context);
   }
 
   return string;
@@ -346,4 +347,10 @@ function booleanFromValueNode(valueNode, context) {
   }
 
   return boolean;
+}
+
+function stringFromStringLiteral(stringLiteral, context) {
+  const string = stringLiteral.replace(/(^"|"$)/g, EMPTY_STRING);
+
+  return string;
 }

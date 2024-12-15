@@ -1,10 +1,10 @@
 "use strict";
 
-import dom from "../dom";
+import dom from "../../dom";
 
-import { nodeQuery } from "../utilities/query";
-import { domAssigned } from "../dom";
-import { DISJUNCTION } from "../constants";
+import { nodeQuery } from "../../utilities/query";
+import { domAssigned } from "../../dom";
+import { DISJUNCTION } from "../../constants";
 
 const terminalNodeQuery = nodeQuery("/bitwiseCondition/@*"),
       leftConditionNodeQuery = nodeQuery("/bitwiseCondition/condition[0]"),
@@ -33,6 +33,29 @@ export default domAssigned(class BitwiseCondition {
 
   getRightCondition() {
     return this.rightCondition;
+  }
+
+  resolve(context) {
+    let value;
+
+    const bitwiseConditionString = this.string; ///
+
+    context.trace(`Resolving the '${bitwiseConditionString}' bitwise condition...`);
+
+    const { Value } = dom,
+          leftValue = this.leftCondition.resolve(context),
+          rightValue = this.rightCondition.resolve(context),
+          leftValueBoolean = leftValue.getBoolean(),
+          rightValueBoolean = rightValue.getBoolean(),
+          boolean = this.disjoint ?
+                      (leftValueBoolean || rightValueBoolean) :
+                        (leftValueBoolean && rightValueBoolean);
+
+    value = Value.fromBoolean(boolean, context);  ///
+
+    context.debug(`...resolved the '${bitwiseConditionString}' bitwise condition.`);
+
+    return value;
   }
 
   static name = "BitwiseCondition";

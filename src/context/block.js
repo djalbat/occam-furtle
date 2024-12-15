@@ -16,14 +16,16 @@ export default class BlockContext {
     return this.context;
   }
 
-  getVariables() {
+  getVariables(blocked = false) {
     const variables = [];
 
     push(variables, this.variables);
 
-    const contextVariables = this.context.getVariables();
+    if (!blocked) {
+      const contextVariables = this.context.getVariables();
 
-    push(variables, contextVariables);
+      push(variables, contextVariables);
+    }
 
     return variables;
   }
@@ -34,8 +36,8 @@ export default class BlockContext {
 
   isProcedurePresentByReference(reference) { return this.context.isProcedurePresentByReference(reference); }
 
-  findVariableByVariableName(variableName) {
-    const variables = this.getVariables(),
+  findVariableByVariableName(variableName, blocked = false) {
+    const variables = this.getVariables(blocked),
           variable = variables.find((variable) => {
             const variableNameMatches = variable.matchVariableName(variableName);
 
@@ -47,17 +49,18 @@ export default class BlockContext {
     return variable;
   }
 
-  isVariablePresentByVariableName(variableName) {
-    const variable = this.findVariableByVariableName(variableName),
+  isVariablePresentByVariableName(variableName, blocked = false) {
+    const variable = this.findVariableByVariableName(variableName, blocked),
           variablePresent = (variable !== null);
 
     return variablePresent;
   }
 
   addVariable(variable) {
-    const variableName = variable.getName(),
+    const blocked = true,
+          variableName = variable.getName(),
           variableString = variable.getString(),
-          variablePresent = this.isVariablePresentByVariableName(variableName);
+          variablePresent = this.isVariablePresentByVariableName(variableName, blocked);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.'`,

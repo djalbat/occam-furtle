@@ -1,14 +1,13 @@
 "use strict";
 
-import dom from "../dom";
-import BlockContext from "../context/block";
+import dom from "../../dom";
+import BlockContext from "../../context/block";
 
-import { domAssigned } from "../dom";
-import { nodeQuery, nodesQuery } from "../utilities/query";
-import { variablesFromValuesAndParameters } from "./procedure";
+import { domAssigned } from "../../dom";
+import { nodeQuery, nodesQuery } from "../../utilities/query";
+import { variablesFromValuesAndParameters } from "../procedure";
 
 const nonsenseNodesQuery = nodesQuery("/forEachLoop/anonymousProcedure/block/nonsense"),
-      parameterNodesQuery = nodesQuery("/forEachLoop/anonymousProcedure/parameters/parameter"),
       parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters");
 
 export default domAssigned(class AnonymousProcedure {
@@ -42,12 +41,9 @@ export default domAssigned(class AnonymousProcedure {
 
     this.parameters.matchValues(values, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          blockContext = BlockContext.fromVariables(variables, context);
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    context = blockContext; ///
-
-    this.block.resolve(context);
+    this.block.resolve(variables, context);
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
   }

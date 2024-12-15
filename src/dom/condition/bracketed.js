@@ -1,9 +1,9 @@
 "use strict";
 
-import dom from "../dom";
+import dom from "../../dom";
 
-import { nodeQuery } from "../utilities/query";
-import { domAssigned } from "../dom";
+import { nodeQuery } from "../../utilities/query";
+import { domAssigned } from "../../dom";
 
 const conditionNodeQuery = nodeQuery("/bracketedCondition/condition"),
       bracketedConditionNodeQuery = nodeQuery("/condition/bracketedCondition");
@@ -20,6 +20,20 @@ export default domAssigned(class BracketedCondition {
 
   getCondition() {
     return this.condition;
+  }
+
+  resolve(context) {
+    let value;
+
+    const bracketedConditionString = this.string; ///
+
+    context.trace(`Resolving the '${bracketedConditionString}' bracketed condition...`);
+
+    value = this.condition.resolve(context);
+
+    context.debug(`...resolved the '${bracketedConditionString}' bracketed condition.`);
+
+    return value;
   }
 
   static name = "BracketedCondition";

@@ -25,10 +25,10 @@ releaseContext.addFileContext(fileContext);
 
 const procedure = procedureFromReleaseContext(releaseContext);
 
-// try {
+try {
   procedure.call(values, fileContext);
-// } catch (exception) {
-//   const message = exception.getMessage();
-//
-//   console.log(message);
-// }
+} catch (exception) {
+  const message = exception.getMessage();
+
+  console.log(message);
+}

@@ -1,6 +1,7 @@
 "use strict";
 
 import dom from "../dom";
+import BlockContext from "../context/block";
 
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
@@ -22,7 +23,17 @@ export default domAssigned(class Block {
     return this.steps;
   }
 
-  resolve(context) {
+  resolve(variables, context) {
+    if (context === undefined) {
+      context = variables;  ///
+
+      variables = [];
+    }
+
+    const blockContext = BlockContext.fromVariables(variables, context);
+
+    context = blockContext; ///
+
     this.steps.forEach((step) => {
       step.resolve(context);
     });

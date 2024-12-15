@@ -61,7 +61,7 @@ export default domAssigned(class Procedure {
 
     context = fileContext;  ///
 
-    const procedureString = this.string;
+    const procedureString = this.string;  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 

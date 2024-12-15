@@ -1,9 +1,10 @@
 "use strict";
 
-import dom from "../dom";
+import dom from "../../dom";
+import BlockContext from "../../context/block";
 
-import { nodesQuery } from "../utilities/query";
-import { domAssigned } from "../dom";
+import { nodesQuery } from "../../utilities/query";
+import { domAssigned } from "../../dom";
 
 const stepNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/step");
 
@@ -27,6 +28,10 @@ export default domAssigned(class ReturnBlock {
   }
 
   resolve(context) {
+    const blockContext = BlockContext.fromNothing(context);
+
+    context = blockContext; ///
+
     this.steps.forEach((step) => {
       step.resolve(context);
     });

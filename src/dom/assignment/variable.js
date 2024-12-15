@@ -22,7 +22,7 @@ export default domAssigned(class VariableAssignment {
   }
 
   resolve(context) {
-    const variableAssignmentString = this.string;
+    const variableAssignmentString = this.string; ///
 
     context.trace(`Resolving the '${variableAssignmentString}' variable assignment...`);
 

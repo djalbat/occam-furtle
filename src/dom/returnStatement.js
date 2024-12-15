@@ -24,7 +24,7 @@ export default domAssigned(class ReturnStatement {
   resolve(context) {
     let value;
 
-    const returnStatementString = this.string;
+    const returnStatementString = this.string;  ///
 
     context.trace(`Resolving the '${returnStatementString}' return statement...`);
 

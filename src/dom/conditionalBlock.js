@@ -35,7 +35,7 @@ export default domAssigned(class ConditionalBlock {
   }
 
   resolve(context) {
-    const conditionalBlockString = this.string;
+    const conditionalBlockString = this.string; ///
 
     context.trace(`Resolving the '${conditionalBlockString}' conditional block...`);
 
