@@ -6,7 +6,7 @@ import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
 
-const termNodeQuery = Query.fromExpressionString("/statement/argument/term");
+const termNodeQuery = Query.fromExpressionString("//term[1]");
 
 export function valuesFromFileContext(fileContext) {
   const context = fileContext,  ///

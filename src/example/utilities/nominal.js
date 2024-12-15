@@ -10,7 +10,7 @@ const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
       { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
 
 export function nominalFileContextFromReleaseContext(releaseContext) {
-  const content = `∀n n = n`,
+  const content = `∀n m = m`,
         startRuleName = "statement",
         combinedCustomGrammar = combinedCustomGrammarFromNothing(),
         nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar),

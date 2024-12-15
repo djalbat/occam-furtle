@@ -21,6 +21,7 @@ import ForEachLoop from "./dom/forEachLoop";
 import ProcedureCall from "./dom/procedureCall";
 import ArrayAssigment from "./dom/assignment/array";
 import ReturnStatement from "./dom/returnStatement";
+import NegatedCondition from "./dom/condition/negated";
 import ObjectAssignment from "./dom/assignment/object";
 import BitwiseCondition from "./dom/condition/bitwise";
 import ConditionalBlocks from "./dom/conditionalBlocks";
@@ -31,7 +32,6 @@ import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";
 
 export { default as Values } from "./dom/values";
-export { default as Exception } from "./exception";
 export { default as FileContext } from "./context/file";
 export { default as stringUtilities } from "./utilities/string";
 

@@ -19,10 +19,12 @@ Boolean isVariableBound(Node termNode, Node statementNode) {
     Nodes statementNodes = nodesQuery(statementNode, //statement);
 
     ForEach(statementNodes, (Node statementNode) {
-      String boundVariableName = boundVariableNameFromStatementNode(statementNode);
+      If (!variableBound) {
+        String boundVariableName = boundVariableNameFromStatementNode(statementNode);
 
-      If (boundVariableName == variableName) {
-        variableBound = true;
+        If (boundVariableName == variableName) {
+          variableBound = true;
+        }
       }
     });
   }
