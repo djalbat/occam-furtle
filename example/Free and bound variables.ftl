@@ -61,7 +61,7 @@ String boundVariableNameFromStatementNode(Node statementNode) {
     If ((content == "∀") || (content == "∃")) {
       [ _, Node argumentNode ] = childNodes;
 
-      Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable/@name);
+      Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable!/@name);
 
       If (boundVariableNameTerminalNode != null) {
         { String content } = boundVariableNameTerminalNode;

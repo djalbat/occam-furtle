@@ -18,21 +18,22 @@ releaseContext.addFile(file);
 releaseContext.verify();
 
 const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext),
-      fileContext = nominalFileContext, ///
-      values = valuesFromFileContext(fileContext);
+      fileContext = nominalFileContext; ///
 
 releaseContext.addFileContext(fileContext);
 
-const procedure = procedureFromReleaseContext(releaseContext);
+const free = true,
+      values = valuesFromFileContext(fileContext, free),
+      procedure = procedureFromReleaseContext(releaseContext);
 
-// try {
+try {
   const value = procedure.call(values, fileContext),
         boolean = value.getBoolean(),
         free = boolean; ///
 
   console.log(free);
-// } catch (exception) {
-//   const message = exception.getMessage();
-//
-//   console.log(message);
-// }
+} catch (exception) {
+  const message = exception.getMessage();
+
+  console.log(message);
+}

@@ -7,13 +7,41 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Examples](#examples)
-- [Usage](#usage)
 - [Building](#building)
 - [Contact](#contact)
 
 ## Introduction
 
-Furtle is a dynamically but nonetheless strictly typed language for traversing parse trees. The 
+Furtle is a dynamically but nonetheless strictly typed, procedural language meant primarily for traversing parse trees. 
+It is called from Nominal thus...
+
+```
+Rule (FreeVariable)
+  Premise
+    @isVariableFree(u, P)
+  Conclusion
+    u free in P
+```
+
+...and looks as follows:
+
+```
+Boolean isVariableFree(Node termNode, Node statementNode) {
+  Boolean variableFree = true;
+
+  Boolean variableBound = isVariableBound(termNode, statementNode);
+
+  If (variableBound) {
+    variableFree = false;
+  }
+
+  Return variableFree;
+}
+```
+
+The above procedure ascertains whether or not the given term's sole variable is bound in the given statement.
+Boundedness is usually defined by induction of the structure of statements, however Occam's custom grammars make this practically unworkable.
+Hence Furtle fulfills this role procedurally, so to speak.
 
 ## Installation
 
@@ -33,21 +61,14 @@ You can also run a development server, see the section on building later on.
 
 ## Examples
 
-There is a small development server that can be run from within the project's directory with the following command:
+Unlike most of Occam's examples this example does not run in the browser, rather directly on Node:
 
-    npm start
+```
+node example.js
+```
 
-The examples will then be available at the following URL:
-
-http://localhost:8888
-
-The source for the examples can be found in the `src/example.js` file and corresponding `src/example` folder. You are encouraged to try the examples whilst reading what follows. You can rebuild them on the fly with the following command:
-
-    npm run watch-debug
-
-The development server will reload the page whenever you make changes.
-
-One last thing to bear in mind is that this package is included by way of a relative rather than a package import. If you are importing it into your own application, however, you should use the standard package import.
+The `Free and bound variables.ftl` file in the `example/` directory can be changed and the example can be rebuilt, see below.
+Obviously one thing to try is changing the value of the `free` variable.
 
 ## Usage
 

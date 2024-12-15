@@ -6,18 +6,22 @@ import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
 
-const termNodeQuery = Query.fromExpressionString("//term[1]");
+const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
+      boundTermNodeQuery = Query.fromExpressionString("//term[0]");
 
-export function valuesFromFileContext(fileContext) {
+export function valuesFromFileContext(fileContext, free = true) {
   const context = fileContext,  ///
-        nodes = nodesFromFileContext(fileContext),
+        nodes = nodesFromFileContext(fileContext, free),
         values = Values.fromNodes(nodes, context);
 
   return values;
 }
 
-function nodesFromFileContext(fileContext) {
-  const node = fileContext.getNode(),
+function nodesFromFileContext(fileContext, free) {
+  const termNodeQuery = free ?
+                          freeTermNodeQuery :
+                            boundTermNodeQuery,
+        node = fileContext.getNode(),
         termNodes = termNodeQuery.execute(node),
         firstTermNode = first(termNodes),
         termNode = firstTermNode, ///
