@@ -38,7 +38,7 @@ String variableNameFromTermNode(Node termNode) {
   Node variableNameTerminalNode = nodeQuery(termNode, /term/variable/@name);
 
   If (variableNameTerminalNode != null) {
-    ( String content ) = variableNameTerminalNode;
+    { String content } = variableNameTerminalNode;
 
     variableName = content;
   }
@@ -49,14 +49,14 @@ String variableNameFromTermNode(Node termNode) {
 String boundVariableNameFromStatementNode(Node statementNode) {
   String boundVariableName = "";
 
-  ( Nodes childNodes ) = statementNode;
+  { Nodes childNodes } = statementNode;
 
   [ Node firstChildNode ] = childNodes;
 
-  ( Boolean terminal ) = firstChildNode;
+  { Boolean terminal } = firstChildNode;
 
   If (terminal) {
-    ( String content ) = firstChildNode;
+    { String content } = firstChildNode;
 
     If ((content == "∀") || (content == "∃")) {
       [ _, Node argumentNode ] = childNodes;
@@ -64,7 +64,7 @@ String boundVariableNameFromStatementNode(Node statementNode) {
       Node boundVariableNameTerminalNode = nodeQuery(argumentNode, /argument/term/variable/@name);
 
       If (boundVariableNameTerminalNode != null) {
-        ( String content ) = boundVariableNameTerminalNode;
+        { String content } = boundVariableNameTerminalNode;
 
         boundVariableName = content;
       }
