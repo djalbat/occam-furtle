@@ -13,7 +13,7 @@
 
 ## Introduction
 
-...
+Furtle is a dynamically but nonetheless strictly typed language for traversing parse trees. The 
 
 ## Installation
 
