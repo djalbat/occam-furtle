@@ -90,13 +90,6 @@ export default class BlockContext {
 
   error(message) { this.context.error(message); }
 
-  static fromNothing(context) {
-    const variables = [],
-          blockContext = new BlockContext(context, variables);
-
-    return blockContext;
-  }
-
   static fromVariables(variables, context) {
     const blockContext = new BlockContext(context, variables);
 

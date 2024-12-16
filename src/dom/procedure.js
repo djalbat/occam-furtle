@@ -1,12 +1,11 @@
 "use strict";
 
 import dom from "../dom";
-import BlockContext from "../context/block";
+import Exception from "../exception";
 
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 import { nodeQuery, nodesQuery } from "../utilities/query";
-import Exception from "../exception";
 
 const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
       nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
@@ -75,11 +74,7 @@ export default domAssigned(class Procedure {
     this.parameters.matchValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          blockContext = BlockContext.fromVariables(variables, context);
-
-    context = blockContext; ///
-
-    const value = this.returnBlock.resolve(context),
+          value = this.returnBlock.resolve(variables, context),
           valueType = value.getType();
 
     if (this.type !== valueType) {

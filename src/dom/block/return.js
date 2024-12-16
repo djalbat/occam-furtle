@@ -27,8 +27,8 @@ export default domAssigned(class ReturnBlock {
     return this.returnStatement;
   }
 
-  resolve(context) {
-    const blockContext = BlockContext.fromNothing(context);
+  resolve(variables, context) {
+    const blockContext = BlockContext.fromVariables(variables, context);
 
     context = blockContext; ///
 
