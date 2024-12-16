@@ -161,11 +161,11 @@ export default class FileContext {
 
   isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }
 
-  addProcedures(node) {
+  addProcedures() {
     const context = this; ///
 
     const { ProcedureDeclaration } = dom,
-          procedureDeclarationNodes = procedureDeclarationNodesQuery(node);
+          procedureDeclarationNodes = procedureDeclarationNodesQuery(this.node);
 
     procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
       const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, context),
@@ -211,7 +211,7 @@ export default class FileContext {
             errorNodesLength = errorNodes.length;
 
       if (errorNodesLength === 0) {
-        this.addProcedures(this.node);
+        this.addProcedures();
 
         verified = true;
       } else {
@@ -250,13 +250,15 @@ export default class FileContext {
   initialise(json) {
     const { content } = json,
           lexer = this.getLexer(),
-          parser = this.getParser(),
-          tokens = lexer.tokenise(content),
-          node = parser.parse(tokens);
+          parser = this.getParser();
+
+    this.tokens = lexer.tokenise(content);
+
+    this.node = parser.parse(this.tokens);
 
     this.clear();
 
-    this.addProcedures(node);
+    this.addProcedures();
   }
 
   toJSON() {
