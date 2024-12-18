@@ -88,7 +88,7 @@ export default domAssigned(class Variable {
       throw exception;
     }
 
-    const value = this.assignment.resolve(context),
+    const value = this.assignment.evaluate(context),
           variable = context.findVariableByVariableName(variableName),
           valueType = value.getType(),
           variableType = variable.getType();
@@ -107,10 +107,10 @@ export default domAssigned(class Variable {
     context.debug(`...assigned the ${valueString} value to the '${variableString}' variable.`);
   }
 
-  resolve(context) {
+  evaluate(context) {
     const variableString = this.string; ///
 
-    context.trace(`Resolving the '${variableString}' variable...`);
+    context.trace(`Evaluating the '${variableString}' variable...`);
 
     const variableName = this.name, ///
           variablePresent = context.isVariablePresentByVariableName(variableName);
@@ -126,7 +126,7 @@ export default domAssigned(class Variable {
           value = variable.getValue(),
           valueString = value.asString(context);
 
-    context.debug(`...resolved the '${variableString}' variable to the ${valueString} value.`);
+    context.debug(`...evaluated the '${variableString}' variable to the ${valueString} value.`);
 
     return value;
   }

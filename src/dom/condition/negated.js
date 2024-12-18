@@ -22,14 +22,14 @@ export default domAssigned(class NegatedCondition {
     return this.condition;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const negatedConditionString = this.string; ///
 
-    context.trace(`Resolving the '${negatedConditionString}' negated condition...`);
+    context.trace(`Evaluating the '${negatedConditionString}' negated condition...`);
 
-    value = this.condition.resolve(context);
+    value = this.condition.evaluate(context);
 
     let boolean = value.getBoolean();
 
@@ -39,7 +39,7 @@ export default domAssigned(class NegatedCondition {
 
     value = Value.fromBoolean(boolean, context);  ///
 
-    context.debug(`...resolved the '${negatedConditionString}' negated condition.`);
+    context.debug(`...evaluated the '${negatedConditionString}' negated condition.`);
 
     return value;
   }

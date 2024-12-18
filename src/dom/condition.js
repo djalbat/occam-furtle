@@ -43,15 +43,15 @@ export default domAssigned(class Condition {
     return this.bracketedCondition;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const conditionString = this.string;  ///
 
-    context.trace(`Resolving the '${conditionString}' condition...`);
+    context.trace(`Evaluating the '${conditionString}' condition...`);
 
     if (this.value !== null) {
-      value = this.value.resolve(context);
+      value = this.value.evaluate(context);
 
       const valueType = value.getType();
 
@@ -65,22 +65,22 @@ export default domAssigned(class Condition {
     }
 
     if (this.comparison !== null) {
-      value = this.comparison.resolve(context);
+      value = this.comparison.evaluate(context);
     }
 
     if (this.bitwiseCondition !== null) {
-      value = this.bitwiseCondition.resolve(context);
+      value = this.bitwiseCondition.evaluate(context);
     }
 
     if (this.negatedCondition !== null) {
-      value = this.negatedCondition.resolve(context);
+      value = this.negatedCondition.evaluate(context);
     }
 
     if (this.bracketedCondition !== null) {
-      value = this.bracketedCondition.resolve(context);
+      value = this.bracketedCondition.evaluate(context);
     }
 
-    context.debug(`...resolved the '${conditionString}' condition.`);
+    context.debug(`...evaluated the '${conditionString}' condition.`);
 
     return value;
   }

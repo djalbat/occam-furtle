@@ -22,16 +22,16 @@ export default domAssigned(class BracketedCondition {
     return this.condition;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const bracketedConditionString = this.string; ///
 
-    context.trace(`Resolving the '${bracketedConditionString}' bracketed condition...`);
+    context.trace(`Evaluating the '${bracketedConditionString}' bracketed condition...`);
 
-    value = this.condition.resolve(context);
+    value = this.condition.evaluate(context);
 
-    context.debug(`...resolved the '${bracketedConditionString}' bracketed condition.`);
+    context.debug(`...evaluated the '${bracketedConditionString}' bracketed condition.`);
 
     return value;
   }

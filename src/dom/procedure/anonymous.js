@@ -50,7 +50,7 @@ export default domAssigned(class AnonymousProcedure {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    this.block.resolve(variables, context);
+    this.block.evaluate(variables, context);
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
   }

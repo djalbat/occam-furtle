@@ -30,12 +30,12 @@ export default domAssigned(class ObjectAssigment {
     return this.parameters;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const objectAssignmentString = this.string; ///
 
-    context.trace(`Resolving the '${objectAssignmentString}' object assignment...`);
+    context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 
-    const value = this.variable.resolve(context),
+    const value = this.variable.evaluate(context),
           valueType = value.getType();
 
     if (valueType !== NODE_TYPE) {
@@ -50,45 +50,45 @@ export default domAssigned(class ObjectAssigment {
 
     this.parameters.forEachParameter((parameter) => {
       if (parameter !== null) {
-        this.resolveParameter(parameter, value, context);
+        this.evaluateParameter(parameter, value, context);
       }
     });
 
-    context.debug(`...resolved the '${objectAssignmentString}' object assignment.`);
+    context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
   }
 
-  resolveParameter(parameter, value, context) {
+  evaluateParameter(parameter, value, context) {
     const valueString = value.asString(context),
           parameterString = parameter.getString();
 
-    context.trace(`Resolving the '${parameterString}' parameter against the ${valueString} value...`);
+    context.trace(`Evaluating the '${parameterString}' parameter against the ${valueString} value...`);
 
     const name = parameter.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        this.resolveContentParameter(parameter, value, context);
+        this.evaluateContentParameter(parameter, value, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        this.resolveTerminalParameter(parameter, value, context);
+        this.evaluateTerminalParameter(parameter, value, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        this.resolveChildNodesParameter(parameter, value, context);
+        this.evaluateChildNodesParameter(parameter, value, context);
 
         break;
       }
     }
 
-    context.debug(`...resolved the '${parameterString}' parameter against the ${valueString} value.`);
+    context.debug(`...evaluated the '${parameterString}' parameter against the ${valueString} value.`);
   }
 
-  resolveContentParameter(parameter, value, context) {
+  evaluateContentParameter(parameter, value, context) {
     const type = parameter.getType();
 
     if (type !== STRING_TYPE) {
@@ -125,7 +125,7 @@ export default domAssigned(class ObjectAssigment {
     variable.assign(context);
   }
 
-  resolveTerminalParameter(parameter, value, context) {
+  evaluateTerminalParameter(parameter, value, context) {
     const type = parameter.getType();
 
     if (type !== BOOLEAN_TYPE) {
@@ -153,7 +153,7 @@ export default domAssigned(class ObjectAssigment {
     variable.assign(context);
   }
 
-  resolveChildNodesParameter(parameter, value, context) {
+  evaluateChildNodesParameter(parameter, value, context) {
     const type = parameter.getType();
 
     if (type !== NODES_TYPE) {

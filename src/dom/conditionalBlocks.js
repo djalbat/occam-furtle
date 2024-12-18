@@ -34,23 +34,23 @@ export default domAssigned(class ConditionalBlocks {
     return this.elseBlock;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const conditionalBlocksString = this.string; ///
 
-    context.trace(`Resolving the '${conditionalBlocksString}' conditional blocks...`);
+    context.trace(`Evaluating the '${conditionalBlocksString}' conditional blocks...`);
 
-    const value = this.condition.resolve(context),
+    const value = this.condition.evaluate(context),
           boolean = value.getBoolean();
 
     if (boolean) {
-      this.ifBlock.resolve(context);
+      this.ifBlock.evaluate(context);
     } else {
       if (this.elseBlock !== null) {
-        this.elseBlock.resolve(context);
+        this.elseBlock.evaluate(context);
       }
     }
 
-    context.debug(`...resolved the '${conditionalBlocksString}' conditional blocks.`);
+    context.debug(`...evaluated the '${conditionalBlocksString}' conditional blocks.`);
   }
 
   static name = "ConditionalBlocks";

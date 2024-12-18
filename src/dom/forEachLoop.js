@@ -30,12 +30,12 @@ export default domAssigned(class ForEachLoop {
     return this.anonymousProcedure;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const forEachLoopString = this.getString();
 
-    context.trace(`Resolving the '${forEachLoopString}' for-each loop...`);
+    context.trace(`Evaluating the '${forEachLoopString}' for-each loop...`);
 
-    const value = this.variable.resolve(context),
+    const value = this.variable.evaluate(context),
           valueType = value.getType();
 
     if (valueType !== NODES_TYPE) {
@@ -56,7 +56,7 @@ export default domAssigned(class ForEachLoop {
       this.anonymousProcedure.call(values, context);
     });
 
-    context.trace(`...resolved the '${forEachLoopString}' for-each loop.`);
+    context.trace(`...evaluated the '${forEachLoopString}' for-each loop.`);
   }
 
   static name = "ForEachLoop";

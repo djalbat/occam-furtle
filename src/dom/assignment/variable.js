@@ -21,14 +21,14 @@ export default domAssigned(class VariableAssignment {
     return this.variable;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const variableAssignmentString = this.string; ///
 
-    context.trace(`Resolving the '${variableAssignmentString}' variable assignment...`);
+    context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
     this.variable.assign(context);
 
-    context.debug(`...resolved the '${variableAssignmentString}' variable assignment.`);
+    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment.`);
   }
 
   static name = "VariableAssignment";

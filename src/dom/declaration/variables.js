@@ -25,10 +25,10 @@ export default domAssigned(class VariablesDeclaration {
     return this.variables;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const variablesDeclarationString = this.string; ///
 
-    context.trace(`Resolving the '${variablesDeclarationString}' variables declaration...`);
+    context.trace(`Evaluating the '${variablesDeclarationString}' variables declaration...`);
 
     this.variables.forEach((variable) => {
       context.addVariable(variable);
@@ -36,7 +36,7 @@ export default domAssigned(class VariablesDeclaration {
       variable.assign(context);
     });
 
-    context.debug(`...resolved the '${variablesDeclarationString}' variables declaration.`);
+    context.debug(`...evaluated the '${variablesDeclarationString}' variables declaration.`);
   }
 
   static name = "VariablesDeclaration";

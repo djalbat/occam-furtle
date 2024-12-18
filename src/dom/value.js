@@ -102,9 +102,9 @@ export default domAssigned(class Value {
     return string;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const value = (this.variable !== null) ?
-                     this.variable.resolve(context) :
+                     this.variable.evaluate(context) :
                        this; ///
 
     return value;

@@ -27,10 +27,10 @@ export default domAssigned(class ProcedureCall {
     return this.values;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const procedureCallString = this.string;  ///
 
-    context.trace(`Resolving the '${procedureCallString}' procedure call...`);
+    context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
 
     const procedurePresent = context.isProcedurePresentByReference(this.reference);
 
@@ -43,10 +43,10 @@ export default domAssigned(class ProcedureCall {
 
     const fileContext = context.getFileContext(),
           procedure = context.findProcedureByReference(this.reference),
-          values = this.values.resolve(context),
+          values = this.values.evaluate(context),
           value = procedure.call(values, fileContext);
 
-    context.debug(`...resolved the '${procedureCallString}' procedure call.`);
+    context.debug(`...evaluated the '${procedureCallString}' procedure call.`);
 
     return value;
   }

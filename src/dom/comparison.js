@@ -36,15 +36,15 @@ export default domAssigned(class Comparison {
     return this.rightValue;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const comparisonString = this.string; ///
 
-    context.trace(`Resolving the '${comparisonString}' comparison...`);
+    context.trace(`Evaluating the '${comparisonString}' comparison...`);
 
-    const leftValue = this.leftValue.resolve(context),
-          rightValue = this.rightValue.resolve(context),
+    const leftValue = this.leftValue.evaluate(context),
+          rightValue = this.rightValue.evaluate(context),
           leftValueType = leftValue.getType(),
           rightValueType = rightValue.getType();
 
@@ -69,7 +69,7 @@ export default domAssigned(class Comparison {
 
     value = Value.fromBoolean(boolean, context);
 
-    context.debug(`...resolved the '${comparisonString}' comparison.`);
+    context.debug(`...evaluated the '${comparisonString}' comparison.`);
 
     return value;
   }

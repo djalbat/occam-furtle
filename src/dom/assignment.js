@@ -33,34 +33,34 @@ export default domAssigned(class Assignment {
     return this.nodesQuery;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const assignmentString = this.string; ///
 
-    context.trace(`Resolving the '${assignmentString}' assignment...`);
+    context.trace(`Evaluating the '${assignmentString}' assignment...`);
 
     if (false) {
       ///
     } else if (this.procedureCall !== null) {
-      value = this.procedureCall.resolve(context);
+      value = this.procedureCall.evaluate(context);
     } else if (this.nodesQuery !== null) {
-      value = this.nodesQuery.resolve(context);
+      value = this.nodesQuery.evaluate(context);
     } else if (this.nodeQuery !== null) {
-      value = this.nodeQuery.resolve(context);
+      value = this.nodeQuery.evaluate(context);
     } else {
-      value = this.value.resolve(context);
+      value = this.value.evaluate(context);
     }
 
     if (value === null) {
       const assignmentString = this.string, ///
-            message = `The '${assignmentString}' assigment cannot be resolved.`,
+            message = `The '${assignmentString}' assigment cannot be evaluated.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...resolved the '${assignmentString}' assignment.`);
+    context.debug(`...evaluated the '${assignmentString}' assignment.`);
 
     return value;
   }

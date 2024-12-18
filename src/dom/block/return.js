@@ -27,16 +27,16 @@ export default domAssigned(class ReturnBlock {
     return this.returnStatement;
   }
 
-  resolve(variables, context) {
+  evaluate(variables, context) {
     const blockContext = BlockContext.fromVariables(variables, context);
 
     context = blockContext; ///
 
     this.steps.forEach((step) => {
-      step.resolve(context);
+      step.evaluate(context);
     });
 
-    const value = this.returnStatement.resolve(context);
+    const value = this.returnStatement.evaluate(context);
 
     return value;
   }

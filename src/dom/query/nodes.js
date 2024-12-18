@@ -31,14 +31,14 @@ export default domAssigned(class NodesQuery {
     return this.query;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const nodesQueryString = this.string;  ///
 
-    context.trace(`Resolving the '${nodesQueryString}' nodes query...`);
+    context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
 
-    value = this.variable.resolve(context);
+    value = this.variable.evaluate(context);
 
     const valueType = value.getType();
 
@@ -70,7 +70,7 @@ export default domAssigned(class NodesQuery {
 
     value = Value.fromNodes(nodes, context);
 
-    context.debug(`...resolved the '${nodesQueryString}' nodes query.`);
+    context.debug(`...evaluated the '${nodesQueryString}' nodes query.`);
 
     return value;
   }

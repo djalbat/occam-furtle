@@ -21,16 +21,16 @@ export default domAssigned(class ReturnStatement {
     return this.value;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const returnStatementString = this.string;  ///
 
-    context.trace(`Resolving the '${returnStatementString}' return statement...`);
+    context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 
-    value = this.value.resolve(context);
+    value = this.value.evaluate(context);
 
-    context.debug(`...resolved the '${returnStatementString}' return statement.`);
+    context.debug(`...evaluated the '${returnStatementString}' return statement.`);
 
     return value;
   }

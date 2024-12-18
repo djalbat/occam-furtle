@@ -23,7 +23,7 @@ export default domAssigned(class Block {
     return this.steps;
   }
 
-  resolve(variables, context) {
+  evaluate(variables, context) {
     if (context === undefined) {
       context = variables;  ///
 
@@ -35,7 +35,7 @@ export default domAssigned(class Block {
     context = blockContext; ///
 
     this.steps.forEach((step) => {
-      step.resolve(context);
+      step.evaluate(context);
     });
   }
 

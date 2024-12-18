@@ -28,12 +28,12 @@ export default domAssigned(class ArrayAssigment {
     return this.parameters;
   }
 
-  resolve(context) {
+  evaluate(context) {
     const arrayAssignmentString = this.string; ///
 
-    context.trace(`Resolving the '${arrayAssignmentString}' array assignment...`);
+    context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
 
-    const value = this.variable.resolve(context),
+    const value = this.variable.evaluate(context),
           valueType = value.getType();
 
     if (valueType !== NODES_TYPE) {
@@ -63,18 +63,18 @@ export default domAssigned(class ArrayAssigment {
               node = nodes[index],
               value = Value.fromNode(node, context);
 
-        this.resolveParameter(parameter, value, context);
+        this.evaluateParameter(parameter, value, context);
       }
     });
 
-    context.debug(`...resolved the '${arrayAssignmentString}' array assignment.`);
+    context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
   }
 
-  resolveParameter(parameter, value, context) {
+  evaluateParameter(parameter, value, context) {
     const valueString = value.asString(context),
           parameterString = parameter.getString();
 
-    context.trace(`Resolving the '${parameterString}' parameter against the ${valueString} value...`);
+    context.trace(`Evaluating the '${parameterString}' parameter against the ${valueString} value...`);
 
     const parameterType = parameter.getType();
 
@@ -93,7 +93,7 @@ export default domAssigned(class ArrayAssigment {
 
     variable.assign(context);
 
-    context.debug(`...resolved the '${parameterString}' parameter against the ${valueString} value.`);
+    context.debug(`...evaluated the '${parameterString}' parameter against the ${valueString} value.`);
   }
 
   static name = "ArrayAssignment";

@@ -35,16 +35,16 @@ export default domAssigned(class BitwiseCondition {
     return this.rightCondition;
   }
 
-  resolve(context) {
+  evaluate(context) {
     let value;
 
     const bitwiseConditionString = this.string; ///
 
-    context.trace(`Resolving the '${bitwiseConditionString}' bitwise condition...`);
+    context.trace(`Evaluating the '${bitwiseConditionString}' bitwise condition...`);
 
     const { Value } = dom,
-          leftValue = this.leftCondition.resolve(context),
-          rightValue = this.rightCondition.resolve(context),
+          leftValue = this.leftCondition.evaluate(context),
+          rightValue = this.rightCondition.evaluate(context),
           leftValueBoolean = leftValue.getBoolean(),
           rightValueBoolean = rightValue.getBoolean(),
           boolean = this.disjoint ?
@@ -53,7 +53,7 @@ export default domAssigned(class BitwiseCondition {
 
     value = Value.fromBoolean(boolean, context);  ///
 
-    context.debug(`...resolved the '${bitwiseConditionString}' bitwise condition.`);
+    context.debug(`...evaluated the '${bitwiseConditionString}' bitwise condition.`);
 
     return value;
   }

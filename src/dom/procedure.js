@@ -74,7 +74,7 @@ export default domAssigned(class Procedure {
     this.parameters.matchValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          value = this.returnBlock.resolve(variables, context),
+          value = this.returnBlock.evaluate(variables, context),
           valueType = value.getType();
 
     if (this.type !== valueType) {
