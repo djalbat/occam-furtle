@@ -107,16 +107,8 @@ export default domAssigned(class Parameters {
 
   static name = "Parameters";
 
-  static fromNamesAndTypes(names, types, context) {
-    const array = names.map((name, index) => {
-            const { Parameter } = dom,
-                  type = types[index],
-                  parameter = Parameter.fromNameAndType(name, type, context);
-
-            return parameter;
-          }),
-          string = stringFromArray(array, context),
-          parameters = new Parameters(string, array);
+  static fromStringAndArray(string, array) {
+    const parameters = new Parameters(string, array);
 
     return parameters;
   }
@@ -179,7 +171,7 @@ export default domAssigned(class Parameters {
   }
 });
 
-function stringFromArray(array, context) {
+export function stringFromArray(array, context) {
   const parametersString = array.reduce((parametersString, parameter) => {
           const parameterString = parameter.getString();
 
