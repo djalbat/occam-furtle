@@ -75,7 +75,29 @@ step                   ::=  variablesDeclaration
                           
                          ;  
   
+  
+  
 assignment             ::=  "=" value ;
+
+
+
+value                  ::=  procedureCall
+ 
+                         |  nodesQuery
+                          
+                         |  nodeQuery
+                          
+                         |  variable
+                          
+                         |  ternary
+                          
+                         |  [number]
+                          
+                         |  [primitive]
+                          
+                         |  [string-literal] 
+                         
+                         ;
 
 
 
@@ -85,6 +107,10 @@ nodesQuery             ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," expressi
 
 nodeQuery              ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
 
+variable               ::=  [name] ;
+
+ternary                ::=  "If" "(" condition ")" value "Else" value ;
+
 
 
 parameters             ::=  parameter ( "," parameter )* ;
@@ -92,10 +118,6 @@ parameters             ::=  parameter ( "," parameter )* ;
 values                 ::=  value ( "," value )* ;
 
 
-
-value                  ::=  procedureCall | nodesQuery | nodeQuery | variable | [number] | [primitive] | [string-literal] ;
-
-variable               ::=  [name] ;
 
 parameter              ::=  [type] [name]
 
