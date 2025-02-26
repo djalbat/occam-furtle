@@ -5,7 +5,7 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const valuesNodeQuery = nodeQuery("/assignment/procedureCall/values"),
+const valuesNodeQuery = nodeQuery("/value/procedureCall/values"),
       valueNodesQuery = nodesQuery("/values/value");
 
 export default domAssigned(class Values {
@@ -86,10 +86,10 @@ export default domAssigned(class Values {
     return values;
   }
 
-  static fromAssignmentNode(assignmentNode, context) {
+  static fromValueNode(valueNode, context) {
     let values = null;
 
-    const valuesNode = valuesNodeQuery(assignmentNode);
+    const valuesNode = valuesNodeQuery(valueNode);
 
     if (valuesNode !== null) {
       values = valuesFromValuesNode(valuesNode, context);

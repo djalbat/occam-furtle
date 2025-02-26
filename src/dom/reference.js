@@ -4,7 +4,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
 const referenceNameTerminalNodeQuery = nodeQuery("/reference/@name"),
-      assignmentProcedureCallReferenceNodeQuery = nodeQuery("/assignment/procedureCall/reference");
+      valueProcedureCallReferenceNodeQuery = nodeQuery("/value/procedureCall/reference");
 
 export default domAssigned(class Reference {
   constructor(string, name) {
@@ -31,9 +31,9 @@ export default domAssigned(class Reference {
     return reference;
   }
 
-  static fromAssignmentNode(assignmentNode, context) {
-    const assignmentProcedureCallReferenceNod = assignmentProcedureCallReferenceNodeQuery(assignmentNode),
-          referenceNode = assignmentProcedureCallReferenceNod,
+  static fromValueNode(valueNode, context) {
+    const valueProcedureCallReferenceNod = valueProcedureCallReferenceNodeQuery(valueNode),
+          referenceNode = valueProcedureCallReferenceNod,
           node = referenceNode, ///
           string = context.nodeAsString(node),
           name = nameFromReferenceNode(referenceNode, context),

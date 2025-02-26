@@ -1,7 +1,7 @@
 "use strict";
 
 import { arrayUtilities } from "necessary";
-import { lexersUtilities, parsersUtilities } from "occam-grammars";
+import { lexersUtilities, parsersUtilities } from "../_occam-grammars"; ///
 
 import dom from "../dom";
 

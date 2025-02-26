@@ -12,7 +12,7 @@ import { domAssigned } from "../../dom";
 
 const { first } = arrayUtilities;
 
-const nodeQueryNodeQuery = nodeQuery("/assignment/nodeQuery"),
+const nodeQueryNodeQuery = nodeQuery("/value/nodeQuery"),
       expressionNodeQuery = nodeQuery("/nodeQuery/expression");
 
 export default domAssigned(class NodeQuery {
@@ -92,10 +92,10 @@ export default domAssigned(class NodeQuery {
 
   static name = "NodeQuery";
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromValueNode(valueNode, context) {
     let nodeQuery = null;
 
-    const nodeQueryNode = nodeQueryNodeQuery(assigmentNode);
+    const nodeQueryNode = nodeQueryNodeQuery(valueNode);
 
     if (nodeQueryNode !== null) {
       const { Variable } = dom,

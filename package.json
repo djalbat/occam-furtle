@@ -17,6 +17,9 @@
     "@swc/core": "^1.5.6",
     "occam-custom-grammars": "^5.0.1078",
     "occam-entities": "^1.0.288",
+    "occam-grammar-utilities": "^8.0.258",
+    "occam-lexers": "^23.0.45",
+    "occam-parsers": "^23.0.50",
     "occam-query": "^4.1.30",
     "watchful-cli": "^1.7.56"
   },

@@ -26,14 +26,13 @@ const free = true,
       values = valuesFromFileContext(fileContext, free),
       procedure = procedureFromReleaseContext(releaseContext);
 
-try {
+// try {
   const value = procedure.call(values, fileContext),
-        boolean = value.getBoolean(),
-        free = boolean; ///
+        boolean = value.getBoolean();
 
-  console.log(free);
-} catch (exception) {
-  const message = exception.getMessage();
-
-  console.log(message);
-}
+  console.log(boolean);
+// } catch (exception) {
+//   const message = exception.getMessage();
+//
+//   console.log(message);
+// }

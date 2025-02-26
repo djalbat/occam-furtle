@@ -6,7 +6,7 @@ import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 import Exception from "../exception";
 
-const procedureCallNodeQuery = nodeQuery("/assignment/procedureCall");
+const procedureCallNodeQuery = nodeQuery("/value/procedureCall");
 
 export default domAssigned(class ProcedureCall {
   constructor(string, reference, values) {
@@ -53,17 +53,17 @@ export default domAssigned(class ProcedureCall {
 
   static name = "ProcedureCall";
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromValueNode(valueNode, context) {
     let procedureCall = null;
 
-    const procedureCallNode = procedureCallNodeQuery(assigmentNode);
+    const procedureCallNode = procedureCallNodeQuery(valueNode);
 
     if (procedureCallNode !== null) {
       const { Values, Reference } = dom,
             node = procedureCallNode, ///
             string = context.nodeAsString(node),
-            reference = Reference.fromAssignmentNode(assigmentNode, context),
-            values = Values.fromAssignmentNode(assigmentNode, context);
+            reference = Reference.fromValueNode(valueNode, context),
+            values = Values.fromValueNode(valueNode, context);
 
       procedureCall = new ProcedureCall(string, reference, values);
     }

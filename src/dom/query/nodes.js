@@ -9,7 +9,7 @@ import { nodeQuery } from "../../utilities/query";
 import { NODE_TYPE } from "../../types";
 import { domAssigned } from "../../dom";
 
-const nodesQueryNodeQuery = nodeQuery("/assignment/nodesQuery"),
+const nodesQueryNodeQuery = nodeQuery("/value/nodesQuery"),
       expressionNodeQuery = nodeQuery("/nodesQuery/expression");
 
 export default domAssigned(class NodesQuery {
@@ -77,10 +77,10 @@ export default domAssigned(class NodesQuery {
 
   static name = "NodesQuery";
 
-  static fromAssignmentNode(assigmentNode, context) {
+  static fromValueNode(valueNode, context) {
     let nodesQuery = null;
 
-    const nodesQueryNode = nodesQueryNodeQuery(assigmentNode);
+    const nodesQueryNode = nodesQueryNodeQuery(valueNode);
 
     if (nodesQueryNode !== null) {
       const { Variable } = dom,
