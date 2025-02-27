@@ -16,7 +16,7 @@ variablesDeclaration   ::=  [type] variable assignment ( "," variable assignment
 
 variableAssignment     ::=  variable assignment ";" ;
 
-conditionalBlocks      ::=  "If" "(" condition ")" block ( "Else" block )? ;                                            
+conditionalBlocks      ::=  "If" "(" value ")" block ( "Else" block )? ;                                            
 
 objectAssignment       ::=  "{" parameters "}" "=" variable ";" ;
 
@@ -25,29 +25,6 @@ arrayAssignment        ::=  "[" parameters "]" "=" variable ";" ;
 
 
 anonymousProcedure     ::=  "(" parameters? ")" returnBlock ;
-
-
-
-condition              ::=  bracketedCondition 
-
-                         |  bitwiseCondition 
-
-                         |  negatedCondition 
-
-                         |  comparison 
-
-                         |  value 
-                        
-                         ;
-                        
-bracketedCondition     ::=  "(" condition ")" ; 
-
-bitwiseCondition       ::=  condition ( "||" | "&&" ) condition ; 
-
-negatedCondition       ::=  "!"<NO_WHITESPACE>condition ; 
-
-comparison             ::=  value ( "!=" | "==" ) value ; 
-
 
 
 
@@ -77,9 +54,23 @@ assignment             ::=  "=" value ;
 
 
 
+parameter              ::=  [type] [name]
+
+                         |  "_" 
+
+                         ;
+
+
+
 value                  ::=  procedureCall
  
-                         |  comparison
+                         |  bracketedValue 
+
+                         |  bitwiseValue 
+
+                         |  negatedValue 
+
+                         |  comparison 
 
                          |  nodesQuery
                           
@@ -103,7 +94,15 @@ value                  ::=  procedureCall
 
 
 
+bracketedValue         ::=  "(" value ")" ; 
+
 procedureCall          ::=  reference<NO_WHITESPACE>"(" values? ")" ;
+
+bitwiseValue           ::=  value ( "||" | "&&" ) value ; 
+
+negatedValue           ::=  "!"<NO_WHITESPACE>value ; 
+
+comparison             ::=  value ( "!=" | "==" ) value ; 
 
 nodesQuery             ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," expression ")" ;
 
@@ -111,7 +110,7 @@ nodeQuery              ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," expressio
 
 variable               ::=  [name] ;
 
-ternary                ::=  "If" "(" condition ")" value "Else" value ;
+ternary                ::=  "If" "(" value ")" value "Else" value ;
 
 some                   ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ;
 
@@ -120,14 +119,6 @@ some                   ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProce
 parameters             ::=  parameter ( "," parameter )* ;
 
 values                 ::=  value ( "," value )* ;
-
-
-
-parameter              ::=  [type] [name]
-
-                         |  "_" 
-
-                         ;
 
 
 

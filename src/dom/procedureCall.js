@@ -1,10 +1,10 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { domAssigned } from "../dom";
-import { nodeQuery, nodesQuery } from "../utilities/query";
-import Exception from "../exception";
+import { nodeQuery } from "../utilities/query";
 
 const procedureCallNodeQuery = nodeQuery("/value/procedureCall");
 

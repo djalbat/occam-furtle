@@ -1,19 +1,21 @@
 "use strict";
 
 import dom from "../dom";
+import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { BOOLEAN_TYPE } from "../types";
 
-const ifValueNodeQuery = nodeQuery("/ternary/value[0]"),
+const valueNodeQuery = nodeQuery("/ternary/value[0]"),
+      ifValueNodeQuery = nodeQuery("/ternary/value[1]"),
       ternaryNodeQuery = nodeQuery("/value/ternary"),
-      conditionNodeQuery = nodeQuery("/ternary/condition"),
-      elseValueNodeQuery = nodeQuery("/ternary/value[1]");
+      elseValueNodeQuery = nodeQuery("/ternary/value[2]");
 
 export default domAssigned(class Ternary {
-  constructor(string, condition, ifValue, elseValue) {
+  constructor(string, value, ifValue, elseValue) {
     this.string = string;
-    this.condition = condition;
+    this.value = value;
     this.ifValue = ifValue;
     this.elseValue = elseValue;
   }
@@ -22,11 +24,11 @@ export default domAssigned(class Ternary {
     return this.string;
   }
 
-  getCondition() {
-    return this.condition;
+  getValue() {
+    return this.value;
   }
 
-  getConditionBlock() {
+  getIfBlock() {
     return this.ifValue;
   }
 
@@ -41,7 +43,17 @@ export default domAssigned(class Ternary {
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    value = this.condition.evaluate(context);
+    value = this.value.evaluate(context);
+
+    const valueType = value.getType();
+
+    if (valueType !== BOOLEAN_TYPE) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     const boolean = value.getBoolean();
 
@@ -62,15 +74,15 @@ export default domAssigned(class Ternary {
     const ternaryNode = ternaryNodeQuery(valueNode);
 
     if (ternaryNode !== null) {
-      const { Value, Condition } = dom,
+      const { Value } = dom,
             string = stringFromTernaryNode(ternaryNode, context),
             ifValueNode = ifValueNodeQuery(ternaryNode),
             elseValueNode = elseValueNodeQuery(ternaryNode),
-            condition = Condition.fromTernaryNode(ternaryNode, context),
+            value = Value.fromTernaryNode(ternaryNode, context),
             ifValue = Value.fromValueNode(ifValueNode, context),
             elseValue = Value.fromValueNode(elseValueNode, context);
 
-      ternary = new Ternary(string, condition, ifValue, elseValue);
+      ternary = new Ternary(string, value, ifValue, elseValue);
     }
 
     return ternary;
@@ -80,14 +92,14 @@ export default domAssigned(class Ternary {
 function stringFromTernaryNode(ternaryNode, context) {
   let string;
 
-  const ifValueNode = ifValueNodeQuery(ternaryNode),
+  const valueNode = valueNodeQuery(ternaryNode),
+        ifValueNode = ifValueNodeQuery(ternaryNode),
         elseValueNode = elseValueNodeQuery(ternaryNode),
-        conditionNode = conditionNodeQuery(ternaryNode),
         ifValueString = context.nodeAsString(ifValueNode),
         elseValueString = context.nodeAsString(elseValueNode),
-        conditionString = context.nodeAsString(conditionNode);
+        valueString = context.nodeAsString(valueNode);
 
-  string = `If (${conditionString}) ${ifValueString} ${elseValueString}`;
+  string = `If (${valueString}) ${ifValueString} ${elseValueString}`;
 
   return string;
 }
