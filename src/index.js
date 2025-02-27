@@ -6,6 +6,7 @@ import Block from "./dom/block";
 import Error from "./dom/error";
 import Value from "./dom/value";
 import Values from "./dom/values";
+import Ternary from "./dom/ternary";
 import Variable from "./dom/variable";
 import Condition from "./dom/condition";
 import Reference from "./dom/reference";

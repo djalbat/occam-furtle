@@ -44,27 +44,20 @@ export default domAssigned(class Step {
   }
 
   evaluate(context) {
-    if (this.forEachLoop !== null) {
+
+    if (false) {
+      ///
+    } else if (this.forEachLoop !== null) {
       this.forEachLoop.evaluate(context);
-    }
-
-    if (this.arrayAssignment !== null) {
+    } else if (this.arrayAssignment !== null) {
       this.arrayAssignment.evaluate(context);
-    }
-
-    if (this.objectAssigment !== null) {
+    } else if (this.objectAssigment !== null) {
       this.objectAssigment.evaluate(context);
-    }
-
-    if (this.conditionalBlocks !== null) {
+    } else if (this.conditionalBlocks !== null) {
       this.conditionalBlocks.evaluate(context);
-    }
-
-    if (this.variableAssignment !== null) {
+    } else if (this.variableAssignment !== null) {
       this.variableAssignment.evaluate(context);
-    }
-
-    if (this.variablesDeclaration !== null) {
+    } else if (this.variablesDeclaration !== null) {
       this.variablesDeclaration.evaluate(context);
     }
   }

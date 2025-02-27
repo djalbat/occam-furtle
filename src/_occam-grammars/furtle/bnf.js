@@ -22,11 +22,11 @@ objectAssignment       ::=  "{" parameters "}" "=" variable ";" ;
 
 arrayAssignment        ::=  "[" parameters "]" "=" variable ";" ;
                                                       
-forEachLoop            ::=  "ForEach"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ";" ;
+someLoop               ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ";" ;
 
 
 
-anonymousProcedure     ::=  "(" parameters? ")" block ;
+anonymousProcedure     ::=  "(" parameters? ")" returnBlock ;
 
 
 
@@ -71,7 +71,7 @@ step                   ::=  variablesDeclaration
                           
                          |  arrayAssignment
                           
-                         |  forEachLoop
+                         |  someLoop
                           
                          ;  
   
@@ -91,6 +91,8 @@ value                  ::=  procedureCall
                           
                          |  ternary
                           
+                         |  [null]
+
                          |  [number]
                           
                          |  [primitive]

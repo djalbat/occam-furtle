@@ -3,6 +3,7 @@
 import { arrayUtilities } from "necessary";
 
 import dom from "../dom";
+import nullNode from "../nullNode";
 
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
@@ -19,12 +20,13 @@ const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall) {
+  constructor(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall) {
     this.node = node;
     this.nodes = nodes;
     this.number = number;
     this.string = string;
     this.boolean = boolean;
+    this.ternary = ternary;
     this.variable = variable;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
@@ -49,6 +51,10 @@ export default domAssigned(class Value {
 
   getBoolean() {
     return this.boolean;
+  }
+
+  getTernary() {
+    return this.ternay;
   }
 
   getVariable() {
@@ -82,6 +88,8 @@ export default domAssigned(class Value {
       type = STRING_TYPE;
     } else if (this.boolean !== null) {
       type = BOOLEAN_TYPE;
+    } else if (this.ternary !== null) {
+      type = this.ternary.getType();
     } else if (this.variable !== null) {
       type = this.variable.getType();
     } else if (this.nodeQuery !== null) {
@@ -110,6 +118,8 @@ export default domAssigned(class Value {
       string = stringAsString(this.string, context)
     } else if (this.boolean !== null) {
       string = booleanAsString(this.boolean, context)
+    } else if (this.ternary !== null) {
+      string = this.ternary.asString(context);
     } else if (this.variable !== null) {
       string = this.variable.asString(context);
     } else if (this.nodeQuery !== null) {
@@ -134,6 +144,8 @@ export default domAssigned(class Value {
                (this.string !== null) ||
                (this.boolean !== null)) {
       value = this;
+    } else if (this.ternary !== null) {
+      value = this.ternary.evaluate(context);
     } else if (this.variable !== null) {
       value = this.variable.evaluate(context);
     } else if (this.nodeQuery !== null) {
@@ -153,15 +165,29 @@ export default domAssigned(class Value {
     if (false) {
       ///
     } else if (this.node !== null) {
-      const node = value.getNode(),
-            nodeMatches = matchNode(this.node, node);
+      const node = value.getNode();
 
-      equalTo = nodeMatches;  ///
+      if (node === null) {
+        equalTo = false;
+      } else {
+        const nodeA = this.node,  ///
+              nodeB = node, ///
+              nodeMatches = matchNode(nodeA, nodeB);
+
+        equalTo = nodeMatches;  ///
+      }
     } else if (this.nodes !== null) {
-      const nodes = value.getNode(),
-            nodesMatch = matchNodes(this.nodes, nodes);
+      const nodes = value.getNode();
 
-      equalTo = nodesMatch; ///
+      if (nodes === null) {
+        equalTo = false;
+      } else {
+        const nodesA = this.nodes,  ///
+              nodesB = nodes, ///
+              nodesMatch = matchNodes(nodesA, nodesB);
+
+        equalTo = nodesMatch; ///
+      }
     } else if (this.number !== null) {
       const number = value.getNumber();
 
@@ -185,18 +211,19 @@ export default domAssigned(class Value {
 
   static fromNode(node, context) {
     if (node === null) {
-      node = nullValue;
+      node = nullNode;
     }
 
     const nodes = null,
           number = null,
           string = null,
           boolean = null,
+          ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
 
     return value;
   }
@@ -206,11 +233,12 @@ export default domAssigned(class Value {
           number = null,
           string = null,
           boolean = null,
+          ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
 
     return value;
   }
@@ -220,11 +248,12 @@ export default domAssigned(class Value {
           nodes = null,
           number = null,
           boolean = null,
+          ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
 
     return value;
   }
@@ -234,11 +263,12 @@ export default domAssigned(class Value {
           nodes = null,
           number = null,
           string = null,
+          ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
 
     return value;
   }
@@ -295,7 +325,7 @@ export default domAssigned(class Value {
 function matchNode(nodeA, nodeB) {
   let nodeMatches;
 
-  if ((nodeA === null) || (nodeB === null)) {
+  if ((nodeA === nullNode) || (nodeB === nullNode)) {
     nodeMatches = (nodeA === nodeB);
   } else {
     const nodeAEqualToNodeA = nodeA.isEqualTo(nodeB);
@@ -309,17 +339,13 @@ function matchNode(nodeA, nodeB) {
 function matchNodes(nodesA, nodesB) {
   let nodesMatch;
 
-  if ((nodesA === null) || (nodesB === null)) {
-    nodesMatch = (nodesA === nodesB);
-  } else {
-    nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
-      const nodeMatches = matchNode(nodeA, nodeB);
+  nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
+    const nodeMatches = matchNode(nodeA, nodeB);
 
-      if (nodeMatches) {
-        return true;
-      }
-    });
-  }
+    if (nodeMatches) {
+      return true;
+    }
+  });
 
   return nodesMatch;
 }
@@ -327,7 +353,7 @@ function matchNodes(nodesA, nodesB) {
 function nodeAsString(node, context) {
   let string;
 
-  const nodeString  = (node === nullValue) ?
+  const nodeString  = (node === nullNode) ?
                         NULL :
                           context.nodeAsString(node);
 
@@ -369,23 +395,38 @@ function booleanAsString(boolean, context) {
 }
 
 function valueFromValueNode(valueNode, context) {
-  const { Value, Variable, NodeQuery, NodesQuery, ProcedureCall } = dom,
+  const { Value, Ternary, Variable, NodeQuery, NodesQuery, ProcedureCall } = dom,
         node = nodeFromValueNode(valueNode, context),
         nodes = nodesFromValueNode(valueNode, context),
         number = numberFromValueNode(valueNode, context),
         string = stringFromValueNode(valueNode, context),
         boolean = booleanFromValueNode(valueNode, context),
+        ternary = Ternary.fromValueNode(valueNode, context),
         variable = Variable.fromValueNode(valueNode, context),
         nodeQuery = NodeQuery.fromValueNode(valueNode, context),
         nodesQuery = NodesQuery.fromValueNode(valueNode, context),
         procedureCall = ProcedureCall.fromValueNode(valueNode, context),
-        value = new Value(node, nodes, number, string, boolean, variable, nodeQuery, nodesQuery, procedureCall);
+        value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
 
   return value;
 }
 
 function nodeFromValueNode(valueNode, context) {
-  const node = null;  ///
+  let node = null;
+
+  const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
+
+  if (primitiveTerminalNode !== null) {
+    const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
+
+    switch (primitiveTerminalNodeContent) {
+      case NULL: {
+        node = nullNode;
+
+        break;
+      }
+    }
+  }
 
   return node;
 }
@@ -456,13 +497,3 @@ function stringFromStringLiteral(stringLiteral, context) {
 
   return string;
 }
-
-class NullValue {
-  static fromNothing() {
-    const nullValue = new NullValue();
-
-    return nullValue;
-  }
-}
-
-export const nullValue = NullValue.fromNothing();

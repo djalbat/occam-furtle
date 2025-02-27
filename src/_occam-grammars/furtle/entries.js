@@ -11,7 +11,7 @@ const entries = [
     "return": "^Return"
   },
   {
-    "keyword": "^(?:If|Else|ForEach)"
+    "keyword": "^(?:If|Else|Some)"
   },
   {
     "primitive": "^(?:null|true|false)"
