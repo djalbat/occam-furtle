@@ -27,7 +27,6 @@ import ReturnStatement from "./dom/returnStatement";
 import ObjectAssignment from "./dom/assignment/object";
 import ConditionalBlocks from "./dom/conditionalBlocks";
 import AnonymousProcedure from "./dom/procedure/anonymous";
-import VariableAssignment from "./dom/assignment/variable";
 import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";
 

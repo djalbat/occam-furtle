@@ -3,10 +3,7 @@
 import dom from "../dom";
 import Exception from "../exception";
 
-import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-
-const assignmentNodeQuery = nodeQuery("/variableAssignment/assignment");
 
 export default domAssigned(class Assignment {
   constructor(string, value) {
@@ -64,13 +61,6 @@ export default domAssigned(class Assignment {
 
   static fromAssignmentNode(assignmentNode, context) {
     const assignment = assignmentFromAssignmentNode(assignmentNode, context);
-
-    return assignment;
-  }
-
-  static fromVariableAssignmentNode(variableAssignmentNode, context) {
-    const assignmentNode = assignmentNodeQuery(variableAssignmentNode),
-          assignment = assignmentFromAssignmentNode(assignmentNode, context);
 
     return assignment;
   }

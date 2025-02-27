@@ -31,11 +31,9 @@ export default domAssigned(class Some {
   }
 
   evaluate(context) {
-    debugger
-
     const someString = this.getString();
 
-    context.trace(`Evaluating the '${someString}' some loop...`);
+    context.trace(`Evaluating the '${someString}' some...`);
 
     const value = this.variable.evaluate(context),
           valueType = value.getType();
@@ -58,7 +56,7 @@ export default domAssigned(class Some {
       this.anonymousProcedure.call(values, context);
     });
 
-    context.trace(`...evaluated the '${someString}' some loop.`);
+    context.trace(`...evaluated the '${someString}' some.`);
   }
 
   static name = "Some";

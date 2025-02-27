@@ -12,8 +12,7 @@ const someVariableNodeQuery = nodeQuery("/some/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
-      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
-      variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
+      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable");
 
 export default domAssigned(class Variable {
   constructor(string, type, name, value, assignment) {
@@ -213,21 +212,6 @@ export default domAssigned(class Variable {
           name = parameter.getName(),
           value = null,
           string = name,  ///
-          variable = new Variable(string, type, name, value, assignment);
-
-    return variable;
-  }
-
-  static fromVariableAssignmentNode(variableAssignmentNode, context) {
-    const { Assignment } = dom,
-          variableAssignmentVariableNode = variableAssignmentVariableNodeQuery(variableAssignmentNode),
-          variableNode = variableAssignmentVariableNode, ///
-          node = variableNode,  ///
-          string = context.nodeAsString(node),
-          type = null,
-          name = nameFromVariableNode(variableNode),
-          value = null,
-          assignment = Assignment.fromVariableAssignmentNode(variableAssignmentNode, context),
           variable = new Variable(string, type, name, value, assignment);
 
     return variable;

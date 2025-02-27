@@ -5,12 +5,11 @@ import dom from "../dom";
 import { domAssigned } from "../dom";
 
 export default domAssigned(class Step {
-  constructor(string, arrayAssignment, objectAssigment, conditionalBlocks, variableAssignment, variablesDeclaration) {
+  constructor(string, arrayAssignment, objectAssigment, conditionalBlocks, variablesDeclaration) {
     this.string = string;
     this.arrayAssignment = arrayAssignment;
     this.objectAssigment = objectAssigment;
     this.conditionalBlocks = conditionalBlocks;
-    this.variableAssignment = variableAssignment;
     this.variablesDeclaration = variablesDeclaration;
   }
 
@@ -30,10 +29,6 @@ export default domAssigned(class Step {
     return this.conditionalBlocks;
   }
 
-  getVariableAssignment() {
-    return this.variableAssignment;
-  }
-
   getVariablesDeclaration() {
     return this.variablesDeclaration;
   }
@@ -48,8 +43,6 @@ export default domAssigned(class Step {
       this.objectAssigment.evaluate(context);
     } else if (this.conditionalBlocks !== null) {
       this.conditionalBlocks.evaluate(context);
-    } else if (this.variableAssignment !== null) {
-      this.variableAssignment.evaluate(context);
     } else if (this.variablesDeclaration !== null) {
       this.variablesDeclaration.evaluate(context);
     }
@@ -58,15 +51,14 @@ export default domAssigned(class Step {
   static name = "Step";
 
   static fromStepNode(stepNode, context) {
-    const { ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariableAssignment, VariablesDeclaration } = dom,
+    const { ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariablesDeclaration } = dom,
           node = stepNode,  ///
           string = context.nodeAsString(node),
           arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
           objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
           conditionalBlocks = ConditionalBlocks.fromStepNode(stepNode, context),
-          variableAssignment = VariableAssignment.fromStepNode(stepNode, context),
           variablesDeclaration = VariablesDeclaration.fromStepNode(stepNode, context),
-          step = new Step(string, arrayAssignment, objectAssigment, conditionalBlocks, variableAssignment, variablesDeclaration);
+          step = new Step(string, arrayAssignment, objectAssigment, conditionalBlocks, variablesDeclaration);
 
     return step;
   }

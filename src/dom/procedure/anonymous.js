@@ -9,7 +9,7 @@ import { variablesFromValuesAndParameters } from "../procedure";
 
 const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
       typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
-      anonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure");
+      somAnonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure");
 
 export default domAssigned(class AnonymousProcedure {
   constructor(string, type, parameters, returnBlock) {
@@ -36,8 +36,6 @@ export default domAssigned(class AnonymousProcedure {
   }
 
   call(values, context) {
-    debugger
-
     const anonymousProcedureString = this.string; ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
@@ -58,25 +56,34 @@ export default domAssigned(class AnonymousProcedure {
     }
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
+
+    return value;
   }
 
   static name = "AnonymousProcedure";
 
   static fromSomeNode(someNode, context) {
-    const { ReturnBlock, Parameters } = dom,
-          anonymousProcedureNode = anonymousProcedureNodeQuery(someNode),
-          string = stringFromAnonymousProcedureNode(anonymousProcedureNode, context),
-          type = typeFromProcedureSomeNode(anonymousProcedureNode, context),
-          parameters = Parameters.fromAnonymousProcedureNode(anonymousProcedureNode, context),
-          returnBlock = ReturnBlock.fromAnonymousProcedureNode(anonymousProcedureNode, context),
-          anonymousProcedureDeclaration = new AnonymousProcedure(string, type, parameters, returnBlock);
+    const someAnonymousProcedureNode = somAnonymousProcedureNodeQuery(someNode),
+          anonymousProcedureNode = someAnonymousProcedureNode,  ///
+          anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
-    return anonymousProcedureDeclaration;
+    return anonymousProcedure;
   }
 });
 
-function typeFromProcedureSomeNode(someNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(someNode),
+function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context) {
+  const { Parameters, ReturnBlock, AnonymousProcedure } = dom,
+        string = stringFromAnonymousProcedureNode(anonymousProcedureNode, context),
+        type = typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context),
+        parameters = Parameters.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+        returnBlock = ReturnBlock.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+        anonymousProcedure = new AnonymousProcedure(string, type, parameters, returnBlock);
+
+  return anonymousProcedure;
+}
+
+function typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context) {
+  const typeTerminalNode = typeTerminalNodeQuery(anonymousProcedureNode),
         typeTerminalNodeContent = typeTerminalNode.getContent(),
         type = typeTerminalNodeContent; ///
 
@@ -85,8 +92,11 @@ function typeFromProcedureSomeNode(someNode, context) {
 
 function stringFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const parametersNode = parametersNodeQuery(anonymousProcedureNode),
+        typeTerminalNode = typeTerminalNodeQuery(anonymousProcedureNode),
         parametersString = context.nodeAsString(parametersNode),
-        string = `(${parametersString}) { ... }`;
+        typeNode = typeTerminalNode,  ///
+        typeString = context.nodeAsString(typeNode),
+        string = `${typeString} (${parametersString}) { ... }`;
 
   return string;
 }

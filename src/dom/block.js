@@ -3,8 +3,8 @@
 import dom from "../dom";
 import BlockContext from "../context/block";
 
+import { nodesQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
-import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const stepNodesQuery = nodesQuery("/block/step");
 
