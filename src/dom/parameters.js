@@ -6,8 +6,8 @@ import Exception from "../exception";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters"),
-      parameterNodesQuery = nodesQuery("/parameters/parameter"),
+const parameterNodesQuery = nodesQuery("/parameters/parameter"),
+      someParametersNodeQuery = nodeQuery("/some/parameters"),
       arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
       objectAssignmentParametersNodeQuery = nodeQuery("/objectAssignment/parameters"),
       procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
@@ -107,16 +107,11 @@ export default domAssigned(class Parameters {
 
   static name = "Parameters";
 
-  static fromStringAndArray(string, array) {
-    const parameters = new Parameters(string, array);
-
-    return parameters;
-  }
-
-  static fromForEachLoopNode(forEachLoopNode, context) {
+  static fromSomeNode(someNode, context) {
     const { Parameter } = dom,
-          parametersNode = parametersNodeQuery(forEachLoopNode),
-          parameterNodes = parameterNodesQuery(parametersNode),
+          someParametersNode = someParametersNodeQuery(someNode),
+          parameterNode = someParametersNode, ///
+          parameterNodes = parameterNodesQuery(parameterNode),
           array = parameterNodes.map((parameterNode) => {
             const parameter = Parameter.fromParameterNode(parameterNode, context);
 
@@ -124,6 +119,12 @@ export default domAssigned(class Parameters {
           }),
           string = stringFromArray(array, context),
           parameters = new Parameters(string, array);
+
+    return parameters;
+  }
+
+  static fromStringAndArray(string, array) {
+    const parameters = new Parameters(string, array);
 
     return parameters;
   }

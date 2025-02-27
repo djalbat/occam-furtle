@@ -20,16 +20,18 @@ const numberTerminalNodeQuery = nodeQuery("/value/@number"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal");
 
 export default domAssigned(class Value {
-  constructor(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall) {
+  constructor(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall) {
     this.node = node;
     this.nodes = nodes;
     this.number = number;
     this.string = string;
     this.boolean = boolean;
+    this.some = some;
     this.ternary = ternary;
     this.variable = variable;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
+    this.comparison = comparison;
     this.procedureCall = procedureCall;
   }
 
@@ -53,6 +55,10 @@ export default domAssigned(class Value {
     return this.boolean;
   }
 
+  getSome() {
+    return this.some;
+  }
+
   getTernary() {
     return this.ternay;
   }
@@ -67,6 +73,10 @@ export default domAssigned(class Value {
 
   getNodesQuery() {
     return this.nodesQuery;
+  }
+
+  getComparison() {
+    return this.comparison;
   }
 
   getProcedureCall() {
@@ -88,6 +98,8 @@ export default domAssigned(class Value {
       type = STRING_TYPE;
     } else if (this.boolean !== null) {
       type = BOOLEAN_TYPE;
+    } else if (this.some !== null) {
+      type = this.some.getType();
     } else if (this.ternary !== null) {
       type = this.ternary.getType();
     } else if (this.variable !== null) {
@@ -96,6 +108,8 @@ export default domAssigned(class Value {
       type = this.nodeQuery.getType();
     } else if (this.nodesQuery !== null) {
       type = this.nodesQuery.getType();
+    } else if (this.comparison !== null) {
+      type = this.comparison.getType();
     } else if (this.procedureCall !== null) {
       type = this.procedureCall.getType();
     }
@@ -118,6 +132,8 @@ export default domAssigned(class Value {
       string = stringAsString(this.string, context)
     } else if (this.boolean !== null) {
       string = booleanAsString(this.boolean, context)
+    } else if (this.some !== null) {
+      string = this.some.asString(context);
     } else if (this.ternary !== null) {
       string = this.ternary.asString(context);
     } else if (this.variable !== null) {
@@ -126,6 +142,8 @@ export default domAssigned(class Value {
       string = this.nodeQuery.asString(context);
     } else if (this.nodesQuery !== null) {
       string = this.nodesQuery.asString(context);
+    } else if (this.comparison !== null) {
+      string = this.comparison.asString(context);
     } else if (this.procedureCall !== null) {
       string = this.procedureCall.asString(context);
     }
@@ -144,6 +162,8 @@ export default domAssigned(class Value {
                (this.string !== null) ||
                (this.boolean !== null)) {
       value = this;
+    } else if (this.some !== null) {
+      value = this.some.evaluate(context);
     } else if (this.ternary !== null) {
       value = this.ternary.evaluate(context);
     } else if (this.variable !== null) {
@@ -152,6 +172,8 @@ export default domAssigned(class Value {
       value = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
       value = this.nodesQuery.evaluate(context);
+    } else if (this.comparison !== null) {
+      value = this.comparison.evaluate(context);
     } else if (this.procedureCall !== null) {
       value = this.procedureCall.evaluate(context);
     }
@@ -218,12 +240,14 @@ export default domAssigned(class Value {
           number = null,
           string = null,
           boolean = null,
+          some = null,
           ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
+          comparison = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall);
 
     return value;
   }
@@ -234,11 +258,13 @@ export default domAssigned(class Value {
           string = null,
           boolean = null,
           ternary = null,
+          some = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
+          comparison = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall);
 
     return value;
   }
@@ -248,12 +274,14 @@ export default domAssigned(class Value {
           nodes = null,
           number = null,
           boolean = null,
+          some = null,
           ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
+          comparison = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall);
 
     return value;
   }
@@ -263,12 +291,14 @@ export default domAssigned(class Value {
           nodes = null,
           number = null,
           string = null,
+          some = null,
           ternary = null,
           variable = null,
           nodeQuery = null,
           nodesQuery = null,
+          comparison = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall);
 
     return value;
   }
@@ -395,7 +425,7 @@ function booleanAsString(boolean, context) {
 }
 
 function valueFromValueNode(valueNode, context) {
-  const { Value, Ternary, Variable, NodeQuery, NodesQuery, ProcedureCall } = dom,
+  const { Value, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ProcedureCall } = dom,
         node = nodeFromValueNode(valueNode, context),
         nodes = nodesFromValueNode(valueNode, context),
         number = numberFromValueNode(valueNode, context),
@@ -405,8 +435,9 @@ function valueFromValueNode(valueNode, context) {
         variable = Variable.fromValueNode(valueNode, context),
         nodeQuery = NodeQuery.fromValueNode(valueNode, context),
         nodesQuery = NodesQuery.fromValueNode(valueNode, context),
+        comparison = Comparison.fromValueNode(valueNode, context),
         procedureCall = ProcedureCall.fromValueNode(valueNode, context),
-        value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, procedureCall);
+        value = new Value(node, nodes, number, string, boolean, ternary, variable, nodeQuery, nodesQuery, comparison, procedureCall);
 
   return value;
 }

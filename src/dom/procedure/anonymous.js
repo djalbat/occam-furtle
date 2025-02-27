@@ -7,15 +7,15 @@ import { domAssigned } from "../../dom";
 import { nodeQuery, nodesQuery } from "../../utilities/query";
 import { variablesFromValuesAndParameters } from "../procedure";
 
-const nonsenseNodesQuery = nodesQuery("/forEachLoop/anonymousProcedure/block/nonsense"),
-      parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters");
+const nonsenseNodesQuery = nodesQuery("/some/anonymousProcedure/returnBlock/nonsense"),
+      parametersNodeQuery = nodeQuery("/some/anonymousProcedure/parameters");
 
 export default domAssigned(class AnonymousProcedure {
-  constructor(string, parameters, nonsensical, block) {
+  constructor(string, parameters, nonsensical, returnBlock) {
     this.string = string;
     this.parameters = parameters;
     this.nonsensical = nonsensical;
-    this.block = block;
+    this.returnBlock = returnBlock;
   }
 
   getString() {
@@ -30,11 +30,13 @@ export default domAssigned(class AnonymousProcedure {
     return this.nonsensical;
   }
 
-  getBlock() {
-    return this.block;
+  getReturnBlock() {
+    return this.returnBlock;
   }
 
   call(values, context) {
+    debugger
+
     const anonymousProcedureString = this.string; ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
@@ -50,35 +52,35 @@ export default domAssigned(class AnonymousProcedure {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    this.block.evaluate(variables, context);
+    this.returnBlock.evaluate(variables, context);
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
   }
 
   static name = "AnonymousProcedure";
 
-  static fromForEachLoopNode(forEachLoopNode, context) {
-    const { Block, Parameters } = dom,
-          string = stringFromForEachLoopNode(forEachLoopNode, context),
-          parameters = Parameters.fromForEachLoopNode(forEachLoopNode, context),
-          nonsensical = nonsensicalFromForEachLoopNode(forEachLoopNode, context),
-          block = Block.fromForEachLoopNode(forEachLoopNode, context),
-          anonymousProcedureDeclaration = new AnonymousProcedure(string, parameters, nonsensical, block);
+  static fromSomeNode(someNode, context) {
+    const { ReturnBlock, Parameters } = dom,
+          string = stringFromSomeNode(someNode, context),
+          parameters = Parameters.fromSomeNode(someNode, context),
+          nonsensical = nonsensicalFromSomeNode(someNode, context),
+          returnBlock = ReturnBlock.fromSomeNode(someNode, context),
+          anonymousProcedureDeclaration = new AnonymousProcedure(string, parameters, nonsensical, returnBlock);
 
     return anonymousProcedureDeclaration;
   }
 });
 
-function stringFromForEachLoopNode(forEachLoopNode, context) {
-  const parametersNode = parametersNodeQuery(forEachLoopNode),
+function stringFromSomeNode(someNode, context) {
+  const parametersNode = parametersNodeQuery(someNode),
         parametersString = context.nodeAsString(parametersNode),
         string = `(${parametersString}) { ... }`;
 
   return string;
 }
 
-function nonsensicalFromForEachLoopNode(forEachLoopNode, context) {
-  const nonsenseNodes = nonsenseNodesQuery(forEachLoopNode),
+function nonsensicalFromSomeNode(someNode, context) {
+  const nonsenseNodes = nonsenseNodesQuery(someNode),
         nonsenseNodesLength = nonsenseNodes.length,
         nonsensical = (nonsenseNodesLength > 0);
 

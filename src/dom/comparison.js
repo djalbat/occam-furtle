@@ -10,7 +10,8 @@ import { domAssigned } from "../dom";
 const terminalNodeQuery = nodeQuery("/comparison/@*"),
       leftValueNodeQuery = nodeQuery("/comparison/value[0]"),
       rightValueNodeQuery = nodeQuery("/comparison/value[1]"),
-      comparisonNodeQuery = nodeQuery("/condition/comparison");
+      valueComparisonNodeQuery = nodeQuery("/value/comparison"),
+      conditionComparisonNodeQuery = nodeQuery("/condition/comparison");
 
 export default domAssigned(class Comparison {
   constructor(string, negated, leftValue, rightValue) {
@@ -76,22 +77,29 @@ export default domAssigned(class Comparison {
 
   static name = "Comparison";
 
+  static fromValueNode(valudNode, context) {
+    let comparison = null;
+
+    const valueComparisonNode = valueComparisonNodeQuery(valudNode);
+
+    if (valueComparisonNode !== null) {
+      const comparisonNode = valueComparisonNode; ///
+
+      comparison = comparisonFromComparisonNode(comparisonNode, context);
+    }
+
+    return comparison;
+  }
+
   static fromConditionNode(conditionNode, context) {
     let comparison = null;
 
-    const comparisonNode = comparisonNodeQuery(conditionNode);
+    const conditionComparisonNode = conditionComparisonNodeQuery(conditionNode);
 
-    if (comparisonNode !== null) {
-      const { Value } = dom,
-            node = comparisonNode,  ///
-            string = context.nodeAsString(node),
-            leftValueNode = leftValueNodeQuery(comparisonNode),
-            rightValueNode = rightValueNodeQuery(comparisonNode),
-            negated = negatedFromComparisonNode(comparisonNode, context),
-            leftValue = Value.fromValueNode(leftValueNode, context),
-            rightValue = Value.fromValueNode(rightValueNode, context);
+    if (conditionComparisonNode !== null) {
+      const comparisonNode = conditionComparisonNode; ///
 
-      comparison = new Comparison(string, negated, leftValue, rightValue);
+      comparison = comparisonFromComparisonNode(comparisonNode, context);
     }
 
     return comparison;
@@ -104,4 +112,18 @@ function negatedFromComparisonNode(comparisonNode) {
         negated = (terminalNodeContent !== EQUAL_TO);
 
   return negated;
+}
+
+function comparisonFromComparisonNode(comparisonNode, context) {
+  const { Value, Comparison } = dom,
+        node = comparisonNode,  ///
+        string = context.nodeAsString(node),
+        leftValueNode = leftValueNodeQuery(comparisonNode),
+        rightValueNode = rightValueNodeQuery(comparisonNode),
+        negated = negatedFromComparisonNode(comparisonNode, context),
+        leftValue = Value.fromValueNode(leftValueNode, context),
+        rightValue = Value.fromValueNode(rightValueNode, context),
+        comparison = new Comparison(string, negated, leftValue, rightValue);
+
+  return comparison;
 }

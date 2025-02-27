@@ -7,11 +7,11 @@ import { nodeQuery } from "../utilities/query";
 import { NODES_TYPE } from "../types";
 import { domAssigned } from "../dom";
 
-const variableNodeQuery = nodeQuery("/forEachLoop/variable"),
-      parametersNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/parameters"),
-      forEachLoopNodeQuery = nodeQuery("/step/forEachLoop");
+const variableNodeQuery = nodeQuery("/some/variable"),
+      valueSomeNodeQuery = nodeQuery("/value/some"),
+      parametersNodeQuery = nodeQuery("/some/anonymousProcedure/parameters");
 
-export default domAssigned(class ForEachLoop {
+export default domAssigned(class Some {
   constructor(string, variable, anonymousProcedure) {
     this.string = string;
     this.variable = variable;
@@ -31,9 +31,11 @@ export default domAssigned(class ForEachLoop {
   }
 
   evaluate(context) {
-    const forEachLoopString = this.getString();
+    debugger
 
-    context.trace(`Evaluating the '${forEachLoopString}' for-each loop...`);
+    const someString = this.getString();
+
+    context.trace(`Evaluating the '${someString}' some loop...`);
 
     const value = this.variable.evaluate(context),
           valueType = value.getType();
@@ -48,7 +50,7 @@ export default domAssigned(class ForEachLoop {
 
     const nodes = value.getNodes();
 
-    nodes.forEach((node) => {
+    nodes.some((node) => {
       const { Value, Values } = dom,
             value = Value.fromNode(node, context),
             values = Values.fromValue(value, context);
@@ -56,35 +58,36 @@ export default domAssigned(class ForEachLoop {
       this.anonymousProcedure.call(values, context);
     });
 
-    context.trace(`...evaluated the '${forEachLoopString}' for-each loop.`);
+    context.trace(`...evaluated the '${someString}' some loop.`);
   }
 
-  static name = "ForEachLoop";
+  static name = "Some";
 
-  static fromStepNode(stepNode, context) {
-    let forEachLoop = null;
+  static fromValueNode(valueNode, context) {
+    let some = null;
 
-    const forEachLoopNode = forEachLoopNodeQuery(stepNode);
+    const valueSomeNode = valueSomeNodeQuery(valueNode);
 
-    if (forEachLoopNode !== null) {
+    if (valueSomeNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
-            string = stringFromForEachLoopNode(forEachLoopNode, context),
-            variable = Variable.fromForEachLoopNode(forEachLoopNode, context),
-            anonymousProcedure = AnonymousProcedure.fromForEachLoopNode(forEachLoopNode, context);
+            someNode = valueSomeNode, ///
+            string = stringFromSomeNode(someNode, context),
+            variable = Variable.fromSomeNode(someNode, context),
+            anonymousProcedure = AnonymousProcedure.fromSomeNode(someNode, context);
 
-      forEachLoop = new ForEachLoop(string, variable, anonymousProcedure);
+      some = new Some(string, variable, anonymousProcedure);
     }
 
-    return forEachLoop;
+    return some;
   }
 });
 
-function stringFromForEachLoopNode(forEachLoopNode, context) {
-  const variableNode = variableNodeQuery(forEachLoopNode),
-        parametersNode = parametersNodeQuery(forEachLoopNode),
+function stringFromSomeNode(someNode, context) {
+  const variableNode = variableNodeQuery(someNode),
+        parametersNode = parametersNodeQuery(someNode),
         variableString = context.nodeAsString(variableNode),
         parametersString = context.nodeAsString(parametersNode),
-        string = `ForEach(${variableString}, (${parametersString}) { ... })`;
+        string = `Some(${variableString}, (${parametersString}) { ... })`;
 
   return string;
 }

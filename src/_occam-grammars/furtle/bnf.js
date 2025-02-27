@@ -22,8 +22,6 @@ objectAssignment       ::=  "{" parameters "}" "=" variable ";" ;
 
 arrayAssignment        ::=  "[" parameters "]" "=" variable ";" ;
                                                       
-someLoop               ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ";" ;
-
 
 
 anonymousProcedure     ::=  "(" parameters? ")" returnBlock ;
@@ -71,8 +69,6 @@ step                   ::=  variablesDeclaration
                           
                          |  arrayAssignment
                           
-                         |  someLoop
-                          
                          ;  
   
   
@@ -83,6 +79,8 @@ assignment             ::=  "=" value ;
 
 value                  ::=  procedureCall
  
+                         |  comparison
+
                          |  nodesQuery
                           
                          |  nodeQuery
@@ -91,6 +89,8 @@ value                  ::=  procedureCall
                           
                          |  ternary
                           
+                         |  some
+
                          |  [null]
 
                          |  [number]
@@ -112,6 +112,8 @@ nodeQuery              ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," expressio
 variable               ::=  [name] ;
 
 ternary                ::=  "If" "(" condition ")" value "Else" value ;
+
+some                   ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ";" ;
 
 
 

@@ -1,6 +1,7 @@
 "use strict";
 
 import Step from "./dom/step";
+import Some from "./dom/some";
 import Label from "./dom/label";
 import Block from "./dom/block";
 import Error from "./dom/error";
@@ -18,7 +19,6 @@ import NodesQuery from "./dom/query/nodes";
 import Comparison from "./dom/comparison";
 import Assignment from "./dom/assignment";
 import ReturnBlock from "./dom/block/return";
-import ForEachLoop from "./dom/forEachLoop";
 import ProcedureCall from "./dom/procedureCall";
 import ArrayAssigment from "./dom/assignment/array";
 import ReturnStatement from "./dom/returnStatement";

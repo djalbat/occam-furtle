@@ -6,10 +6,10 @@ import Exception from "../exception";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const valueVariableNodeQuery = nodeQuery("/value/variable"),
+const someVariableNodeQuery = nodeQuery("/some/variable"),
+      valueVariableNodeQuery = nodeQuery("/value/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
-      forEachLoopVariableNodeQuery = nodeQuery("/forEachLoop/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
       objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
@@ -133,6 +133,14 @@ export default domAssigned(class Variable {
 
   static name = "Variable";
 
+  static fromSomeNode(someLoopNode, context) {
+    const someVariableNode = someVariableNodeQuery(someLoopNode),
+          variableNode = someVariableNode, ///
+          variable = variableFromVariableNode(variableNode, context);
+
+    return variable;
+  }
+
   static fromValueNode(valueNode, context) {
     let variable = null;
 
@@ -158,14 +166,6 @@ export default domAssigned(class Variable {
   static fromNodesQueryNode(nodesQueryNode, context) {
     const nodesQueryVariableNode = nodesQueryVariableNodeQuery(nodesQueryNode),
           variableNode = nodesQueryVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromForEachLoopNode(forEachLoopLoopNode, context) {
-    const forEachLoopVariableNode = forEachLoopVariableNodeQuery(forEachLoopLoopNode),
-          variableNode = forEachLoopVariableNode, ///
           variable = variableFromVariableNode(variableNode, context);
 
     return variable;

@@ -6,8 +6,7 @@ import BlockContext from "../context/block";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
-const stepNodesQuery = nodesQuery("/block/step"),
-      forEachLoopBlockNodeQuery = nodeQuery("/forEachLoop/anonymousProcedure/block");
+const stepNodesQuery = nodesQuery("/block/step");
 
 export default domAssigned(class Block {
   constructor(string, steps) {
@@ -52,18 +51,6 @@ export default domAssigned(class Block {
 
       block = new Block(string, steps);
     }
-
-    return block;
-  }
-
-  static fromForEachLoopNode(forEachLoopNode, context) {
-    const forEachLoopBockNode = forEachLoopBlockNodeQuery(forEachLoopNode),
-          blockNode = forEachLoopBockNode,  ///
-          stepNodes = stepNodesQuery(blockNode),
-          node = blockNode, ///
-          string = context.nodeAsString(node),
-          steps = stepsFromStepNodes(stepNodes, context),
-          block = new Block(string, steps);
 
     return block;
   }
