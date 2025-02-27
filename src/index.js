@@ -21,6 +21,7 @@ import ReturnBlock from "./dom/block/return";
 import NegatedValue from "./dom/value/negated";
 import BitwiseValue from "./dom/value/bitwise";
 import ProcedureCall from "./dom/procedureCall";
+import NamedParameter from "./dom/parameter/named";
 import BracketedValue from "./dom/value/bracketed";
 import ArrayAssigment from "./dom/assignment/array";
 import ReturnStatement from "./dom/returnStatement";
