@@ -7,9 +7,9 @@ import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const parameterNodesQuery = nodesQuery("/parameters/parameter"),
-      someParametersNodeQuery = nodeQuery("/some/parameters"),
       arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
       objectAssignmentParametersNodeQuery = nodeQuery("/objectAssignment/parameters"),
+      anonymousProcedureParametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
       procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
 
 export default domAssigned(class Parameters {
@@ -107,22 +107,6 @@ export default domAssigned(class Parameters {
 
   static name = "Parameters";
 
-  static fromSomeNode(someNode, context) {
-    const { Parameter } = dom,
-          someParametersNode = someParametersNodeQuery(someNode),
-          parameterNode = someParametersNode, ///
-          parameterNodes = parameterNodesQuery(parameterNode),
-          array = parameterNodes.map((parameterNode) => {
-            const parameter = Parameter.fromParameterNode(parameterNode, context);
-
-            return parameter;
-          }),
-          string = stringFromArray(array, context),
-          parameters = new Parameters(string, array);
-
-    return parameters;
-  }
-
   static fromStringAndArray(string, array) {
     const parameters = new Parameters(string, array);
 
@@ -148,6 +132,22 @@ export default domAssigned(class Parameters {
           string = context.nodeAsString(node),
           parameterNodes = parameterNodesQuery(parametersNode),
           array = arrayFromParameterNodes(parameterNodes, context),
+          parameters = new Parameters(string, array);
+
+    return parameters;
+  }
+
+  static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
+    const { Parameter } = dom,
+          anonymousProcedureParametersNode = anonymousProcedureParametersNodeQuery(anonymousProcedureNode),
+          parameterNode = anonymousProcedureParametersNode, ///
+          parameterNodes = parameterNodesQuery(parameterNode),
+          array = parameterNodes.map((parameterNode) => {
+            const parameter = Parameter.fromParameterNode(parameterNode, context);
+
+            return parameter;
+          }),
+          string = stringFromArray(array, context),
           parameters = new Parameters(string, array);
 
     return parameters;

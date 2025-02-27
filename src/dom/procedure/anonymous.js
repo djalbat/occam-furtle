@@ -3,18 +3,19 @@
 import dom from "../../dom";
 import Exception from "../../exception";
 
+import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
 import { variablesFromValuesAndParameters } from "../procedure";
 
-const nonsenseNodesQuery = nodesQuery("/some/anonymousProcedure/returnBlock/nonsense"),
-      parametersNodeQuery = nodeQuery("/some/anonymousProcedure/parameters");
+const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
+      typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
+      anonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure");
 
 export default domAssigned(class AnonymousProcedure {
-  constructor(string, parameters, nonsensical, returnBlock) {
+  constructor(string, type, parameters, returnBlock) {
     this.string = string;
+    this.type - type;
     this.parameters = parameters;
-    this.nonsensical = nonsensical;
     this.returnBlock = returnBlock;
   }
 
@@ -22,12 +23,12 @@ export default domAssigned(class AnonymousProcedure {
     return this.string;
   }
 
-  getParameters() {
-    return this.paramters;
+  getType() {
+    return this.type;
   }
 
-  isNonsensical() {
-    return this.nonsensical;
+  getParameters() {
+    return this.paramters;
   }
 
   getReturnBlock() {
@@ -41,18 +42,20 @@ export default domAssigned(class AnonymousProcedure {
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
 
-    if (this.nonsensical) {
-      const message = `The '${anonymousProcedureString}' anonymous procedure is nonsensical.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
-
     this.parameters.matchValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    this.returnBlock.evaluate(variables, context);
+    const value = this.returnBlock.evaluate(variables, context),
+          valueType = value.getType();
+
+    if (this.type !== valueType) {
+      const valueString = value.asString(context),
+            message = `The ${valueString} value's '${valueType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
   }
@@ -61,28 +64,29 @@ export default domAssigned(class AnonymousProcedure {
 
   static fromSomeNode(someNode, context) {
     const { ReturnBlock, Parameters } = dom,
-          string = stringFromSomeNode(someNode, context),
-          parameters = Parameters.fromSomeNode(someNode, context),
-          nonsensical = nonsensicalFromSomeNode(someNode, context),
-          returnBlock = ReturnBlock.fromSomeNode(someNode, context),
-          anonymousProcedureDeclaration = new AnonymousProcedure(string, parameters, nonsensical, returnBlock);
+          anonymousProcedureNode = anonymousProcedureNodeQuery(someNode),
+          string = stringFromAnonymousProcedureNode(anonymousProcedureNode, context),
+          type = typeFromProcedureSomeNode(anonymousProcedureNode, context),
+          parameters = Parameters.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+          returnBlock = ReturnBlock.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+          anonymousProcedureDeclaration = new AnonymousProcedure(string, type, parameters, returnBlock);
 
     return anonymousProcedureDeclaration;
   }
 });
 
-function stringFromSomeNode(someNode, context) {
-  const parametersNode = parametersNodeQuery(someNode),
+function typeFromProcedureSomeNode(someNode, context) {
+  const typeTerminalNode = typeTerminalNodeQuery(someNode),
+        typeTerminalNodeContent = typeTerminalNode.getContent(),
+        type = typeTerminalNodeContent; ///
+
+  return type;
+}
+
+function stringFromAnonymousProcedureNode(anonymousProcedureNode, context) {
+  const parametersNode = parametersNodeQuery(anonymousProcedureNode),
         parametersString = context.nodeAsString(parametersNode),
         string = `(${parametersString}) { ... }`;
 
   return string;
-}
-
-function nonsensicalFromSomeNode(someNode, context) {
-  const nonsenseNodes = nonsenseNodesQuery(someNode),
-        nonsenseNodesLength = nonsenseNodes.length,
-        nonsensical = (nonsenseNodesLength > 0);
-
-  return nonsensical;
 }

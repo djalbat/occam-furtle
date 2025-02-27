@@ -3,22 +3,20 @@
 import dom from "../dom";
 import Exception from "../exception";
 
+import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
-import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
-      nonsenseNodesQuery = nodesQuery("/procedureDeclaration/returnBlock/nonsense"),
       parametersNodeQuery = nodeQuery("/procedureDeclaration/parameters"),
       typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
-  constructor(string, type, label, parameters, nonsensical, returnBlock) {
+  constructor(string, type, label, parameters, returnBlock) {
     this.string = string;
     this.type = type;
     this.label = label;
     this.parameters = parameters;
-    this.nonsensical = nonsensical;
     this.returnBlock = returnBlock;
   }
 
@@ -36,10 +34,6 @@ export default domAssigned(class Procedure {
 
   getParameters() {
     return this.parameters;
-  }
-
-  isNonsensical() {
-    return this.nonsensical;
   }
 
   getReturnBlock() {
@@ -63,13 +57,6 @@ export default domAssigned(class Procedure {
     const procedureString = this.string;  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
-
-    if (this.nonsensical) {
-      const message = `The '${procedureString}' procedure is nonsensical.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
 
     this.parameters.matchValues(values, context);
 
@@ -100,9 +87,8 @@ export default domAssigned(class Procedure {
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          nonsensical = nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context),
           returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          procedureDeclaration = new Procedure(string, type, label, parameters, nonsensical, returnBlock);
+          procedureDeclaration = new Procedure(string, type, label, parameters, returnBlock);
 
     return procedureDeclaration;
   }
@@ -144,12 +130,4 @@ function stringFromProcedureDeclarationNode(procedureDeclarationNode, context) {
         string = `${typeString} ${labelString}(${parametersString}) { ... }`;
 
   return string;
-}
-
-function nonsensicalFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const nonsenseNodes = nonsenseNodesQuery(procedureDeclarationNode),
-        nonsenseNodesLength = nonsenseNodes.length,
-        nonsensical = (nonsenseNodesLength > 0);
-
-  return nonsensical;
 }

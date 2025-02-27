@@ -19,7 +19,7 @@ const ternaryValueNodeQuery = nodeQuery("/ternary/value"),
       primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
       returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal"),
-      conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/vvalue");
+      conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/value");
 
 export default domAssigned(class Value {
   constructor(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall) {
