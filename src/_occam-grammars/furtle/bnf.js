@@ -113,7 +113,7 @@ variable               ::=  [name] ;
 
 ternary                ::=  "If" "(" condition ")" value "Else" value ;
 
-some                   ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ";" ;
+some                   ::=  "Some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ;
 
 
 
