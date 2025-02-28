@@ -108,15 +108,16 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const { Value, Variable, Assignment } = dom,
+    const { Value, Variable } = dom,
           terminalNode = node,  ///
           content = terminalNode.getContent(),
           string = content;  ///
 
     value = Value.fromString(string, context);  ///
 
-    const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
+    debugger
+
+    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
 
     context.addVariable(variable);
 
@@ -138,13 +139,14 @@ export default domAssigned(class ObjectAssigment {
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
-    const { Value, Variable, Assignment } = dom,
+    const { Value, Variable } = dom,
           boolean = terminal; ///
 
     value = Value.fromBoolean(boolean, context);  ///
 
-    const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
+    debugger
+
+    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
 
     context.addVariable(variable);
 
@@ -173,15 +175,16 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const { Value, Variable, Assignment } = dom,
+    const { Value, Variable } = dom,
           nonTerminalNode = node,  ///
           childNodes = nonTerminalNode.getChildNodes(),
           nodes = childNodes;  ///
 
     value = Value.fromNodes(nodes, context);  ///
 
-    const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
+    debugger
+
+    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
 
     context.addVariable(variable);
 

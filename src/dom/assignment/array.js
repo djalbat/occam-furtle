@@ -85,9 +85,10 @@ export default domAssigned(class ArrayAssigment {
       throw exception;
     }
 
-    const { Variable, Assignment } = dom,
-          assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+    debugger
+
+    const { Variable } = dom,
+          variable = Variable.fromValueAndParameter(value, parameter, context);
 
     context.addVariable(variable);
 
@@ -116,3 +117,17 @@ export default domAssigned(class ArrayAssigment {
     return arrayAssignment;
   }
 });
+
+/*
+  static fromParameterAndAssignment(parameter, assignment, context) {
+    const type = parameter.getType(),
+          name = parameter.getName(),
+          value = null,
+          string = name,  ///
+          variable = new Variable(string, type, name, value, assignment);
+
+    return variable;
+  }
+
+
+ */

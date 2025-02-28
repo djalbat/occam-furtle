@@ -1,9 +1,9 @@
 "use strict";
 
-import dom from "../dom";
+import dom from "../../dom";
 
-import { nodeQuery } from "../utilities/query";
-import { domAssigned } from "../dom";
+import { nodeQuery } from "../../utilities/query";
+import { domAssigned } from "../../dom";
 
 const returnStatementNodeQuery = nodeQuery("/returnBlock/returnStatement");
 

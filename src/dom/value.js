@@ -15,11 +15,11 @@ const { match } = arrayUtilities;
 const ternaryValueNodeQuery = nodeQuery("/ternary/value"),
       numberTerminalNodeQuery = nodeQuery("/value/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
-      assignmentValueNodeQuery = nodeQuery("/assignment/value"),
       primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
       returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal"),
-      conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/value");
+      conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/value"),
+      variableAssignmentValueNodeQuery = nodeQuery("/variableAssignment/value");
 
 export default domAssigned(class Value {
   constructor(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall) {
@@ -393,20 +393,6 @@ export default domAssigned(class Value {
     return value;
   }
 
-  static fromAssignmentNode(assigmentNode, context) {
-    let value = null;
-
-    const assignmentValueNode = assignmentValueNodeQuery(assigmentNode);
-
-    if (assignmentValueNode !== null) {
-      const valueNode = assignmentValueNode;  ///
-
-      value = valueFromValueNode(valueNode, context);
-    }
-
-    return value;
-  }
-
   static fromReturnStatementNode(returnStatementNode, context) {
     let value = null;
 
@@ -425,6 +411,20 @@ export default domAssigned(class Value {
     const conditionalBlocksCValueNode = conditionalBlocksCValueNodeQuery(conditionalBlocksNode),
           valueNode = conditionalBlocksCValueNode,  ///
           value = valueFromValueNode(valueNode, context);
+
+    return value;
+  }
+
+  static fromVariableAssignmentNode(variableAssigmentNode, context) {
+    let value = null;
+
+    const variableAssignmentValueNode = variableAssignmentValueNodeQuery(variableAssigmentNode);
+
+    if (variableAssignmentValueNode !== null) {
+      const valueNode = variableAssignmentValueNode;  ///
+
+      value = valueFromValueNode(valueNode, context);
+    }
 
     return value;
   }
