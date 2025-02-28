@@ -34,7 +34,6 @@ export default domAssigned(class Step {
   }
 
   evaluate(context) {
-
     if (false) {
       ///
     } else if (this.arrayAssignment !== null) {

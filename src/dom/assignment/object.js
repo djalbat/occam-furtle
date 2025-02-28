@@ -2,7 +2,7 @@
 
 import dom from "../../dom";
 import Exception from "../../exception";
-import nodeParameters from "../../parameters/node";
+import nodeProperties from "../../nodeProperties";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
@@ -12,10 +12,10 @@ import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_
 const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default domAssigned(class ObjectAssigment {
-  constructor(string, variable, parameters) {
+  constructor(string, variable, namedParameters) {
     this.string = string;
     this.variable = variable;
-    this.parameters = parameters;
+    this.namedParameters = namedParameters;
   }
 
   getString() {
@@ -26,8 +26,8 @@ export default domAssigned(class ObjectAssigment {
     return this.variable;
   }
 
-  getParameters() {
-    return this.parameters;
+  getNamedParameters() {
+    return this.namedParameters;
   }
 
   evaluate(context) {
@@ -46,54 +46,52 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    nodeParameters.matchParameters(this.parameters, context);
+    nodeProperties.matchNamedParameters(this.namedParameters, context);
 
-    this.parameters.forEachParameter((parameter) => {
-      if (parameter !== null) {
-        this.evaluateParameter(parameter, value, context);
-      }
+    this.namedParameters.forEachNamedParameter((namedParameter) => {
+      this.evaluateNamedParameter(namedParameter, value, context);
     });
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
   }
 
-  evaluateParameter(parameter, value, context) {
+  evaluateNamedParameter(namedParameter, value, context) {
     const valueString = value.asString(context),
-          parameterString = parameter.getString();
+          namedParameterString = namedParameter.getString();
 
-    context.trace(`Evaluating the '${parameterString}' parameter against the ${valueString} value...`);
+    context.trace(`Evaluating the '${namedParameterString}' named parameter against the ${valueString} value...`);
 
-    const name = parameter.getName();
+    const name = namedParameter.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        this.evaluateContentParameter(parameter, value, context);
+        this.evaluateContentNamedParameter(namedParameter, value, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        this.evaluateTerminalParameter(parameter, value, context);
+        this.evaluateTerminalNamedParameter(namedParameter, value, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        this.evaluateChildNodesParameter(parameter, value, context);
+        this.evaluateChildNodesNamedParameter(namedParameter, value, context);
 
         break;
       }
     }
 
-    context.debug(`...evaluated the '${parameterString}' parameter against the ${valueString} value.`);
+    context.debug(`...evaluated the '${namedParameterString}' parameter named against the ${valueString} value.`);
   }
 
-  evaluateContentParameter(parameter, value, context) {
-    const type = parameter.getType();
+  evaluateContentNamedParameter(namedParameter, value, context) {
+    const type = namedParameter.getType();
 
     if (type !== STRING_TYPE) {
-      const parameterString = parameter.getString(),
-            message = `The '${parameterString}' parameter's type should be '${STRING_TYPE}'.`,
+      const namedParameterString = namedParameter.getString(),
+            message = `The '${namedParameterString}' named parameter's type should be '${STRING_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -118,19 +116,19 @@ export default domAssigned(class ObjectAssigment {
     value = Value.fromString(string, context);  ///
 
     const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
 
     context.addVariable(variable);
 
     variable.assign(context);
   }
 
-  evaluateTerminalParameter(parameter, value, context) {
-    const type = parameter.getType();
+  evaluateTerminalNamedParameter(namedParameter, value, context) {
+    const type = namedParameter.getType();
 
     if (type !== BOOLEAN_TYPE) {
-      const parameterString = parameter.getString(),
-            message = `The '${parameterString}' parameter's type should be '${BOOLEAN_TYPE}'.`,
+      const namedParameterString = namedParameter.getString(),
+            message = `The '${namedParameterString}' named parameter's type should be '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -146,19 +144,19 @@ export default domAssigned(class ObjectAssigment {
     value = Value.fromBoolean(boolean, context);  ///
 
     const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
 
     context.addVariable(variable);
 
     variable.assign(context);
   }
 
-  evaluateChildNodesParameter(parameter, value, context) {
-    const type = parameter.getType();
+  evaluateChildNodesNamedParameter(namedParameter, value, context) {
+    const type = namedParameter.getType();
 
     if (type !== NODES_TYPE) {
-      const parameterString = parameter.getString(),
-            message = `The '${parameterString}' parameter's type should be '${NODES_TYPE}'.`,
+      const namedParameterString = namedParameter.getString(),
+            message = `The '${namedParameterString}' named parameter's type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -183,7 +181,7 @@ export default domAssigned(class ObjectAssigment {
     value = Value.fromNodes(nodes, context);  ///
 
     const assignment = Assignment.fromValue(value, context),
-          variable = Variable.fromParameterAndAssignment(parameter, assignment);
+          variable = Variable.fromNamedParameterAndAssignment(namedParameter, assignment);
 
     context.addVariable(variable);
 
@@ -198,13 +196,13 @@ export default domAssigned(class ObjectAssigment {
     const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
 
     if (objectAssignmentNode !== null) {
-      const { Variable, Parameters } = dom,
+      const { Variable, NamedParameters } = dom,
             node = objectAssignmentNode,  ///
             string = context.nodeAsString(node),
             variable = Variable.fromObjectAssignmentNode(objectAssignmentNode, context),
-            parameters = Parameters.fromObjectAssignmentNode(objectAssignmentNode, context);
+            namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context);
 
-      objectAssignment = new ObjectAssigment(string, variable, parameters);
+      objectAssignment = new ObjectAssigment(string, variable, namedParameters);
     }
 
     return objectAssignment;

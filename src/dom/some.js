@@ -4,8 +4,8 @@ import dom from "../dom";
 import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
-import { NODES_TYPE } from "../types";
 import { domAssigned } from "../dom";
+import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
 const variableNodeQuery = nodeQuery("/some/variable"),
       valueSomeNodeQuery = nodeQuery("/value/some"),
@@ -49,11 +49,29 @@ export default domAssigned(class Some {
     const nodes = value.getNodes();
 
     nodes.some((node) => {
-      const { Value, Values } = dom,
-            value = Value.fromNode(node, context),
-            values = Values.fromValue(value, context);
+      let value;
 
-      this.anonymousProcedure.call(values, context);
+      const { Value, Values } = dom;
+
+      value = Value.fromNode(node, context);
+
+      const values = Values.fromValue(value, context);
+
+      value = this.anonymousProcedure.call(values, context);
+
+      const valueType = value.getType();
+
+      if (valueType !== BOOLEAN_TYPE) {
+        const valueString = value.asString(context),
+              message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+              exception = Exception.fromMessage(message);
+
+        throw exception;
+      }
+
+      const boolean = value.getBoolean();
+
+      return boolean;
     });
 
     context.trace(`...evaluated the '${someString}' some.`);

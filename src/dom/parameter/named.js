@@ -5,45 +5,50 @@ import Exception from "../../exception";
 import { domAssigned } from "../../dom";
 import { nodeQuery, nodesQuery } from "../../utilities/query";
 
-const terminalNodesQuery = nodesQuery("/namedParameter/@*"),
-      nameTerminalNodeQuery = nodeQuery("/namedParameter/@name"),
-      typeTerminalNodeQuery = nodeQuery("/namedParameter/@type");
+const typeTerminalNodeQuery = nodeQuery("/namedParameter/@type"),
+      nameTerminalNodeQuery = nodeQuery("/namedParameter/@name[0]"),
+      asNameTerminalNodeQuery = nodeQuery("/namedParameter/@name[1]");
 
 export default domAssigned(class NamedParameter {
-  constructor(string, name, type) {
+  constructor(string, type, name, asName) {
     this.string = string;
-    this.name = name;
     this.type = type;
+    this.name = name;
+    this.asName = asName;
   }
 
   getString() {
     return this.string;
   }
 
+  getType() {
+    return this.type;
+  }
+
   getName() {
     return this.name;
   }
 
-  getType() {
-    return this.type;
+  getAsName() {
+    return this.asName;
   }
 
   matchValue(value, context) {
     const valueString = value.asString(context),
           namedParameterString = this.string;  ///
 
-    context.trace(`Matching the ${valueString} value against the '${namedParameterString}' namedParameter...`);
+    context.trace(`Matching the ${valueString} value against the '${namedParameterString}' named parameter...`);
 
     const valueType = value.getType();
 
     if (this.type !== valueType) {
-      const message = `The ${valueString} value's '${valueType}' type  and '${namedParameterString}' namedParameter's '${this.type}' type do not match.`,
+      const message = `The ${valueString} value's '${valueType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the ${valueString} value against the '${namedParameterString}' namedParameter.`);
+    context.debug(`...matched the ${valueString} value against the '${namedParameterString}' named parameter.`);
   }
 
   matchNamedParameter(namedParameter, context) {
@@ -55,7 +60,7 @@ export default domAssigned(class NamedParameter {
     const namedParameterAString = namedParameterA.getString(),
           namedParameterBString = namedParameterB.getString();
 
-    context.trace(`Matching the '${namedParameterAString}' namedParameter against the '${namedParameterBString}' namedParameter...`);
+    context.trace(`Matching the '${namedParameterAString}' named parameter against the '${namedParameterBString}' named parameter...`);
 
     const name = namedParameter.getName(),
           type = namedParameter.getType();
@@ -63,7 +68,7 @@ export default domAssigned(class NamedParameter {
     namedParameterMatches = ((this.name === name) && (this.type === type));
 
     if (namedParameterMatches) {
-      context.debug(`...matched the '${namedParameterAString}' namedParameter against the '${namedParameterBString}' namedParameter.`);
+      context.debug(`...matched the '${namedParameterAString}' named parameter against the '${namedParameterBString}' named parameter.`);
     }
 
     return namedParameterMatches;
@@ -71,36 +76,24 @@ export default domAssigned(class NamedParameter {
 
   static name = "NamedParameter";
 
-  static fromNameAndType(name, type, context) {
-    const string = stringFromNameAndType(name, type, context),
-          namedParameter = new NamedParameter(string, name, type);
-
-    return namedParameter;
-  }
-
   static fromNamedParameterNode(namedParameterNode, context) {
-    let namedParameter = null;
-
-    const terminalNodes = terminalNodesQuery(namedParameterNode),
-          terminalNodesLength = terminalNodes.length;
-
-    if (terminalNodesLength === 2) {
-      const name = nameFromNamedParameterNode(namedParameterNode, context),
-            type = typeFromNamedParameterNode(namedParameterNode, context),
-            node = namedParameterNode, //
-            string = context.nodeAsString(node);
-
-      namedParameter = new NamedParameter(string, name, type);
-    }
+    const type = typeFromNamedParameterNode(namedParameterNode, context),
+          name = nameFromNamedParameterNode(namedParameterNode, context),
+          asName = asNameFromNamedParameterNode(namedParameterNode, context),
+          node = namedParameterNode, //
+          string = context.nodeAsString(node),
+          namedParameter = new NamedParameter(string, type, name, asName);
 
     return namedParameter;
   }
 });
 
-function stringFromNameAndType(name, type) {
-  const string = `${type} ${name}`;
+function typeFromNamedParameterNode(namedParameterNode, context) {
+  const typeTerminalNode = typeTerminalNodeQuery(namedParameterNode),
+        typeTerminalNodeContent = typeTerminalNode.getContent(),
+        type = typeTerminalNodeContent; ///
 
-  return string;
+  return type;
 }
 
 function nameFromNamedParameterNode(namedParameterNode, context) {
@@ -111,10 +104,16 @@ function nameFromNamedParameterNode(namedParameterNode, context) {
   return name;
 }
 
-function typeFromNamedParameterNode(namedParameterNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(namedParameterNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
+function asNameFromNamedParameterNode(namedParameterNode, context) {
+  let asName = null;
 
-  return type;
+  const asNameTerminalNode = asNameTerminalNodeQuery(namedParameterNode);
+
+  if (asNameTerminalNode !== null) {
+    const asNameTerminalNodeContent = asNameTerminalNode.getContent();
+
+    asName = asNameTerminalNodeContent; ///
+  }
+
+  return asName;
 }

@@ -217,6 +217,19 @@ export default domAssigned(class Variable {
     return variable;
   }
 
+  static fromNamedParameterAndAssignment(namedParameter, assignment, context) {
+    const asName = namedParameter.getAsName(),
+          name = (asName !== null) ?
+                   asName : ///
+                    namedParameter.getName(),
+          type = namedParameter.getType(),
+          value = null,
+          string = name,  ///
+          variable = new Variable(string, type, name, value, assignment);
+
+    return variable;
+  }
+
   static fromTypeVariableNodeAndAssignmentNode(type, variableNode, assignmentNode, context) {
     const { Assignment } = dom,
           node = variableNode,  ///

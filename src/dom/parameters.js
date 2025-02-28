@@ -8,7 +8,6 @@ import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const parameterNodesQuery = nodesQuery("/parameters/parameter"),
       arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
-      objectAssignmentParametersNodeQuery = nodeQuery("/objectAssignment/parameters"),
       anonymousProcedureParametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
       procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
 
@@ -37,8 +36,6 @@ export default domAssigned(class Parameters {
 
     return parameter;
   }
-
-  someParameter(callback) { return this.array.some(callback); }
 
   forEachParameter(callback) { this.array.forEach(callback); }
 
@@ -69,42 +66,6 @@ export default domAssigned(class Parameters {
     context.debug(`...matched the ${valuesString} values against the '${parametersString}' parameters.`);
   }
 
-  matchParameter(parameter, context) {
-    const parameterString = parameter.getString(),
-          parametersString = this.string; ///
-
-    context.trace(`Matching the '${parameterString}' parameter against the '${parametersString}' parameters...`);
-
-    const parameterA = parameter, ///
-          parameterMatches = this.someParameter((parameter) => {
-            if (parameter !== null) {
-              const parameterB = parameter, ///
-                    parameterBMatchesParameterA = parameterA.matchParameter(parameterB, context);
-
-              if (parameterBMatchesParameterA) {
-                return true;
-              }
-            }
-          });
-
-    if (!parameterMatches) {
-      const message = `The '${parameterString}' parameter does not match any of the '${parametersString}' parameters.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
-
-    context.debug(`...matched the '${parameterString}' parameter against the '${parametersString}' parameters.`);
-  }
-
-  matchParameters(parameters, context) {
-    parameters.forEachParameter((parameter) => {
-      if (parameter !== null) {
-        this.matchParameter(parameter, context);
-      }
-    });
-  }
-
   static name = "Parameters";
 
   static fromStringAndArray(string, array) {
@@ -116,18 +77,6 @@ export default domAssigned(class Parameters {
   static fromArrayAssignmentNode(arrayAssignmentNode, context) {
     const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
           parametersNode = arrayAssignmentParametersNode,  ///
-          node = parametersNode,  ///
-          string = context.nodeAsString(node),
-          parameterNodes = parameterNodesQuery(parametersNode),
-          array = arrayFromParameterNodes(parameterNodes, context),
-          parameters = new Parameters(string, array);
-
-    return parameters;
-  }
-
-  static fromObjectAssignmentNode(objectAssignmentNode, context) {
-    const objectAssignmentParametersNode = objectAssignmentParametersNodeQuery(objectAssignmentNode),
-          parametersNode = objectAssignmentParametersNode,  ///
           node = parametersNode,  ///
           string = context.nodeAsString(node),
           parameterNodes = parameterNodesQuery(parametersNode),

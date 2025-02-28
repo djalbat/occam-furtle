@@ -25,6 +25,7 @@ import NamedParameter from "./dom/parameter/named";
 import BracketedValue from "./dom/value/bracketed";
 import ArrayAssigment from "./dom/assignment/array";
 import ReturnStatement from "./dom/returnStatement";
+import NamedParameters from "./dom/parameters/named";
 import ObjectAssignment from "./dom/assignment/object";
 import ConditionalBlocks from "./dom/conditionalBlocks";
 import AnonymousProcedure from "./dom/procedure/anonymous";
