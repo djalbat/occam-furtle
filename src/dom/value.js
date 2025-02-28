@@ -22,7 +22,7 @@ const ternaryValueNodeQuery = nodeQuery("/ternary/value"),
       conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/value");
 
 export default domAssigned(class Value {
-  constructor(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall) {
+  constructor(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall) {
     this.node = node;
     this.nodes = nodes;
     this.number = number;
@@ -38,6 +38,7 @@ export default domAssigned(class Value {
     this.bitwiseValue = bitwiseValue;
     this.bracketedValue = bracketedValue;
     this.procedureCall = procedureCall;
+    this.anonymousProcedureCall = anonymousProcedureCall;
   }
 
   getNode() {
@@ -100,6 +101,10 @@ export default domAssigned(class Value {
     return this.procedureCall;
   }
 
+  getAnonymousProcedureCall() {
+    return this.anonymousProcedureCall;
+  }
+
   getType() {
     let type;
 
@@ -127,8 +132,16 @@ export default domAssigned(class Value {
       type = this.nodesQuery.getType();
     } else if (this.comparison !== null) {
       type = this.comparison.getType();
+    } else if (this.negatedValue !== null) {
+      type = this.negatedValue.getType();
+    } else if (this.bitwiseValue !== null) {
+      type = this.bitwiseValue.getType();
+    } else if (this.bracketedValue !== null) {
+      type = this.bracketedValue.getType();
     } else if (this.procedureCall !== null) {
       type = this.procedureCall.getType();
+    } else if (this.anonymousProcedureCall !== null) {
+      type = this.anonymousProcedureCall.getType();
     }
 
     return type;
@@ -161,8 +174,16 @@ export default domAssigned(class Value {
       string = this.nodesQuery.asString(context);
     } else if (this.comparison !== null) {
       string = this.comparison.asString(context);
+    } else if (this.negatedValue !== null) {
+      string = this.negatedValue.asString(context);
+    } else if (this.bitwiseValue !== null) {
+      string = this.bitwiseValue.asString(context);
+    } else if (this.bracketedValue !== null) {
+      string = this.bracketedValue.asString(context);
     } else if (this.procedureCall !== null) {
       string = this.procedureCall.asString(context);
+    } else if (this.anonymousProcedureCall !== null) {
+      string = this.anonymousProcedureCall.asString(context);
     }
 
     return string;
@@ -191,8 +212,16 @@ export default domAssigned(class Value {
       value = this.nodesQuery.evaluate(context);
     } else if (this.comparison !== null) {
       value = this.comparison.evaluate(context);
+    } else if (this.negatedValue !== null) {
+      value = this.negatedValue.evaluate(context);
+    } else if (this.bitwiseValue !== null) {
+      value = this.bitwiseValue.evaluate(context);
+    } else if (this.bracketedValue !== null) {
+      value = this.bracketedValue.evaluate(context);
     } else if (this.procedureCall !== null) {
       value = this.procedureCall.evaluate(context);
+    } else if (this.anonymousProcedureCall !== null) {
+      value = this.anonymousProcedureCall.evaluate(context);
     }
 
     return value;
@@ -267,7 +296,8 @@ export default domAssigned(class Value {
           bitwiseValue = null,
           bracketedValue = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall);
+          anonymousProcedureCall = null,
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall);
 
     return value;
   }
@@ -287,7 +317,8 @@ export default domAssigned(class Value {
           bitwiseValue = null,
           bracketedValue = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall);
+          anonymousProcedureCall = null,
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall);
 
     return value;
   }
@@ -307,7 +338,8 @@ export default domAssigned(class Value {
           bitwiseValue = null,
           bracketedValue = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall);
+          anonymousProcedureCall = null,
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall);
 
     return value;
   }
@@ -327,7 +359,8 @@ export default domAssigned(class Value {
           bitwiseValue = null,
           bracketedValue = null,
           procedureCall = null,
-          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall);
+          anonymousProcedureCall = null,
+          value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall);
 
     return value;
   }
@@ -470,7 +503,7 @@ function booleanAsString(boolean, context) {
 }
 
 function valueFromValueNode(valueNode, context) {
-  const { Some, Value, Ternary, Variable, NodeQuery, NodesQuery, Comparison, NegatedValue, BitwiseValue, BracketedValue, ProcedureCall } = dom,
+  const { Some, Value, Ternary, Variable, NodeQuery, NodesQuery, Comparison, NegatedValue, BitwiseValue, BracketedValue, ProcedureCall, AnonymousProcedureCall } = dom,
         node = nodeFromValueNode(valueNode, context),
         nodes = nodesFromValueNode(valueNode, context),
         number = numberFromValueNode(valueNode, context),
@@ -486,7 +519,8 @@ function valueFromValueNode(valueNode, context) {
         bitwiseValue = BitwiseValue.fromValueNode(valueNode, context),
         bracketedValue = BracketedValue.fromValueNode(valueNode, context),
         procedureCall = ProcedureCall.fromValueNode(valueNode, context),
-        value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall);
+        anonymousProcedureCall = AnonymousProcedureCall.fromValueNode(valueNode, context),
+        value = new Value(node, nodes, number, string, boolean, some, ternary, variable, nodeQuery, nodesQuery, comparison, negatedValue, bitwiseValue, bracketedValue, procedureCall, anonymousProcedureCall);
 
   return value;
 }

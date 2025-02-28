@@ -31,8 +31,8 @@ import ConditionalBlocks from "./dom/conditionalBlocks";
 import AnonymousProcedure from "./dom/procedure/anonymous";
 import ProcedureDeclaration from "./dom/declaration/procedure";
 import VariablesDeclaration from "./dom/declaration/variables";
+import AnonymousProcedureCall from "./dom/procedureCall/anonymous";
 
 export { default as Values } from "./dom/values";
 export { default as FileContext } from "./context/file";
 export { default as stringUtilities } from "./utilities/string";
-
