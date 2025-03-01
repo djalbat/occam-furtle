@@ -10,6 +10,7 @@ import { variablesFromValuesAndParameters } from "../procedure";
 const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
       typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
       someAnonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure"),
+      everyAnonymousProcedureNodeQuery = nodeQuery("/every/anonymousProcedure"),
       anonymousProcedureCallAnonymousProcedureNodeQuery = nodeQuery("/anonymousProcedureCall/anonymousProcedure");
 
 export default domAssigned(class AnonymousProcedure {
@@ -66,6 +67,14 @@ export default domAssigned(class AnonymousProcedure {
   static fromSomeNode(someNode, context) {
     const someAnonymousProcedureNode = someAnonymousProcedureNodeQuery(someNode),
           anonymousProcedureNode = someAnonymousProcedureNode,  ///
+          anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
+
+    return anonymousProcedure;
+  }
+
+  static fromEveryNode(everyNode, context) {
+    const everyAnonymousProcedureNode = everyAnonymousProcedureNodeQuery(everyNode),
+          anonymousProcedureNode = everyAnonymousProcedureNode,  ///
           anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
     return anonymousProcedure;

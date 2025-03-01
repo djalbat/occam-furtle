@@ -8,6 +8,7 @@ import { domAssigned } from "../dom";
 
 const someVariableNodeQuery = nodeQuery("/some/variable"),
       valueVariableNodeQuery = nodeQuery("/value/variable"),
+      everyVariableNodeQuery = nodeQuery("/every/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
@@ -105,8 +106,8 @@ export default domAssigned(class Variable {
 
   static name = "Variable";
 
-  static fromSomeNode(someLoopNode, context) {
-    const someVariableNode = someVariableNodeQuery(someLoopNode),
+  static fromSomeNode(someNode, context) {
+    const someVariableNode = someVariableNodeQuery(someNode),
           variableNode = someVariableNode, ///
           variable = variableFromVariableNode(variableNode, context);
 
@@ -123,6 +124,14 @@ export default domAssigned(class Variable {
 
       variable = variableFromVariableNode(variableNode, context);
     }
+
+    return variable;
+  }
+
+  static fromEveryNode(everyNode, context) {
+    const everyVariableNode = everyVariableNodeQuery(everyNode),
+          variableNode = everyVariableNode, ///
+          variable = variableFromVariableNode(variableNode, context);
 
     return variable;
   }
