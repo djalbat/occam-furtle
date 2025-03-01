@@ -7,14 +7,16 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
-const variableNodeQuery = nodeQuery("/some/variable"),
-      valueSomeNodeQuery = nodeQuery("/value/some"),
-      parametersNodeQuery = nodeQuery("/some/anonymousProcedure/parameters");
+const variableNodeQuery = nodeQuery("/reduce/variable"),
+      parametersNodeQuery = nodeQuery("/reduce/anonymousProcedure/parameters"),
+      valueReduceNodeQuery = nodeQuery("/value/reduce"),
+      initialValueNodeQuery = nodeQuery("/reduce/value"); ///
 
-export default domAssigned(class Some {
-  constructor(string, variable, anonymousProcedure) {
+export default domAssigned(class Reduce {
+  constructor(string, variable, initialValue, anonymousProcedure) {
     this.string = string;
     this.variable = variable;
+    this.initialValue = initialValue;
     this.anonymousProcedure = anonymousProcedure;
   }
 
@@ -26,6 +28,10 @@ export default domAssigned(class Some {
     return this.variable;
   }
 
+  getInitialValue() {
+    return this.initialValue;
+  }
+
   getAnonymousProcedure() {
     return this.anonymousProcedure;
   }
@@ -33,9 +39,9 @@ export default domAssigned(class Some {
   evaluate(context) {
     let value;
 
-    const someString = this.getString();
+    const reduceString = this.getString();
 
-    context.trace(`Evaluating the '${someString}' some...`);
+    context.trace(`Evaluating the '${reduceString}' reduce...`);
 
     value = this.variable.evaluate(context);
 
@@ -50,68 +56,62 @@ export default domAssigned(class Some {
     }
 
     const nodes = value.getNodes(),
-          boolean = nodes.some((node) => {
-            let value;
+          initialValue = this.initialValue.evaluate(context);
 
-            const { Value, Values } = dom;
+    value = nodes.reduce((currentValue, node) => {
+      let value;
 
-            value = Value.fromNode(node, context);
+      const { Value, Values } = dom;
 
-            const values = Values.fromValue(value, context);
+      value = currentValue; ///
 
-            value = this.anonymousProcedure.call(values, context);
+      const values = Values.fromValue(value, context);
 
-            const valueType = value.getType();
+      value = Value.fromNode(node, context);
 
-            if (valueType !== BOOLEAN_TYPE) {
-              const valueString = value.asString(context),
-                    message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
-                    exception = Exception.fromMessage(message);
+      values.addValue(value);
 
-              throw exception;
-            }
+      value = this.anonymousProcedure.call(values, context);
 
-            const boolean = value.getBoolean();
+      return value;
+    }, initialValue);
 
-            return boolean;
-          });
-
-    const { Value } = dom;
-
-    value = Value.fromBoolean(boolean, context);
-
-    context.trace(`...evaluated the '${someString}' some.`);
+    context.trace(`...evaluated the '${reduceString}' reduce.`);
 
     return value;
   }
 
-  static name = "Some";
+  static name = "Reduce";
 
   static fromValueNode(valueNode, context) {
-    let some = null;
+    let reduce = null;
 
-    const valueSomeNode = valueSomeNodeQuery(valueNode);
+    const valueReduceNode = valueReduceNodeQuery(valueNode);
 
-    if (valueSomeNode !== null) {
-      const { Variable, AnonymousProcedure } = dom,
-            someNode = valueSomeNode, ///
-            string = stringFromSomeNode(someNode, context),
-            variable = Variable.fromSomeNode(someNode, context),
-            anonymousProcedure = AnonymousProcedure.fromSomeNode(someNode, context);
+    if (valueReduceNode !== null) {
+      const { Value, Variable, AnonymousProcedure } = dom,
+            reduceNode = valueReduceNode, ///
+            string = stringFromReduceNode(reduceNode, context),
+            value = Value.fromReduceNode(reduceNode, context),
+            variable = Variable.fromReduceNode(reduceNode, context),
+            initialValue = value, ///
+            anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context);
 
-      some = new Some(string, variable, anonymousProcedure);
+      reduce = new Reduce(string, variable, initialValue, anonymousProcedure);
     }
 
-    return some;
+    return reduce;
   }
 });
 
-function stringFromSomeNode(someNode, context) {
-  const variableNode = variableNodeQuery(someNode),
-        parametersNode = parametersNodeQuery(someNode),
+function stringFromReduceNode(reduceNode, context) {
+  const variableNode = variableNodeQuery(reduceNode),
+        parametersNode = parametersNodeQuery(reduceNode),
+        initialValueNode = initialValueNodeQuery(reduceNode),
         variableString = context.nodeAsString(variableNode),
         parametersString = context.nodeAsString(parametersNode),
-        string = `Some(${variableString}, (${parametersString}) { ... })`;
+        initialValueString = context.nodeAsString(initialValueNode),
+        string = `Reduce(${variableString}, (${parametersString}) { ... }, ${initialValueString})`;
 
   return string;
 }

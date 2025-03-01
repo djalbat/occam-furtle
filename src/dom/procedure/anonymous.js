@@ -11,6 +11,7 @@ const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
       typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
       someAnonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure"),
       everyAnonymousProcedureNodeQuery = nodeQuery("/every/anonymousProcedure"),
+      reduceAnonymousProcedureNodeQuery = nodeQuery("/reduce/anonymousProcedure"),
       anonymousProcedureCallAnonymousProcedureNodeQuery = nodeQuery("/anonymousProcedureCall/anonymousProcedure");
 
 export default domAssigned(class AnonymousProcedure {
@@ -75,6 +76,14 @@ export default domAssigned(class AnonymousProcedure {
   static fromEveryNode(everyNode, context) {
     const everyAnonymousProcedureNode = everyAnonymousProcedureNodeQuery(everyNode),
           anonymousProcedureNode = everyAnonymousProcedureNode,  ///
+          anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
+
+    return anonymousProcedure;
+  }
+
+  static fromReduceNode(reduceNode, context) {
+    const reduceAnonymousProcedureNode = reduceAnonymousProcedureNodeQuery(reduceNode),
+          anonymousProcedureNode = reduceAnonymousProcedureNode,  ///
           anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
     return anonymousProcedure;

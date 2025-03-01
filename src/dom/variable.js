@@ -9,6 +9,7 @@ import { domAssigned } from "../dom";
 const someVariableNodeQuery = nodeQuery("/some/variable"),
       valueVariableNodeQuery = nodeQuery("/value/variable"),
       everyVariableNodeQuery = nodeQuery("/every/variable"),
+      reduceVariableNodeQuery = nodeQuery("/reduce/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
@@ -142,6 +143,14 @@ export default domAssigned(class Variable {
           value = null,
           string = name,  ///
           variable = new Variable(string, type, name, value);
+
+    return variable;
+  }
+
+  static fromReduceNode(reduceNode, context) {
+    const reduceVariableNode = reduceVariableNodeQuery(reduceNode),
+          variableNode = reduceVariableNode, ///
+          variable = variableFromVariableNode(variableNode, context);
 
     return variable;
   }

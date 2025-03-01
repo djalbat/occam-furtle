@@ -12,7 +12,8 @@ import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from ".
 
 const { match } = arrayUtilities;
 
-const ternaryValueNodeQuery = nodeQuery("/ternary/value"),
+const reduceValueNodeQuery = nodeQuery("/reduce/value"),
+      ternaryValueNodeQuery = nodeQuery("/ternary/value"),
       numberTerminalNodeQuery = nodeQuery("/value/@number"),
       conditionValueNodeQuery = nodeQuery("/condition/value"),
       primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
@@ -29,7 +30,7 @@ export default domAssigned(class Value {
     this.string = string;
     this.boolean = boolean;
     this.some = some;
-    this.every - every;
+    this.every = every;
     this.reduce = reduce;
     this.ternary = ternary;
     this.variable = variable;
@@ -397,6 +398,14 @@ export default domAssigned(class Value {
 
   static fromValueNode(valueNode, context) {
     const value = valueFromValueNode(valueNode, context);
+
+    return value;
+  }
+
+  static fromReduceNode(reduceNode, context) {
+    const reduceValueNode = reduceValueNodeQuery(reduceNode),
+          valueNode = reduceValueNode, ///
+          value = valueFromValueNode(valueNode, context);
 
     return value;
   }

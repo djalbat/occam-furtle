@@ -35,6 +35,10 @@ export default domAssigned(class Values {
     return value;
   }
 
+  addValue(value) {
+    this.array.push(value);
+  }
+
   mapValue(callback) { return this.array.map(callback); }
 
   forEachValue(callback) { this.array.forEach(callback); }
