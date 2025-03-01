@@ -1,7 +1,6 @@
 "use strict";
 
 import dom from "../../dom";
-import Exception from "../../exception";
 
 import { domAssigned } from "../../dom";
 
@@ -33,15 +32,7 @@ export default domAssigned(class VariableAssignment {
 
     value = this.value.evaluate(context);
 
-    debugger
-
-    if (value === null) {
-      const variableAssignmentString = this.string, ///
-            message = `The '${variableAssignmentString}' variable assignment cannot be evaluated.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
+    this.variable.assign(value, context);
 
     context.debug(`...evaluated the '${variableAssignmentString}' variable assignment.`);
 
@@ -51,13 +42,13 @@ export default domAssigned(class VariableAssignment {
   static name = "VariableAssignment";
 
   static fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-    const variableAssignment = variableAssignmentFromTypeAndAssignmentNode(type, variableAssignmentNode, context);
+    const variableAssignment = variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context);
 
     return variableAssignment;
   }
 });
 
-function variableAssignmentFromTypeAndAssignmentNode(type, variableAssignmentNode, context) {
+function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
   const { Variable, Value, VariableAssignment } = dom,
         node = variableAssignmentNode, ///
         string = context.nodeAsString(node),

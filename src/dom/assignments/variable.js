@@ -30,10 +30,6 @@ export default domAssigned(class VariableAssignments {
 
     this.array.forEach((variableAssignment) => {
       variableAssignment.evaluate(context);
-
-      // context.addVariable(variable);
-      //
-      // variable.assign(context);
     });
 
     context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);

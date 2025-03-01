@@ -416,15 +416,9 @@ export default domAssigned(class Value {
   }
 
   static fromVariableAssignmentNode(variableAssigmentNode, context) {
-    let value = null;
-
-    const variableAssignmentValueNode = variableAssignmentValueNodeQuery(variableAssigmentNode);
-
-    if (variableAssignmentValueNode !== null) {
-      const valueNode = variableAssignmentValueNode;  ///
-
-      value = valueFromValueNode(valueNode, context);
-    }
+    const variableAssignmentValueNode = variableAssignmentValueNodeQuery(variableAssigmentNode),
+          valueNode = variableAssignmentValueNode,  ///
+          value = valueFromValueNode(valueNode, context);
 
     return value;
   }

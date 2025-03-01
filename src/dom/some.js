@@ -31,12 +31,15 @@ export default domAssigned(class Some {
   }
 
   evaluate(context) {
+    let value;
+
     const someString = this.getString();
 
     context.trace(`Evaluating the '${someString}' some...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType();
+    value = this.variable.evaluate(context);
+
+    const valueType = value.getType();
 
     if (valueType !== NODES_TYPE) {
       const valueString = value.asString(context),
@@ -46,35 +49,40 @@ export default domAssigned(class Some {
       throw exception;
     }
 
-    const nodes = value.getNodes();
+    const nodes = value.getNodes(),
+          boolean = nodes.some((node) => {
+            let value;
 
-    nodes.some((node) => {
-      let value;
+            const { Value, Values } = dom;
 
-      const { Value, Values } = dom;
+            value = Value.fromNode(node, context);
 
-      value = Value.fromNode(node, context);
+            const values = Values.fromValue(value, context);
 
-      const values = Values.fromValue(value, context);
+            value = this.anonymousProcedure.call(values, context);
 
-      value = this.anonymousProcedure.call(values, context);
+            const valueType = value.getType();
 
-      const valueType = value.getType();
+            if (valueType !== BOOLEAN_TYPE) {
+              const valueString = value.asString(context),
+                    message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+                    exception = Exception.fromMessage(message);
 
-      if (valueType !== BOOLEAN_TYPE) {
-        const valueString = value.asString(context),
-              message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
-              exception = Exception.fromMessage(message);
+              throw exception;
+            }
 
-        throw exception;
-      }
+            const boolean = value.getBoolean();
 
-      const boolean = value.getBoolean();
+            return boolean;
+          });
 
-      return boolean;
-    });
+    const { Value } = dom;
+
+    value = Value.fromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${someString}' some.`);
+
+    return value;
   }
 
   static name = "Some";

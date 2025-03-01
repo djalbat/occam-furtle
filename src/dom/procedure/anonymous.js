@@ -15,7 +15,7 @@ const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
 export default domAssigned(class AnonymousProcedure {
   constructor(string, type, parameters, returnBlock) {
     this.string = string;
-    this.type - type;
+    this.type = type;
     this.parameters = parameters;
     this.returnBlock = returnBlock;
   }

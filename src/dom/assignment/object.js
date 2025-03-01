@@ -65,23 +65,28 @@ export default domAssigned(class ObjectAssigment {
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        this.evaluateContentNamedParameter(namedParameter, value, context);
+        value = this.evaluateContentNamedParameter(namedParameter, value, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        this.evaluateTerminalNamedParameter(namedParameter, value, context);
+        value = this.evaluateTerminalNamedParameter(namedParameter, value, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        this.evaluateChildNodesNamedParameter(namedParameter, value, context);
+        value = this.evaluateChildNodesNamedParameter(namedParameter, value, context);
 
         break;
       }
     }
+
+    const { Variable } = dom,
+          variable = Variable.fromNamedParameter(namedParameter, context);
+
+    variable.assign(value, context);
 
     context.debug(`...evaluated the '${namedParameterString}' parameter named against the ${valueString} value.`);
   }
@@ -108,20 +113,14 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const { Value, Variable } = dom,
+    const { Value } = dom,
           terminalNode = node,  ///
           content = terminalNode.getContent(),
           string = content;  ///
 
     value = Value.fromString(string, context);  ///
 
-    debugger
-
-    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
-
-    context.addVariable(variable);
-
-    variable.assign(context);
+    return value;
   }
 
   evaluateTerminalNamedParameter(namedParameter, value, context) {
@@ -139,18 +138,12 @@ export default domAssigned(class ObjectAssigment {
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
-    const { Value, Variable } = dom,
+    const { Value } = dom,
           boolean = terminal; ///
 
     value = Value.fromBoolean(boolean, context);  ///
 
-    debugger
-
-    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
-
-    context.addVariable(variable);
-
-    variable.assign(context);
+    return value;
   }
 
   evaluateChildNodesNamedParameter(namedParameter, value, context) {
@@ -175,20 +168,14 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const { Value, Variable } = dom,
+    const { Value } = dom,
           nonTerminalNode = node,  ///
           childNodes = nonTerminalNode.getChildNodes(),
           nodes = childNodes;  ///
 
     value = Value.fromNodes(nodes, context);  ///
 
-    debugger
-
-    const variable = Variable.fromValueAndNamedParameter(value, namedParameter, context);
-
-    context.addVariable(variable);
-
-    variable.assign(context);
+    return value;
   }
 
   static name = "ObjectAssigment";

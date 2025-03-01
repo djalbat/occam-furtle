@@ -50,13 +50,13 @@ export default domAssigned(class Step {
   static name = "Step";
 
   static fromStepNode(stepNode, context) {
-    const { ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariablesDeclaration } = dom,
+    const { ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariableAssignments } = dom,
           node = stepNode,  ///
           string = context.nodeAsString(node),
           arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
           objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
           conditionalBlocks = ConditionalBlocks.fromStepNode(stepNode, context),
-          variablesDeclaration = VariablesDeclaration.fromStepNode(stepNode, context),
+          variablesDeclaration = VariableAssignments.fromStepNode(stepNode, context),
           step = new Step(string, arrayAssignment, objectAssigment, conditionalBlocks, variablesDeclaration);
 
     return step;

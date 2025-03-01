@@ -38,7 +38,7 @@ export default domAssigned(class NegatedValue {
 
     value = this.value.evaluate(context);
 
-    const valueType = value.getType;
+    const valueType = value.getType();
 
     if (valueType !== BOOLEAN_TYPE) {
       const valueString = value.asString(context),
