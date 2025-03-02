@@ -5,8 +5,8 @@ import Exception from "../../exception";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { DISJUNCTION } from "../../constants";
 import { BOOLEAN_TYPE } from "../../types";
+import { CONJUNCTION, DISJUNCTION } from "../../constants";
 
 const terminalNodeQuery = nodeQuery("/bitwiseValue/@*"),
       leftValueNodeQuery = nodeQuery("/bitwiseValue/value[0]"),
@@ -93,14 +93,13 @@ export default domAssigned(class BitwiseValue {
 
     if (bitwiseValueNode !== null) {
       const { Value } = dom,
-            node = bitwiseValueNode,  //
-            string = context.nodeAsString(node),
             type = BOOLEAN_TYPE,
             leftValueNode = leftValueNodeQuery(bitwiseValueNode),
             rightValueNode = rightValueNodeQuery(bitwiseValueNode),
             disjoint = disjointFromBitwiseValueNode(bitwiseValueNode, context),
             leftValue = Value.fromValueNode(leftValueNode, context),
-            rightValue = Value.fromValueNode(rightValueNode, context);
+            rightValue = Value.fromValueNode(rightValueNode, context),
+            string = stringFromTypeDisjointLeftValueAndRightValue(disjoint, leftValue, rightValue, context);
 
       bitwiseValue = new BitwiseValue(string, type, disjoint, leftValue, rightValue);
     }
@@ -115,4 +114,15 @@ function disjointFromBitwiseValueNode(bitwiseValueNode, context) {
         disjoint = (terminalNodeContent === DISJUNCTION);
 
   return disjoint;
+}
+
+function stringFromTypeDisjointLeftValueAndRightValue(disjoint, leftValue, rightValue, context) {
+  const operatorString = disjoint ?
+                           DISJUNCTION :
+                             CONJUNCTION,
+        leftValueString = leftValue.asString(context),
+        rightValueString = rightValue.asString(context),
+        string = `${leftValueString} ${operatorString} ${rightValueString}`;
+
+  return string;
 }

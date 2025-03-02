@@ -102,10 +102,9 @@ export default domAssigned(class ArrayAssigment {
 
     if (arrayAssignmentNode !== null) {
       const { Variable, Parameters } = dom,
-            node = arrayAssignmentNode,  ///
-            string = context.nodeAsString(node),
+            parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context),
             variable = Variable.fromArrayAssignmentNode(arrayAssignmentNode, context),
-            parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context);
+            string = stringFromVariableAndParameters(variable, parameters, context);
 
       arrayAssignment = new ArrayAssigment(string, variable, parameters);
     }
@@ -113,3 +112,11 @@ export default domAssigned(class ArrayAssigment {
     return arrayAssignment;
   }
 });
+
+function stringFromVariableAndParameters(variable, parameters, context) {
+  const variableString = variable.getString(),
+        parametersString = parameters.getString(),
+        string = `[ ${parametersString} ] = ${variableString};`;
+
+  return string;
+}

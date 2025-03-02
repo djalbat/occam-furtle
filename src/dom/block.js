@@ -44,10 +44,9 @@ export default domAssigned(class Block {
     let block = null;
 
     if (blockNode !== null) {
-      const node = blockNode, ///
-            string = context.nodeAsString(node),
-            stepNodes = stepNodesQuery(blockNode),
-            steps = stepsFromStepNodes(stepNodes, context);
+      const stepNodes = stepNodesQuery(blockNode),
+            steps = stepsFromStepNodes(stepNodes, context),
+            string = stringFromSteps(steps, context);
 
       block = new Block(string, steps);
     }
@@ -55,6 +54,12 @@ export default domAssigned(class Block {
     return block;
   }
 });
+
+function stringFromSteps(steps, context) {
+  const string = `{ ... }`;
+
+  return string;
+}
 
 function stepsFromStepNodes(stepNodes, context) {
   const { Step } = dom,

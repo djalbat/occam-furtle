@@ -74,12 +74,12 @@ export default domAssigned(class ConditionalBlocks {
 
     if (conditionalBlocksNode !== null) {
       const { Block, Value } = dom,
-            string = stringFromConditionalBlocksNode(conditionalBlocksNode, context),
             ifBlockNode = ifBlockNodeQuery(conditionalBlocksNode),
             elseBlockNode = elseBlockNodeQuery(conditionalBlocksNode),
             value = Value.fromConditionalBlocksNode(conditionalBlocksNode, context),
             ifBlock = Block.fromBlockNode(ifBlockNode, context),
-            elseBlock = Block.fromBlockNode(elseBlockNode, context);
+            elseBlock = Block.fromBlockNode(elseBlockNode, context),
+            string = stringFromValueIfBockAndElseBock(value, ifBlock, elseBlock, context);
 
       conditionalBlocks = new ConditionalBlocks(string, value, ifBlock, elseBlock);
     }
@@ -88,18 +88,18 @@ export default domAssigned(class ConditionalBlocks {
   }
 });
 
-function stringFromConditionalBlocksNode(conditionalBlocksNode, context) {
+function stringFromValueIfBockAndElseBock(value, ifBlock, elseBlock, context) {
   let string;
 
-  const valueNode = valueNodeQuery(conditionalBlocksNode),
-        conditionString = context.nodeAsString(valueNode);
+  const valueString = value.asString(context),
+        ifBlockString = ifBlock.getString();
 
-  string = `If (${conditionString}) { ... }`;
+  string = `If (${valueString}) ${ifBlockString}`;
 
-  const elseBlockNode = elseBlockNodeQuery(conditionalBlocksNode);
+  if (elseBlock !== null) {
+    const elseBlockString = elseBlock.getString();
 
-  if (elseBlockNode !== null) {
-    string = `${string} Else { ... }`;
+    string = `${string} Else ${elseBlockString}`;
   }
 
   return string;

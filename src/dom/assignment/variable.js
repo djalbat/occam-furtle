@@ -50,11 +50,18 @@ export default domAssigned(class VariableAssignment {
 
 function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
   const { Variable, Value, VariableAssignment } = dom,
-        node = variableAssignmentNode, ///
-        string = context.nodeAsString(node),
         value = Value.fromVariableAssignmentNode(variableAssignmentNode, context),
         variable = Variable.fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
+        string = stringFromValueAndVariable(value, variable, context),
         assignment = new VariableAssignment(string, variable, value);
 
   return assignment;
+}
+
+function stringFromValueAndVariable(value, variable, context) {
+  const variableString = variable.getString(),
+        valueString = value.getString(),
+        string = `${variableString} = ${valueString};`;
+
+  return string;
 }

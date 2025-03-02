@@ -48,10 +48,9 @@ export default domAssigned(class BracketedValue {
     if (valueBracketedValueNode !== null) {
       const { Value } = dom,
             bracketedValueNode = valueBracketedValueNode, ///
-            node = bracketedValueNode,  ///
-            string = context.nodeAsString(node),
             valueNode = valueNodeQuery(bracketedValueNode),
-            value = Value.fromValueNode(valueNode, context);
+            value = Value.fromValueNode(valueNode, context),
+            string = stringFromValue(value, context);
 
       bracketedValue = new BracketedValue(string, value);
     }
@@ -59,3 +58,10 @@ export default domAssigned(class BracketedValue {
     return bracketedValue;
   }
 });
+
+function stringFromValue(value, context) {
+  const valueString = value.asString(context),
+        string = `(${valueString})`;
+
+  return string;
+}

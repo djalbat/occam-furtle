@@ -80,13 +80,25 @@ export default domAssigned(class NamedParameter {
     const type = typeFromNamedParameterNode(namedParameterNode, context),
           name = nameFromNamedParameterNode(namedParameterNode, context),
           asName = asNameFromNamedParameterNode(namedParameterNode, context),
-          node = namedParameterNode, //
-          string = context.nodeAsString(node),
+          string = stringFromTypeNameAndAsName(type, name, asName, context),
           namedParameter = new NamedParameter(string, type, name, asName);
 
     return namedParameter;
   }
 });
+
+function stringFromTypeNameAndAsName(type, name, asName, context) {
+  let string;
+
+  string = `${type} ${name}`;
+
+  if (asName !== null) {
+    string = `${string} As ${asName}`;
+  }
+
+  return string;
+}
+
 
 function typeFromNamedParameterNode(namedParameterNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(namedParameterNode),

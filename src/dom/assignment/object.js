@@ -187,10 +187,9 @@ export default domAssigned(class ObjectAssigment {
 
     if (objectAssignmentNode !== null) {
       const { Variable, NamedParameters } = dom,
-            node = objectAssignmentNode,  ///
-            string = context.nodeAsString(node),
+            namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context),
             variable = Variable.fromObjectAssignmentNode(objectAssignmentNode, context),
-            namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context);
+            string = stringFromVariableAndNamesParameters(variable, namedParameters, context);
 
       objectAssignment = new ObjectAssigment(string, variable, namedParameters);
     }
@@ -198,3 +197,11 @@ export default domAssigned(class ObjectAssigment {
     return objectAssignment;
   }
 });
+
+function stringFromVariableAndNamesParameters(variable, namedParameters, context) {
+  const namedParametersString = namedParameters.getString(),
+        variableString = variable.getString(),
+        string = `{ ${namedParametersString} } = ${variableString};`;
+
+  return string;
+}

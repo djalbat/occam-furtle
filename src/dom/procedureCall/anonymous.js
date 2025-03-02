@@ -48,10 +48,9 @@ export default domAssigned(class AnonymousProcedureCall {
 
     if (anonymousProcedureCallNode !== null) {
       const { Values, AnonymousProcedure } = dom,
-            node = anonymousProcedureCallNode, ///
-            string = context.nodeAsString(node),
             anonymousProcedure = AnonymousProcedure.fromAnonymousProcedureCallNode(anonymousProcedureCallNode, context),
-            values = Values.fromAnonymousProcedureCallNode(anonymousProcedureCallNode, context);
+            values = Values.fromAnonymousProcedureCallNode(anonymousProcedureCallNode, context),
+            string = stringFromAnonymousProcedureAndValues(anonymousProcedure, values, context);
 
       anonymousProcedureCall = new AnonymousProcedureCall(string, anonymousProcedure, values);
     }
@@ -59,3 +58,11 @@ export default domAssigned(class AnonymousProcedureCall {
     return anonymousProcedureCall;
   }
 });
+
+function stringFromAnonymousProcedureAndValues(anonymousProcedure, values, context) {
+  const anonymousProcedureString = anonymousProcedure.getString(),
+        valuesString = values.getString(),
+        string = `(${anonymousProcedureString})(${valuesString})`;
+
+  return string;
+}

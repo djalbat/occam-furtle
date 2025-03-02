@@ -43,10 +43,9 @@ export default domAssigned(class VariableAssignments {
     const variableAssignmentsNode = variableAssignmentsNodeQuery(stepNode);
 
     if (variableAssignmentsNode !== null) {
-      const node = variableAssignmentsNode,  ////
-            string = context.nodeAsString(node),
-            type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
-            array = arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context);
+      const type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
+            array = arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context),
+            string = stringFromArray(array, context);
 
       variableAssignments = new VariableAssignments(string, array);
     }
@@ -54,6 +53,21 @@ export default domAssigned(class VariableAssignments {
     return variableAssignments;
   }
 });
+
+function stringFromArray(array, context) {
+  const variableAssignmentsString = array.reduce((variableAssignmentsString, variableAssignment) => {
+          const variableAssignmentString = variableAssignment.getString();
+
+          variableAssignmentsString = (variableAssignmentsString === null) ?
+                                        variableAssignmentString :
+                                         `${variableAssignmentsString}, ${variableAssignmentString}`;
+
+          return variableAssignmentsString;
+        }, null),
+        string = variableAssignmentsString; ///
+
+  return string;
+}
 
 function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
   const typeTerminalNode = typeTerminalNodeQuery(variableAssignmentsNode),

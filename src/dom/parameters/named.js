@@ -107,15 +107,29 @@ export default domAssigned(class NamedParameters {
   static fromObjectAssignmentNode(objectAssignmentNode, context) {
     const objectAssignmentNamedParametersNode = objectAssignmentNamedParametersNodeQuery(objectAssignmentNode),
           parametersNode = objectAssignmentNamedParametersNode,  ///
-          node = parametersNode,  ///
-          string = context.nodeAsString(node),
           namedParameterNodes = namedParameterNodesQuery(parametersNode),
           array = arrayFromNamedParameterNodes(namedParameterNodes, context),
+          string = stringFromArray(array, context),
           namedParameters = new NamedParameters(string, array);
 
     return namedParameters;
   }
 });
+
+function stringFromArray(array, context) {
+  const namedParametersSString = array.reduce((namedParametersSString, namedParameter) => {
+          const namedParameterString = namedParameter.getString();
+
+          namedParametersSString = (namedParametersSString === null) ?
+                                     namedParameterString :
+                                      `${namedParametersSString}, ${namedParameterString}`;
+
+          return namedParametersSString;
+        }, null),
+        string = namedParametersSString;  ///
+
+  return string;
+}
 
 function arrayFromNamedParameterNodes(namedParameterNodes, context) {
   const { NamedParameter } = dom,

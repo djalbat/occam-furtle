@@ -172,37 +172,37 @@ export default domAssigned(class Value {
     } else if (this.nodes !== null) {
       string = nodesAsString(this.nodes, context);
     } else if (this.number !== null) {
-      string = numberAsString(this.number, context);
+      string = numberAsString(this.number);
     } else if (this.string !== null) {
-      string = stringAsString(this.string, context)
+      string = stringAsString(this.string)
     } else if (this.boolean !== null) {
-      string = booleanAsString(this.boolean, context)
+      string = booleanAsString(this.boolean)
     } else if (this.some !== null) {
-      string = this.some.asString(context);
+      string = this.some.getString();
     } else if (this.every !== null) {
-      string = this.every.asString(context);
+      string = this.every.getString();
     } else if (this.reduce !== null) {
-      string = this.reduce.asString(context);
+      string = this.reduce.getString();
     } else if (this.ternary !== null) {
-      string = this.ternary.asString(context);
+      string = this.ternary.getString();
     } else if (this.variable !== null) {
-      string = this.variable.asString(context);
+      string = this.variable.getString();
     } else if (this.nodeQuery !== null) {
-      string = this.nodeQuery.asString(context);
+      string = this.nodeQuery.getString();
     } else if (this.nodesQuery !== null) {
-      string = this.nodesQuery.asString(context);
+      string = this.nodesQuery.getString();
     } else if (this.comparison !== null) {
-      string = this.comparison.asString(context);
+      string = this.comparison.getString();
     } else if (this.negatedValue !== null) {
-      string = this.negatedValue.asString(context);
+      string = this.negatedValue.getString();
     } else if (this.bitwiseValue !== null) {
-      string = this.bitwiseValue.asString(context);
+      string = this.bitwiseValue.getString();
     } else if (this.bracketedValue !== null) {
-      string = this.bracketedValue.asString(context);
+      string = this.bracketedValue.getString();
     } else if (this.procedureCall !== null) {
-      string = this.procedureCall.asString(context);
+      string = this.procedureCall.getString();
     } else if (this.anonymousProcedureCall !== null) {
-      string = this.anonymousProcedureCall.asString(context);
+      string = this.anonymousProcedureCall.getString();
     }
 
     return string;
@@ -513,7 +513,7 @@ function nodesAsString(nodes, context) {
   return string;
 }
 
-function numberAsString(number, context) {
+function numberAsString(number) {
   let string;
 
   string = `${number}`;
@@ -521,13 +521,13 @@ function numberAsString(number, context) {
   return string;
 }
 
-function stringAsString(string, context) {
+function stringAsString(string) {
   string = `"${string}"`; ///
 
   return string;
 }
 
-function booleanAsString(boolean, context) {
+function booleanAsString(boolean) {
   let string;
 
   string = `'${boolean}'`;

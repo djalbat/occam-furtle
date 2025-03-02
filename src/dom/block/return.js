@@ -76,8 +76,16 @@ export default domAssigned(class ReturnBlock {
   }
 });
 
-function stepsFromStepNodes(stepNodes, context) {
+function stringFromReturnStatement(returnStatement, context) {
+  const returnStatementString = returnStatement.getString(),
+        string = `{ ... ${returnStatementString} }`;
+
+  return string;
+}
+
+function stepsFromReturnBlockNode(returnBlockNode, context) {
   const { Step } = dom,
+        stepNodes = stepNodesQuery(returnBlockNode),
         steps = stepNodes.map((stepNode) => {
           const step = Step.fromStepNode(stepNode, context);
 
@@ -89,12 +97,10 @@ function stepsFromStepNodes(stepNodes, context) {
 
 function returnBlockFromReturnBlockNode(returnBlockNode, context) {
   const { ReturnBlock, ReturnStatement } = dom,
-        node = returnBlockNode, ///
-        string = context.nodeAsString(node),
-        stepNodes = stepNodesQuery(returnBlockNode),
-        steps = stepsFromStepNodes(stepNodes, context),
-        nonsensical = nonsensicalFromReturnBlockNode(returnBlockNode, context),
         returnStatement = ReturnStatement.fromReturnBlockNode(returnBlockNode, context),
+        nonsensical = nonsensicalFromReturnBlockNode(returnBlockNode, context),
+        steps = stepsFromReturnBlockNode(returnBlockNode, context),
+        string = stringFromReturnStatement(returnStatement, context),
         returnBlock = new ReturnBlock(string, steps, nonsensical, returnStatement);
 
   return returnBlock;

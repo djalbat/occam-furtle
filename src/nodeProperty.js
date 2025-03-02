@@ -49,7 +49,7 @@ export default class NodeProperty {
   }
 };
 
-function stringFromNameAndType(name, type) {
+function stringFromNameAndType(name, type, context) {
   const string = `${type} ${name}`;
 
   return string;

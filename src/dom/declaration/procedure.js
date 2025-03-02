@@ -22,11 +22,17 @@ export default domAssigned(class ProcedureDeclaration {
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const { Procedure } = dom,
-          node = procedureDeclarationNode,  ///
-          string = context.nodeAsString(node),
           procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          string = stringFromProcedure(procedure, context),
           procedureDeclaration = new ProcedureDeclaration(string, procedure);
 
     return procedureDeclaration;
   }
 });
+
+function stringFromProcedure(procedure, context) {
+  const procedureString = procedure.getString(),
+        string = `${procedureString};`;
+
+  return string;
+}

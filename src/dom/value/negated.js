@@ -70,11 +70,10 @@ export default domAssigned(class NegatedValue {
 
     if (negatedValueNode !== null) {
       const { Value } = dom,
-            node = negatedValueNode,  //
-            string = context.nodeAsString(node),
             type = BOOLEAN_TYPE,
             valueNode = valueNodeQuery(negatedValueNode),
-            value = Value.fromValueNode(valueNode, context);
+            value = Value.fromValueNode(valueNode, context),
+            string = stringFromValue(value, context);
 
       negatedValue = new NegatedValue(string, type, value);
     }
@@ -82,3 +81,10 @@ export default domAssigned(class NegatedValue {
     return negatedValue;
   }
 });
+
+function stringFromValue(value, context) {
+  const valueString = value.asString(context),
+        string = `!${valueString}`;
+
+  return string;
+}

@@ -3,9 +3,9 @@
 import dom from "../dom";
 import Exception from "../exception";
 
-import { EQUAL_TO } from "../constants";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
+import { EQUAL_TO, NOT_EQUAL_TO } from "../constants";
 
 const terminalNodeQuery = nodeQuery("/comparison/@*"),
       leftValueNodeQuery = nodeQuery("/comparison/value[0]"),
@@ -116,14 +116,24 @@ function negatedFromComparisonNode(comparisonNode) {
 
 function comparisonFromComparisonNode(comparisonNode, context) {
   const { Value, Comparison } = dom,
-        node = comparisonNode,  ///
-        string = context.nodeAsString(node),
         leftValueNode = leftValueNodeQuery(comparisonNode),
         rightValueNode = rightValueNodeQuery(comparisonNode),
-        negated = negatedFromComparisonNode(comparisonNode, context),
-        leftValue = Value.fromValueNode(leftValueNode, context),
         rightValue = Value.fromValueNode(rightValueNode, context),
+        leftValue = Value.fromValueNode(leftValueNode, context),
+        negated = negatedFromComparisonNode(comparisonNode, context),
+        string = stringFromNegatedLeftValueAndRightValue(negated, leftValue, rightValue, context),
         comparison = new Comparison(string, negated, leftValue, rightValue);
 
   return comparison;
+}
+
+function stringFromNegatedLeftValueAndRightValue(negated, leftValue, rightValue, context) {
+  const operatorString = negated ?
+                           EQUAL_TO :
+                            NOT_EQUAL_TO,
+        leftValueString = leftValue.asString(context),
+        rightValueString = rightValue.asString(context),
+        string = `${leftValueString} ${operatorString} ${rightValueString}`;
+
+  return string;
 }

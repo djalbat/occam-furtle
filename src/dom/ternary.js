@@ -7,8 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 
-const valueNodeQuery = nodeQuery("/ternary/value[0]"),
-      ifValueNodeQuery = nodeQuery("/ternary/value[1]"),
+const ifValueNodeQuery = nodeQuery("/ternary/value[1]"),
       ternaryNodeQuery = nodeQuery("/value/ternary"),
       elseValueNodeQuery = nodeQuery("/ternary/value[2]");
 
@@ -75,12 +74,12 @@ export default domAssigned(class Ternary {
 
     if (ternaryNode !== null) {
       const { Value } = dom,
-            string = stringFromTernaryNode(ternaryNode, context),
             ifValueNode = ifValueNodeQuery(ternaryNode),
             elseValueNode = elseValueNodeQuery(ternaryNode),
             value = Value.fromTernaryNode(ternaryNode, context),
             ifValue = Value.fromValueNode(ifValueNode, context),
-            elseValue = Value.fromValueNode(elseValueNode, context);
+            elseValue = Value.fromValueNode(elseValueNode, context),
+            string = stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context);
 
       ternary = new Ternary(string, value, ifValue, elseValue);
     }
@@ -89,17 +88,11 @@ export default domAssigned(class Ternary {
   }
 });
 
-function stringFromTernaryNode(ternaryNode, context) {
-  let string;
-
-  const valueNode = valueNodeQuery(ternaryNode),
-        ifValueNode = ifValueNodeQuery(ternaryNode),
-        elseValueNode = elseValueNodeQuery(ternaryNode),
-        ifValueString = context.nodeAsString(ifValueNode),
-        elseValueString = context.nodeAsString(elseValueNode),
-        valueString = context.nodeAsString(valueNode);
-
-  string = `If (${valueString}) ${ifValueString} ${elseValueString}`;
+function stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context) {
+  const valueString = value.getString(),
+        ifValueString = ifValue.getString(),
+        elseValueString = elseValue.getString(),
+        string = `If (${valueString}) ${ifValueString} ${elseValueString}`;
 
   return string;
 }
