@@ -31,7 +31,6 @@ import AnonymousProcedure from "./dom/procedure/anonymous";
 import VariableAssignment from "./dom/assignment/variable";
 import VariableAssignments from "./dom/assignments/variable";
 import ProcedureDeclaration from "./dom/declaration/procedure";
-import AnonymousProcedureCall from "./dom/procedureCall/anonymous";
 
 export { default as Values } from "./dom/values";
 export { default as FileContext } from "./context/file";

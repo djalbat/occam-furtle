@@ -7,12 +7,10 @@ import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 import { variablesFromValuesAndParameters } from "../procedure";
 
-const parametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
-      typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
+const typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
       someAnonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure"),
       everyAnonymousProcedureNodeQuery = nodeQuery("/every/anonymousProcedure"),
-      reduceAnonymousProcedureNodeQuery = nodeQuery("/reduce/anonymousProcedure"),
-      anonymousProcedureCallAnonymousProcedureNodeQuery = nodeQuery("/anonymousProcedureCall/anonymousProcedure");
+      reduceAnonymousProcedureNodeQuery = nodeQuery("/reduce/anonymousProcedure");
 
 export default domAssigned(class AnonymousProcedure {
   constructor(string, type, parameters, returnBlock) {
@@ -83,14 +81,6 @@ export default domAssigned(class AnonymousProcedure {
   static fromReduceNode(reduceNode, context) {
     const reduceAnonymousProcedureNode = reduceAnonymousProcedureNodeQuery(reduceNode),
           anonymousProcedureNode = reduceAnonymousProcedureNode,  ///
-          anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
-
-    return anonymousProcedure;
-  }
-
-  static fromAnonymousProcedureCallNode(anonymousProcedureCallNode, context) {
-    const anonymousProcedureCallAnonymousProcedureNode = anonymousProcedureCallAnonymousProcedureNodeQuery(anonymousProcedureCallNode),
-          anonymousProcedureNode = anonymousProcedureCallAnonymousProcedureNode,  ///
           anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
     return anonymousProcedure;

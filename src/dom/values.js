@@ -6,8 +6,7 @@ import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const valuesNodeQuery = nodeQuery("/value/procedureCall/values"),
-      valueNodesQuery = nodesQuery("/values/value"),
-      anonymousProcedureCallValuesNodeQuery = nodeQuery("/anonymousProcedureCall/values");
+      valueNodesQuery = nodesQuery("/values/value");
 
 export default domAssigned(class Values {
   constructor(string, array) {
@@ -99,14 +98,6 @@ export default domAssigned(class Values {
     if (valuesNode !== null) {
       values = valuesFromValuesNode(valuesNode, context);
     }
-
-    return values;
-  }
-
-  static fromAnonymousProcedureCallNode(anonymousProcedureCallNode, context) {
-    const anonymousProcedureCallValuesNode = anonymousProcedureCallValuesNodeQuery(anonymousProcedureCallNode),
-          valuesNode = anonymousProcedureCallValuesNode,  ///
-          values = valuesFromValuesNode(valuesNode, context);
 
     return values;
   }
