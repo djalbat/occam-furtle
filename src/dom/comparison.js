@@ -10,8 +10,7 @@ import { EQUAL_TO, NOT_EQUAL_TO } from "../constants";
 const terminalNodeQuery = nodeQuery("/comparison/@*"),
       leftValueNodeQuery = nodeQuery("/comparison/value[0]"),
       rightValueNodeQuery = nodeQuery("/comparison/value[1]"),
-      valueComparisonNodeQuery = nodeQuery("/value/comparison"),
-      conditionComparisonNodeQuery = nodeQuery("/condition/comparison");
+      valueComparisonNodeQuery = nodeQuery("/value/comparison");
 
 export default domAssigned(class Comparison {
   constructor(string, negated, leftValue, rightValue) {
@@ -84,20 +83,6 @@ export default domAssigned(class Comparison {
 
     if (valueComparisonNode !== null) {
       const comparisonNode = valueComparisonNode; ///
-
-      comparison = comparisonFromComparisonNode(comparisonNode, context);
-    }
-
-    return comparison;
-  }
-
-  static fromConditionNode(conditionNode, context) {
-    let comparison = null;
-
-    const conditionComparisonNode = conditionComparisonNodeQuery(conditionNode);
-
-    if (conditionComparisonNode !== null) {
-      const comparisonNode = conditionComparisonNode; ///
 
       comparison = comparisonFromComparisonNode(comparisonNode, context);
     }

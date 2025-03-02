@@ -4,13 +4,10 @@ import dom from "../dom";
 import Exception from "../exception";
 
 import { nodeQuery } from "../utilities/query";
+import { NODES_TYPE } from "../types";
 import { domAssigned } from "../dom";
-import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
-const variableNodeQuery = nodeQuery("/reduce/variable"),
-      parametersNodeQuery = nodeQuery("/reduce/anonymousProcedure/parameters"),
-      valueReduceNodeQuery = nodeQuery("/value/reduce"),
-      initialValueNodeQuery = nodeQuery("/reduce/value"); ///
+const valueReduceNodeQuery = nodeQuery("/value/reduce"); ///
 
 export default domAssigned(class Reduce {
   constructor(string, variable, initialValue, anonymousProcedure) {
@@ -89,20 +86,26 @@ export default domAssigned(class Reduce {
     const valueReduceNode = valueReduceNodeQuery(valueNode);
 
     if (valueReduceNode !== null) {
-      const { Value, Variable, AnonymousProcedure } = dom,
-            reduceNode = valueReduceNode, ///
-            value = Value.fromReduceNode(reduceNode, context),
-            variable = Variable.fromReduceNode(reduceNode, context),
-            initialValue = value, ///
-            anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context),
-            string = stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure);
+      const reduceNode = valueReduceNode; ///
 
-      reduce = new Reduce(string, variable, initialValue, anonymousProcedure);
+      reduce = reduceFromReduceNode(reduceNode, context);
     }
 
     return reduce;
   }
 });
+
+function reduceFromReduceNode(reduceNode, context) {
+  const { Value, Reduce, Variable, AnonymousProcedure } = dom,
+        value = Value.fromReduceNode(reduceNode, context),
+        variable = Variable.fromReduceNode(reduceNode, context),
+        initialValue = value, ///
+        anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context),
+        string = stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure),
+        reduce = new Reduce(string, variable, initialValue, anonymousProcedure);
+
+  return reduce;
+}
 
 function stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure) {
   const variableString = variable.getString(),

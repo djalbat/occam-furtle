@@ -6,7 +6,7 @@ import Exception from "../exception";
 import { domAssigned } from "../dom";
 import { nodeQuery } from "../utilities/query";
 
-const procedureCallNodeQuery = nodeQuery("/value/procedureCall");
+const valueProcedureCallNodeQuery = nodeQuery("/value/procedureCall");
 
 export default domAssigned(class ProcedureCall {
   constructor(string, reference, values) {
@@ -56,21 +56,27 @@ export default domAssigned(class ProcedureCall {
   static fromValueNode(valueNode, context) {
     let procedureCall = null;
 
-    const procedureCallNode = procedureCallNodeQuery(valueNode);
+    const valueProcedureCallNode = valueProcedureCallNodeQuery(valueNode);
 
-    if (procedureCallNode !== null) {
-      const { Values, Reference } = dom,
-            node = procedureCallNode, ///
-            reference = Reference.fromValueNode(valueNode, context),
-            values = Values.fromValueNode(valueNode, context),
-            string = stringFromValuesAndReference(values, reference, context);
+    if (valueProcedureCallNode !== null) {
+      const procedureCallNode = valueProcedureCallNode; ///
 
-      procedureCall = new ProcedureCall(string, reference, values);
+      procedureCall = procedureCallFromProcedureCallNode(procedureCallNode, context);
     }
 
     return procedureCall;
   }
 });
+
+function procedureCallFromProcedureCallNode(procedureCallNode, context) {
+  const { Values, Reference, ProcedureCall } = dom,
+        reference = Reference.fromProcedureCallNode(procedureCallNode, context),
+        values = Values.fromProcedureCallNode(procedureCallNode, context),
+        string = stringFromValuesAndReference(values, reference, context),
+        procedureCall = new ProcedureCall(string, reference, values);
+
+  return procedureCall;
+}
 
 function stringFromValuesAndReference(values, reference, context) {
   const valuesString = values.getString(),

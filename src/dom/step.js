@@ -44,16 +44,22 @@ export default domAssigned(class Step {
   static name = "Step";
 
   static fromStepNode(stepNode, context) {
-    const { ArrayAssignment, ObjectAssigment, VariableAssignments } = dom,
-          string = stringFromNothing(context),
-          arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
-          objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
-          variablesDeclaration = VariableAssignments.fromStepNode(stepNode, context),
-          step = new Step(string, arrayAssignment, objectAssigment, variablesDeclaration);
+    const step = stepFromStepNode(stepNode, context);
 
     return step;
   }
 });
+
+function stepFromStepNode(stepNode, context) {
+  const { Step, ArrayAssignment, ObjectAssigment, VariableAssignments } = dom,
+        string = stringFromNothing(context),
+        arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
+        objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
+        variablesDeclaration = VariableAssignments.fromStepNode(stepNode, context),
+        step = new Step(string, arrayAssignment, objectAssigment, variablesDeclaration);
+
+  return step;
+}
 
 function stringFromNothing(context) {
   const string = EMPTY_STRING;

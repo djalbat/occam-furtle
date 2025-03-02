@@ -8,8 +8,8 @@ import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 
 const ifValueNodeQuery = nodeQuery("/ternary/value[1]"),
-      ternaryNodeQuery = nodeQuery("/value/ternary"),
-      elseValueNodeQuery = nodeQuery("/ternary/value[2]");
+      elseValueNodeQuery = nodeQuery("/ternary/value[2]"),
+      valueTernaryNodeQuery = nodeQuery("/value/ternary");
 
 export default domAssigned(class Ternary {
   constructor(string, value, ifValue, elseValue) {
@@ -57,8 +57,8 @@ export default domAssigned(class Ternary {
     const boolean = value.getBoolean();
 
     value = boolean ?
-      this.ifValue.evaluate(context) :
-        this.elseValue.evaluate(context);
+              this.ifValue.evaluate(context) :
+                this.elseValue.evaluate(context);
 
     context.debug(`...evaluated the '${ternaryString}' ternary.`);
 
@@ -70,23 +70,30 @@ export default domAssigned(class Ternary {
   static fromValueNode(valueNode, context) {
     let ternary = null;
 
-    const ternaryNode = ternaryNodeQuery(valueNode);
+    const valueTernaryNode = valueTernaryNodeQuery(valueNode);
 
-    if (ternaryNode !== null) {
-      const { Value } = dom,
-            ifValueNode = ifValueNodeQuery(ternaryNode),
-            elseValueNode = elseValueNodeQuery(ternaryNode),
-            value = Value.fromTernaryNode(ternaryNode, context),
-            ifValue = Value.fromValueNode(ifValueNode, context),
-            elseValue = Value.fromValueNode(elseValueNode, context),
-            string = stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context);
+    if (valueTernaryNode !== null) {
+      const ternaryNode = valueTernaryNode; ///
 
-      ternary = new Ternary(string, value, ifValue, elseValue);
+      ternary = ternaryFromTernaryNode(ternaryNode, context);
     }
 
     return ternary;
   }
 });
+
+function ternaryFromTernaryNode(ternaryNode, context) {
+  const { Value, Ternary } = dom,
+        ifValueNode = ifValueNodeQuery(ternaryNode),
+        elseValueNode = elseValueNodeQuery(ternaryNode),
+        value = Value.fromTernaryNode(ternaryNode, context),
+        ifValue = Value.fromValueNode(ifValueNode, context),
+        elseValue = Value.fromValueNode(elseValueNode, context),
+        string = stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context),
+        ternary = new Ternary(string, value, ifValue, elseValue);
+
+  return ternary;
+}
 
 function stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context) {
   const valueString = value.asString(context),

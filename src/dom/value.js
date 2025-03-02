@@ -15,7 +15,6 @@ const { match } = arrayUtilities;
 const reduceValueNodeQuery = nodeQuery("/reduce/value"),
       ternaryValueNodeQuery = nodeQuery("/ternary/value"),
       numberTerminalNodeQuery = nodeQuery("/value/@number"),
-      conditionValueNodeQuery = nodeQuery("/condition/value"),
       primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
       returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal"),
@@ -417,30 +416,10 @@ export default domAssigned(class Value {
     return value;
   }
 
-  static fromConditionNode(conditionNode, context) {
-    let value = null;
-
-    const conditionValueNode = conditionValueNodeQuery(conditionNode);
-
-    if (conditionValueNode !== null) {
-      const valueNode = conditionValueNode; ///
-
-      value = valueFromValueNode(valueNode, context);
-    }
-
-    return value;
-  }
-
   static fromReturnStatementNode(returnStatementNode, context) {
-    let value = null;
-
-    const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode);
-
-    if (returnStatementValueNode !== null) {
-      const valueNode = returnStatementValueNode; ///
-
-      value = valueFromValueNode(valueNode, context);
-    }
+    const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode),
+          valueNode = returnStatementValueNode, ///
+          value = valueFromValueNode(valueNode, context);
 
     return value;
   }

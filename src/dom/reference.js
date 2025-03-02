@@ -1,10 +1,12 @@
 "use strict";
 
+import dom from "../dom";
+
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
 const referenceNameTerminalNodeQuery = nodeQuery("/reference/@name"),
-      valueProcedureCallReferenceNodeQuery = nodeQuery("/value/procedureCall/reference");
+      procedureCallReferenceNodeQuery = nodeQuery("/procedureCall/reference");
 
 export default domAssigned(class Reference {
   constructor(string, name) {
@@ -23,30 +25,27 @@ export default domAssigned(class Reference {
   static name = "Reference";
 
   static fromReferenceNode(referenceNode, context) {
-    const node = referenceNode, ///
-          string = context.nodeAsString(node),
-          name = nameFromReferenceNode(referenceNode, context),
-          reference = new Reference(string, name);
+    const reference = referenceFromReferenceNode(referenceNode, context);
 
     return reference;
   }
 
-  static fromValueNode(valueNode, context) {
-    const valueProcedureCallReferenceNod = valueProcedureCallReferenceNodeQuery(valueNode),
-          referenceNode = valueProcedureCallReferenceNod,
-          name = nameFromReferenceNode(referenceNode, context),
-          string = stringFromName(name, context),
-          reference = new Reference(string, name);
+  static fromProcedureCallNode(procedureCallNode, context) {
+    const procedureCallReferenceNod = procedureCallReferenceNodeQuery(procedureCallNode),
+          referenceNode = procedureCallReferenceNod,  ///
+          reference = referenceFromReferenceNode(referenceNode, context);
 
     return reference;
   }
 });
 
-function stringFromName(name, context) {
-  const nameString = name,  ///
-        string = nameString;  ///
+function referenceFromReferenceNode(referenceNode, context) {
+  const { Reference } = dom,
+        name = nameFromReferenceNode(referenceNode, context),
+        string = stringFromName(name, context),
+        reference = new Reference(string, name);
 
-  return string;
+  return reference;
 }
 
 function nameFromReferenceNode(referenceNode, context) {
@@ -55,4 +54,11 @@ function nameFromReferenceNode(referenceNode, context) {
         name = referenceNameTerminalNodeContent; ///
 
   return name;
+}
+
+function stringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
 }

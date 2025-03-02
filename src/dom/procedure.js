@@ -7,9 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 
-const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
-      parametersNodeQuery = nodeQuery("/procedureDeclaration/parameters"),
-      typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
+const typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
 export default domAssigned(class Procedure {
   constructor(string, type, label, parameters, returnBlock) {
@@ -82,13 +80,7 @@ export default domAssigned(class Procedure {
   static name = "Procedure";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const { Label, ReturnBlock, Parameters } = dom,
-          type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
-          label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          string = stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
-          procedureDeclaration = new Procedure(string, type, label, parameters, returnBlock);
+    const procedureDeclaration = procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context);
 
     return procedureDeclaration;
   }
@@ -111,12 +103,16 @@ export function variablesFromValuesAndParameters(values, parameters, context) {
   return variables;
 }
 
-function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
+function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Label, ReturnBlock, Parameters, Procedure } = dom,
+        returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+        parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+        label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+        type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        string = stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
+        procedureDeclaration = new Procedure(string, type, label, parameters, returnBlock);
 
-  return type;
+  return procedureDeclaration;
 }
 
 function stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock) {
@@ -127,4 +123,12 @@ function stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, re
         string = `${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
 
   return string;
+}
+
+function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
+        typeTerminalNodeContent = typeTerminalNode.getContent(),
+        type = typeTerminalNodeContent; ///
+
+  return type;
 }

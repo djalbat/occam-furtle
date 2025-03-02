@@ -3,6 +3,7 @@
 import dom from "../dom";
 import Exception from "../exception";
 
+import { UNDERSCORE } from "../constants";
 import { domAssigned } from "../dom";
 import { nodeQuery, nodesQuery } from "../utilities/query";
 
@@ -116,7 +117,9 @@ function arrayFromParametersNode(parametersNode, context) {
 
 function stringFromArray(array, context) {
   const parametersString = array.reduce((parametersString, parameter) => {
-          const parameterString = parameter.getString();
+          const parameterString = (parameter !== null)?
+                                    parameter.getString() :
+                                      UNDERSCORE;
 
           parametersString = (parametersString === null) ?
                                parameterString :
