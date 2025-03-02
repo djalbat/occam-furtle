@@ -12,8 +12,8 @@ import { domAssigned } from "../../dom";
 
 const { first } = arrayUtilities;
 
-const nodeQueryNodeQuery = nodeQuery("/value/nodeQuery"),
-      expressionNodeQuery = nodeQuery("/nodeQuery/expression");
+const expressionNodeQuery = nodeQuery("/nodeQuery/expression"),
+      valueNodeQueryNodeQuery = nodeQuery("/value/nodeQuery");
 
 export default domAssigned(class NodeQuery {
   constructor(string, variable, query) {
@@ -95,20 +95,27 @@ export default domAssigned(class NodeQuery {
   static fromValueNode(valueNode, context) {
     let nodeQuery = null;
 
-    const nodeQueryNode = nodeQueryNodeQuery(valueNode);
+    const valueNodeQueryNode = valueNodeQueryNodeQuery(valueNode);
 
-    if (nodeQueryNode !== null) {
-      const { Variable } = dom,
-            node = nodeQueryNode, ///
-            string = context.nodeAsString(node),
-            expressionNode = expressionNodeQuery(nodeQueryNode),
-            expression = Expression.fromExpressionNode(expressionNode),
-            variable = Variable.fromNodeQueryNode(nodeQueryNode, context),
-            query = Query.fromExpression(expression);
+    if (valueNodeQueryNode !== null) {
+      const nodeQueryNode = valueNodeQueryNode; ///
 
-      nodeQuery = new NodeQuery(string, variable, query);
+      nodeQuery = nodeQueryFromNodeQueryNode(nodeQueryNode, context);
     }
 
     return nodeQuery;
   }
 });
+
+function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
+  const { Variable, NodeQuery } = dom,
+        node = nodeQueryNode, ///
+        string = context.nodeAsString(node),
+        expressionNode = expressionNodeQuery(nodeQueryNode),
+        expression = Expression.fromExpressionNode(expressionNode),
+        variable = Variable.fromNodeQueryNode(nodeQueryNode, context),
+        query = Query.fromExpression(expression),
+        nodeQuery = new NodeQuery(string, variable, query);
+
+  return nodeQuery;
+}

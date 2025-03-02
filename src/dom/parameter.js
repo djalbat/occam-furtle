@@ -1,5 +1,6 @@
 "use strict";
 
+import dom from "../dom";
 import Exception from "../exception";
 
 import { domAssigned } from "../dom";
@@ -55,16 +56,22 @@ export default domAssigned(class Parameter {
           terminalNodesLength = terminalNodes.length;
 
     if (terminalNodesLength === 2) {
-      const name = nameFromParameterNode(parameterNode, context),
-            type = typeFromParameterNode(parameterNode, context),
-            string = stringFromNameAndType(name, type, context);
-
-      parameter = new Parameter(string, type, name);
+      parameter = parameterFromParameterNode(parameterNode, context);
     }
 
     return parameter;
   }
 });
+
+function parameterFromParameterNode(parameterNode, context) {
+  const { Parameter } = dom,
+        name = nameFromParameterNode(parameterNode, context),
+        type = typeFromParameterNode(parameterNode, context),
+        string = stringFromNameAndType(name, type, context),
+        parameter = new Parameter(string, type, name);
+
+  return parameter;
+}
 
 function stringFromNameAndType(name, type, context) {
   const nameString = name,  ///

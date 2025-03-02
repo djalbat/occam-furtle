@@ -9,7 +9,7 @@ import { domAssigned } from "../../dom";
 import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
-const objectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
+const stepObjectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default domAssigned(class ObjectAssigment {
   constructor(string, variable, namedParameters) {
@@ -183,20 +183,27 @@ export default domAssigned(class ObjectAssigment {
   static fromStepNode(stepNode, context) {
     let objectAssignment = null;
 
-    const objectAssignmentNode = objectAssignmentNodeQuery(stepNode);
+    const stepObjectAssignmentNode = stepObjectAssignmentNodeQuery(stepNode);
 
-    if (objectAssignmentNode !== null) {
-      const { Variable, NamedParameters } = dom,
-            namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context),
-            variable = Variable.fromObjectAssignmentNode(objectAssignmentNode, context),
-            string = stringFromVariableAndNamesParameters(variable, namedParameters, context);
+    if (stepObjectAssignmentNode !== null) {
+      const objectAssignmentNode = stepObjectAssignmentNode;  ///
 
-      objectAssignment = new ObjectAssigment(string, variable, namedParameters);
+      objectAssignment = objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context);
     }
 
     return objectAssignment;
   }
 });
+
+function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context) {
+  const { Variable, NamedParameters, ObjectAssigment } = dom,
+        namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context),
+        variable = Variable.fromObjectAssignmentNode(objectAssignmentNode, context),
+        string = stringFromVariableAndNamesParameters(variable, namedParameters, context),
+        objectAssignment = new ObjectAssigment(string, variable, namedParameters);
+
+  return objectAssignment;
+}
 
 function stringFromVariableAndNamesParameters(variable, namedParameters, context) {
   const namedParametersString = namedParameters.getString(),

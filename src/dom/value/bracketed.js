@@ -46,18 +46,24 @@ export default domAssigned(class BracketedValue {
     const valueBracketedValueNode = valueBracketedValueNodeQuery(valueNode);
 
     if (valueBracketedValueNode !== null) {
-      const { Value } = dom,
-            bracketedValueNode = valueBracketedValueNode, ///
-            valueNode = valueNodeQuery(bracketedValueNode),
-            value = Value.fromValueNode(valueNode, context),
-            string = stringFromValue(value, context);
+      const bracketedValueNode = valueBracketedValueNode; ///
 
-      bracketedValue = new BracketedValue(string, value);
+      bracketedValue = bracketedValueFromBracketedValueNode(bracketedValueNode, context);
     }
 
     return bracketedValue;
   }
 });
+
+function bracketedValueFromBracketedValueNode(bracketedValueNode, context) {
+  const { Value, BracketedValue } = dom,
+        valueNode = valueNodeQuery(bracketedValueNode),
+        value = Value.fromValueNode(valueNode, context),
+        string = stringFromValue(value, context),
+        bracketedValue = new BracketedValue(string, value);
+
+  return bracketedValue;
+}
 
 function stringFromValue(value, context) {
   const valueString = value.asString(context),

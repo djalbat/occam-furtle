@@ -21,14 +21,20 @@ export default domAssigned(class ProcedureDeclaration {
   static name = "ProcedureDeclaration";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const { Procedure } = dom,
-          procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-          string = stringFromProcedure(procedure, context),
-          procedureDeclaration = new ProcedureDeclaration(string, procedure);
+    const procedureDeclaration = procedureFromProcedureDeclarationNode(procedureDeclarationNode, context);
 
     return procedureDeclaration;
   }
 });
+
+function procedureFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Procedure, ProcedureDeclaration } = dom,
+        procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+        string = stringFromProcedure(procedure, context),
+        procedureDeclaration = new ProcedureDeclaration(string, procedure);
+
+  return procedureDeclaration;
+}
 
 function stringFromProcedure(procedure, context) {
   const procedureString = procedure.getString(),

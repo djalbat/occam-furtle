@@ -1,9 +1,10 @@
 "use strict";
 
+import dom from "../../dom";
 import Exception from "../../exception";
 
+import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
 
 const typeTerminalNodeQuery = nodeQuery("/namedParameter/@type"),
       nameTerminalNodeQuery = nodeQuery("/namedParameter/@name[0]"),
@@ -77,15 +78,22 @@ export default domAssigned(class NamedParameter {
   static name = "NamedParameter";
 
   static fromNamedParameterNode(namedParameterNode, context) {
-    const type = typeFromNamedParameterNode(namedParameterNode, context),
-          name = nameFromNamedParameterNode(namedParameterNode, context),
-          asName = asNameFromNamedParameterNode(namedParameterNode, context),
-          string = stringFromTypeNameAndAsName(type, name, asName, context),
-          namedParameter = new NamedParameter(string, type, name, asName);
+    const namedParameter = namedParameterFromNamedParameterNode(namedParameterNode, context);
 
     return namedParameter;
   }
 });
+
+function namedParameterFromNamedParameterNode(namedParameterNode, context) {
+  const { NamedParameter } = dom,
+        type = typeFromNamedParameterNode(namedParameterNode, context),
+        name = nameFromNamedParameterNode(namedParameterNode, context),
+        asName = asNameFromNamedParameterNode(namedParameterNode, context),
+        string = stringFromTypeNameAndAsName(type, name, asName, context),
+        namedParameter = new NamedParameter(string, type, name, asName);
+
+  return namedParameter;
+}
 
 function stringFromTypeNameAndAsName(type, name, asName, context) {
   let string;

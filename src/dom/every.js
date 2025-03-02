@@ -91,18 +91,24 @@ export default domAssigned(class Every {
     const valueEveryNode = valueEveryNodeQuery(valueNode);
 
     if (valueEveryNode !== null) {
-      const { Variable, AnonymousProcedure } = dom,
-            everyNode = valueEveryNode, ///
-            anonymousProcedure = AnonymousProcedure.fromEveryNode(everyNode, context),
-            variable = Variable.fromEveryNode(everyNode, context),
-            string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context);
+      const everyNode = valueEveryNode; ///
 
-      every = new Every(string, variable, anonymousProcedure);
+      every = everyFromEveryNode(everyNode, context);
     }
 
     return every;
   }
 });
+
+function everyFromEveryNode(everyNode, context) {
+  const { Every, Variable, AnonymousProcedure } = dom,
+        anonymousProcedure = AnonymousProcedure.fromEveryNode(everyNode, context),
+        variable = Variable.fromEveryNode(everyNode, context),
+        string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context),
+        every = new Every(string, variable, anonymousProcedure);
+
+  return every;
+}
 
 function stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
   const variableString = variable.getString(),

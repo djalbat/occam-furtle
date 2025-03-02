@@ -8,7 +8,7 @@ import { domAssigned } from "../../dom";
 import { BOOLEAN_TYPE } from "../../types";
 
 const valueNodeQuery = nodeQuery("/negatedValue/value"),
-      negatedValueNodeQuery = nodeQuery("/value/negatedValue");
+      valueNegatedValueNodeQuery = nodeQuery("/value/negatedValue");
 
 export default domAssigned(class NegatedValue {
   constructor(string, type, value) {
@@ -66,21 +66,28 @@ export default domAssigned(class NegatedValue {
   static fromValueNode(valueNode, context) {
     let negatedValue = null;
 
-    const negatedValueNode = negatedValueNodeQuery(valueNode);
+    const valueNegatedValueNode = valueNegatedValueNodeQuery(valueNode);
 
-    if (negatedValueNode !== null) {
-      const { Value } = dom,
-            type = BOOLEAN_TYPE,
-            valueNode = valueNodeQuery(negatedValueNode),
-            value = Value.fromValueNode(valueNode, context),
-            string = stringFromValue(value, context);
+    if (valueNegatedValueNode !== null) {
+      const negatedValueNode = valueNegatedValueNode; ///
 
-      negatedValue = new NegatedValue(string, type, value);
+      negatedValue = negatedValueFromNegatedValueNode(negatedValueNode, context);
     }
 
     return negatedValue;
   }
 });
+
+function negatedValueFromNegatedValueNode(negatedValueNode, context) {
+  const { Value, NegatedValue } = dom,
+        valueNode = valueNodeQuery(negatedValueNode),
+        value = Value.fromValueNode(valueNode, context),
+        type = BOOLEAN_TYPE,
+        string = stringFromValue(value, context),
+        negatedValue = new NegatedValue(string, type, value);
+
+  return negatedValue;
+}
 
 function stringFromValue(value, context) {
   const valueString = value.asString(context),

@@ -1,10 +1,12 @@
 "use strict";
 
+import dom from "../dom";
+
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const labelNodeQuery = nodeQuery("/procedureDeclaration/label"),
-      nameTerminalNodeQuery = nodeQuery("/label/@name");
+const nameTerminalNodeQuery = nodeQuery("/label/@name"),
+      procedureDeclarationLabelNodeQuery = nodeQuery("/procedureDeclaration/label");
 
 export default domAssigned(class Label {
   constructor(string, name) {
@@ -29,20 +31,21 @@ export default domAssigned(class Label {
   static name = "Label";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const labelNode = labelNodeQuery(procedureDeclarationNode),
-          name = nameFromLabelNode(labelNode, context),
-          string = stringFromName(name, context),
-          label = new Label(string, name);
+    const procedureDeclarationLabelNode = procedureDeclarationLabelNodeQuery(procedureDeclarationNode),
+          labelNode = procedureDeclarationLabelNode,  ///
+          label = labelFromLabelNode(labelNode, context);
 
     return label;
   }
 });
 
-function stringFromName(name, context) {
-  const nameString = name,  ///
-        string = nameString;  ///
+function labelFromLabelNode(labelNode, context) {
+  const { Label } = dom,
+        name = nameFromLabelNode(labelNode, context),
+        string = stringFromName(name, context),
+        label = new Label(string, name);
 
-  return string;
+  return label;
 }
 
 function nameFromLabelNode(labelNode, context) {
@@ -51,5 +54,12 @@ function nameFromLabelNode(labelNode, context) {
         name = nameTerminalNodeContent; ///
 
   return name;
+}
+
+function stringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
 }
 

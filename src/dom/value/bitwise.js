@@ -11,7 +11,7 @@ import { CONJUNCTION, DISJUNCTION } from "../../constants";
 const terminalNodeQuery = nodeQuery("/bitwiseValue/@*"),
       leftValueNodeQuery = nodeQuery("/bitwiseValue/value[0]"),
       rightValueNodeQuery = nodeQuery("/bitwiseValue/value[1]"),
-      bitwiseValueNodeQuery = nodeQuery("/value/bitwiseValue");
+      valueBitwiseValueNodeQuery = nodeQuery("/value/bitwiseValue");
 
 export default domAssigned(class BitwiseValue {
   constructor(string, type, disjoint, leftValue, rightValue) {
@@ -89,24 +89,31 @@ export default domAssigned(class BitwiseValue {
   static fromValueNode(valueNode, context) {
     let bitwiseValue = null;
 
-    const bitwiseValueNode = bitwiseValueNodeQuery(valueNode);
+    const valueBitwiseValueNode = valueBitwiseValueNodeQuery(valueNode);
 
-    if (bitwiseValueNode !== null) {
-      const { Value } = dom,
-            type = BOOLEAN_TYPE,
-            leftValueNode = leftValueNodeQuery(bitwiseValueNode),
-            rightValueNode = rightValueNodeQuery(bitwiseValueNode),
-            disjoint = disjointFromBitwiseValueNode(bitwiseValueNode, context),
-            leftValue = Value.fromValueNode(leftValueNode, context),
-            rightValue = Value.fromValueNode(rightValueNode, context),
-            string = stringFromTypeDisjointLeftValueAndRightValue(disjoint, leftValue, rightValue, context);
+    if (valueBitwiseValueNode !== null) {
+      const bitwiseValueNode = valueBitwiseValueNode; ///
 
-      bitwiseValue = new BitwiseValue(string, type, disjoint, leftValue, rightValue);
+      bitwiseValue = bitwiseValueFromBitwiseValueNode(bitwiseValueNode, context);
     }
 
     return bitwiseValue;
   }
 });
+
+function bitwiseValueFromBitwiseValueNode(bitwiseValueNode, context) {
+  const { Value, BitwiseValue } = dom,
+        leftValueNode = leftValueNodeQuery(bitwiseValueNode),
+        rightValueNode = rightValueNodeQuery(bitwiseValueNode),
+        type = BOOLEAN_TYPE,
+        disjoint = disjointFromBitwiseValueNode(bitwiseValueNode, context),
+        leftValue = Value.fromValueNode(leftValueNode, context),
+        rightValue = Value.fromValueNode(rightValueNode, context),
+        string = stringFromTypeDisjointLeftValueAndRightValue(disjoint, leftValue, rightValue, context),
+        bitwiseValue = new BitwiseValue(string, type, disjoint, leftValue, rightValue);
+
+  return bitwiseValue;
+}
 
 function disjointFromBitwiseValueNode(bitwiseValueNode, context) {
   const terminalNode = terminalNodeQuery(bitwiseValueNode),

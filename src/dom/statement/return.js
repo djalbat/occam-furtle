@@ -5,7 +5,7 @@ import dom from "../../dom";
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
-const returnStatementNodeQuery = nodeQuery("/returnBlock/returnStatement");
+const returnBlockReturnStatementNodeQuery = nodeQuery("/returnBlock/returnStatement");
 
 export default domAssigned(class ReturnStatement {
   constructor(string, value) {
@@ -38,15 +38,22 @@ export default domAssigned(class ReturnStatement {
   static name = "ReturnStatement";
 
   static fromReturnBlockNode(returnBlockNode, context) {
-    const { Value } = dom,
-          returnStatementNode = returnStatementNodeQuery(returnBlockNode),
-          value = Value.fromReturnStatementNode(returnStatementNode, context),
-          string = stringFromValue(value, context),
-          returnStatement = new ReturnStatement(string, value);
+    const returnBlockReturnStatementNode = returnBlockReturnStatementNodeQuery(returnBlockNode),
+          returnStatementNode = returnBlockReturnStatementNode, ///
+          returnStatement = returnStatementFromReturnStatementNode(returnStatementNode, context);
 
     return returnStatement;
   }
 });
+
+function returnStatementFromReturnStatementNode(returnStatementNode, context) {
+  const { Value, ReturnStatement } = dom,
+        value = Value.fromReturnStatementNode(returnStatementNode, context),
+        string = stringFromValue(value, context),
+        returnStatement = new ReturnStatement(string, value);
+
+  return returnStatement;
+}
 
 function stringFromValue(value, context) {
   const valueString = value.asString(context),

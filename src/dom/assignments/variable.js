@@ -6,8 +6,8 @@ import { domAssigned } from "../../dom";
 import { nodeQuery, nodesQuery } from "../../utilities/query";
 
 const typeTerminalNodeQuery = nodeQuery("/variableAssignments/@type"),
-      variableAssignmentsNodeQuery = nodeQuery("/step/variableAssignments"),
-      variableAssignmentNodesQuery = nodesQuery("/variableAssignments/variableAssignment");
+      variableAssignmentNodesQuery = nodesQuery("/variableAssignments/variableAssignment"),
+      stepVariableAssignmentsNodeQuery = nodeQuery("/step/variableAssignments");
 
 export default domAssigned(class VariableAssignments {
   constructor(string, array) {
@@ -40,19 +40,27 @@ export default domAssigned(class VariableAssignments {
   static fromStepNode(stepNode, context) {
     let variableAssignments = null;
 
-    const variableAssignmentsNode = variableAssignmentsNodeQuery(stepNode);
+    const stepVariableAssignmentsNode = stepVariableAssignmentsNodeQuery(stepNode);
 
-    if (variableAssignmentsNode !== null) {
-      const type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
-            array = arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context),
-            string = stringFromArray(array, context);
+    if (stepVariableAssignmentsNode !== null) {
+      const variableAssignmentsNode = stepVariableAssignmentsNode;  ///
 
-      variableAssignments = new VariableAssignments(string, array);
+      variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
     }
 
     return variableAssignments;
   }
 });
+
+function variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context) {
+  const { VariableAssignments } = dom,
+        type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
+        array = arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context),
+        string = stringFromArray(array, context),
+        variableAssignments = new VariableAssignments(string, array);
+
+  return variableAssignments;
+}
 
 function stringFromArray(array, context) {
   const variableAssignmentsString = array.reduce((variableAssignmentsString, variableAssignment) => {

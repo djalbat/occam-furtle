@@ -68,58 +68,51 @@ export default domAssigned(class Parameters {
 
   static name = "Parameters";
 
-  static fromStringAndArray(string, array) {
-    const parameters = new Parameters(string, array);
-
-    return parameters;
-  }
-
   static fromArrayAssignmentNode(arrayAssignmentNode, context) {
     const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
           parametersNode = arrayAssignmentParametersNode,  ///
-          node = parametersNode,  ///
-          string = context.nodeAsString(node),
-          parameterNodes = parameterNodesQuery(parametersNode),
-          array = arrayFromParameterNodes(parameterNodes, context),
-          parameters = new Parameters(string, array);
+          parameters = parametersFromParametersNode(parametersNode, context);
 
     return parameters;
   }
 
   static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
-    const { Parameter } = dom,
-          anonymousProcedureParametersNode = anonymousProcedureParametersNodeQuery(anonymousProcedureNode),
-          parameterNode = anonymousProcedureParametersNode, ///
-          parameterNodes = parameterNodesQuery(parameterNode),
-          array = parameterNodes.map((parameterNode) => {
-            const parameter = Parameter.fromParameterNode(parameterNode, context);
-
-            return parameter;
-          }),
-          string = stringFromArray(array, context),
-          parameters = new Parameters(string, array);
+    const anonymousProcedureParametersNode = anonymousProcedureParametersNodeQuery(anonymousProcedureNode),
+          parametersNode = anonymousProcedureParametersNode,  ///
+          parameters = parametersFromParametersNode(parametersNode, context);
 
     return parameters;
   }
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    let parameters = null;
-
-    const procedureDeclarationParametersNode = procedureDeclarationParametersNodeQuery(procedureDeclarationNode);
-
-    if (procedureDeclarationParametersNode !== null) {
-      const parametersNode = procedureDeclarationParametersNode,  ///
-            node = parametersNode,  ///
-            string = context.nodeAsString(node),
-            parameterNodes = parameterNodesQuery(parametersNode),
-            array = arrayFromParameterNodes(parameterNodes, context);
-
-      parameters = new Parameters(string, array);
-    }
+    const procedureDeclarationParametersNode = procedureDeclarationParametersNodeQuery(procedureDeclarationNode),
+          parametersNode = procedureDeclarationParametersNode,  ///
+          parameters = parametersFromParametersNode(parametersNode, context);
 
     return parameters;
   }
 });
+
+function parametersFromParametersNode(parametersNode, context) {
+  const { Parameters } = dom,
+        array = arrayFromParametersNode(parametersNode, context),
+        string = stringFromArray(array, context),
+        parameters = new Parameters(string, array);
+
+  return parameters;
+}
+
+function arrayFromParametersNode(parametersNode, context) {
+  const parameterNodes = parameterNodesQuery(parametersNode),
+        array = parameterNodes.map((parameterNode) => { ///
+          const { Parameter } = dom,
+                parameter = Parameter.fromParameterNode(parameterNode, context);
+
+          return parameter;
+        });
+
+  return array;
+}
 
 function stringFromArray(array, context) {
   const parametersString = array.reduce((parametersString, parameter) => {
@@ -134,15 +127,4 @@ function stringFromArray(array, context) {
         string = parametersString;  ///
 
   return string;
-}
-
-function arrayFromParameterNodes(parameterNodes, context) {
-  const { Parameter } = dom,
-        array = parameterNodes.map((parameterNode) => { ///
-          const parameter = Parameter.fromParameterNode(parameterNode, context);
-
-          return parameter;
-        });
-
-  return array;
 }

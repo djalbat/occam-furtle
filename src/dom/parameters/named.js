@@ -106,15 +106,33 @@ export default domAssigned(class NamedParameters {
 
   static fromObjectAssignmentNode(objectAssignmentNode, context) {
     const objectAssignmentNamedParametersNode = objectAssignmentNamedParametersNodeQuery(objectAssignmentNode),
-          parametersNode = objectAssignmentNamedParametersNode,  ///
-          namedParameterNodes = namedParameterNodesQuery(parametersNode),
-          array = arrayFromNamedParameterNodes(namedParameterNodes, context),
-          string = stringFromArray(array, context),
-          namedParameters = new NamedParameters(string, array);
+          namedParametersNode = objectAssignmentNamedParametersNode,  ///
+          namedParameters = namedParametersFromNamedParametersNode(namedParametersNode, context);
 
     return namedParameters;
   }
 });
+
+function namedParametersFromNamedParametersNode(namedParametersNode, context) {
+  const { NamedParameters } = dom,
+        namedParameterNodes = namedParameterNodesQuery(namedParametersNode),
+        array = arrayFromNamedParameterNodes(namedParameterNodes, context),
+        string = stringFromArray(array, context),
+        namedParameters = new NamedParameters(string, array);
+
+  return namedParameters;
+}
+
+function arrayFromNamedParameterNodes(namedParameterNodes, context) {
+  const { NamedParameter } = dom,
+        array = namedParameterNodes.map((namedParameterNode) => { ///
+          const namedParameter = NamedParameter.fromNamedParameterNode(namedParameterNode, context);
+
+          return namedParameter;
+        });
+
+  return array;
+}
 
 function stringFromArray(array, context) {
   const namedParametersSString = array.reduce((namedParametersSString, namedParameter) => {
@@ -129,15 +147,4 @@ function stringFromArray(array, context) {
         string = namedParametersSString;  ///
 
   return string;
-}
-
-function arrayFromNamedParameterNodes(namedParameterNodes, context) {
-  const { NamedParameter } = dom,
-        array = namedParameterNodes.map((namedParameterNode) => { ///
-          const namedParameter = NamedParameter.fromNamedParameterNode(namedParameterNode, context);
-
-          return namedParameter;
-        });
-
-  return array;
 }

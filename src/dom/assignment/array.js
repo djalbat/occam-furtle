@@ -7,7 +7,7 @@ import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
-const arrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
+const stepArrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
 
 export default domAssigned(class ArrayAssigment {
   constructor(string, variable, parameters) {
@@ -98,20 +98,27 @@ export default domAssigned(class ArrayAssigment {
   static fromStepNode(stepNode, context) {
     let arrayAssignment = null;
 
-    const arrayAssignmentNode = arrayAssignmentNodeQuery(stepNode);
+    const stepArrayAssignmentNode = stepArrayAssignmentNodeQuery(stepNode);
 
-    if (arrayAssignmentNode !== null) {
-      const { Variable, Parameters } = dom,
-            parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context),
-            variable = Variable.fromArrayAssignmentNode(arrayAssignmentNode, context),
-            string = stringFromVariableAndParameters(variable, parameters, context);
+    if (stepArrayAssignmentNode !== null) {
+      const arrayAssignmentNode = stepArrayAssignmentNode;  ///
 
-      arrayAssignment = new ArrayAssigment(string, variable, parameters);
+      arrayAssignment = arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context);
     }
 
     return arrayAssignment;
   }
 });
+
+function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
+  const { Variable, Parameters, ArrayAssignment } = dom,
+        parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context),
+        variable = Variable.fromArrayAssignmentNode(arrayAssignmentNode, context),
+        string = stringFromVariableAndParameters(variable, parameters, context),
+        arrayAssignment = new ArrayAssignment(string, variable, parameters);
+
+  return arrayAssignment;
+}
 
 function stringFromVariableAndParameters(variable, parameters, context) {
   const variableString = variable.getString(),
