@@ -99,13 +99,22 @@ export default domAssigned(class AnonymousProcedure {
 
 function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const { Parameters, ReturnBlock, AnonymousProcedure } = dom,
-        string = stringFromAnonymousProcedureNode(anonymousProcedureNode, context),
-        type = typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context),
-        parameters = Parameters.fromAnonymousProcedureNode(anonymousProcedureNode, context),
         returnBlock = ReturnBlock.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+        parameters = Parameters.fromAnonymousProcedureNode(anonymousProcedureNode, context),
+        type = typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context),
+        string = stringFromTypeParametersAndReturnBlock(type, parameters, returnBlock, context),
         anonymousProcedure = new AnonymousProcedure(string, type, parameters, returnBlock);
 
   return anonymousProcedure;
+}
+
+function stringFromTypeParametersAndReturnBlock(type, parameters, returnBlock, context) {
+  const typeString = type,  ///
+        parametersString = parameters.getString(),
+        returnBlockString = returnBlock.getString(),
+        string = `${typeString} (${parametersString}) ${returnBlockString}`;
+
+  return string;
 }
 
 function typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context) {
@@ -114,15 +123,4 @@ function typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context
         type = typeTerminalNodeContent; ///
 
   return type;
-}
-
-function stringFromAnonymousProcedureNode(anonymousProcedureNode, context) {
-  const parametersNode = parametersNodeQuery(anonymousProcedureNode),
-        typeTerminalNode = typeTerminalNodeQuery(anonymousProcedureNode),
-        parametersString = context.nodeAsString(parametersNode),
-        typeNode = typeTerminalNode,  ///
-        typeString = context.nodeAsString(typeNode),
-        string = `${typeString} (${parametersString}) { ... }`;
-
-  return string;
 }
