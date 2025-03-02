@@ -7,9 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
-const variableNodeQuery = nodeQuery("/some/variable"),
-      valueSomeNodeQuery = nodeQuery("/value/some"),
-      parametersNodeQuery = nodeQuery("/some/anonymousProcedure/parameters");
+const valueSomeNodeQuery = nodeQuery("/value/some");
 
 export default domAssigned(class Some {
   constructor(string, variable, anonymousProcedure) {

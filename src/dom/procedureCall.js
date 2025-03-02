@@ -3,8 +3,8 @@
 import dom from "../dom";
 import Exception from "../exception";
 
-import { domAssigned } from "../dom";
 import { nodeQuery } from "../utilities/query";
+import { domAssigned } from "../dom";
 
 const valueProcedureCallNodeQuery = nodeQuery("/value/procedureCall");
 

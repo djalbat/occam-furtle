@@ -2,7 +2,6 @@
 
 import dom from "../../dom";
 
-import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
 export default domAssigned(class VariableAssignment {
