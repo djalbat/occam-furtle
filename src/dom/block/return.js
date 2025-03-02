@@ -9,6 +9,7 @@ import { nodeQuery, nodesQuery } from "../../utilities/query";
 
 const stepNodesQuery = nodesQuery("/returnBlock/step"),
       nonsenseNodesQuery = nodesQuery("/returnBlock/nonsense"),
+      valueReturnBlockNodeQuery = nodeQuery("/value/returnBlock"),
       anonymousProcedureReturnBlockNodeQuery = nodeQuery("/anonymousProcedure/returnBlock"),
       procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
 
@@ -37,6 +38,12 @@ export default domAssigned(class ReturnBlock {
   }
 
   evaluate(variables, context) {
+    if (context === undefined) {
+      context = variables;  ///
+
+      variables = [];
+    }
+
     if (this.nonsensical) {
       const message = `The return block is nonsensical.`,
             exception = Exception.fromMessage(message);
@@ -59,10 +66,16 @@ export default domAssigned(class ReturnBlock {
 
   static name = "ReturnBlock";
 
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const procedureDeclarationReturnBlockNode = procedureDeclarationReturnBlockNodeQuery(procedureDeclarationNode),
-          returnBlockNode = procedureDeclarationReturnBlockNode,  ///
-          returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
+  static fromValueNode(valueNode, context) {
+    let returnBlock = null;
+
+    const valueReturnBlockNode = valueReturnBlockNodeQuery(valueNode);
+
+    if (valueReturnBlockNode !== null) {
+      const returnBlockNode = valueReturnBlockNode;  ///
+
+      returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
+    }
 
     return returnBlock;
   }
@@ -70,6 +83,14 @@ export default domAssigned(class ReturnBlock {
   static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
     const anonymousProcedureReturnBlockNode = anonymousProcedureReturnBlockNodeQuery(anonymousProcedureNode),
           returnBlockNode = anonymousProcedureReturnBlockNode,  ///
+          returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
+
+    return returnBlock;
+  }
+
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+    const procedureDeclarationReturnBlockNode = procedureDeclarationReturnBlockNodeQuery(procedureDeclarationNode),
+          returnBlockNode = procedureDeclarationReturnBlockNode,  ///
           returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
 
     return returnBlock;

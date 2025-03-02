@@ -52,8 +52,9 @@ export default domAssigned(class Variable {
 
     context.trace(`Evaluating the '${variableString}' variable...`);
 
-    const variableName = this.name, ///
-          variablePresent = context.isVariablePresentByVariableName(variableName);
+    const nested = true,
+          variableName = this.name, ///
+          variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     if (!variablePresent) {
       const message = `The '${variableString}; variable is not present.'`,
@@ -72,10 +73,11 @@ export default domAssigned(class Variable {
   }
 
   assign(value, context) {
-    const valueString = value.asString(context), ///
+    const nested = false,
+          valueString = value.asString(context), ///
           variableName = this.name, ///
           variableString = this.string, ///
-          variablePresent = context.isVariablePresentByVariableName(variableName);
+          variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     context.trace(`Assigning the ${valueString} value to the '${variableString}' variable...`);
 
