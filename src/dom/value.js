@@ -19,7 +19,6 @@ const reduceValueNodeQuery = nodeQuery("/reduce/value"),
       primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
       returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
       stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal"),
-      conditionalBlocksCValueNodeQuery = nodeQuery("/conditionalBlocks/value"),
       variableAssignmentValueNodeQuery = nodeQuery("/variableAssignment/value");
 
 export default domAssigned(class Value {
@@ -442,14 +441,6 @@ export default domAssigned(class Value {
 
       value = valueFromValueNode(valueNode, context);
     }
-
-    return value;
-  }
-
-  static fromConditionalBlocksNode(conditionalBlocksNode, context) {
-    const conditionalBlocksCValueNode = conditionalBlocksCValueNodeQuery(conditionalBlocksNode),
-          valueNode = conditionalBlocksCValueNode,  ///
-          value = valueFromValueNode(valueNode, context);
 
     return value;
   }
