@@ -61,7 +61,7 @@ function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssig
 
 function stringFromValueAndVariable(value, variable, context) {
   const variableString = variable.getString(),
-        valueString = value.getString(),
+        valueString = value.asString(context),
         string = `${variableString} = ${valueString};`;
 
   return string;
