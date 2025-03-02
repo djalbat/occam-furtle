@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Furtle is a dynamically but nonetheless strictly typed, procedural language meant primarily for traversing parse trees. 
+Furtle is a dynamically but nonetheless strictly typed, pure functional language meant primarily for traversing parse trees. 
 It is called from Nominal thus...
 
 ```
@@ -23,25 +23,56 @@ Rule (FreeVariable)
     u is free in P
 ```
 
-...and looks as follows:
+...and looks like, for example:
 
 ```
-Boolean isVariableFree(Node termNode, Node statementNode) {
-  Boolean variableFree = true;
+String variableNameFromTermNode(Node termNode) {
+  Node variableNameTerminalNode = nodeQuery(termNode, /term/variable/@name);
+  
+  String variableName = 
 
-  Boolean variableBound = isVariableBound(termNode, statementNode);
+    If (variableNameTerminalNode != null) {
+      { String content As variableName } = variableNameTerminalNode;
+    
+      Return variableName;
+    } 
 
-  If (variableBound) {
-    variableFree = false;
-  }
-
-  Return variableFree;
+    Else 
+      ""
+  ;
+  
+  Return variableName;
 }
 ```
 
-The above procedure ascertains whether or not the given term's sole variable is bound in the given statement.
-Boundedness is usually defined by induction over the structure of statements, however Occam's custom grammars make this practically unworkable.
-Hence Furtle fulfills this role procedurally, so to speak.
+Despite its strict typing it has a somewhat JavaScripty feel.
+It supports array and object destructuring, for example.
+It also supports "some", "every" and "reduce" functionality as well as ternaries:
+
+```
+String boundVariableNameFromStatementChildNodes(Nodes statementChildNodes) {
+  [ Node terminalNode ] = statementChildNodes;
+
+  { String content } = terminalNode;
+
+  String boundVariableName = 
+
+    If ((content == "∀") || (content == "∃")) {
+      [ _, Node argumentNode ] = statementChildNodes;
+
+      String boundVariableName = boundVariableNameFromArgumentNode(argumentNode);
+  
+      Return boundVariableName;
+    }
+    Else
+     ""
+  ;
+
+  Return boundVariableName;
+}
+```
+
+It is nascent at this stage, but is expected to grow.
 
 ## Installation
 
