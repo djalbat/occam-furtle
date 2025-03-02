@@ -89,10 +89,10 @@ export default domAssigned(class Ternary {
 });
 
 function stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context) {
-  const valueString = value.getString(),
-        ifValueString = ifValue.getString(),
-        elseValueString = elseValue.getString(),
-        string = `If (${valueString}) ${ifValueString} ${elseValueString}`;
+  const valueString = value.asString(context),
+        ifValueString = ifValue.asString(context),
+        elseValueString = elseValue.asString(context),
+        string = `If (${valueString}) ${ifValueString} Else ${elseValueString};`;
 
   return string;
 }

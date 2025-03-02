@@ -34,14 +34,20 @@ export default domAssigned(class Reference {
   static fromValueNode(valueNode, context) {
     const valueProcedureCallReferenceNod = valueProcedureCallReferenceNodeQuery(valueNode),
           referenceNode = valueProcedureCallReferenceNod,
-          node = referenceNode, ///
-          string = context.nodeAsString(node),
           name = nameFromReferenceNode(referenceNode, context),
+          string = stringFromName(name, context),
           reference = new Reference(string, name);
 
     return reference;
   }
 });
+
+function stringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
+}
 
 function nameFromReferenceNode(referenceNode, context) {
   const referenceNameTerminalNode = referenceNameTerminalNodeQuery(referenceNode),

@@ -57,8 +57,7 @@ export default domAssigned(class Parameter {
     if (terminalNodesLength === 2) {
       const name = nameFromParameterNode(parameterNode, context),
             type = typeFromParameterNode(parameterNode, context),
-            node = parameterNode, //
-            string = context.nodeAsString(node);
+            string = stringFromNameAndType(name, type, context);
 
       parameter = new Parameter(string, type, name);
     }
@@ -66,6 +65,14 @@ export default domAssigned(class Parameter {
     return parameter;
   }
 });
+
+function stringFromNameAndType(name, type, context) {
+  const nameString = name,  ///
+        typeString = type,  ///
+        string = `${typeString} ${nameString}`;
+
+  return string;
+}
 
 function nameFromParameterNode(parameterNode, context) {
   const nameTerminalNode = nameTerminalNodeQuery(parameterNode),

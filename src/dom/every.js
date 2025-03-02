@@ -7,9 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
-const variableNodeQuery = nodeQuery("/every/variable"),
-      valueEveryNodeQuery = nodeQuery("/value/every"),
-      parametersNodeQuery = nodeQuery("/every/anonymousProcedure/parameters");
+const valueEveryNodeQuery = nodeQuery("/value/every");
 
 export default domAssigned(class Every {
   constructor(string, variable, anonymousProcedure) {
@@ -95,9 +93,9 @@ export default domAssigned(class Every {
     if (valueEveryNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
             everyNode = valueEveryNode, ///
-            string = stringFromEveryNode(everyNode, context),
+            anonymousProcedure = AnonymousProcedure.fromEveryNode(everyNode, context),
             variable = Variable.fromEveryNode(everyNode, context),
-            anonymousProcedure = AnonymousProcedure.fromEveryNode(everyNode, context);
+            string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context);
 
       every = new Every(string, variable, anonymousProcedure);
     }
@@ -106,12 +104,10 @@ export default domAssigned(class Every {
   }
 });
 
-function stringFromEveryNode(everyNode, context) {
-  const variableNode = variableNodeQuery(everyNode),
-        parametersNode = parametersNodeQuery(everyNode),
-        variableString = context.nodeAsString(variableNode),
-        parametersString = context.nodeAsString(parametersNode),
-        string = `Every(${variableString}, (${parametersString}) { ... })`;
+function stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+  const variableString = variable.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        string = `Every(${variableString}, ${anonymousProcedureString}) `;
 
   return string;
 }

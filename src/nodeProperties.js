@@ -3,7 +3,6 @@
 import Exception from "./exception";
 import NodeProperty from "./nodeProperty";
 
-import { stringFromArray } from "./dom/parameters";
 import { NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "./types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "./parameterNames";
 
@@ -82,3 +81,18 @@ class NodeProperties {
 const nodeProperties = NodeProperties.fromNothing();
 
 export default nodeProperties;
+
+function stringFromArray(array, context) {
+  const nodePropertiesString = array.reduce((nodePropertiesString, nodeProperty) => {
+          const nodePropertyString = nodeProperty.getString();
+
+          nodePropertiesString = (nodePropertiesString === null) ?
+                                   nodePropertyString :
+                                    `${nodePropertiesString}, ${nodePropertyString}`;
+
+          return nodePropertiesString;
+        }, null),
+        string = nodePropertiesString;  ///
+
+  return string;
+}

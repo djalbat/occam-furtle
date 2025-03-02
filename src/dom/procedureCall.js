@@ -61,9 +61,9 @@ export default domAssigned(class ProcedureCall {
     if (procedureCallNode !== null) {
       const { Values, Reference } = dom,
             node = procedureCallNode, ///
-            string = context.nodeAsString(node),
             reference = Reference.fromValueNode(valueNode, context),
-            values = Values.fromValueNode(valueNode, context);
+            values = Values.fromValueNode(valueNode, context),
+            string = stringFromValuesAndReference(values, reference, context);
 
       procedureCall = new ProcedureCall(string, reference, values);
     }
@@ -71,3 +71,11 @@ export default domAssigned(class ProcedureCall {
     return procedureCall;
   }
 });
+
+function stringFromValuesAndReference(values, reference, context) {
+  const valuesString = values.getString(),
+        referenceString = reference.getString(),
+        string = `${referenceString}(${valuesString})`;
+
+  return string;
+}

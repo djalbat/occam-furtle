@@ -121,7 +121,7 @@ export default domAssigned(class Parameters {
   }
 });
 
-export function stringFromArray(array, context) {
+function stringFromArray(array, context) {
   const parametersString = array.reduce((parametersString, parameter) => {
           const parameterString = parameter.getString();
 

@@ -91,11 +91,11 @@ export default domAssigned(class Reduce {
     if (valueReduceNode !== null) {
       const { Value, Variable, AnonymousProcedure } = dom,
             reduceNode = valueReduceNode, ///
-            string = stringFromReduceNode(reduceNode, context),
             value = Value.fromReduceNode(reduceNode, context),
             variable = Variable.fromReduceNode(reduceNode, context),
             initialValue = value, ///
-            anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context);
+            anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context),
+            string = stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure);
 
       reduce = new Reduce(string, variable, initialValue, anonymousProcedure);
     }
@@ -104,14 +104,11 @@ export default domAssigned(class Reduce {
   }
 });
 
-function stringFromReduceNode(reduceNode, context) {
-  const variableNode = variableNodeQuery(reduceNode),
-        parametersNode = parametersNodeQuery(reduceNode),
-        initialValueNode = initialValueNodeQuery(reduceNode),
-        variableString = context.nodeAsString(variableNode),
-        parametersString = context.nodeAsString(parametersNode),
-        initialValueString = context.nodeAsString(initialValueNode),
-        string = `Reduce(${variableString}, (${parametersString}) { ... }, ${initialValueString})`;
+function stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure) {
+  const variableString = variable.getString(),
+        initialValueString = initialValue.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        string = `Reduce(${variableString}, ${anonymousProcedureString}, ${initialValueString})`;
 
   return string;
 }

@@ -90,10 +90,15 @@ export default domAssigned(class NamedParameter {
 function stringFromTypeNameAndAsName(type, name, asName, context) {
   let string;
 
-  string = `${type} ${name}`;
+  const typeString = type,  ///
+        nameString = name;  ///
+
+  string = `${typeString} ${nameString}`;
 
   if (asName !== null) {
-    string = `${string} As ${asName}`;
+    const asNameString = asName;  ///
+
+    string = `${string} As ${asNameString}`;
   }
 
   return string;

@@ -50,7 +50,9 @@ export default class NodeProperty {
 };
 
 function stringFromNameAndType(name, type, context) {
-  const string = `${type} ${name}`;
+  const typeString = type,  ///
+        nameString = name,  ///
+        string = `${typeString} ${nameString}`;
 
   return string;
 }

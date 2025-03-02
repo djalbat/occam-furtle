@@ -83,11 +83,11 @@ export default domAssigned(class Procedure {
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const { Label, ReturnBlock, Parameters } = dom,
-          string = stringFromProcedureDeclarationNode(procedureDeclarationNode, context),
           type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
           label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
           returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+          string = stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
           procedureDeclaration = new Procedure(string, type, label, parameters, returnBlock);
 
     return procedureDeclaration;
@@ -119,15 +119,12 @@ function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   return type;
 }
 
-function stringFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const labelNode = labelNodeQuery(procedureDeclarationNode),
-        parametersNode = parametersNodeQuery(procedureDeclarationNode),
-        typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
-        typeNode = typeTerminalNode,  ///
-        typeString = context.nodeAsString(typeNode),
-        labelString = context.nodeAsString(labelNode),
-        parametersString = context.nodeAsString(parametersNode),
-        string = `${typeString} ${labelString}(${parametersString}) { ... }`;
+function stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock) {
+  const typeString = type,  ///
+        labelString = label.getString(),
+        parametersString = parameters.getString(),
+        returnBlockString = returnBlock.getString(),
+        string = `${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
 
   return string;
 }

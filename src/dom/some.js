@@ -95,9 +95,9 @@ export default domAssigned(class Some {
     if (valueSomeNode !== null) {
       const { Variable, AnonymousProcedure } = dom,
             someNode = valueSomeNode, ///
-            string = stringFromSomeNode(someNode, context),
+            anonymousProcedure = AnonymousProcedure.fromSomeNode(someNode, context),
             variable = Variable.fromSomeNode(someNode, context),
-            anonymousProcedure = AnonymousProcedure.fromSomeNode(someNode, context);
+            string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context);
 
       some = new Some(string, variable, anonymousProcedure);
     }
@@ -106,12 +106,10 @@ export default domAssigned(class Some {
   }
 });
 
-function stringFromSomeNode(someNode, context) {
-  const variableNode = variableNodeQuery(someNode),
-        parametersNode = parametersNodeQuery(someNode),
-        variableString = context.nodeAsString(variableNode),
-        parametersString = context.nodeAsString(parametersNode),
-        string = `Some(${variableString}, (${parametersString}) { ... })`;
+function stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+  const variableString = variable.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        string = `Some(${variableString}, ${anonymousProcedureString}) `;
 
   return string;
 }

@@ -141,7 +141,7 @@ export default domAssigned(class Variable {
     const type = parameter.getType(),
           name = parameter.getName(),
           value = null,
-          string = name,  ///
+          string = stringFromName(name, context),
           variable = new Variable(string, type, name, value);
 
     return variable;
@@ -178,7 +178,7 @@ export default domAssigned(class Variable {
                    asName : ///
                      namedParameter.getName(),
           value = null,
-          string = name,  ///
+          string = stringFromName(name, context),
           variable = new Variable(string, type, name, value);
 
     return variable;
@@ -187,17 +187,7 @@ export default domAssigned(class Variable {
   static fromValueAndParameter(value, parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
-          string = name,  ///
-          variable = new Variable(string, type, name, value);
-
-    return variable;
-  }
-
-  static fromVariableNodeAndType(variableNode, type, context) {
-    const node = variableNode,  ///
-          string = context.nodeAsString(node),
-          name = nameFromVariableNode(variableNode),
-          value = null,
+          string = stringFromName(name, context),
           variable = new Variable(string, type, name, value);
 
     return variable;
@@ -230,10 +220,9 @@ export default domAssigned(class Variable {
 
 function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = dom,
-        node = variableNode,  ///
-        string = context.nodeAsString(node),
         name = nameFromVariableNode(variableNode),
         value = null,
+        string = stringFromName(name, context),
         variable = new Variable(string, type, name, value);
 
   return variable;
@@ -241,11 +230,10 @@ function variableFromTypeAndVariableNode(type, variableNode, context) {
 
 function variableFromVariableNode(variableNode, context) {
   const { Variable } = dom,
-        node = variableNode,  ///
-        string = context.nodeAsString(node),
         type = null,
         name = nameFromVariableNode(variableNode),
         value = null,
+        string = stringFromName(name, context),
         variable = new Variable(string, type, name, value);
 
   return variable;
@@ -257,4 +245,11 @@ function nameFromVariableNode(variableNode) {
         name = variableNameTerminalNodeContent; ///
 
   return name;
+}
+
+function stringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
 }

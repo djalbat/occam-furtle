@@ -3,6 +3,7 @@
 import dom from "../dom";
 
 import { domAssigned } from "../dom";
+import { EMPTY_STRING } from "../constants";
 
 export default domAssigned(class Step {
   constructor(string, arrayAssignment, objectAssigment, conditionalBlocks, variablesDeclaration) {
@@ -51,8 +52,7 @@ export default domAssigned(class Step {
 
   static fromStepNode(stepNode, context) {
     const { ArrayAssignment, ObjectAssigment, ConditionalBlocks, VariableAssignments } = dom,
-          node = stepNode,  ///
-          string = context.nodeAsString(node),
+          string = stringFromNothing(context),
           arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
           objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
           conditionalBlocks = ConditionalBlocks.fromStepNode(stepNode, context),
@@ -62,3 +62,9 @@ export default domAssigned(class Step {
     return step;
   }
 });
+
+function stringFromNothing(context) {
+  const string = EMPTY_STRING;
+
+  return string;
+}

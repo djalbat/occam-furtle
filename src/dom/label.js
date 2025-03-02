@@ -29,15 +29,21 @@ export default domAssigned(class Label {
   static name = "Label";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const node = procedureDeclarationNode,  ///
-          string = context.nodeAsString(node),
-          labelNode = labelNodeQuery(procedureDeclarationNode),
+    const labelNode = labelNodeQuery(procedureDeclarationNode),
           name = nameFromLabelNode(labelNode, context),
+          string = stringFromName(name, context),
           label = new Label(string, name);
 
     return label;
   }
 });
+
+function stringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
+}
 
 function nameFromLabelNode(labelNode, context) {
   const nameTerminalNode = nameTerminalNodeQuery(labelNode),
