@@ -27,7 +27,7 @@ Rule (FreeVariable)
 
 ```
 String variableNameFromTermNode(Node termNode) {
-  Node variableNameTerminalNode = nodeQuery(termNode, /term/variable/@name);
+  Node variableNameTerminalNode = nodeQuery(termNode, "/term/variable/@name");
   
   String variableName = 
 
