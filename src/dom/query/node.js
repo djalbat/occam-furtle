@@ -1,7 +1,8 @@
 "use strict";
 
+import { Query } from "occam-query";
 import { arrayUtilities } from "necessary";
-import { Query, Expression } from "occam-query";
+import { contentUtilities } from "occam-entities";
 
 import dom from "../../dom";
 import Exception from "../../exception";
@@ -10,10 +11,11 @@ import { NODE_TYPE } from "../../types";
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
 
-const { first } = arrayUtilities;
+const { first } = arrayUtilities,
+      { trimDoubleQuotes } = contentUtilities;
 
-const expressionNodeQuery = nodeQuery("/nodeQuery/expression"),
-      valueNodeQueryNodeQuery = nodeQuery("/value/nodeQuery");
+const valueNodeQueryNodeQuery = nodeQuery("/value/nodeQuery"),
+      stringLiteralTerminalNodeQuery = nodeQuery("/nodeQuery/@string-literal");
 
 export default domAssigned(class NodeQuery {
   constructor(string, variable, query) {
@@ -40,6 +42,13 @@ export default domAssigned(class NodeQuery {
     const nodeQueryString = this.string;  ///
 
     context.trace(`Evaluating the '${nodeQueryString}' node query...`);
+
+    if (this.query === null) {
+      const message = `Cannot evaluate the '${nodeQueryString}' node query because its expression is malformed.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     value = this.variable.evaluate(context);
 
@@ -111,11 +120,18 @@ function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
   const { Variable, NodeQuery } = dom,
         node = nodeQueryNode, ///
         string = context.nodeAsString(node),
-        expressionNode = expressionNodeQuery(nodeQueryNode),
-        expression = Expression.fromExpressionNode(expressionNode),
+        expressionString = expressionStringFromNodeQueryNode(nodeQueryNode, context),
         variable = Variable.fromNodeQueryNode(nodeQueryNode, context),
-        query = Query.fromExpression(expression),
+        query = Query.fromExpressionString(expressionString),
         nodeQuery = new NodeQuery(string, variable, query);
 
   return nodeQuery;
+}
+
+function expressionStringFromNodeQueryNode(nodeQueryNode, context) {
+  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(nodeQueryNode),
+        stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
+        expressionString = trimDoubleQuotes(stringLiteralTerminalNodeContent);
+
+  return expressionString;
 }

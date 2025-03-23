@@ -1,6 +1,7 @@
 "use strict";
 
-import { Query, Expression } from "occam-query";
+import { Query } from "occam-query";
+import { contentUtilities } from "occam-entities";
 
 import dom from "../../dom";
 import Exception from "../../exception";
@@ -9,8 +10,10 @@ import { nodeQuery } from "../../utilities/query";
 import { NODE_TYPE } from "../../types";
 import { domAssigned } from "../../dom";
 
-const expressionNodeQuery = nodeQuery("/nodesQuery/expression"),
-      valueNodesQueryNodeQuery = nodeQuery("/value/nodesQuery");
+const { trimDoubleQuotes } = contentUtilities;
+
+const valueNodesQueryNodeQuery = nodeQuery("/value/nodesQuery"),
+      stringLiteralTerminalNodesQuery = nodeQuery("/nodesQuery/@string-literal");
 
 export default domAssigned(class NodesQuery {
   constructor(string, variable, query) {
@@ -37,6 +40,13 @@ export default domAssigned(class NodesQuery {
     const nodesQueryString = this.string;  ///
 
     context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
+
+    if (this.query === null) {
+      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its expression is malformed.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
 
     value = this.variable.evaluate(context);
 
@@ -96,11 +106,18 @@ function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   const { Variable, NodesQuery } = dom,
         node = nodesQueryNode,  ///
         string = context.nodeAsString(node),
-        expressionNode = expressionNodeQuery(nodesQueryNode),
-        expression = Expression.fromExpressionNode(expressionNode),
+        expressionString = expressionStringFromNodesQueryNode(nodesQueryNode, context),
         variable = Variable.fromNodesQueryNode(nodesQueryNode, context),
-        query = Query.fromExpression(expression),
+        query = Query.fromExpressionString(expressionString),
         nodesQuery = new NodesQuery(string, variable, query);
 
   return nodesQuery;
+}
+
+function expressionStringFromNodesQueryNode(nodesQueryNode, context) {
+  const stringLiteralTerminalNode = stringLiteralTerminalNodesQuery(nodesQueryNode),
+        stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
+        expressionString = trimDoubleQuotes(stringLiteralTerminalNodeContent);
+
+  return expressionString;
 }
