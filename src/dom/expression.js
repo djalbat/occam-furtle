@@ -12,16 +12,16 @@ import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from ".
 
 const { match } = arrayUtilities;
 
-const reduceValueNodeQuery = nodeQuery("/reduce/value"),
-      ternaryValueNodeQuery = nodeQuery("/ternary/value"),
-      numberTerminalNodeQuery = nodeQuery("/value/@number"),
-      primitiveTerminalNodeQuery = nodeQuery("/value/@primitive"),
-      returnStatementValueNodeQuery = nodeQuery("/returnStatement/value"),
-      stringLiteralTerminalNodeQuery = nodeQuery("/value/@string-literal"),
-      variableAssignmentValueNodeQuery = nodeQuery("/variableAssignment/value");
+const numberTerminalNodeQuery = nodeQuery("/expression/@number"),
+      reduceExpressionNodeQuery = nodeQuery("/reduce/expression"),
+      primitiveTerminalNodeQuery = nodeQuery("/expression/@primitive"),
+      ternaryExpressionNodeQuery = nodeQuery("/ternary/expression"),
+      stringLiteralTerminalNodeQuery = nodeQuery("/expression/@string-literal"),
+      returnStatementExpressionNodeQuery = nodeQuery("/returnStatement/expression"),
+      variableAssignmentExpressionNodeQuery = nodeQuery("/variableAssignment/expression");
 
-export default domAssigned(class Value {
-  constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue) {
+export default domAssigned(class Expression {
+  constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression) {
     this.node = node;
     this.nodes = nodes;
     this.number = number;
@@ -37,9 +37,9 @@ export default domAssigned(class Value {
     this.comparison = comparison;
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
-    this.negatedValue = negatedValue;
-    this.bitwiseValue = bitwiseValue;
-    this.bracketedValue = bracketedValue;
+    this.negatedExpression = negatedExpression;
+    this.bitwiseExpression = bitwiseExpression;
+    this.bracketedExpression = bracketedExpression;
   }
 
   getNode() {
@@ -102,16 +102,16 @@ export default domAssigned(class Value {
     return this.procedureCall;
   }
 
-  getNegatedValue() {
-    return this.negatedValue;
+  getNegatedExpression() {
+    return this.negatedExpression;
   }
 
-  getBitwiseValue() {
-    return this.bitwiseValue;
+  getBitwiseExpression() {
+    return this.bitwiseExpression;
   }
 
-  getBracketedValue() {
-    return this.bracketedValue;
+  getBracketedExpression() {
+    return this.bracketedExpression;
   }
 
   getType() {
@@ -149,12 +149,12 @@ export default domAssigned(class Value {
       type = this.returnBlock.getType();
     } else if (this.procedureCall !== null) {
       type = this.procedureCall.getType();
-    } else if (this.negatedValue !== null) {
-      type = this.negatedValue.getType();
-    } else if (this.bitwiseValue !== null) {
-      type = this.bitwiseValue.getType();
-    } else if (this.bracketedValue !== null) {
-      type = this.bracketedValue.getType();
+    } else if (this.negatedExpression !== null) {
+      type = this.negatedExpression.getType();
+    } else if (this.bitwiseExpression !== null) {
+      type = this.bitwiseExpression.getType();
+    } else if (this.bracketedExpression !== null) {
+      type = this.bracketedExpression.getType();
     }
 
     return type;
@@ -195,19 +195,19 @@ export default domAssigned(class Value {
       string = this.returnBlock.getString();
     } else if (this.procedureCall !== null) {
       string = this.procedureCall.getString();
-    } else if (this.negatedValue !== null) {
-      string = this.negatedValue.getString();
-    } else if (this.bitwiseValue !== null) {
-      string = this.bitwiseValue.getString();
-    } else if (this.bracketedValue !== null) {
-      string = this.bracketedValue.getString();
+    } else if (this.negatedExpression !== null) {
+      string = this.negatedExpression.getString();
+    } else if (this.bitwiseExpression !== null) {
+      string = this.bitwiseExpression.getString();
+    } else if (this.bracketedExpression !== null) {
+      string = this.bracketedExpression.getString();
     }
 
     return string;
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     if (false) {
       ///
@@ -216,45 +216,45 @@ export default domAssigned(class Value {
                (this.number !== null) ||
                (this.string !== null) ||
                (this.boolean !== null)) {
-      value = this;
+      expression = this;
     } else if (this.some !== null) {
-      value = this.some.evaluate(context);
+      expression = this.some.evaluate(context);
     } else if (this.every !== null) {
-      value = this.every.evaluate(context);
+      expression = this.every.evaluate(context);
     } else if (this.reduce !== null) {
-      value = this.reduce.evaluate(context);
+      expression = this.reduce.evaluate(context);
     } else if (this.ternary !== null) {
-      value = this.ternary.evaluate(context);
+      expression = this.ternary.evaluate(context);
     } else if (this.variable !== null) {
-      value = this.variable.evaluate(context);
+      expression = this.variable.evaluate(context);
     } else if (this.nodeQuery !== null) {
-      value = this.nodeQuery.evaluate(context);
+      expression = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
-      value = this.nodesQuery.evaluate(context);
+      expression = this.nodesQuery.evaluate(context);
     } else if (this.comparison !== null) {
-      value = this.comparison.evaluate(context);
+      expression = this.comparison.evaluate(context);
     } else if (this.returnBlock !== null) {
-      value = this.returnBlock.evaluate(context);
+      expression = this.returnBlock.evaluate(context);
     } else if (this.procedureCall !== null) {
-      value = this.procedureCall.evaluate(context);
-    } else if (this.negatedValue !== null) {
-      value = this.negatedValue.evaluate(context);
-    } else if (this.bitwiseValue !== null) {
-      value = this.bitwiseValue.evaluate(context);
-    } else if (this.bracketedValue !== null) {
-      value = this.bracketedValue.evaluate(context);
+      expression = this.procedureCall.evaluate(context);
+    } else if (this.negatedExpression !== null) {
+      expression = this.negatedExpression.evaluate(context);
+    } else if (this.bitwiseExpression !== null) {
+      expression = this.bitwiseExpression.evaluate(context);
+    } else if (this.bracketedExpression !== null) {
+      expression = this.bracketedExpression.evaluate(context);
     }
 
-    return value;
+    return expression;
   }
 
-  isEqualTo(value) {
+  isEqualTo(expression) {
     let equalTo;
 
     if (false) {
       ///
     } else if (this.node !== null) {
-      const node = value.getNode();
+      const node = expression.getNode();
 
       if (node === null) {
         equalTo = false;
@@ -266,7 +266,7 @@ export default domAssigned(class Value {
         equalTo = nodeMatches;  ///
       }
     } else if (this.nodes !== null) {
-      const nodes = value.getNode();
+      const nodes = expression.getNode();
 
       if (nodes === null) {
         equalTo = false;
@@ -278,15 +278,15 @@ export default domAssigned(class Value {
         equalTo = nodesMatch; ///
       }
     } else if (this.number !== null) {
-      const number = value.getNumber();
+      const number = expression.getNumber();
 
       equalTo = (this.number === number);
     } else if (this.string !== null) {
-      const string = value.getString();
+      const string = expression.getString();
 
       equalTo = (this.string === string);
     } else if (this.boolean !== null) {
-      const boolean = value.getBoolean();
+      const boolean = expression.getBoolean();
 
       equalTo = (this.boolean === boolean);
     } else {
@@ -296,7 +296,7 @@ export default domAssigned(class Value {
     return equalTo;
   }
 
-  static name = "Value";
+  static name = "Expression";
 
   static fromNode(node, context) {
     if (node === null) {
@@ -317,12 +317,12 @@ export default domAssigned(class Value {
           comparison = null,
           returnBlock = null,
           procedureCall = null,
-          negatedValue = null,
-          bitwiseValue = null,
-          bracketedValue = null,
-          value = new Value(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue);
+          negatedExpression = null,
+          bitwiseExpression = null,
+          bracketedExpression = null,
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
 
-    return value;
+    return expression;
   }
 
   static fromNodes(nodes, context) {
@@ -340,12 +340,12 @@ export default domAssigned(class Value {
           comparison = null,
           returnBlock = null,
           procedureCall = null,
-          negatedValue = null,
-          bitwiseValue = null,
-          bracketedValue = null,
-          value = new Value(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue);
+          negatedExpression = null,
+          bitwiseExpression = null,
+          bracketedExpression = null,
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
 
-    return value;
+    return expression;
   }
 
   static fromString(string, context) {
@@ -363,12 +363,12 @@ export default domAssigned(class Value {
           comparison = null,
           returnBlock = null,
           procedureCall = null,
-          negatedValue = null,
-          bitwiseValue = null,
-          bracketedValue = null,
-          value = new Value(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue);
+          negatedExpression = null,
+          bitwiseExpression = null,
+          bracketedExpression = null,
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
 
-    return value;
+    return expression;
   }
 
   static fromBoolean(boolean, context) {
@@ -386,50 +386,50 @@ export default domAssigned(class Value {
           comparison = null,
           returnBlock = null,
           procedureCall = null,
-          negatedValue = null,
-          bitwiseValue = null,
-          bracketedValue = null,
-          value = new Value(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue);
+          negatedExpression = null,
+          bitwiseExpression = null,
+          bracketedExpression = null,
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
 
-    return value;
+    return expression;
   }
 
-  static fromValueNode(valueNode, context) {
-    const value = valueFromValueNode(valueNode, context);
+  static fromExpressionNode(expressionNode, context) {
+    const expression = expressionFromExpressionNode(expressionNode, context);
 
-    return value;
+    return expression;
   }
 
   static fromReduceNode(reduceNode, context) {
-    const reduceValueNode = reduceValueNodeQuery(reduceNode),
-          valueNode = reduceValueNode, ///
-          value = valueFromValueNode(valueNode, context);
+    const reduceExpressionNode = reduceExpressionNodeQuery(reduceNode),
+          expressionNode = reduceExpressionNode, ///
+          expression = expressionFromExpressionNode(expressionNode, context);
 
-    return value;
+    return expression;
   }
 
   static fromTernaryNode(ternaryNode, context) {
-    const ternaryValueNode = ternaryValueNodeQuery(ternaryNode),
-          valueNode = ternaryValueNode, ///
-          value = valueFromValueNode(valueNode, context);
+    const ternaryExpressionNode = ternaryExpressionNodeQuery(ternaryNode),
+          expressionNode = ternaryExpressionNode, ///
+          expression = expressionFromExpressionNode(expressionNode, context);
 
-    return value;
+    return expression;
   }
 
   static fromReturnStatementNode(returnStatementNode, context) {
-    const returnStatementValueNode = returnStatementValueNodeQuery(returnStatementNode),
-          valueNode = returnStatementValueNode, ///
-          value = valueFromValueNode(valueNode, context);
+    const returnStatementExpressionNode = returnStatementExpressionNodeQuery(returnStatementNode),
+          expressionNode = returnStatementExpressionNode, ///
+          expression = expressionFromExpressionNode(expressionNode, context);
 
-    return value;
+    return expression;
   }
 
   static fromVariableAssignmentNode(variableAssigmentNode, context) {
-    const variableAssignmentValueNode = variableAssignmentValueNodeQuery(variableAssigmentNode),
-          valueNode = variableAssignmentValueNode,  ///
-          value = valueFromValueNode(valueNode, context);
+    const variableAssignmentExpressionNode = variableAssignmentExpressionNodeQuery(variableAssigmentNode),
+          expressionNode = variableAssignmentExpressionNode,  ///
+          expression = expressionFromExpressionNode(expressionNode, context);
 
-    return value;
+    return expression;
   }
 });
 
@@ -505,35 +505,35 @@ function booleanAsString(boolean) {
   return string;
 }
 
-function valueFromValueNode(valueNode, context) {
-  const { Some, Every, Reduce, Value, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ReturnBlock, ProcedureCall, NegatedValue, BitwiseValue, BracketedValue } = dom,
-        node = nodeFromValueNode(valueNode, context),
-        nodes = nodesFromValueNode(valueNode, context),
-        number = numberFromValueNode(valueNode, context),
-        string = stringFromValueNode(valueNode, context),
-        boolean = booleanFromValueNode(valueNode, context),
-        some = Some.fromValueNode(valueNode, context),
-        every = Every.fromValueNode(valueNode, context),
-        reduce = Reduce.fromValueNode(valueNode, context),
-        ternary = Ternary.fromValueNode(valueNode, context),
-        variable = Variable.fromValueNode(valueNode, context),
-        nodeQuery = NodeQuery.fromValueNode(valueNode, context),
-        nodesQuery = NodesQuery.fromValueNode(valueNode, context),
-        comparison = Comparison.fromValueNode(valueNode, context),
-        returnBlock = ReturnBlock.fromValueNode(valueNode, context),
-        procedureCall = ProcedureCall.fromValueNode(valueNode, context),
-        negatedValue = NegatedValue.fromValueNode(valueNode, context),
-        bitwiseValue = BitwiseValue.fromValueNode(valueNode, context),
-        bracketedValue = BracketedValue.fromValueNode(valueNode, context),
-        value = new Value(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedValue, bitwiseValue, bracketedValue);
+function expressionFromExpressionNode(expressionNode, context) {
+  const { Some, Every, Reduce, Expression, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ReturnBlock, ProcedureCall, NegatedExpression, BitwiseExpression, BracketedExpression } = dom,
+        node = nodeFromExpressionNode(expressionNode, context),
+        nodes = nodesFromExpressionNode(expressionNode, context),
+        number = numberFromExpressionNode(expressionNode, context),
+        string = stringFromExpressionNode(expressionNode, context),
+        boolean = booleanFromExpressionNode(expressionNode, context),
+        some = Some.fromExpressionNode(expressionNode, context),
+        every = Every.fromExpressionNode(expressionNode, context),
+        reduce = Reduce.fromExpressionNode(expressionNode, context),
+        ternary = Ternary.fromExpressionNode(expressionNode, context),
+        variable = Variable.fromExpressionNode(expressionNode, context),
+        nodeQuery = NodeQuery.fromExpressionNode(expressionNode, context),
+        nodesQuery = NodesQuery.fromExpressionNode(expressionNode, context),
+        comparison = Comparison.fromExpressionNode(expressionNode, context),
+        returnBlock = ReturnBlock.fromExpressionNode(expressionNode, context),
+        procedureCall = ProcedureCall.fromExpressionNode(expressionNode, context),
+        negatedExpression = NegatedExpression.fromExpressionNode(expressionNode, context),
+        bitwiseExpression = BitwiseExpression.fromExpressionNode(expressionNode, context),
+        bracketedExpression = BracketedExpression.fromExpressionNode(expressionNode, context),
+        expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
 
-  return value;
+  return expression;
 }
 
-function nodeFromValueNode(valueNode, context) {
+function nodeFromExpressionNode(expressionNode, context) {
   let node = null;
 
-  const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
+  const primitiveTerminalNode = primitiveTerminalNodeQuery(expressionNode);
 
   if (primitiveTerminalNode !== null) {
     const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
@@ -550,16 +550,16 @@ function nodeFromValueNode(valueNode, context) {
   return node;
 }
 
-function nodesFromValueNode(valueNode, context) {
+function nodesFromExpressionNode(expressionNode, context) {
   const nodes = null;  ///
 
   return nodes;
 }
 
-function numberFromValueNode(valueNode, context) {
+function numberFromExpressionNode(expressionNode, context) {
   let number = null;
 
-  const numberTerminalNode = numberTerminalNodeQuery(valueNode);
+  const numberTerminalNode = numberTerminalNodeQuery(expressionNode);
 
   if (numberTerminalNode !== null) {
     const numberTerminalNodeContent = numberTerminalNode.getContent();
@@ -570,10 +570,10 @@ function numberFromValueNode(valueNode, context) {
   return number;
 }
 
-function stringFromValueNode(valueNode, context) {
+function stringFromExpressionNode(expressionNode, context) {
   let string = null;
 
-  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(valueNode);
+  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(expressionNode);
 
   if (stringLiteralTerminalNode !== null) {
     const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
@@ -585,10 +585,10 @@ function stringFromValueNode(valueNode, context) {
   return string;
 }
 
-function booleanFromValueNode(valueNode, context) {
+function booleanFromExpressionNode(expressionNode, context) {
   let boolean = null;
 
-  const primitiveTerminalNode = primitiveTerminalNodeQuery(valueNode);
+  const primitiveTerminalNode = primitiveTerminalNodeQuery(expressionNode);
 
   if (primitiveTerminalNode !== null) {
     const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();

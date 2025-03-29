@@ -7,10 +7,10 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
 const someVariableNodeQuery = nodeQuery("/some/variable"),
-      valueVariableNodeQuery = nodeQuery("/value/variable"),
       everyVariableNodeQuery = nodeQuery("/every/variable"),
       reduceVariableNodeQuery = nodeQuery("/reduce/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
+      expressionVariableNodeQuery = nodeQuery("/expression/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
       variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
@@ -18,11 +18,11 @@ const someVariableNodeQuery = nodeQuery("/some/variable"),
       variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
 
 export default domAssigned(class Variable {
-  constructor(string, type, name, value) {
+  constructor(string, type, name, expression) {
     this.string = string;
     this.type = type;
     this.name = name;
-    this.value = value;
+    this.expression = expression;
   }
 
   getString() {
@@ -37,8 +37,8 @@ export default domAssigned(class Variable {
     return this.name;
   }
 
-  getValue() {
-    return this.value;
+  getExpression() {
+    return this.expression;
   }
 
   matchVariableName(variableName) {
@@ -64,22 +64,22 @@ export default domAssigned(class Variable {
     }
 
     const variable = context.findVariableByVariableName(variableName),
-          value = variable.getValue(),
-          valueString = value.asString(context);
+          expression = variable.getExpression(),
+          expressionString = expression.asString(context);
 
-    context.debug(`...evaluated the '${variableString}' variable to the ${valueString} value.`);
+    context.debug(`...evaluated the '${variableString}' variable to the ${expressionString} expression.`);
 
-    return value;
+    return expression;
   }
 
-  assign(value, context) {
+  assign(expression, context) {
     const nested = false,
-          valueString = value.asString(context), ///
+          expressionString = expression.asString(context), ///
           variableName = this.name, ///
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
-    context.trace(`Assigning the ${valueString} value to the '${variableString}' variable...`);
+    context.trace(`Assigning the ${expressionString} expression to the '${variableString}' variable...`);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.`,
@@ -88,23 +88,23 @@ export default domAssigned(class Variable {
       throw exception;
     }
 
-    const valueType = value.getType(),
+    const expressionType = expression.getType(),
           variableType = this.type;
 
-    if (valueType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not match the value's '${valueType}' type.'`,
+    if (expressionType !== variableType) {
+      const message = `The '${variableString} variable's '${variableType}' type does not match the expression's '${expressionType}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.value = value;
+    this.expression = expression;
 
     const variable = this;  ///
 
     context.addVariable(variable);
 
-    context.debug(`...assigned the ${valueString} value to the '${variableString}' variable.`);
+    context.debug(`...assigned the ${expressionString} expression to the '${variableString}' variable.`);
   }
 
   static name = "Variable";
@@ -117,13 +117,13 @@ export default domAssigned(class Variable {
     return variable;
   }
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let variable = null;
 
-    const valueVariableNode = valueVariableNodeQuery(valueNode);
+    const expressionVariableNode = expressionVariableNodeQuery(expressionNode);
 
-    if (valueVariableNode !== null) {
-      const variableNode = valueVariableNode; ///
+    if (expressionVariableNode !== null) {
+      const variableNode = expressionVariableNode; ///
 
       variable = variableFromVariableNode(variableNode, context);
     }
@@ -142,9 +142,9 @@ export default domAssigned(class Variable {
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
-          value = null,
+          expression = null,
           string = stringFromName(name, context),
-          variable = new Variable(string, type, name, value);
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
@@ -179,18 +179,18 @@ export default domAssigned(class Variable {
           name = (asName !== null) ?
                    asName : ///
                      namedParameter.getName(),
-          value = null,
+          expression = null,
           string = stringFromName(name, context),
-          variable = new Variable(string, type, name, value);
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
 
-  static fromValueAndParameter(value, parameter, context) {
+  static fromExpressionAndParameter(expression, parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
           string = stringFromName(name, context),
-          variable = new Variable(string, type, name, value);
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
@@ -223,9 +223,9 @@ export default domAssigned(class Variable {
 function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = dom,
         name = nameFromVariableNode(variableNode),
-        value = null,
+        expression = null,
         string = stringFromName(name, context),
-        variable = new Variable(string, type, name, value);
+        variable = new Variable(string, type, name, expression);
 
   return variable;
 }
@@ -234,9 +234,9 @@ function variableFromVariableNode(variableNode, context) {
   const { Variable } = dom,
         type = null,
         name = nameFromVariableNode(variableNode),
-        value = null,
+        expression = null,
         string = stringFromName(name, context),
-        variable = new Variable(string, type, name, value);
+        variable = new Variable(string, type, name, expression);
 
   return variable;
 }

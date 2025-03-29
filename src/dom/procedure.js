@@ -47,7 +47,7 @@ export default domAssigned(class Procedure {
 
   matchName(name) { return this.label.matchName(name); }
 
-  call(values, fileContext) {
+  call(expressions, fileContext) {
     let context;
 
     context = fileContext;  ///
@@ -56,15 +56,15 @@ export default domAssigned(class Procedure {
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    this.parameters.matchValues(values, context);
+    this.parameters.matchExpressions(expressions, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          value = this.returnBlock.evaluate(variables, context),
-          valueType = value.getType();
+    const variables = variablesFromExpressionsAndParameters(expressions, this.parameters, context),
+          expression = this.returnBlock.evaluate(variables, context),
+          expressionType = expression.getType();
 
-    if (this.type !== valueType) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
+    if (this.type !== expressionType) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -74,7 +74,7 @@ export default domAssigned(class Procedure {
 
     context.debug(`...called the '${procedureString}' procedure.`);
 
-    return value;
+    return expression;
   }
 
   static name = "Procedure";
@@ -86,15 +86,15 @@ export default domAssigned(class Procedure {
   }
 });
 
-export function variablesFromValuesAndParameters(values, parameters, context) {
+export function variablesFromExpressionsAndParameters(expressions, parameters, context) {
   const variables = [];
 
-  values.forEachValue((value, index) => {
+  expressions.forEachExpression((expression, index) => {
     const { Variable } = dom,
           parameter = parameters.getParameter(index);
 
     if (parameter !== null) {
-      const variable = Variable.fromValueAndParameter(value, parameter, context);
+      const variable = Variable.fromExpressionAndParameter(expression, parameter, context);
 
       variables.push(variable);
     }

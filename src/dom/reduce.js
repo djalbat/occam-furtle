@@ -7,13 +7,13 @@ import { nodeQuery } from "../utilities/query";
 import { NODES_TYPE } from "../types";
 import { domAssigned } from "../dom";
 
-const valueReduceNodeQuery = nodeQuery("/value/reduce"); ///
+const expressionReduceNodeQuery = nodeQuery("/expression/reduce");
 
 export default domAssigned(class Reduce {
-  constructor(string, variable, initialValue, anonymousProcedure) {
+  constructor(string, variable, initialExpression, anonymousProcedure) {
     this.string = string;
     this.variable = variable;
-    this.initialValue = initialValue;
+    this.initialExpression = initialExpression;
     this.anonymousProcedure = anonymousProcedure;
   }
 
@@ -25,8 +25,8 @@ export default domAssigned(class Reduce {
     return this.variable;
   }
 
-  getInitialValue() {
-    return this.initialValue;
+  getInitialExpression() {
+    return this.initialExpression;
   }
 
   getAnonymousProcedure() {
@@ -34,59 +34,59 @@ export default domAssigned(class Reduce {
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const reduceString = this.getString();
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    value = this.variable.evaluate(context);
+    expression = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const expressionType = expression.getType();
 
-    if (valueType !== NODES_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type should be '${NODES_TYPE}'.`,
+    if (expressionType !== NODES_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = value.getNodes(),
-          initialValue = this.initialValue.evaluate(context);
+    const nodes = expression.getNodes(),
+          initialExpression = this.initialExpression.evaluate(context);
 
-    value = nodes.reduce((currentValue, node) => {
-      let value;
+    expression = nodes.reduce((currentExpression, node) => {
+      let expression;
 
-      const { Value, Values } = dom;
+      const { Expression, Expressions } = dom;
 
-      value = currentValue; ///
+      expression = currentExpression; ///
 
-      const values = Values.fromValue(value, context);
+      const expressions = Expressions.fromExpression(expression, context);
 
-      value = Value.fromNode(node, context);
+      expression = Expression.fromNode(node, context);
 
-      values.addValue(value);
+      expressions.addExpression(expression);
 
-      value = this.anonymousProcedure.call(values, context);
+      expression = this.anonymousProcedure.call(expressions, context);
 
-      return value;
-    }, initialValue);
+      return expression;
+    }, initialExpression);
 
     context.trace(`...evaluated the '${reduceString}' reduce.`);
 
-    return value;
+    return expression;
   }
 
   static name = "Reduce";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let reduce = null;
 
-    const valueReduceNode = valueReduceNodeQuery(valueNode);
+    const expressionReduceNode = expressionReduceNodeQuery(expressionNode);
 
-    if (valueReduceNode !== null) {
-      const reduceNode = valueReduceNode; ///
+    if (expressionReduceNode !== null) {
+      const reduceNode = expressionReduceNode; ///
 
       reduce = reduceFromReduceNode(reduceNode, context);
     }
@@ -96,22 +96,22 @@ export default domAssigned(class Reduce {
 });
 
 function reduceFromReduceNode(reduceNode, context) {
-  const { Value, Reduce, Variable, AnonymousProcedure } = dom,
-        value = Value.fromReduceNode(reduceNode, context),
+  const { Reduce, Variable, Expression, AnonymousProcedure } = dom,
+        expression = Expression.fromReduceNode(reduceNode, context),
         variable = Variable.fromReduceNode(reduceNode, context),
-        initialValue = value, ///
+        initialExpression = expression, ///
         anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context),
-        string = stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure),
-        reduce = new Reduce(string, variable, initialValue, anonymousProcedure);
+        string = stringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure),
+        reduce = new Reduce(string, variable, initialExpression, anonymousProcedure);
 
   return reduce;
 }
 
-function stringFromVariableInitialValueAndAnonymousProcedure(variable, initialValue, anonymousProcedure) {
+function stringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {
   const variableString = variable.getString(),
-        initialValueString = initialValue.getString(),
+        initialExpressionString = initialExpression.getString(),
         anonymousProcedureString = anonymousProcedure.getString(),
-        string = `Reduce(${variableString}, ${anonymousProcedureString}, ${initialValueString})`;
+        string = `Reduce(${variableString}, ${anonymousProcedureString}, ${initialExpressionString})`;
 
   return string;
 }

@@ -35,12 +35,12 @@ export default domAssigned(class ObjectAssigment {
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType();
+    const expression = this.variable.evaluate(context),
+          expressionType = expression.getType();
 
-    if (valueType !== NODE_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type should be '${NODE_TYPE}'.`,
+    if (expressionType !== NODE_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -49,35 +49,35 @@ export default domAssigned(class ObjectAssigment {
     nodeProperties.matchNamedParameters(this.namedParameters, context);
 
     this.namedParameters.forEachNamedParameter((namedParameter) => {
-      this.evaluateNamedParameter(namedParameter, value, context);
+      this.evaluateNamedParameter(namedParameter, expression, context);
     });
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
   }
 
-  evaluateNamedParameter(namedParameter, value, context) {
-    const valueString = value.asString(context),
+  evaluateNamedParameter(namedParameter, expression, context) {
+    const expressionString = expression.asString(context),
           namedParameterString = namedParameter.getString();
 
-    context.trace(`Evaluating the '${namedParameterString}' named parameter against the ${valueString} value...`);
+    context.trace(`Evaluating the '${namedParameterString}' named parameter against the ${expressionString} expression...`);
 
     const name = namedParameter.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        value = this.evaluateContentNamedParameter(namedParameter, value, context);
+        expression = this.evaluateContentNamedParameter(namedParameter, expression, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        value = this.evaluateTerminalNamedParameter(namedParameter, value, context);
+        expression = this.evaluateTerminalNamedParameter(namedParameter, expression, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        value = this.evaluateChildNodesNamedParameter(namedParameter, value, context);
+        expression = this.evaluateChildNodesNamedParameter(namedParameter, expression, context);
 
         break;
       }
@@ -86,12 +86,12 @@ export default domAssigned(class ObjectAssigment {
     const { Variable } = dom,
           variable = Variable.fromNamedParameter(namedParameter, context);
 
-    variable.assign(value, context);
+    variable.assign(expression, context);
 
-    context.debug(`...evaluated the '${namedParameterString}' parameter named against the ${valueString} value.`);
+    context.debug(`...evaluated the '${namedParameterString}' parameter named against the ${expressionString} expression.`);
   }
 
-  evaluateContentNamedParameter(namedParameter, value, context) {
+  evaluateContentNamedParameter(namedParameter, expression, context) {
     const type = namedParameter.getType();
 
     if (type !== STRING_TYPE) {
@@ -102,28 +102,28 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const node = value.getNode(),
+    const node = expression.getNode(),
           nodeTerminalNode = node.isTerminalNode();
 
     if (!nodeTerminalNode) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's node must be terminal.`,
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's node must be terminal.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const { Value } = dom,
+    const { Expression } = dom,
           terminalNode = node,  ///
           content = terminalNode.getContent(),
           string = content;  ///
 
-    value = Value.fromString(string, context);  ///
+    expression = Expression.fromString(string, context);  ///
 
-    return value;
+    return expression;
   }
 
-  evaluateTerminalNamedParameter(namedParameter, value, context) {
+  evaluateTerminalNamedParameter(namedParameter, expression, context) {
     const type = namedParameter.getType();
 
     if (type !== BOOLEAN_TYPE) {
@@ -134,19 +134,19 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const node = value.getNode(),
+    const node = expression.getNode(),
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
-    const { Value } = dom,
+    const { Expression } = dom,
           boolean = terminal; ///
 
-    value = Value.fromBoolean(boolean, context);  ///
+    expression = Expression.fromBoolean(boolean, context);  ///
 
-    return value;
+    return expression;
   }
 
-  evaluateChildNodesNamedParameter(namedParameter, value, context) {
+  evaluateChildNodesNamedParameter(namedParameter, expression, context) {
     const type = namedParameter.getType();
 
     if (type !== NODES_TYPE) {
@@ -157,25 +157,25 @@ export default domAssigned(class ObjectAssigment {
       throw exception;
     }
 
-    const node = value.getNode(),
+    const node = expression.getNode(),
           nodeNonTerminalNode = node.isNonTerminalNode();
 
     if (!nodeNonTerminalNode) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's node must be non-terminal.`,
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's node must be non-terminal.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const { Value } = dom,
+    const { Expression } = dom,
           nonTerminalNode = node,  ///
           childNodes = nonTerminalNode.getChildNodes(),
           nodes = childNodes;  ///
 
-    value = Value.fromNodes(nodes, context);  ///
+    expression = Expression.fromNodes(nodes, context);  ///
 
-    return value;
+    return expression;
   }
 
   static name = "ObjectAssigment";

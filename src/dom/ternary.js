@@ -7,73 +7,73 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { BOOLEAN_TYPE } from "../types";
 
-const ifValueNodeQuery = nodeQuery("/ternary/value[1]"),
-      elseValueNodeQuery = nodeQuery("/ternary/value[2]"),
-      valueTernaryNodeQuery = nodeQuery("/value/ternary");
+const ifExpressionNodeQuery = nodeQuery("/ternary/expression[1]"),
+      elseExpressionNodeQuery = nodeQuery("/ternary/expression[2]"),
+      expressionTernaryNodeQuery = nodeQuery("/expression/ternary");
 
 export default domAssigned(class Ternary {
-  constructor(string, value, ifValue, elseValue) {
+  constructor(string, expression, ifExpression, elseExpression) {
     this.string = string;
-    this.value = value;
-    this.ifValue = ifValue;
-    this.elseValue = elseValue;
+    this.expression = expression;
+    this.ifExpression = ifExpression;
+    this.elseExpression = elseExpression;
   }
 
   getString() {
     return this.string;
   }
 
-  getValue() {
-    return this.value;
+  getExpression() {
+    return this.expression;
   }
 
   getIfBlock() {
-    return this.ifValue;
+    return this.ifExpression;
   }
 
   getElseBlock() {
-    return this.elseValue;
+    return this.elseExpression;
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const ternaryString = this.string; ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    value = this.value.evaluate(context);
+    expression = this.expression.evaluate(context);
 
-    const valueType = value.getType();
+    const expressionType = expression.getType();
 
-    if (valueType !== BOOLEAN_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (expressionType !== BOOLEAN_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const boolean = value.getBoolean();
+    const boolean = expression.getBoolean();
 
-    value = boolean ?
-              this.ifValue.evaluate(context) :
-                this.elseValue.evaluate(context);
+    expression = boolean ?
+              this.ifExpression.evaluate(context) :
+                this.elseExpression.evaluate(context);
 
     context.debug(`...evaluated the '${ternaryString}' ternary.`);
 
-    return value;
+    return expression;
   }
 
   static name = "Ternary";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let ternary = null;
 
-    const valueTernaryNode = valueTernaryNodeQuery(valueNode);
+    const expressionTernaryNode = expressionTernaryNodeQuery(expressionNode);
 
-    if (valueTernaryNode !== null) {
-      const ternaryNode = valueTernaryNode; ///
+    if (expressionTernaryNode !== null) {
+      const ternaryNode = expressionTernaryNode; ///
 
       ternary = ternaryFromTernaryNode(ternaryNode, context);
     }
@@ -83,23 +83,23 @@ export default domAssigned(class Ternary {
 });
 
 function ternaryFromTernaryNode(ternaryNode, context) {
-  const { Value, Ternary } = dom,
-        ifValueNode = ifValueNodeQuery(ternaryNode),
-        elseValueNode = elseValueNodeQuery(ternaryNode),
-        value = Value.fromTernaryNode(ternaryNode, context),
-        ifValue = Value.fromValueNode(ifValueNode, context),
-        elseValue = Value.fromValueNode(elseValueNode, context),
-        string = stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context),
-        ternary = new Ternary(string, value, ifValue, elseValue);
+  const { Expression, Ternary } = dom,
+        ifExpressionNode = ifExpressionNodeQuery(ternaryNode),
+        elseExpressionNode = elseExpressionNodeQuery(ternaryNode),
+        expression = Expression.fromTernaryNode(ternaryNode, context),
+        ifExpression = Expression.fromExpressionNode(ifExpressionNode, context),
+        elseExpression = Expression.fromExpressionNode(elseExpressionNode, context),
+        string = stringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context),
+        ternary = new Ternary(string, expression, ifExpression, elseExpression);
 
   return ternary;
 }
 
-function stringFromValueIfValueAndElseValue(value, ifValue, elseValue, context) {
-  const valueString = value.asString(context),
-        ifValueString = ifValue.asString(context),
-        elseValueString = elseValue.asString(context),
-        string = `If (${valueString}) ${ifValueString} Else ${elseValueString};`;
+function stringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
+  const expressionString = expression.asString(context),
+        ifExpressionString = ifExpression.asString(context),
+        elseExpressionString = elseExpression.asString(context),
+        string = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
 
   return string;
 }

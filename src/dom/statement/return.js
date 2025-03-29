@@ -8,31 +8,31 @@ import { domAssigned } from "../../dom";
 const returnBlockReturnStatementNodeQuery = nodeQuery("/returnBlock/returnStatement");
 
 export default domAssigned(class ReturnStatement {
-  constructor(string, value) {
+  constructor(string, expression) {
     this.string = string;
-    this.value = value;
+    this.expression = expression;
   }
 
   getString() {
     return this.string;
   }
 
-  getValue() {
-    return this.value;
+  getExpression() {
+    return this.expression;
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const returnStatementString = this.string;  ///
 
     context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 
-    value = this.value.evaluate(context);
+    expression = this.expression.evaluate(context);
 
     context.debug(`...evaluated the '${returnStatementString}' return statement.`);
 
-    return value;
+    return expression;
   }
 
   static name = "ReturnStatement";
@@ -47,17 +47,17 @@ export default domAssigned(class ReturnStatement {
 });
 
 function returnStatementFromReturnStatementNode(returnStatementNode, context) {
-  const { Value, ReturnStatement } = dom,
-        value = Value.fromReturnStatementNode(returnStatementNode, context),
-        string = stringFromValue(value, context),
-        returnStatement = new ReturnStatement(string, value);
+  const { Expression, ReturnStatement } = dom,
+        expression = Expression.fromReturnStatementNode(returnStatementNode, context),
+        string = stringFromExpression(expression, context),
+        returnStatement = new ReturnStatement(string, expression);
 
   return returnStatement;
 }
 
-function stringFromValue(value, context) {
-  const valueString = value.asString(context),
-        string = `Return ${valueString};`;
+function stringFromExpression(expression, context) {
+  const expressionString = expression.asString(context),
+        string = `Return ${expressionString};`;
 
   return string;
 }

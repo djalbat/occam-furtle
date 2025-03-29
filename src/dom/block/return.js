@@ -9,7 +9,7 @@ import { nodeQuery, nodesQuery } from "../../utilities/query";
 
 const stepNodesQuery = nodesQuery("/returnBlock/step"),
       nonsenseNodesQuery = nodesQuery("/returnBlock/nonsense"),
-      valueReturnBlockNodeQuery = nodeQuery("/value/returnBlock"),
+      expressionReturnBlockNodeQuery = nodeQuery("/expression/returnBlock"),
       anonymousProcedureReturnBlockNodeQuery = nodeQuery("/anonymousProcedure/returnBlock"),
       procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
 
@@ -59,20 +59,20 @@ export default domAssigned(class ReturnBlock {
       step.evaluate(context);
     });
 
-    const value = this.returnStatement.evaluate(context);
+    const expression = this.returnStatement.evaluate(context);
 
-    return value;
+    return expression;
   }
 
   static name = "ReturnBlock";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let returnBlock = null;
 
-    const valueReturnBlockNode = valueReturnBlockNodeQuery(valueNode);
+    const expressionReturnBlockNode = expressionReturnBlockNodeQuery(expressionNode);
 
-    if (valueReturnBlockNode !== null) {
-      const returnBlockNode = valueReturnBlockNode;  ///
+    if (expressionReturnBlockNode !== null) {
+      const returnBlockNode = expressionReturnBlockNode;  ///
 
       returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
     }

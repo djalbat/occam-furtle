@@ -6,13 +6,13 @@ import Exception from "../exception";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const valueProcedureCallNodeQuery = nodeQuery("/value/procedureCall");
+const expressionProcedureCallNodeQuery = nodeQuery("/expression/procedureCall");
 
 export default domAssigned(class ProcedureCall {
-  constructor(string, reference, values) {
+  constructor(string, reference, expressions) {
     this.string = string;
     this.reference = reference;
-    this.values = values;
+    this.expressions = expressions;
   }
 
   getString() {
@@ -23,8 +23,8 @@ export default domAssigned(class ProcedureCall {
     return this.reference;
   }
 
-  getValues() {
-    return this.values;
+  getExpressions() {
+    return this.expressions;
   }
 
   evaluate(context) {
@@ -43,23 +43,23 @@ export default domAssigned(class ProcedureCall {
 
     const fileContext = context.getFileContext(),
           procedure = context.findProcedureByReference(this.reference),
-          values = this.values.evaluate(context),
-          value = procedure.call(values, fileContext);
+          expressions = this.expressions.evaluate(context),
+          expression = procedure.call(expressions, fileContext);
 
     context.debug(`...evaluated the '${procedureCallString}' procedure call.`);
 
-    return value;
+    return expression;
   }
 
   static name = "ProcedureCall";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let procedureCall = null;
 
-    const valueProcedureCallNode = valueProcedureCallNodeQuery(valueNode);
+    const expressionProcedureCallNode = expressionProcedureCallNodeQuery(expressionNode);
 
-    if (valueProcedureCallNode !== null) {
-      const procedureCallNode = valueProcedureCallNode; ///
+    if (expressionProcedureCallNode !== null) {
+      const procedureCallNode = expressionProcedureCallNode; ///
 
       procedureCall = procedureCallFromProcedureCallNode(procedureCallNode, context);
     }
@@ -69,19 +69,19 @@ export default domAssigned(class ProcedureCall {
 });
 
 function procedureCallFromProcedureCallNode(procedureCallNode, context) {
-  const { Values, Reference, ProcedureCall } = dom,
+  const { Reference, Expressions, ProcedureCall } = dom,
         reference = Reference.fromProcedureCallNode(procedureCallNode, context),
-        values = Values.fromProcedureCallNode(procedureCallNode, context),
-        string = stringFromValuesAndReference(values, reference, context),
-        procedureCall = new ProcedureCall(string, reference, values);
+        expressions = Expressions.fromProcedureCallNode(procedureCallNode, context),
+        string = stringFromExpressionsAndReference(expressions, reference, context),
+        procedureCall = new ProcedureCall(string, reference, expressions);
 
   return procedureCall;
 }
 
-function stringFromValuesAndReference(values, reference, context) {
-  const valuesString = values.getString(),
+function stringFromExpressionsAndReference(expressions, reference, context) {
+  const expressionsString = expressions.getString(),
         referenceString = reference.getString(),
-        string = `${referenceString}(${valuesString})`;
+        string = `${referenceString}(${expressionsString})`;
 
   return string;
 }

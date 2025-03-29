@@ -8,16 +8,16 @@ import { domAssigned } from "../dom";
 import { EQUAL_TO, NOT_EQUAL_TO } from "../constants";
 
 const terminalNodeQuery = nodeQuery("/comparison/@*"),
-      leftValueNodeQuery = nodeQuery("/comparison/value[0]"),
-      rightValueNodeQuery = nodeQuery("/comparison/value[1]"),
-      valueComparisonNodeQuery = nodeQuery("/value/comparison");
+      leftExpressionNodeQuery = nodeQuery("/comparison/expression[0]"),
+      rightExpressionNodeQuery = nodeQuery("/comparison/expression[1]"),
+      expressionComparisonNodeQuery = nodeQuery("/expression/comparison");
 
 export default domAssigned(class Comparison {
-  constructor(string, negated, leftValue, rightValue) {
+  constructor(string, negated, leftExpression, rightExpression) {
     this.string = string;
     this.negated = negated;
-    this.leftValue = leftValue;
-    this.rightValue = rightValue;
+    this.leftExpression = leftExpression;
+    this.rightExpression = rightExpression;
   }
 
   getString() {
@@ -28,61 +28,61 @@ export default domAssigned(class Comparison {
     return this.negated;
   }
 
-  getLeftValue() {
-    return this.leftValue;
+  getLeftExpression() {
+    return this.leftExpression;
   }
 
-  getRightValue() {
-    return this.rightValue;
+  getRightExpression() {
+    return this.rightExpression;
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const comparisonString = this.string; ///
 
     context.trace(`Evaluating the '${comparisonString}' comparison...`);
 
-    const leftValue = this.leftValue.evaluate(context),
-          rightValue = this.rightValue.evaluate(context),
-          leftValueType = leftValue.getType(),
-          rightValueType = rightValue.getType();
+    const leftExpression = this.leftExpression.evaluate(context),
+          rightExpression = this.rightExpression.evaluate(context),
+          leftExpressionType = leftExpression.getType(),
+          rightExpressionType = rightExpression.getType();
 
-    if (leftValueType !== rightValueType) {
-      const leftValueString = leftValue.asString(context),
-            rightValueString = rightValue.asString(context),
-            message = `The ${leftValueString} left value's type is '${leftValueType}' whereas the ${rightValueString} right value's type is '${rightValueType}'.`,
+    if (leftExpressionType !== rightExpressionType) {
+      const leftExpressionString = leftExpression.asString(context),
+            rightExpressionString = rightExpression.asString(context),
+            message = `The ${leftExpressionString} left expression's type is '${leftExpressionType}' whereas the ${rightExpressionString} right expression's type is '${rightExpressionType}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
+    const leftExpressionEqualToRightExpression = leftExpression.isEqualTo(rightExpression);
 
-    let boolean = leftValueEqualToRightValue; ///
+    let boolean = leftExpressionEqualToRightExpression; ///
 
     if (this.negated) {
       boolean = !boolean; ///
     }
 
-    const { Value } = dom;
+    const { Expression } = dom;
 
-    value = Value.fromBoolean(boolean, context);
+    expression = Expression.fromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${comparisonString}' comparison.`);
 
-    return value;
+    return expression;
   }
 
   static name = "Comparison";
 
-  static fromValueNode(valudNode, context) {
+  static fromExpressionNode(valudNode, context) {
     let comparison = null;
 
-    const valueComparisonNode = valueComparisonNodeQuery(valudNode);
+    const expressionComparisonNode = expressionComparisonNodeQuery(valudNode);
 
-    if (valueComparisonNode !== null) {
-      const comparisonNode = valueComparisonNode; ///
+    if (expressionComparisonNode !== null) {
+      const comparisonNode = expressionComparisonNode; ///
 
       comparison = comparisonFromComparisonNode(comparisonNode, context);
     }
@@ -100,25 +100,25 @@ function negatedFromComparisonNode(comparisonNode) {
 }
 
 function comparisonFromComparisonNode(comparisonNode, context) {
-  const { Value, Comparison } = dom,
-        leftValueNode = leftValueNodeQuery(comparisonNode),
-        rightValueNode = rightValueNodeQuery(comparisonNode),
-        rightValue = Value.fromValueNode(rightValueNode, context),
-        leftValue = Value.fromValueNode(leftValueNode, context),
+  const { Expression, Comparison } = dom,
+        leftExpressionNode = leftExpressionNodeQuery(comparisonNode),
+        rightExpressionNode = rightExpressionNodeQuery(comparisonNode),
+        rightExpression = Expression.fromExpressionNode(rightExpressionNode, context),
+        leftExpression = Expression.fromExpressionNode(leftExpressionNode, context),
         negated = negatedFromComparisonNode(comparisonNode, context),
-        string = stringFromNegatedLeftValueAndRightValue(negated, leftValue, rightValue, context),
-        comparison = new Comparison(string, negated, leftValue, rightValue);
+        string = stringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context),
+        comparison = new Comparison(string, negated, leftExpression, rightExpression);
 
   return comparison;
 }
 
-function stringFromNegatedLeftValueAndRightValue(negated, leftValue, rightValue, context) {
+function stringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context) {
   const operatorString = negated ?
                            EQUAL_TO :
                             NOT_EQUAL_TO,
-        leftValueString = leftValue.asString(context),
-        rightValueString = rightValue.asString(context),
-        string = `${leftValueString} ${operatorString} ${rightValueString}`;
+        leftExpressionString = leftExpression.asString(context),
+        rightExpressionString = rightExpression.asString(context),
+        string = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
 
   return string;
 }

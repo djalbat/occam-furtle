@@ -1,7 +1,7 @@
 "use strict";
 
 import { Query } from "occam-query";
-import { Values } from "../../index"; ///
+import { Expressions } from "../../index"; ///
 import { arrayUtilities } from "necessary";
 
 const { first } = arrayUtilities;
@@ -9,12 +9,12 @@ const { first } = arrayUtilities;
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");
 
-export function valuesFromFileContext(fileContext, free = true) {
+export function expressionsFromFileContext(fileContext, free = true) {
   const context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext, free),
-        values = Values.fromNodes(nodes, context);
+        expressions = Expressions.fromNodes(nodes, context);
 
-  return values;
+  return expressions;
 }
 
 function nodesFromFileContext(fileContext, free) {

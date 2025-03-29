@@ -5,7 +5,7 @@ import Exception from "../../exception";
 
 import { nodeQuery } from "../../utilities/query";
 import { domAssigned } from "../../dom";
-import { variablesFromValuesAndParameters } from "../procedure";
+import { variablesFromExpressionsAndParameters } from "../procedure";
 
 const typeTerminalNodeQuery = nodeQuery("/anonymousProcedure/@type"),
       someAnonymousProcedureNodeQuery = nodeQuery("/some/anonymousProcedure"),
@@ -36,20 +36,20 @@ export default domAssigned(class AnonymousProcedure {
     return this.returnBlock;
   }
 
-  call(values, context) {
+  call(expressions, context) {
     const anonymousProcedureString = this.string; ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
 
-    this.parameters.matchValues(values, context);
+    this.parameters.matchExpressions(expressions, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          value = this.returnBlock.evaluate(variables, context),
-          valueType = value.getType();
+    const variables = variablesFromExpressionsAndParameters(expressions, this.parameters, context),
+          expression = this.returnBlock.evaluate(variables, context),
+          expressionType = expression.getType();
 
-    if (this.type !== valueType) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
+    if (this.type !== expressionType) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -57,7 +57,7 @@ export default domAssigned(class AnonymousProcedure {
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
 
-    return value;
+    return expression;
   }
 
   static name = "AnonymousProcedure";

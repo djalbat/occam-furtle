@@ -5,7 +5,7 @@ import "./index";
 import { ReleaseContext } from "./example/context/release";
 
 import { furtleFileFromNothing } from "./example/utilities/furtle";
-import { valuesFromFileContext } from "./example/utilities/values";
+import { expressionsFromFileContext } from "./example/utilities/expressions";
 import { procedureFromReleaseContext } from "./example/utilities/procedure";
 import { nominalFileContextFromReleaseContext } from "./example/utilities/nominal";
 
@@ -23,12 +23,12 @@ const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext),
 releaseContext.addFileContext(fileContext);
 
 const free = true,
-      values = valuesFromFileContext(fileContext, free),
+      expressions = expressionsFromFileContext(fileContext, free),
       procedure = procedureFromReleaseContext(releaseContext);
 
 // try {
-  const value = procedure.call(values, fileContext),
-        boolean = value.getBoolean();
+  const expression = procedure.call(expressions, fileContext),
+        boolean = expression.getBoolean();
 
   console.log(boolean);
 // } catch (exception) {

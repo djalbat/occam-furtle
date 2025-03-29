@@ -14,7 +14,7 @@ import { domAssigned } from "../../dom";
 const { first } = arrayUtilities,
       { trimDoubleQuotes } = contentUtilities;
 
-const valueNodeQueryNodeQuery = nodeQuery("/value/nodeQuery"),
+const expressionNodeQueryNodeQuery = nodeQuery("/expression/nodeQuery"),
       stringLiteralTerminalNodeQuery = nodeQuery("/nodeQuery/@string-literal");
 
 export default domAssigned(class NodeQuery {
@@ -37,7 +37,7 @@ export default domAssigned(class NodeQuery {
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const nodeQueryString = this.string;  ///
 
@@ -50,23 +50,23 @@ export default domAssigned(class NodeQuery {
       throw exception;
     }
 
-    value = this.variable.evaluate(context);
+    expression = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const expressionType = expression.getType();
 
-    if (valueType !== NODE_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type should be '${NODE_TYPE}'.`,
+    if (expressionType !== NODE_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const valueNode = value.getNode();
+    const expressionNode = expression.getNode();
 
-    if (valueNode === null) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's node is null.`,
+    if (expressionNode === null) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -74,7 +74,7 @@ export default domAssigned(class NodeQuery {
 
     let node;
 
-    node = valueNode; ///
+    node = expressionNode; ///
 
     const nodes = this.query.execute(node),
           nodesLength = nodes.length;
@@ -90,24 +90,24 @@ export default domAssigned(class NodeQuery {
 
     node = firstNode; ///
 
-    const { Value } = dom;
+    const { Expression } = dom;
 
-    value = Value.fromNode(node, context);
+    expression = Expression.fromNode(node, context);
 
     context.debug(`...evaluated the '${nodeQueryString}' node query.`);
 
-    return value;
+    return expression;
   }
 
   static name = "NodeQuery";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let nodeQuery = null;
 
-    const valueNodeQueryNode = valueNodeQueryNodeQuery(valueNode);
+    const expressionNodeQueryNode = expressionNodeQueryNodeQuery(expressionNode);
 
-    if (valueNodeQueryNode !== null) {
-      const nodeQueryNode = valueNodeQueryNode; ///
+    if (expressionNodeQueryNode !== null) {
+      const nodeQueryNode = expressionNodeQueryNode; ///
 
       nodeQuery = nodeQueryFromNodeQueryNode(nodeQueryNode, context);
     }

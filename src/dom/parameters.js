@@ -40,17 +40,17 @@ export default domAssigned(class Parameters {
 
   forEachParameter(callback) { this.array.forEach(callback); }
 
-  matchValues(values, context) {
-    const valuesString = values.getString(),
+  matchExpressions(expressions, context) {
+    const expressionsString = expressions.getString(),
           parametersString = this.string; ///
 
-    context.trace(`Matching the ${valuesString} values against the '${parametersString}' parameters...`);
+    context.trace(`Matching the ${expressionsString} expressions against the '${parametersString}' parameters...`);
 
-    const valuesLength = values.getLength(),
+    const expressionsLength = expressions.getLength(),
           parametersLength = this.getLength();
 
-    if (valuesLength !== parametersLength) {
-      const message = `The ${valuesString} values and '${parametersString}' parameters are not of the same length.`,
+    if (expressionsLength !== parametersLength) {
+      const message = `The ${expressionsString} expressions and '${parametersString}' parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -58,13 +58,13 @@ export default domAssigned(class Parameters {
 
     this.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const value = values.getValue(index);
+        const expression = expressions.getExpression(index);
 
-        parameter.matchValue(value, context);
+        parameter.matchExpression(expression, context);
       }
     });
 
-    context.debug(`...matched the ${valuesString} values against the '${parametersString}' parameters.`);
+    context.debug(`...matched the ${expressionsString} expressions against the '${parametersString}' parameters.`);
   }
 
   static name = "Parameters";

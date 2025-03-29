@@ -34,22 +34,22 @@ export default domAssigned(class NamedParameter {
     return this.asName;
   }
 
-  matchValue(value, context) {
-    const valueString = value.asString(context),
+  matchExpression(expression, context) {
+    const expressionString = expression.asString(context),
           namedParameterString = this.string;  ///
 
-    context.trace(`Matching the ${valueString} value against the '${namedParameterString}' named parameter...`);
+    context.trace(`Matching the ${expressionString} expression against the '${namedParameterString}' named parameter...`);
 
-    const valueType = value.getType();
+    const expressionType = expression.getType();
 
-    if (this.type !== valueType) {
-      const message = `The ${valueString} value's '${valueType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
+    if (this.type !== expressionType) {
+      const message = `The ${expressionString} expression's '${expressionType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the ${valueString} value against the '${namedParameterString}' named parameter.`);
+    context.debug(`...matched the ${expressionString} expression against the '${namedParameterString}' named parameter.`);
   }
 
   matchNamedParameter(namedParameter, context) {

@@ -33,18 +33,18 @@ export default domAssigned(class ArrayAssigment {
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType();
+    const expression = this.variable.evaluate(context),
+          expressionType = expression.getType();
 
-    if (valueType !== NODES_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type should be '${NODES_TYPE}'.`,
+    if (expressionType !== NODES_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = value.getNodes(),
+    const nodes = expression.getNodes(),
           nodesLength = nodes.length,
           parametersLength = this.parameters.getLength();
 
@@ -59,22 +59,22 @@ export default domAssigned(class ArrayAssigment {
 
     this.parameters.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const { Value } = dom,
+        const { Expression } = dom,
               node = nodes[index],
-              value = Value.fromNode(node, context);
+              expression = Expression.fromNode(node, context);
 
-        this.evaluateParameter(parameter, value, context);
+        this.evaluateParameter(parameter, expression, context);
       }
     });
 
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
   }
 
-  evaluateParameter(parameter, value, context) {
-    const valueString = value.asString(context),
+  evaluateParameter(parameter, expression, context) {
+    const expressionString = expression.asString(context),
           parameterString = parameter.getString();
 
-    context.trace(`Evaluating the '${parameterString}' parameter against the ${valueString} value...`);
+    context.trace(`Evaluating the '${parameterString}' parameter against the ${expressionString} expression...`);
 
     const parameterType = parameter.getType();
 
@@ -88,9 +88,9 @@ export default domAssigned(class ArrayAssigment {
     const { Variable } = dom,
           variable = Variable.fromParameter(parameter, context);
 
-    variable.assign(value, context);
+    variable.assign(expression, context);
 
-    context.debug(`...evaluated the '${parameterString}' parameter against the ${valueString} value.`);
+    context.debug(`...evaluated the '${parameterString}' parameter against the ${expressionString} expression.`);
   }
 
   static name = "ArrayAssignment";

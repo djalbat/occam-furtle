@@ -7,7 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 
-const valueEveryNodeQuery = nodeQuery("/value/every");
+const expressionEveryNodeQuery = nodeQuery("/expression/every");
 
 export default domAssigned(class Every {
   constructor(string, variable, anonymousProcedure) {
@@ -29,69 +29,69 @@ export default domAssigned(class Every {
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const everyString = this.getString();
 
     context.trace(`Evaluating the '${everyString}' every...`);
 
-    value = this.variable.evaluate(context);
+    expression = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const expressionType = expression.getType();
 
-    if (valueType !== NODES_TYPE) {
-      const valueString = value.asString(context),
-            message = `The ${valueString} value's '${valueType}' type should be '${NODES_TYPE}'.`,
+    if (expressionType !== NODES_TYPE) {
+      const expressionString = expression.asString(context),
+            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = value.getNodes(),
+    const nodes = expression.getNodes(),
           boolean = nodes.every((node) => {
-            let value;
+            let expression;
 
-            const { Value, Values } = dom;
+            const { Expression, Expressions } = dom;
 
-            value = Value.fromNode(node, context);
+            expression = Expression.fromNode(node, context);
 
-            const values = Values.fromValue(value, context);
+            const expressions = Expressions.fromExpression(expression, context);
 
-            value = this.anonymousProcedure.call(values, context);
+            expression = this.anonymousProcedure.call(expressions, context);
 
-            const valueType = value.getType();
+            const expressionType = expression.getType();
 
-            if (valueType !== BOOLEAN_TYPE) {
-              const valueString = value.asString(context),
-                    message = `The ${valueString} value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            if (expressionType !== BOOLEAN_TYPE) {
+              const expressionString = expression.asString(context),
+                    message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;
             }
 
-            const boolean = value.getBoolean();
+            const boolean = expression.getBoolean();
 
             return boolean;
           });
 
-    const { Value } = dom;
+    const { Expression } = dom;
 
-    value = Value.fromBoolean(boolean, context);
+    expression = Expression.fromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${everyString}' every.`);
 
-    return value;
+    return expression;
   }
 
   static name = "Every";
 
-  static fromValueNode(valueNode, context) {
+  static fromExpressionNode(expressionNode, context) {
     let every = null;
 
-    const valueEveryNode = valueEveryNodeQuery(valueNode);
+    const expressionEveryNode = expressionEveryNodeQuery(expressionNode);
 
-    if (valueEveryNode !== null) {
-      const everyNode = valueEveryNode; ///
+    if (expressionEveryNode !== null) {
+      const everyNode = expressionEveryNode; ///
 
       every = everyFromEveryNode(everyNode, context);
     }

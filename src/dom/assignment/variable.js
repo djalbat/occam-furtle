@@ -5,10 +5,10 @@ import dom from "../../dom";
 import { domAssigned } from "../../dom";
 
 export default domAssigned(class VariableAssignment {
-  constructor(string, variable, value) {
+  constructor(string, variable, expression) {
     this.string = string;
     this.variable = variable;
-    this.value = value;
+    this.expression = expression;
   }
 
   getString() {
@@ -19,24 +19,24 @@ export default domAssigned(class VariableAssignment {
     return this.variable;
   }
 
-  getValue() {
-    return this.value;
+  getExpression() {
+    return this.expression;
   }
 
   evaluate(context) {
-    let value;
+    let expression;
 
     const variableAssignmentString = this.string; ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    value = this.value.evaluate(context);
+    expression = this.expression.evaluate(context);
 
-    this.variable.assign(value, context);
+    this.variable.assign(expression, context);
 
     context.debug(`...evaluated the '${variableAssignmentString}' variable assignment.`);
 
-    return value;
+    return expression;
   }
 
   static name = "VariableAssignment";
@@ -49,19 +49,19 @@ export default domAssigned(class VariableAssignment {
 });
 
 function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-  const { Variable, Value, VariableAssignment } = dom,
-        value = Value.fromVariableAssignmentNode(variableAssignmentNode, context),
+  const { Variable, Expression, VariableAssignment } = dom,
+        expression = Expression.fromVariableAssignmentNode(variableAssignmentNode, context),
         variable = Variable.fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
-        string = stringFromValueAndVariable(value, variable, context),
-        assignment = new VariableAssignment(string, variable, value);
+        string = stringFromExpressionAndVariable(expression, variable, context),
+        assignment = new VariableAssignment(string, variable, expression);
 
   return assignment;
 }
 
-function stringFromValueAndVariable(value, variable, context) {
+function stringFromExpressionAndVariable(expression, variable, context) {
   const variableString = variable.getString(),
-        valueString = value.asString(context),
-        string = `${variableString} = ${valueString};`;
+        expressionString = expression.asString(context),
+        string = `${variableString} = ${expressionString};`;
 
   return string;
 }
