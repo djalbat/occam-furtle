@@ -169,7 +169,10 @@ export default class FileContext {
 
     procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
       const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-            procedure = procedureDeclaration.getProcedure();
+            procedure = procedureDeclaration.getProcedure(),
+            procedureString = procedure.getString();
+
+      this.debug(`Adding the '${procedureString}' procedure.`);
 
       this.procedures.push(procedure);
     });
