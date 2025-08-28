@@ -47,11 +47,7 @@ export default domAssigned(class Procedure {
 
   matchName(name) { return this.label.matchName(name); }
 
-  call(expressions, fileContext) {
-    let context;
-
-    context = fileContext;  ///
-
+  call(expressions, context) {
     const procedureString = this.string;  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
@@ -69,8 +65,6 @@ export default domAssigned(class Procedure {
 
       throw exception;
     }
-
-    context = fileContext;  ///
 
     context.debug(`...called the '${procedureString}' procedure.`);
 

@@ -149,12 +149,6 @@ export default class FileContext {
     return variables;
   }
 
-  getFileContext() {
-    const fileContext = this;
-
-    return fileContext;
-  }
-
   findFile(filePath) { return this.releaseContext.findFile(filePath); }
 
   findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }

@@ -27,7 +27,8 @@ const free = true,
       procedure = procedureFromReleaseContext(releaseContext);
 
 // try {
-  const expression = procedure.call(expressions, fileContext),
+  const context = fileContext,
+        expression = procedure.call(expressions, context),
         boolean = expression.getBoolean();
 
   console.log(boolean);

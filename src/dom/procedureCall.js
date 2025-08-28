@@ -41,10 +41,9 @@ export default domAssigned(class ProcedureCall {
       throw exception;
     }
 
-    const fileContext = context.getFileContext(),
-          procedure = context.findProcedureByReference(this.reference),
+    const procedure = context.findProcedureByReference(this.reference),
           expressions = this.expressions.evaluate(context),
-          expression = procedure.call(expressions, fileContext);
+          expression = procedure.call(expressions, context);
 
     context.debug(`...evaluated the '${procedureCallString}' procedure call.`);
 

@@ -35,12 +35,6 @@ export default class FileContext {
     return procedures;
   }
 
-  getFileContext() {
-    const fileContext = this;
-
-    return fileContext;
-  }
-
   findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }
 
   isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }

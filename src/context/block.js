@@ -30,8 +30,6 @@ export default class BlockContext {
     return variables;
   }
 
-  getFileContext() { return this.context.getFileContext(); }
-
   findProcedureByReference(reference) { return this.context.findProcedureByReference(reference); }
 
   isProcedurePresentByReference(reference) { return this.context.isProcedurePresentByReference(reference); }
