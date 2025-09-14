@@ -1,7 +1,7 @@
 {
   "name": "occam-furtle",
   "author": "James Smith",
-  "version": "2.0.183",
+  "version": "2.0.184",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/djalbat/occam-furtle",
   "description": "Occam's Furtle language.",
@@ -18,7 +18,7 @@
     "express": "^5.1.0",
     "lively-cli": "^2.0.70",
     "occam-custom-grammars": "^5.0.1232",
-    "occam-entities": "^1.0.374",
+    "occam-entities": "^1.0.376",
     "occam-query": "^4.1.110",
     "watchful-cli": "^1.7.56"
   },
