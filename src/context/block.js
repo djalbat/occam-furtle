@@ -34,12 +34,12 @@ export default class BlockContext {
 
   isProcedurePresentByReference(reference) { return this.context.isProcedurePresentByReference(reference); }
 
-  findVariableByVariableName(variableName, nested = true) {
+  findVariableByVariableIdentifier(variableIdentifier, nested = true) {
     const variables = this.getVariables(nested),
           variable = variables.find((variable) => {
-            const variableNameMatches = variable.matchVariableName(variableName);
+            const variableIdentifierMatches = variable.matchVariableIdentifier(variableIdentifier);
 
-            if (variableNameMatches) {
+            if (variableIdentifierMatches) {
               return true;
             }
           }) || null;
@@ -47,8 +47,8 @@ export default class BlockContext {
     return variable;
   }
 
-  isVariablePresentByVariableName(variableName, nested = true) {
-    const variable = this.findVariableByVariableName(variableName, nested),
+  isVariablePresentByVariableIdentifier(variableIdentifier, nested = true) {
+    const variable = this.findVariableByVariableIdentifier(variableIdentifier, nested),
           variablePresent = (variable !== null);
 
     return variablePresent;
@@ -56,9 +56,9 @@ export default class BlockContext {
 
   addVariable(variable) {
     const nested = false,
-          variableName = variable.getName(),
           variableString = variable.getString(),
-          variablePresent = this.isVariablePresentByVariableName(variableName, nested);
+          variableIdentifier = variable.getIdentifier(),
+          variablePresent = this.isVariablePresentByVariableIdentifier(variableIdentifier, nested);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.'`,
