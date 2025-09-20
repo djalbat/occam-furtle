@@ -3,14 +3,14 @@
     "name": "Default",
     "termBNF": "term.                                ::=  \"(\" argument \")\"\n\n                                       |  variable \n                                       \n                                       ;",
     "statementBNF": "statement.                           ::=  \"(\" metaArgument \")\" \n                                                  \n                                       |  equality\n\n                                       |  judgement\n\n                                       |  typeAssertion \n                                                  \n                                       |  definedAssertion  \n\n                                       |  containedAssertion  \n                                       \n                                       |  satisfyingAssertion\n\n                                       |  subproofAssertion         \n\n                                       |  propertyAssertion  \n\n                                       |  metavariable ( frameSubstitution | termSubstitution )?\n\n                                       ;\n\nequality                             ::=  term \"=\" term ;\n\njudgement                            ::=  frame \"|-\" declaration ;\n\ntypeAssertion                        ::=  term \":\" type ;\n\ndefinedAssertion                     ::=  ( frame | term ) \"is\" ( \"defined\" | \"undefined\" );\n\ncontainedAssertion                   ::=  ( frame | term ) \"is\" ( \"present\" | \"missing\" ) \"in\" statement ;\n\nsatisfyingAssertion                  ::=  ( ( term \"satisfies\" ) | ( term ( \",\" term )+ \"satisfy\" ) ) metavariable ;  \n\nsubproofAssertion                    ::=  \"[\" statement ( \",\" statement )* \"]\" \"...\" statement ;\n\npropertyAssertion                    ::=  term \"is\" ( \"a\" | \"an\" ) propertyRelation ;\n\npropertyRelation                     ::=  property \"of\" term ;\n\nframe                                ::=  \"[\" ( ( declaration | metavariable ) ( \",\" ( declaration | metavariable ) )* )? \"]\" ;\n \ndeclaration                          ::=  metavariable \"::\" statement ;\n\ntermSubstitution                     ::=  \"[\" term \"for\" term \"]\";\n\nframeSubstitution                    ::=  \"[\" frame \"for\" frame \"]\";\n\nstatementSubstitution                ::=  \"[\" statement \"for\" statement \"]\";\n\nreferenceSubstitution                ::=  \"[\" reference \"for\" reference \"]\";",
-    "typePattern": "Object",
-    "symbolPattern": "::|\\[|\\]|\\.\\.\\.|\\|-|=|defined|undefined|missing|present"
+    "typeVocabulary": "_\n",
+    "symbolVocabulary": ""
   },
   {
     "name": "first-order-logic",
-    "termBNF": null,
+    "termBNF": "",
     "statementBNF": "\n\n                              statement  ::=  ( \"∀\" | \"∃\" ) ( frameArgument | argument ) metaArgument \n\n                                           |  ( frameArgument | argument ) \"is\" ( \"bound\" | \"free\" ) \"in\" metaArgument\n\n                                           ;\n\n",
-    "typePattern": null,
-    "symbolPattern": "bound|free|∀|∃"
+    "typeVocabulary": "",
+    "symbolVocabulary": "\uD835\uDE23\uD835\uDE30\uD835\uDE36\uD835\uDE2F\uD835\uDE25\n\uD835\uDE27\uD835\uDE33\uD835\uDE26\uD835\uDE26\n∀\n∃\n"
   }
 ]
