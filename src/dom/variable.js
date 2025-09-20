@@ -12,16 +12,16 @@ const someVariableNodeQuery = nodeQuery("/some/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       expressionVariableNodeQuery = nodeQuery("/expression/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
+      variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
       objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
-      variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable"),
-      variableIdentifierTerminalNodeQuery = nodeQuery("/variable/@identifier");
+      variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
 
 export default domAssigned(class Variable {
-  constructor(string, type, identifier, expression) {
+  constructor(string, type, name, expression) {
     this.string = string;
     this.type = type;
-    this.identifier = identifier;
+    this.name = name;
     this.expression = expression;
   }
 
@@ -33,16 +33,16 @@ export default domAssigned(class Variable {
     return this.type;
   }
 
-  getIdentifier() {
-    return this.identifier;
+  getName() {
+    return this.name;
   }
 
   getExpression() {
     return this.expression;
   }
 
-  matchVariableIdentifier(variableIdentifier) {
-    const nameMatches = (this.identifier === variableIdentifier);
+  matchVariableName(variableName) {
+    const nameMatches = (this.name === variableName);
 
     return nameMatches;
   }
@@ -53,8 +53,8 @@ export default domAssigned(class Variable {
     context.trace(`Evaluating the '${variableString}' variable...`);
 
     const nested = true,
-          variableIdentifier = this.identifier, ///
-          variablePresent = context.isVariablePresentByVariableIdentifier(variableIdentifier, nested);
+          variableName = this.name, ///
+          variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     if (!variablePresent) {
       const message = `The '${variableString}; variable is not present.'`,
@@ -63,7 +63,7 @@ export default domAssigned(class Variable {
       throw exception;
     }
 
-    const variable = context.findVariableByVariableIdentifier(variableIdentifier),
+    const variable = context.findVariableByVariableName(variableName),
           expression = variable.getExpression(),
           expressionString = expression.asString(context);
 
@@ -75,9 +75,9 @@ export default domAssigned(class Variable {
   assign(expression, context) {
     const nested = false,
           expressionString = expression.asString(context), ///
-          variableIdentifier = this.identifier, ///
+          variableName = this.name, ///
           variableString = this.string, ///
-          variablePresent = context.isVariablePresentByVariableIdentifier(variableIdentifier, nested);
+          variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     context.trace(`Assigning the ${expressionString} expression to the '${variableString}' variable...`);
 
@@ -107,7 +107,7 @@ export default domAssigned(class Variable {
     context.debug(`...assigned the ${expressionString} expression to the '${variableString}' variable.`);
   }
 
-  static identifier = "Variable";
+  static name = "Variable";
 
   static fromSomeNode(someNode, context) {
     const someVariableNode = someVariableNodeQuery(someNode),
@@ -141,10 +141,10 @@ export default domAssigned(class Variable {
 
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
-          identifier = parameter.getName(),
+          name = parameter.getName(),
           expression = null,
-          string = stringFromName(identifier, context),
-          variable = new Variable(string, type, identifier, expression);
+          string = stringFromName(name, context),
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
@@ -176,21 +176,21 @@ export default domAssigned(class Variable {
   static fromNamedParameter(namedParameter, context) {
     const asName = namedParameter.getAsName(),
           type = namedParameter.getType(),
-          identifier = (asName !== null) ?
+          name = (asName !== null) ?
                    asName : ///
                      namedParameter.getName(),
           expression = null,
-          string = stringFromName(identifier, context),
-          variable = new Variable(string, type, identifier, expression);
+          string = stringFromName(name, context),
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
 
   static fromExpressionAndParameter(expression, parameter, context) {
     const type = parameter.getType(),
-          identifier = parameter.getName(),
-          string = stringFromName(identifier, context),
-          variable = new Variable(string, type, identifier, expression);
+          name = parameter.getName(),
+          string = stringFromName(name, context),
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
@@ -222,10 +222,10 @@ export default domAssigned(class Variable {
 
 function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = dom,
-        identifier = nameFromVariableNode(variableNode),
+        name = nameFromVariableNode(variableNode),
         expression = null,
-        string = stringFromName(identifier, context),
-        variable = new Variable(string, type, identifier, expression);
+        string = stringFromName(name, context),
+        variable = new Variable(string, type, name, expression);
 
   return variable;
 }
@@ -233,24 +233,24 @@ function variableFromTypeAndVariableNode(type, variableNode, context) {
 function variableFromVariableNode(variableNode, context) {
   const { Variable } = dom,
         type = null,
-        identifier = nameFromVariableNode(variableNode),
+        name = nameFromVariableNode(variableNode),
         expression = null,
-        string = stringFromName(identifier, context),
-        variable = new Variable(string, type, identifier, expression);
+        string = stringFromName(name, context),
+        variable = new Variable(string, type, name, expression);
 
   return variable;
 }
 
 function nameFromVariableNode(variableNode) {
-  const variableIdentifierTerminalNode = variableIdentifierTerminalNodeQuery(variableNode),
-        variableIdentifierTerminalNodeContent = variableIdentifierTerminalNode.getContent(),
-        identifier = variableIdentifierTerminalNodeContent; ///
+  const variableNameTerminalNode = variableNameTerminalNodeQuery(variableNode),
+        variableNameTerminalNodeContent = variableNameTerminalNode.getContent(),
+        name = variableNameTerminalNodeContent; ///
 
-  return identifier;
+  return name;
 }
 
-function stringFromName(identifier, context) {
-  const nameString = identifier,  ///
+function stringFromName(name, context) {
+  const nameString = name,  ///
         string = nameString;  ///
 
   return string;
