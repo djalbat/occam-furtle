@@ -125,6 +125,12 @@ export default class FileContext {
     return combinators;
   }
 
+  getTypePrefixes(includeRelease = true) {
+    const typePrefixes = [];
+
+    return typePrefixes;
+  }
+
   getConstructors(includeRelease = true) {
     const constructors = [];
 
