@@ -286,13 +286,11 @@ export default class FileContext {
     return fileContext;
   }
 
-  static fromFilePathAndJSON(filePath, json, releaseContext) {
+  static fromFilePath(filePath, json, releaseContext) {
     const tokens = null,
           node = null,
           procedures = null,
           fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
-
-    fileContext.initialise(json);
 
     return fileContext;
   }
