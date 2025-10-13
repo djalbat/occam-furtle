@@ -286,7 +286,7 @@ export default class FileContext {
     return fileContext;
   }
 
-  static fromFilePath(filePath, json, releaseContext) {
+  static fromFilePath(filePath, releaseContext) {
     const tokens = null,
           node = null,
           procedures = null,
