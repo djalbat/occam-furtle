@@ -45,6 +45,8 @@ export default domAssigned(class Procedure {
     return boolean;
   }
 
+  getName() { return this.label.getName(); }
+
   matchName(name) { return this.label.matchName(name); }
 
   call(expressions, context) {

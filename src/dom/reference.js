@@ -5,8 +5,8 @@ import dom from "../dom";
 import { nodeQuery } from "../utilities/query";
 import { domAssigned } from "../dom";
 
-const referenceNameTerminalNodeQuery = nodeQuery("/reference/@name"),
-      procedureCallReferenceNodeQuery = nodeQuery("/procedureCall/reference");
+const procedureCallReferenceNodeQuery = nodeQuery("/procedureCall/reference!"),
+      referenceNameTerminalNodeQuery = nodeQuery("/reference/@name");
 
 export default domAssigned(class Reference {
   constructor(string, name) {
