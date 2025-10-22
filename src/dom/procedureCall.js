@@ -9,9 +9,9 @@ import { domAssigned } from "../dom";
 const expressionProcedureCallNodeQuery = nodeQuery("/expression/procedureCall");
 
 export default domAssigned(class ProcedureCall {
-  constructor(string, reference, expressions) {
+  constructor(string, name, expressions) {
     this.string = string;
-    this.reference = reference;
+    this.name = name;
     this.expressions = expressions;
   }
 
@@ -19,8 +19,8 @@ export default domAssigned(class ProcedureCall {
     return this.string;
   }
 
-  getReference() {
-    return this.reference;
+  getName() {
+    return this.name;
   }
 
   getExpressions() {
@@ -32,7 +32,7 @@ export default domAssigned(class ProcedureCall {
 
     context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
 
-    const procedurePresent = context.isProcedurePresentByReference(this.reference);
+    const procedurePresent = context.isProcedurePresentByName(this.name);
 
     if (!procedurePresent) {
       const message = `The '${procedureCallString} procedure is not present.'`,
@@ -41,7 +41,7 @@ export default domAssigned(class ProcedureCall {
       throw exception;
     }
 
-    const procedure = context.findProcedureByReference(this.reference),
+    const procedure = context.findProcedureByName(this.name),
           expressions = this.expressions.evaluate(context),
           expression = procedure.call(expressions, context);
 
@@ -68,18 +68,18 @@ export default domAssigned(class ProcedureCall {
 });
 
 function procedureCallFromProcedureCallNode(procedureCallNode, context) {
-  const { Reference, Expressions, ProcedureCall } = dom,
-        reference = Reference.fromProcedureCallNode(procedureCallNode, context),
+  const { Name, Expressions, ProcedureCall } = dom,
+        name = Name.fromProcedureCallNode(procedureCallNode, context),
         expressions = Expressions.fromProcedureCallNode(procedureCallNode, context),
-        string = stringFromExpressionsAndReference(expressions, reference, context),
-        procedureCall = new ProcedureCall(string, reference, expressions);
+        string = stringFromExpressionsAndName(expressions, name, context),
+        procedureCall = new ProcedureCall(string, name, expressions);
 
   return procedureCall;
 }
 
-function stringFromExpressionsAndReference(expressions, reference, context) {
+function stringFromExpressionsAndName(expressions, name, context) {
   const expressionsString = expressions.getString(),
-        referenceString = reference.getString(),
+        referenceString = name.getString(),
         string = `${referenceString}(${expressionsString})`;
 
   return string;

@@ -52,9 +52,8 @@ export class ReleaseContext {
     return file;
   }
 
-  findProcedureByReference(reference) {
+  findProcedureByName(name) {
     const procedures = this.getProcedures(),
-          name = reference.getName(),
           procedure = procedures.find((procedure) => {
             const nameMatches = procedure.matchName(name);
 
@@ -66,8 +65,8 @@ export class ReleaseContext {
     return procedure;
   }
 
-  isProcedurePresentByReference(reference) {
-    const procedure = this.findProcedureByReference(reference),
+  isProcedurePresentByName(name) {
+    const procedure = this.findProcedureByName(name),
           procedurePresent = (procedure !== null);
 
     return procedurePresent;

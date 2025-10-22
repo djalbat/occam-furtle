@@ -30,9 +30,9 @@ export default class BlockContext {
     return variables;
   }
 
-  findProcedureByReference(reference) { return this.context.findProcedureByReference(reference); }
+  findProcedureByName(name) { return this.context.findProcedureByName(name); }
 
-  isProcedurePresentByReference(reference) { return this.context.isProcedurePresentByReference(reference); }
+  isProcedurePresentByName(name) { return this.context.isProcedurePresentByName(name); }
 
   findVariableByVariableName(variableName, nested = true) {
     const variables = this.getVariables(nested),

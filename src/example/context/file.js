@@ -35,9 +35,9 @@ export default class FileContext {
     return procedures;
   }
 
-  findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }
+  findProcedureByName(name) { return this.releaseContext.findProcedureByName(name); }
 
-  isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }
+  isProcedurePresentByName(name) { return this.releaseContext.isProcedurePresentByName(name); }
 
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);

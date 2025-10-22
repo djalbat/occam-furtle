@@ -157,9 +157,9 @@ export default class FileContext {
 
   findFile(filePath) { return this.releaseContext.findFile(filePath); }
 
-  findProcedureByReference(reference) { return this.releaseContext.findProcedureByReference(reference); }
+  findProcedureByName(name) { return this.releaseContext.findProcedureByName(name); }
 
-  isProcedurePresentByReference(reference) { return this.releaseContext.isProcedurePresentByReference(reference); }
+  isProcedurePresentByName(name) { return this.releaseContext.isProcedurePresentByName(name); }
 
   addProcedures() {
     const context = this; ///
