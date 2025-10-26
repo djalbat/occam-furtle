@@ -1,36 +1,6 @@
 "use strict";
 
-import Step from "./dom/step";
-import Some from "./dom/some";
-import Label from "./dom/label";
-import Error from "./dom/error";
-import Every from "./dom/every";
-import Reduce from "./dom/reduce";
-import Ternary from "./dom/ternary";
-import Variable from "./dom/variable";
-import Reference from "./dom/reference";
-import Procedure from "./dom/procedure";
-import NodeQuery from "./dom/query/node";
-import Parameter from "./dom/parameter";
-import Parameters from "./dom/parameters";
-import NodesQuery from "./dom/query/nodes";
-import Comparison from "./dom/comparison";
-import Expression from "./dom/expression";
-import Expressions from "./dom/expressions";
-import ReturnBlock from "./dom/block/return";
-import ProcedureCall from "./dom/procedureCall";
-import NamedParameter from "./dom/parameter/named";
-import ArrayAssigment from "./dom/assignment/array";
-import ReturnStatement from "./dom/statement/return";
-import NamedParameters from "./dom/parameters/named";
-import ObjectAssignment from "./dom/assignment/object";
-import NegatedExpression from "./dom/expression/negated";
-import BitwiseExpression from "./dom/expression/bitwise";
-import AnonymousProcedure from "./dom/procedure/anonymous";
-import VariableAssignment from "./dom/assignment/variable";
-import BracketedExpression from "./dom/expression/bracketed";
-import VariableAssignments from "./dom/assignments/variable";
-import ProcedureDeclaration from "./dom/declaration/procedure";
+import "./preamble";
 
 export { default as Expressions } from "./dom/expressions";
 export { default as FileContext } from "./context/file";
