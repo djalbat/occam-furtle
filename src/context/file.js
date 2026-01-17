@@ -6,6 +6,7 @@ import { lexersUtilities, parsersUtilities } from "occam-grammars";
 import dom from "../dom";
 
 import { nodesQuery } from "../utilities/query";
+import { chainContext } from "../utilities/context";
 import { nodeAsString, nodesAsString } from "../utilities/string";
 
 const { push } = arrayUtilities,
@@ -19,16 +20,18 @@ const errorNodesQuery = nodesQuery("/document/error"),
       procedureDeclarationNodesQuery = nodesQuery("/document/procedureDeclaration");
 
 export default class FileContext {
-  constructor(releaseContext, filePath, node, tokens, procedures) {
-    this.releaseContext = releaseContext;
+  constructor(context, filePath, node, tokens, procedures) {
+    this.context = context;
     this.filePath = filePath;
     this.node = node;
     this.tokens = tokens;
     this.procedures = procedures;
+
+    return chainContext(this);
   }
 
-  getReleaseContext() {
-    return this.releaseContext;
+  getContext() {
+    return this.context;
   }
 
   getFilePath() {
@@ -54,8 +57,6 @@ export default class FileContext {
 
     return parser;
   }
-
-  getMetaTypes() { return this.releaseContext.getMetaTypes(); }
 
   getLabels(includeRelease = true) {
     const labels = [];
@@ -99,7 +100,7 @@ export default class FileContext {
     push(procedures, this.procedures);
 
     if (includeRelease) {
-      const releaseContextProcedures = this.releaseContext.getProcedures();
+      const releaseContextProcedures = this.context.getProcedures();
 
       push(procedures, releaseContextProcedures);
     }
@@ -155,12 +156,6 @@ export default class FileContext {
     return variables;
   }
 
-  findFile(filePath) { return this.releaseContext.findFile(filePath); }
-
-  findProcedureByName(name) { return this.releaseContext.findProcedureByName(name); }
-
-  isProcedurePresentByName(name) { return this.releaseContext.isProcedurePresentByName(name); }
-
   addProcedures() {
     const context = this; ///
 
@@ -190,15 +185,15 @@ export default class FileContext {
     return string;
   }
 
-  trace(message) { this.releaseContext.trace(message, this.filePath); }
+  trace(message) { this.context.trace(message, this.filePath); }
 
-  debug(message) { this.releaseContext.debug(message, this.filePath); }
+  debug(message) { this.context.debug(message, this.filePath); }
 
-  info(message) { this.releaseContext.info(message, this.filePath); }
+  info(message) { this.context.info(message, this.filePath); }
 
-  warning(message) { this.releaseContext.warning(message, this.filePath); }
+  warning(message) { this.context.warning(message, this.filePath); }
 
-  error(message) { this.releaseContext.error(message, this.filePath); }
+  error(message) { this.context.error(message, this.filePath); }
 
   verify() {
     let verified = false;
@@ -276,21 +271,21 @@ export default class FileContext {
     return json;
   }
 
-  static fromFile(file, releaseContext) {
+  static fromFile(file, context) {
     const filePath = file.getPath(),
           tokens = null,
           node = null,
           procedures = [],
-          fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
+          fileContext = new FileContext(context, filePath, node, tokens, procedures);
 
     return fileContext;
   }
 
-  static fromFilePath(filePath, releaseContext) {
+  static fromFilePath(filePath, context) {
     const tokens = null,
           node = null,
           procedures = null,
-          fileContext = new FileContext(releaseContext, filePath, node, tokens, procedures);
+          fileContext = new FileContext(context, filePath, node, tokens, procedures);
 
     return fileContext;
   }

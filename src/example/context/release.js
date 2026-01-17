@@ -83,10 +83,9 @@ export class ReleaseContext {
   error(message) { console.log(message); }
 
   verify() {
-    const releaseContext = this;
-
     this.files.forEach((file) => {
-      const fileContext = FileContext.fromFile(file, releaseContext);
+      const context = this, ///
+            fileContext = FileContext.fromFile(file, context);
 
       fileContext.verify();
 

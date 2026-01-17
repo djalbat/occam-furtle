@@ -2,17 +2,21 @@
 
 import { stringUtilities } from "../../index";  ///
 
+import { chainContext } from "../../utilities/context";
+
 const { nodeAsString, nodesAsString } = stringUtilities;
 
 export default class FileContext {
-  constructor(releaseContext, node, tokens) {
-    this.releaseContext = releaseContext;
+  constructor(context, node, tokens) {
+    this.context = context;
     this.node = node;
     this.tokens = tokens;
+
+    return chainContext(this);
   }
 
-  getReleaseContext() {
-    return this.releaseContext;
+  getContext() {
+    return this.context;
   }
 
   getNode() {
@@ -35,10 +39,6 @@ export default class FileContext {
     return procedures;
   }
 
-  findProcedureByName(name) { return this.releaseContext.findProcedureByName(name); }
-
-  isProcedurePresentByName(name) { return this.releaseContext.isProcedurePresentByName(name); }
-
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
 
@@ -51,18 +51,18 @@ export default class FileContext {
     return string;
   }
 
-  trace(message) { this.releaseContext.trace(message, this.filePath); }
+  trace(message) { this.context.trace(message, this.filePath); }
 
-  debug(message) { this.releaseContext.debug(message, this.filePath); }
+  debug(message) { this.context.debug(message, this.filePath); }
 
-  info(message) { this.releaseContext.info(message, this.filePath); }
+  info(message) { this.context.info(message, this.filePath); }
 
-  warning(message) { this.releaseContext.warning(message, this.filePath); }
+  warning(message) { this.context.warning(message, this.filePath); }
 
-  error(message) { this.releaseContext.error(message, this.filePath); }
+  error(message) { this.context.error(message, this.filePath); }
 
-  static fromNodeAndTokens(node, tokens, releaseContext) {
-    const fileContext = new FileContext(releaseContext, node, tokens);
+  static fromNodeAndTokens(node, tokens, context) {
+    const fileContext = new FileContext(context, node, tokens);
 
     return fileContext;
   }

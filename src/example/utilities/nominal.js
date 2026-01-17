@@ -19,7 +19,8 @@ export function nominalFileContextFromReleaseContext(releaseContext) {
         parser = nominalParser, ///
         tokens = lexer.tokenise(content),
         node = parser.parse(tokens),
-        fileContext = FileContext.fromNodeAndTokens(node, tokens, releaseContext),
+        context = releaseContext, ///
+        fileContext = FileContext.fromNodeAndTokens(node, tokens, context),
         nominalFileContext = fileContext;  ///
 
   return nominalFileContext;

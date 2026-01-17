@@ -4,12 +4,16 @@ import { arrayUtilities } from "necessary";
 
 import Exception from "../exception";
 
+import { chainContext } from "../utilities/context";
+
 const { push } = arrayUtilities;
 
 export default class BlockContext {
   constructor(context, variables) {
     this.context = context;
     this.variables = variables;
+
+    return chainContext(this);
   }
 
   getContext() {
@@ -29,10 +33,6 @@ export default class BlockContext {
 
     return variables;
   }
-
-  findProcedureByName(name) { return this.context.findProcedureByName(name); }
-
-  isProcedurePresentByName(name) { return this.context.isProcedurePresentByName(name); }
 
   findVariableByVariableName(variableName, nested = true) {
     const variables = this.getVariables(nested),
@@ -67,26 +67,12 @@ export default class BlockContext {
       throw exception;
     }
 
-    const context = this;
+    const context = this; ///
 
     context.trace(`Added the '${variableString}' variable to the context.`);
 
     this.variables.push(variable);
   }
-
-  nodeAsString(node) { return this.context.nodeAsString(node); }
-
-  nodesAsString(node) { return this.context.nodesAsString(node); }
-
-  trace(message) { this.context.trace(message); }
-
-  debug(message) { this.context.debug(message); }
-
-  info(message) { this.context.info(message); }
-
-  warning(message) { this.context.warning(message); }
-
-  error(message) { this.context.error(message); }
 
   static fromVariables(variables, context) {
     const blockContext = new BlockContext(context, variables);
