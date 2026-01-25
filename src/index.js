@@ -9,5 +9,6 @@ export { default as Element } from "./element";
 export { default as elements } from "./elements";
 export { default as FileContext } from "./context/file";
 
-export { default as nodegUtilities } from "./utilities/node";
+export { default as nodeUtilities } from "./utilities/node";
+export { default as queryUtilities } from "./utilities/query";
 export { default as contextUtilities } from "./utilities/context";

@@ -23,3 +23,8 @@ export function nodesQuery(expressionString) {
     return nodes;
   };
 }
+
+export default {
+  nodeQuery,
+  nodesQuery,
+}

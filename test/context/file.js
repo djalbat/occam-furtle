@@ -1,8 +1,8 @@
 "use strict";
 
-const { stringUtilities, contextUtilities } = require("../../lib/index");
+const { nodeUtilities, contextUtilities } = require("../../lib/index");
 
-const { nodeAsString, nodesAsString } = stringUtilities,
+const { nodeAsString, nodesAsString } = nodeUtilities,
       { chainContext, lineIndexFromNodeAndTokens } = contextUtilities;
 
 class FileContext {
