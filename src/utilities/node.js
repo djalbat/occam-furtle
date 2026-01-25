@@ -18,20 +18,21 @@ export function nodesAsString(nodes, tokens) {
   const string = nodes.reduce((string, node) => {
     const nodeString = nodeAsString(node, tokens);
 
-    string = (string === EMPTY_STRING) ?
-               nodeString :
-                `${string},${nodeString}`;
+    string = (string === null) ?
+      nodeString :
+      `${string}, ${nodeString}`;
 
     return string;
-  }, EMPTY_STRING);
+  }, null);
 
   return string;
 }
 
-export default {
-  nodeAsString,
-  nodesAsString
-};
+function trimString(string) {
+  string = string.replace(/\s+$/, EMPTY_STRING);  ///
+
+  return string;
+}
 
 function tokensAsString(tokens) {
   const string = tokens.reduce((string, token) => {
@@ -59,12 +60,6 @@ function nodeAsTokens(node, tokens) {
   }
 
   return tokens;
-}
-
-function trimString(string) {
-  string = string.replace(/\s+$/, EMPTY_STRING);  ///
-
-  return string;
 }
 
 function terminalNodeAsTokens(terminalNode, tokens) {

@@ -5,7 +5,7 @@ import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
 import { LEVELS } from "../constants";
 import { verifyFile } from "../process/verify";
-import { nodeAsString, nodesAsString } from "../utilities/string";
+import { nodeAsString, nodesAsString } from "../utilities/node";
 import { chainContext, lineIndexFromNodeAndTokens } from "../utilities/context";
 
 const { push } = arrayUtilities,
