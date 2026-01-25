@@ -117,20 +117,6 @@ export default define(class Variable {
     return variable;
   }
 
-  static fromExpressionNode(expressionNode, context) {
-    let variable = null;
-
-    const expressionVariableNode = expressionVariableNodeQuery(expressionNode);
-
-    if (expressionVariableNode !== null) {
-      const variableNode = expressionVariableNode; ///
-
-      variable = variableFromVariableNode(variableNode, context);
-    }
-
-    return variable;
-  }
-
   static fromEveryNode(everyNode, context) {
     const everyVariableNode = everyVariableNodeQuery(everyNode),
           variableNode = everyVariableNode, ///
@@ -186,11 +172,16 @@ export default define(class Variable {
     return variable;
   }
 
-  static fromExpressionAndParameter(expression, parameter, context) {
-    const type = parameter.getType(),
-          name = parameter.getName(),
-          string = stringFromName(name, context),
-          variable = new Variable(string, type, name, expression);
+  static fromExpressionNode(expressionNode, context) {
+    let variable = null;
+
+    const expressionVariableNode = expressionVariableNodeQuery(expressionNode);
+
+    if (expressionVariableNode !== null) {
+      const variableNode = expressionVariableNode; ///
+
+      variable = variableFromVariableNode(variableNode, context);
+    }
 
     return variable;
   }
@@ -207,6 +198,15 @@ export default define(class Variable {
     const objectAssignmentVariableNode = objectAssignmentVariableNodeQuery(objectAssignmentNode),
           variableNode = objectAssignmentVariableNode, ///
           variable = variableFromVariableNode(variableNode, context);
+
+    return variable;
+  }
+
+  static fromExpressionAndParameter(expression, parameter, context) {
+    const type = parameter.getType(),
+      name = parameter.getName(),
+      string = stringFromName(name, context),
+      variable = new Variable(string, type, name, expression);
 
     return variable;
   }

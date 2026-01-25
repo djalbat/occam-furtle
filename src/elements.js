@@ -10,8 +10,4 @@ export function define(Element) {
   return Element;
 }
 
-Object.assign(elements, {
-  define
-});
-
 export default elements;
