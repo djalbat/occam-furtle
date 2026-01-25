@@ -5,6 +5,8 @@ import "./preamble";
 export { default as Expressions } from "./element/expressions";
 
 export { default as Log } from "./log";
+export { default as Element } from "./element";
+export { default as elements } from "./elements";
 export { default as FileContext } from "./context/file";
 
 export { default as nodegUtilities } from "./utilities/node";

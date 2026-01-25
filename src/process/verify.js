@@ -4,8 +4,9 @@ import { nodeQuery } from "../utilities/query";
 
 import elements from "../elements";
 
-const nonTerminalNodeQuery = nodeQuery("/*"),
-      errorNodeQuery = nodeQuery("/error"),
+const nonTerminalNodeQuery = nodeQuery("/*");
+
+const errorNodeQuery = nodeQuery("/error"),
       procedureDeclarationNodeQuery = nodeQuery("/procedureDeclaration");
 
 class Pass {
