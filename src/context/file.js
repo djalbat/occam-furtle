@@ -1,20 +1,15 @@
 "use strict";
 
 import { arrayUtilities } from "necessary";
-import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
 import { LEVELS } from "../constants";
 import { verifyFile } from "../process/verify";
+import { furtleLexer, furtleParser } from "../utilities/furtle";
 import { nodeAsString, nodesAsString } from "../utilities/node";
 import { chainContext, lineIndexFromNodeAndTokens } from "../utilities/context";
 
 const { push } = arrayUtilities,
-      { furtleLexerFromNothing } = lexersUtilities,
-      { furtleParserFromNothing } = parsersUtilities,
       [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
-
-const furtleLexer = furtleLexerFromNothing(),
-      furtleParser = furtleParserFromNothing();
 
 export default class FileContext {
   constructor(context, filePath, lineIndex, node, tokens, procedures) {
