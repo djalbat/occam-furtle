@@ -17,7 +17,7 @@ import NodesQuery from "./element/query/nodes";
 import Comparison from "./element/comparison";
 import Expression from "./element/expression";
 import Expressions from "./element/expressions";
-import ReturnBlock from "./element/block/return";
+import ReturnBlock from "./element/returnBlock";
 import ProcedureCall from "./element/procedureCall";
 import NamedParameter from "./element/parameter/named";
 import ArrayAssigment from "./element/assignment/array";

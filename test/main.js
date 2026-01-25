@@ -9,7 +9,7 @@ const { furtleFileFromNothing } = require("./helpers/furtle"),
       { procedureFromReleaseContext } = require("./helpers/procedure"),
       { nominalFileContextFromReleaseContext } = require("./helpers/nominal");
 
-describe("src/eliminateLeftRecursion", () => {
+describe("src/main", () => {
   let fileContext,
       releaseContext;
 

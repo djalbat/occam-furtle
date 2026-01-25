@@ -1,11 +1,11 @@
 "use strict";
 
-import elements from "../../elements";
-import Exception from "../../exception";
-import BlockContext from "../../context/block";
+import elements from "../elements";
+import Exception from "../exception";
+import BlockContext from "../context/block";
 
-import { define } from "../../elements";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
+import { define } from "../elements";
+import { nodeQuery, nodesQuery } from "../utilities/query";
 
 const stepNodesQuery = nodesQuery("/returnBlock/step"),
       nonsenseNodesQuery = nodesQuery("/returnBlock/nonsense"),

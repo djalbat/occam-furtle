@@ -6,7 +6,6 @@ export const EVERY_RULE_NAME = "every";
 export const LABEL_RULE_NAME = "label";
 export const ERROR_RULE_NAME = "error";
 export const QUERY_RULE_NAME = "query";
-export const BLOCK_RULE_NAME = "block";
 export const REDUCE_RULE_NAME = "reduce";
 export const TERNARY_RULE_NAME = "ternary";
 export const VARIABLE_RULE_NAME = "variable";

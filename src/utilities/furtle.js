@@ -1,12 +1,10 @@
 "use strict";
 
-import { lexersUtilities, parsersUtilities } from "occam-grammars";
-
 import FurtleLexer from "../furtle/Lexer";
 import FurtleParser from "../furtle/Parser";
 
-const { furtleLexerFromNothing } = lexersUtilities,
-      { furtleParserFromNothing } = parsersUtilities;
+import { furtleLexerFromNothing } from "../utilities/lexers";
+import { furtleParserFromNothing } from "../utilities/parsers";
 
 export const furtleLexer = furtleLexerFromNothing(FurtleLexer);
 

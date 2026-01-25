@@ -6,7 +6,6 @@ import EveryNode from "./node/every";
 import LabelNode from "./node/label";
 import ErrorNode from "./node/error";
 import QueryNode from "./node/query";
-import BlockNode from "./node/block";
 import ReduceNode from "./node/reduce";
 import TernaryNode from "./node/ternary";
 import VariableNode from "./node/variable";
@@ -32,7 +31,6 @@ import { STEP_RULE_NAME,
          LABEL_RULE_NAME,
          ERROR_RULE_NAME,
          QUERY_RULE_NAME,
-         BLOCK_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
          VARIABLE_RULE_NAME,
@@ -59,7 +57,6 @@ const NonTerminalNodeMap = {
   [LABEL_RULE_NAME]: LabelNode,
   [ERROR_RULE_NAME]: ErrorNode,
   [QUERY_RULE_NAME]: QueryNode,
-  [BLOCK_RULE_NAME]: BlockNode,
   [REDUCE_RULE_NAME]: ReduceNode,
   [TERNARY_RULE_NAME]: TernaryNode,
   [VARIABLE_RULE_NAME]: VariableNode,
