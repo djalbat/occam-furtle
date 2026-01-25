@@ -29,7 +29,9 @@ export default define(class ProcedureDeclaration {
 
     context.addProcedure(procedure);
 
-    context.debug(`...verified the '${procedureDeclarationString}' procedure declaration.`)
+    if (verifies) {
+      context.debug(`...verified the '${procedureDeclarationString}' procedure declaration.`)
+    }
 
     return verifies;
   }
