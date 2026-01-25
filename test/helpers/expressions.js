@@ -1,21 +1,25 @@
 "use strict";
 
-import { Query } from "occam-query";
-import { Expressions } from "../../index"; ///
-import { arrayUtilities } from "necessary";
+const { Query } = require("occam-query"),
+      { Expressions } = require("../../lib/index"), ///
+      { arrayUtilities } = require("necessary");
 
 const { first } = arrayUtilities;
 
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");
 
-export function expressionsFromFileContext(fileContext, free = true) {
+function expressionsFromFileContext(fileContext, free = true) {
   const context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext, free),
         expressions = Expressions.fromNodes(nodes, context);
 
   return expressions;
 }
+
+module.exports = {
+  expressionsFromFileContext
+};
 
 function nodesFromFileContext(fileContext, free) {
   const termNodeQuery = free ?

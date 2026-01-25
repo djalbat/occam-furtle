@@ -1,15 +1,15 @@
 "use strict";
 
-import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
+const { lexersUtilities, parsersUtilities } = require("occam-custom-grammars");
 
-import FileContext from "../context/file";
+const FileContext = require("../context/file");
 
-import { combinedCustomGrammarFromNothing } from "../utilities/grammar";
+const { combinedCustomGrammarFromNothing } = require("../helpers/grammar");
 
 const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
       { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
 
-export function nominalFileContextFromReleaseContext(releaseContext) {
+function nominalFileContextFromReleaseContext(releaseContext) {
   const content = `∀n m = m`,
         startRuleName = "statement",
         combinedCustomGrammar = combinedCustomGrammarFromNothing(),
@@ -20,8 +20,13 @@ export function nominalFileContextFromReleaseContext(releaseContext) {
         tokens = lexer.tokenise(content),
         node = parser.parse(tokens),
         context = releaseContext, ///
-        fileContext = FileContext.fromNodeAndTokens(node, tokens, context),
+        filePath = "lemmas.nml",
+        fileContext = FileContext.fromNodeTokensAndFilePath(node, tokens, filePath, context),
         nominalFileContext = fileContext;  ///
 
   return nominalFileContext;
 }
+
+module.exports = {
+  nominalFileContextFromReleaseContext
+};

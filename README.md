@@ -88,17 +88,6 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
     npm install
 
-## Example
-
-The example runs directly on Node:
-
-```
-node example.js
-```
-
-The `Free and bound variables.ftl` file in the `example/` directory can be changed and the example can be rebuilt, see below.
-Obviously one thing to try is changing the value of the `free` variable.
-
 ## Building
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:

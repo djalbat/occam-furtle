@@ -24,3 +24,5 @@ export const EMPTY_STRING = "";
 export const SINGLE_SPACE = " ";
 export const DOUBLE_SPACE = "  ";
 export const NOT_EQUAL_TO = "!=";
+export const LEVEL_MAXIMUM_LENGTH = 7;
+export const LINE_INDEX_MAXIMUM_LENGTH = 4;

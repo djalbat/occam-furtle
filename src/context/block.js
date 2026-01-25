@@ -74,7 +74,7 @@ export default class BlockContext {
     this.variables.push(variable);
   }
 
-  getFileContext() { return this.contexzt.getFileContext(); }
+  getFileContext() { return this.context.getFileContext(); }
 
   getDepth() {
     let depth = this.context.getDepth();

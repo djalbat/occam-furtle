@@ -1,12 +1,12 @@
 "use strict";
 
-import { fileSystemUtilities } from "necessary";
-import { CustomGrammar, CombinedCustomGrammar } from "occam-custom-grammars";
+const { fileSystemUtilities } = require("necessary"),
+      { CustomGrammar, CombinedCustomGrammar } = require("occam-custom-grammars");
 
 const { readFile } = fileSystemUtilities;
 
-export function combinedCustomGrammarFromNothing() {
-  const filePath = "example/customGrammars.json",
+function combinedCustomGrammarFromNothing() {
+  const filePath = "test/customGrammars.json",
         fileContent = readFile(filePath),
         json = JSON.parse(fileContent),
         customGrammars = customGrammarsFromJSON(json),
@@ -15,6 +15,10 @@ export function combinedCustomGrammarFromNothing() {
 
   return combinedCustomGrammar;
 }
+
+module.exports = {
+  combinedCustomGrammarFromNothing
+};
 
 function customGrammarsFromJSON(json) {
   const customGrammarsJSON = json,  ///

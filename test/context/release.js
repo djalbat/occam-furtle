@@ -1,14 +1,15 @@
 "use strict";
 
-import { arrayUtilities } from "necessary";
-import { Log, FileContext } from "../../index";  ///
+const { arrayUtilities } =require("necessary");
 
-import { LEVELS } from "../../constants";
+const { Log, FileContext } =require("../../lib/index");  ///
+
+const { LEVELS } =require("../helpers/constants");
 
 const { push } = arrayUtilities,
       [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
 
-export class ReleaseContext {
+class ReleaseContext {
   constructor(log, files, fileContexts) {
     this.log = log;
     this.files = files;
@@ -138,9 +139,7 @@ export class ReleaseContext {
   }
 
   static fromNothing() {
-    const follow = true,
-          logLevel = TRACE_LEVEL,
-          log = Log.fromFollowAndLogLevel(follow, logLevel),
+    const log = Log.fromNothing(),
           files = [],
           fileContexts = [],
           releaseContext = new ReleaseContext(log, files, fileContexts);
@@ -148,3 +147,5 @@ export class ReleaseContext {
     return releaseContext;
   }
 }
+
+module.exports = ReleaseContext;

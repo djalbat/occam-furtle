@@ -13,6 +13,15 @@ export default define(class Error {
     return this.string;
   }
 
+  verify(context) {
+    const verifies = false,
+          errorString = this.getString();  ///
+
+    context.warning(`The '${errorString}' error cannot be verified.`);
+
+    return verifies;
+  }
+
   static name = "Error";
 
   static fromErrorNode(errorNode, context) {
@@ -23,7 +32,7 @@ export default define(class Error {
 });
 
 function errorFromErrorNode(errorNode, context) {
-  const {Error} = elements,
+  const { Error } = elements,
         node = errorNode, ///
         string = context.nodeAsString(node),
         error = new Error(string);

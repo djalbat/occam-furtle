@@ -18,6 +18,22 @@ export default define(class ProcedureDeclaration {
     return this.procedure;
   }
 
+  verify(context) {
+    const verifies = true;
+
+    const procedureDeclarationString = this.getString();
+
+    context.trace(`Verifying the '${procedureDeclarationString}' procedure declaration...`)
+
+    const procedure = this.getProcedure();
+
+    context.addProcedure(procedure);
+
+    context.debug(`...verified the '${procedureDeclarationString}' procedure declaration.`)
+
+    return verifies;
+  }
+
   static name = "ProcedureDeclaration";
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {

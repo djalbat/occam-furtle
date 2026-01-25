@@ -1,12 +1,12 @@
 "use strict";
 
-import { File } from "occam-entities";
-import { fileSystemUtilities } from "necessary";
+const { File } = require("occam-entities"),
+      { fileSystemUtilities } = require("necessary");
 
 const { readFile } = fileSystemUtilities;
 
-export function furtleFileFromNothing() {
-  const filePath = "/Users/djalbat/Logic/first-order-logic/Functions/Free and bound variables.ftl",
+function furtleFileFromNothing() {
+  const filePath = "test/Free and bound variables.ftl",
         fileContent = readFile(filePath),
         path = filePath,  ///
         content = fileContent,  ///
@@ -16,3 +16,7 @@ export function furtleFileFromNothing() {
 
   return furtleFile;
 }
+
+module.exports = {
+  furtleFileFromNothing
+};

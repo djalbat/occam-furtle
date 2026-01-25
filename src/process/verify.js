@@ -6,7 +6,7 @@ import elements from "../elements";
 
 const nonTerminalNodeQuery = nodeQuery("/*"),
       errorNodeQuery = nodeQuery("/error"),
-      procedureDeclarationNodeQuery = nodeQuery("/document/procedureDeclaration");
+      procedureDeclarationNodeQuery = nodeQuery("/procedureDeclaration");
 
 class Pass {
   run(node, ...remainingArguments) {
@@ -113,7 +113,7 @@ class TopLevelPass extends Pass {
 
         const { Error } = elements,
               error = Error.fromErrorNode(errorNode, context),
-              errorVerifies = error.verify();
+              errorVerifies = error.verify(context);
 
         if (errorVerifies) {
           success = true;
@@ -125,13 +125,15 @@ class TopLevelPass extends Pass {
     {
       nodeQuery: procedureDeclarationNodeQuery,
       run: (procedureDeclarationNode, context) => {
-        let success = true;
+        let success = false;
 
         const { ProcedureDeclaration } = elements,
               procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-              procedure = procedureDeclaration.getProcedure();
+              procedureDeclarationVerifies = procedureDeclaration.verify(context);
 
-        context.addProcedure(procedure);
+        if (procedureDeclarationVerifies) {
+          success = true;
+        }
 
         return success;
       }

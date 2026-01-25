@@ -69,9 +69,9 @@ export default class Log {
   }
 
   static fromNothing() {
-    const messages = [],
+    const messages = null,
           logLevel = TRACE_LEVEL,
-          follow = false,
+          follow = true,
           log = new Log(messages, logLevel, follow);
 
     return log;
