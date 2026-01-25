@@ -1,0 +1,133 @@
+"use strict";
+
+import elements from "../elements";
+import Exception from "../exception";
+
+import { define } from "../elements";
+import { UNDERSCORE } from "../constants";
+import { nodeQuery, nodesQuery } from "../utilities/query";
+
+const parameterNodesQuery = nodesQuery("/parameters/parameter"),
+      arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
+      anonymousProcedureParametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
+      procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
+
+export default define(class Parameters {
+  constructor(string, array) {
+    this.string = string;
+    this.array = array;
+  }
+
+  getString() {
+    return this.string;
+  }
+
+  getArray() {
+    return this.array;
+  }
+
+  getLength() {
+    const length = this.array.length;
+
+    return length;
+  }
+
+  getParameter(index) {
+    const parameter = this.array[index] || null;
+
+    return parameter;
+  }
+
+  forEachParameter(callback) { this.array.forEach(callback); }
+
+  matchExpressions(expressions, context) {
+    const expressionsString = expressions.getString(),
+          parametersString = this.string; ///
+
+    context.trace(`Matching the ${expressionsString} expressions against the '${parametersString}' parameters...`);
+
+    const expressionsLength = expressions.getLength(),
+          parametersLength = this.getLength();
+
+    if (expressionsLength !== parametersLength) {
+      const message = `The ${expressionsString} expressions and '${parametersString}' parameters are not of the same length.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    this.forEachParameter((parameter, index) => {
+      if (parameter !== null) {
+        const expression = expressions.getExpression(index);
+
+        parameter.matchExpression(expression, context);
+      }
+    });
+
+    context.debug(`...matched the ${expressionsString} expressions against the '${parametersString}' parameters.`);
+  }
+
+  static name = "Parameters";
+
+  static fromArrayAssignmentNode(arrayAssignmentNode, context) {
+    const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
+          parametersNode = arrayAssignmentParametersNode,  ///
+          parameters = parametersFromParametersNode(parametersNode, context);
+
+    return parameters;
+  }
+
+  static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
+    const anonymousProcedureParametersNode = anonymousProcedureParametersNodeQuery(anonymousProcedureNode),
+          parametersNode = anonymousProcedureParametersNode,  ///
+          parameters = parametersFromParametersNode(parametersNode, context);
+
+    return parameters;
+  }
+
+  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
+    const procedureDeclarationParametersNode = procedureDeclarationParametersNodeQuery(procedureDeclarationNode),
+          parametersNode = procedureDeclarationParametersNode,  ///
+          parameters = parametersFromParametersNode(parametersNode, context);
+
+    return parameters;
+  }
+});
+
+function parametersFromParametersNode(parametersNode, context) {
+  const { Parameters } = elements,
+        array = arrayFromParametersNode(parametersNode, context),
+        string = stringFromArray(array, context),
+        parameters = new Parameters(string, array);
+
+  return parameters;
+}
+
+function arrayFromParametersNode(parametersNode, context) {
+  const parameterNodes = parameterNodesQuery(parametersNode),
+        array = parameterNodes.map((parameterNode) => { ///
+          const { Parameter } = elements,
+                parameter = Parameter.fromParameterNode(parameterNode, context);
+
+          return parameter;
+        });
+
+  return array;
+}
+
+function stringFromArray(array, context) {
+  const parametersString = array.reduce((parametersString, parameter) => {
+          const parameterString = (parameter !== null)?
+                                    parameter.getString() :
+                                      UNDERSCORE;
+
+          parametersString = (parametersString === null) ?
+                               parameterString :
+                                `${parametersString}, ${parameterString}`;
+
+          return parametersString;
+        }, null),
+        string = parametersString;  ///
+
+  return string;
+}

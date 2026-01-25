@@ -3,11 +3,9 @@
 import { arrayUtilities } from "necessary";
 import { lexersUtilities, parsersUtilities } from "occam-grammars";
 
-import dom from "../dom";
-
-import { nodesQuery } from "../utilities/query";
-import { chainContext } from "../utilities/context";
+import { verifyFile } from "../process/verify";
 import { nodeAsString, nodesAsString } from "../utilities/string";
+import { chainContext, lineIndexFromNodeAndTokens } from "../utilities/context";
 
 const { push } = arrayUtilities,
       { furtleLexerFromNothing } = lexersUtilities,
@@ -16,13 +14,11 @@ const { push } = arrayUtilities,
 const furtleLexer = furtleLexerFromNothing(),
       furtleParser = furtleParserFromNothing();
 
-const errorNodesQuery = nodesQuery("/document/error"),
-      procedureDeclarationNodesQuery = nodesQuery("/document/procedureDeclaration");
-
 export default class FileContext {
-  constructor(context, filePath, node, tokens, procedures) {
+  constructor(context, filePath, lineIndex, node, tokens, procedures) {
     this.context = context;
     this.filePath = filePath;
+    this.lineIndex = lineIndex;
     this.node = node;
     this.tokens = tokens;
     this.procedures = procedures;
@@ -36,6 +32,10 @@ export default class FileContext {
 
   getFilePath() {
     return this.filePath;
+  }
+
+  getLineIndex() {
+    return this.lineIndex;
   }
 
   getNode() {
@@ -150,27 +150,18 @@ export default class FileContext {
     return metavariables;
   }
 
+  addProcedure(procedure) {
+    const procedureString = procedure.getString();
+
+    this.procedures.push(procedure);
+
+    this.debug(`Added the '${procedureString}' procedure to the context.`);
+  }
+
   getVariables() {
     const variables = [];
 
     return variables;
-  }
-
-  addProcedures() {
-    const context = this; ///
-
-    const { ProcedureDeclaration } = dom,
-          procedureDeclarationNodes = procedureDeclarationNodesQuery(this.node);
-
-    procedureDeclarationNodes.forEach((procedureDeclarationNode) => {
-      const procedureDeclaration = ProcedureDeclaration.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-            procedure = procedureDeclaration.getProcedure(),
-            procedureString = procedure.getString();
-
-      this.debug(`Adding the '${procedureString}' procedure.`);
-
-      this.procedures.push(procedure);
-    });
   }
 
   nodeAsString(node) {
@@ -185,49 +176,86 @@ export default class FileContext {
     return string;
   }
 
-  trace(message) { this.context.trace(message, this.filePath); }
+  trace(message, node = null) {
+    const level = TRACE_LEVEL;
 
-  debug(message) { this.context.debug(message, this.filePath); }
+    this.writeToLog(level, message, node);
+  }
 
-  info(message) { this.context.info(message, this.filePath); }
+  debug(message, node = null) {
+    const level = DEBUG_LEVEL;
 
-  warning(message) { this.context.warning(message, this.filePath); }
+    this.writeToLog(level, message, node);
+  }
 
-  error(message) { this.context.error(message, this.filePath); }
+  info(message, node = null) {
+    const level = INFO_LEVEL;
+
+    this.writeToLog(level, message, node);
+  }
+
+  warning(message, node = null) {
+    const level = WARNING_LEVEL;
+
+    this.writeToLog(level, message, node);
+  }
+
+  error(message, node = null) {
+    const level = ERROR_LEVEL;
+
+    this.writeToLog(level, message, node);
+  }
+
+  writeToLog(level, message, node) {
+    const lineIndex = lineIndexFromNodeAndTokens(node, this.tokens, this.lineIndex),
+          filePath = (lineIndex === null) ?
+                       this.filePath :
+                         null;
+
+    this.context.writeToLog(level, message, filePath, lineIndex);
+
+    this.lineIndex = lineIndex;
+  }
+
+  getFileContext() {
+    const fileContext = this; ///
+
+    return fileContext;
+  }
+
+  getDepth() {
+    let depth = this.context.getDepth();
+
+    depth++;
+
+    return depth;
+  }
 
   verify() {
-    let verified = false;
-
-    this.debug(`Verifying the '${this.filePath}' file...`);
+    let verifies = false;
 
     this.prepare();
 
     if (this.node === null) {
       this.warning(`Unable to verify the '${this.filePath}' file because it cannot be parsed.`);
     } else {
-      const errorNodes = errorNodesQuery(this.node),
-            errorNodesLength = errorNodes.length;
+      this.debug(`Verifying the '${this.filePath}' file...`);
 
-      if (errorNodesLength === 0) {
-        this.addProcedures();
+      const context = this, ///
+            fileNode = this.node; ///
 
-        verified = true;
-      } else {
-        this.warning(`The '${this.filePath}' file cannot be verified because there are errors.`);
+      verifies = verifyFile(fileNode, context);
 
-        this.clear();
+      verifies ?
+        this.complete() :
+          this.clear();
+
+      if (verifies) {
+        this.info(`...verified the '${this.filePath}' file.`);
       }
     }
 
-    if (verified) {
-      this.info(`...verified the '${this.filePath}' file.`);
-    }
-
-    return verified;
-  }
-
-  clear() {
-    this.procedures = [];
+    return verifies;
   }
 
   prepare() {
@@ -243,6 +271,16 @@ export default class FileContext {
     this.tokens = lexer.tokenise(content);
 
     this.node = parser.parse(this.tokens);
+  }
+
+  clear() {
+    this.lineIndex = null;
+
+    this.procedures = [];
+  }
+
+  complete() {
+    this.lineIndex = null;
   }
 
   initialise(json) {
@@ -273,19 +311,21 @@ export default class FileContext {
 
   static fromFile(file, context) {
     const filePath = file.getPath(),
+          lineIndex = null,
           tokens = null,
           node = null,
           procedures = [],
-          fileContext = new FileContext(context, filePath, node, tokens, procedures);
+          fileContext = new FileContext(context, filePath, lineIndex, node, tokens, procedures);
 
     return fileContext;
   }
 
   static fromFilePath(filePath, context) {
-    const tokens = null,
+    const lineIndex = null,
+          tokens = null,
           node = null,
           procedures = null,
-          fileContext = new FileContext(context, filePath, node, tokens, procedures);
+          fileContext = new FileContext(context, filePath, lineIndex, node, tokens, procedures);
 
     return fileContext;
   }

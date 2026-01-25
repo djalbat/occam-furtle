@@ -61,6 +61,20 @@ export default class FileContext {
 
   error(message) { this.context.error(message, this.filePath); }
 
+  getFileContext() {
+    const fileContext = this; ///
+
+    return fileContext;
+  }
+
+  getDepth() {
+    let depth = this.context.getDepth();
+
+    depth++;
+
+    return depth;
+  }
+
   static fromNodeAndTokens(node, tokens, context) {
     const fileContext = new FileContext(context, node, tokens);
 

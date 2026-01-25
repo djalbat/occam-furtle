@@ -1,14 +1,22 @@
 "use strict";
 
-import { FileContext } from "../../index";  ///
 import { arrayUtilities } from "necessary";
+import { Log, FileContext } from "../../index";  ///
 
-const { push } = arrayUtilities;
+import { LEVELS } from "../../constants";
+
+const { push } = arrayUtilities,
+      [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
 
 export class ReleaseContext {
-  constructor(files, fileContexts) {
+  constructor(log, files, fileContexts) {
+    this.log = log;
     this.files = files;
     this.fileContexts = fileContexts;
+  }
+
+  getLog() {
+    return this.log;
   }
 
   getFiles() {
@@ -72,15 +80,51 @@ export class ReleaseContext {
     return procedurePresent;
   }
 
-  trace(message) { console.log(message); }
+  trace(message, filePath = null, lineIndex = null) {
+    const level = TRACE_LEVEL;
 
-  debug(message) { console.log(message); }
+    this.writeToLog(level, message, filePath, lineIndex);
+  }
 
-  info(message) { console.log(message); }
+  debug(message, filePath = null, lineIndex = null) {
+    const level = DEBUG_LEVEL
 
-  warning(message) { console.log(message); }
+    this.writeToLog(level, message, filePath, lineIndex);
+  }
 
-  error(message) { console.log(message); }
+  info(message, filePath = null, lineIndex = null) {
+    const level = INFO_LEVEL;
+
+    this.writeToLog(level, message, filePath, lineIndex);
+  }
+
+  warning(message, filePath = null, lineIndex = null) {
+    const level = WARNING_LEVEL;
+
+    this.writeToLog(level, message, filePath, lineIndex);
+  }
+
+  error(message, filePath = null, lineIndex = null) {
+    const level = ERROR_LEVEL;
+
+    this.writeToLog(level, message, filePath, lineIndex);
+  }
+
+  writeToLog(level, message, filePath, lineIndex) {
+    this.log.write(level, message, filePath, lineIndex);
+  }
+
+  getFileContext() {
+    const fileContext = null;
+
+    return fileContext;
+  }
+
+  getDepth() {
+    const depth = -1;
+
+    return depth;
+  }
 
   verify() {
     this.files.forEach((file) => {
@@ -94,9 +138,12 @@ export class ReleaseContext {
   }
 
   static fromNothing() {
-    const files = [],
+    const follow = true,
+          logLevel = TRACE_LEVEL,
+          log = Log.fromFollowAndLogLevel(follow, logLevel),
+          files = [],
           fileContexts = [],
-          releaseContext = new ReleaseContext(files, fileContexts);
+          releaseContext = new ReleaseContext(log, files, fileContexts);
 
     return releaseContext;
   }
