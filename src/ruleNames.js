@@ -1,0 +1,27 @@
+"use strict";
+
+export const STEP_RULE_NAME = "step";
+export const SOME_RULE_NAME = "some";
+export const EVERY_RULE_NAME = "every";
+export const LABEL_RULE_NAME = "label";
+export const ERROR_RULE_NAME = "error";
+export const QUERY_RULE_NAME = "query";
+export const BLOCK_RULE_NAME = "block";
+export const REDUCE_RULE_NAME = "reduce";
+export const TERNARY_RULE_NAME = "ternary";
+export const VARIABLE_RULE_NAME = "variable";
+export const REFERENCE_RULE_NAME = "reference";
+export const PARAMETER_RULE_NAME = "parameter";
+export const STATEMENT_RULE_NAME = "statement";
+export const PROCEDURE_RULE_NAME = "procedure";
+export const EXPRESSION_RULE_NAME = "expression";
+export const COMPARISON_RULE_NAME = "comparison";
+export const PARAMETERS_RULE_NAME = "parameters";
+export const DECLARATION_RULE_NAME = "declaration";
+export const EXPRESSIONS_RULE_NAME = "expressions";
+export const RETURN_BLOCK_RULE_NAME = "returnBlock";
+export const PROCEDURE_CALL_RULE_NAME = "procedureCall";
+export const ARRAY_ASSIGNMENT_RULE_NAME = "arrayAssignment";
+export const OBJECT_ASSIGNMENT_RULE_NAME = "objectAssignment";
+export const VARIABLE_ASSIGNMENT_RULE_NAME = "variableAssignment";
+export const VARIABLE_ASSIGNMENTS_RULE_NAME = "variableAssignments";
