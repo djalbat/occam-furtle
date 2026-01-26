@@ -5,11 +5,8 @@ import Exception from "../../exception";
 import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
 import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
-
-const stepObjectAssignmentNodeQuery = nodeQuery("/step/objectAssignment");
 
 export default define(class ObjectAssigment {
   constructor(string, variable, namedParameters) {
@@ -179,36 +176,4 @@ export default define(class ObjectAssigment {
   }
 
   static name = "ObjectAssigment";
-
-  static fromStepNode(stepNode, context) {
-    let objectAssignment = null;
-
-    const stepObjectAssignmentNode = stepObjectAssignmentNodeQuery(stepNode);
-
-    if (stepObjectAssignmentNode !== null) {
-      const objectAssignmentNode = stepObjectAssignmentNode;  ///
-
-      objectAssignment = objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context);
-    }
-
-    return objectAssignment;
-  }
 });
-
-function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context) {
-  const { Variable, NamedParameters, ObjectAssigment } = elements,
-        namedParameters = NamedParameters.fromObjectAssignmentNode(objectAssignmentNode, context),
-        variable = Variable.fromObjectAssignmentNode(objectAssignmentNode, context),
-        string = stringFromVariableAndNamesParameters(variable, namedParameters, context),
-        objectAssignment = new ObjectAssigment(string, variable, namedParameters);
-
-  return objectAssignment;
-}
-
-function stringFromVariableAndNamesParameters(variable, namedParameters, context) {
-  const namedParametersString = namedParameters.getString(),
-        variableString = variable.getString(),
-        string = `{ ${namedParametersString} } = ${variableString};`;
-
-  return string;
-}

@@ -1,13 +1,6 @@
 "use strict";
 
-import elements from "../../elements";
-
 import { define } from "../../elements";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
-
-const typeTerminalNodeQuery = nodeQuery("/variableAssignments/@type"),
-      variableAssignmentNodesQuery = nodesQuery("/variableAssignments/variableAssignment"),
-      stepVariableAssignmentsNodeQuery = nodeQuery("/step/variableAssignments");
 
 export default define(class VariableAssignments {
   constructor(string, array) {
@@ -36,63 +29,4 @@ export default define(class VariableAssignments {
   }
 
   static name = "VariableAssignments";
-
-  static fromStepNode(stepNode, context) {
-    let variableAssignments = null;
-
-    const stepVariableAssignmentsNode = stepVariableAssignmentsNodeQuery(stepNode);
-
-    if (stepVariableAssignmentsNode !== null) {
-      const variableAssignmentsNode = stepVariableAssignmentsNode;  ///
-
-      variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
-    }
-
-    return variableAssignments;
-  }
 });
-
-function variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context) {
-  const { VariableAssignments } = elements,
-        type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
-        array = arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context),
-        string = stringFromArray(array, context),
-        variableAssignments = new VariableAssignments(string, array);
-
-  return variableAssignments;
-}
-
-function stringFromArray(array, context) {
-  const variableAssignmentsString = array.reduce((variableAssignmentsString, variableAssignment) => {
-          const variableAssignmentString = variableAssignment.getString();
-
-          variableAssignmentsString = (variableAssignmentsString === null) ?
-                                        variableAssignmentString :
-                                         `${variableAssignmentsString}, ${variableAssignmentString}`;
-
-          return variableAssignmentsString;
-        }, null),
-        string = variableAssignmentsString; ///
-
-  return string;
-}
-
-function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(variableAssignmentsNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
-
-  return type;
-}
-
-function arrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context) {
-  const variableAssignmentNodes = variableAssignmentNodesQuery(variableAssignmentsNode),
-        array = variableAssignmentNodes.map((variableAssignmentNode) => {
-          const { VariableAssignment } = elements,
-                variableAssignment = VariableAssignment.fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context);
-
-          return variableAssignment;
-        });
-
-  return array;
-}

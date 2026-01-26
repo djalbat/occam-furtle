@@ -4,10 +4,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
-
-const stepArrayAssignmentNodeQuery = nodeQuery("/step/arrayAssignment");
 
 export default define(class ArrayAssigment {
   constructor(string, variable, parameters) {
@@ -94,36 +91,4 @@ export default define(class ArrayAssigment {
   }
 
   static name = "ArrayAssignment";
-
-  static fromStepNode(stepNode, context) {
-    let arrayAssignment = null;
-
-    const stepArrayAssignmentNode = stepArrayAssignmentNodeQuery(stepNode);
-
-    if (stepArrayAssignmentNode !== null) {
-      const arrayAssignmentNode = stepArrayAssignmentNode;  ///
-
-      arrayAssignment = arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context);
-    }
-
-    return arrayAssignment;
-  }
 });
-
-function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
-  const { Variable, Parameters, ArrayAssignment } = elements,
-        parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context),
-        variable = Variable.fromArrayAssignmentNode(arrayAssignmentNode, context),
-        string = stringFromVariableAndParameters(variable, parameters, context),
-        arrayAssignment = new ArrayAssignment(string, variable, parameters);
-
-  return arrayAssignment;
-}
-
-function stringFromVariableAndParameters(variable, parameters, context) {
-  const variableString = variable.getString(),
-        parametersString = parameters.getString(),
-        string = `[ ${parametersString} ] = ${variableString};`;
-
-  return string;
-}

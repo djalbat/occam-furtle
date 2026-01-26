@@ -4,6 +4,7 @@ import elements from "../elements";
 
 import { define } from "../elements";
 import { EMPTY_STRING } from "../constants";
+import { arrayAssignmentFromStepNode, objectAssignmentFromStepNode, variableAssignmentsFromStepNode } from "../utilities/element";
 
 export default define(class Step {
   constructor(string, arrayAssignment, objectAssigment, variablesDeclaration) {
@@ -51,11 +52,11 @@ export default define(class Step {
 });
 
 function stepFromStepNode(stepNode, context) {
-  const { Step, ArrayAssignment, ObjectAssigment, VariableAssignments } = elements,
+  const { Step } = elements,
         string = stringFromNothing(context),
-        arrayAssignment = ArrayAssignment.fromStepNode(stepNode, context),
-        objectAssigment = ObjectAssigment.fromStepNode(stepNode, context),
-        variablesDeclaration = VariableAssignments.fromStepNode(stepNode, context),
+        arrayAssignment = arrayAssignmentFromStepNode(stepNode, context),
+        objectAssigment = objectAssignmentFromStepNode(stepNode, context),
+        variablesDeclaration = variableAssignmentsFromStepNode(stepNode, context),
         step = new Step(string, arrayAssignment, objectAssigment, variablesDeclaration);
 
   return step;

@@ -1,7 +1,5 @@
 "use strict";
 
-import elements from "../../elements";
-
 import { define } from "../../elements";
 
 export default define(class VariableAssignment {
@@ -40,28 +38,4 @@ export default define(class VariableAssignment {
   }
 
   static name = "VariableAssignment";
-
-  static fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-    const variableAssignment = variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context);
-
-    return variableAssignment;
-  }
 });
-
-function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-  const { Variable, Expression, VariableAssignment } = elements,
-        expression = Expression.fromVariableAssignmentNode(variableAssignmentNode, context),
-        variable = Variable.fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
-        string = stringFromExpressionAndVariable(expression, variable, context),
-        assignment = new VariableAssignment(string, variable, expression);
-
-  return assignment;
-}
-
-function stringFromExpressionAndVariable(expression, variable, context) {
-  const variableString = variable.getString(),
-        expressionString = expression.asString(context),
-        string = `${variableString} = ${expressionString};`;
-
-  return string;
-}

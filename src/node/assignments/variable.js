@@ -2,6 +2,37 @@
 
 import AssignmentsNode from "../../node/assignment";
 
+import { TYPE_TOKEN_TYPE } from "../../tokenTypes";
+import { VARIABLE_ASSIGNMENT_RULE_NAME } from "../../ruleNames";
+
 export default class VariableAssignmentsNode extends AssignmentsNode {
+  getType() {
+    let type = null;
+
+    this.someChildNode((childNode, index) => {
+      const terminalNode = childNode, ///
+            terminalNodeType = terminalNode.getType();
+
+      if (terminalNodeType === TYPE_TOKEN_TYPE) {
+        const content = terminalNode.getContent();
+
+        type = content;  ///
+      }
+
+      if (index === 0) {
+        return true;
+      }
+    });
+
+    return type;
+  }
+
+  getVariableAssignmentNodes() {
+    const ruleName = VARIABLE_ASSIGNMENT_RULE_NAME,
+          variableAssingnmentNodss = this.getNodesByRuleName(ruleName);
+
+    return variableAssingnmentNodss;
+  }
+
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentsNode.fromRuleNameChildNodesOpacityAndPrecedence(VariableAssignmentsNode, ruleName, childNodes, opacity, precedence); }
 }

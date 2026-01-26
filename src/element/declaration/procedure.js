@@ -1,7 +1,5 @@
 "use strict";
 
-import elements from "../../elements";
-
 import { define } from "../../elements";
 
 export default define(class ProcedureDeclaration {
@@ -37,26 +35,4 @@ export default define(class ProcedureDeclaration {
   }
 
   static name = "ProcedureDeclaration";
-
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const procedureDeclaration = procedureFromProcedureDeclarationNode(procedureDeclarationNode, context);
-
-    return procedureDeclaration;
-  }
 });
-
-function procedureFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Procedure, ProcedureDeclaration } = elements,
-        procedure = Procedure.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-        string = stringFromProcedure(procedure, context),
-        procedureDeclaration = new ProcedureDeclaration(string, procedure);
-
-  return procedureDeclaration;
-}
-
-function stringFromProcedure(procedure, context) {
-  const procedureString = procedure.getString(),
-        string = `${procedureString};`;
-
-  return string;
-}
