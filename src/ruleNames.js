@@ -22,5 +22,6 @@ export const RETURN_BLOCK_RULE_NAME = "returnBlock";
 export const PROCEDURE_CALL_RULE_NAME = "procedureCall";
 export const ARRAY_ASSIGNMENT_RULE_NAME = "arrayAssignment";
 export const OBJECT_ASSIGNMENT_RULE_NAME = "objectAssignment";
+export const BITWISE_EXPRESSION_RULE_NAME = "bitwiseExpression";
 export const VARIABLE_ASSIGNMENT_RULE_NAME = "variableAssignment";
 export const VARIABLE_ASSIGNMENTS_RULE_NAME = "variableAssignments";

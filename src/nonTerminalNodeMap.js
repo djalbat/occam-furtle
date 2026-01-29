@@ -22,6 +22,7 @@ import ReturnBlockNode from "./node/returnBlock";
 import ProcedureCallNode from "./node/procedureCall";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
+import BitwiseExpresionNode from "./node/expression/bitwise";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
 
@@ -47,6 +48,7 @@ import { STEP_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
          ARRAY_ASSIGNMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
+         BITWISE_EXPRESSION_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          VARIABLE_ASSIGNMENTS_RULE_NAME } from "./ruleNames";
 
@@ -73,6 +75,7 @@ const NonTerminalNodeMap = {
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
   [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
+  [BITWISE_EXPRESSION_RULE_NAME]: BitwiseExpresionNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
   [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode
 };
