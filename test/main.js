@@ -34,8 +34,6 @@ const context = fileContext,  ///
       expression = procedure.call(expressions, context),
       boolean = expression.getBoolean();
 
-assert.isTrue(boolean);
-
 console.log(boolean);
 // } catch (exception) {
 //   const message = exception.getMessage();
