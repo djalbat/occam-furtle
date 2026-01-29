@@ -9,7 +9,7 @@ import { CONJUNCTION_OPERATOR, DISJUNCTION_OPERATOR } from "../../constants";
 
 const { first, last } = arrayUtilities;
 
-export default class BitwiseExpressionNode extends ExpressionNode {
+export default class LogicalExpressionNode extends ExpressionNode {
   getOperator() {
     let operator = null;
 
@@ -78,5 +78,5 @@ export default class BitwiseExpressionNode extends ExpressionNode {
     return firstExpressionNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ExpressionNode.fromRuleNameChildNodesOpacityAndPrecedence(BitwiseExpressionNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ExpressionNode.fromRuleNameChildNodesOpacityAndPrecedence(LogicalExpressionNode, ruleName, childNodes, opacity, precedence); }
 }

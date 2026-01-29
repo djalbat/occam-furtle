@@ -5,13 +5,13 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression } from "../../utilities/string";
+import { logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression } from "../../utilities/string";
 
-export default define(class BitwiseExpression {
-  constructor(string, type, disjection, leftExpression, rightExpression) {
+export default define(class LogicalExpression {
+  constructor(string, type, disjunction, leftExpression, rightExpression) {
     this.string = string;
     this.type = type;
-    this.disjection = disjection;
+    this.disjunction = disjunction;
     this.leftExpression = leftExpression;
     this.rightExpression = rightExpression;
   }
@@ -25,7 +25,7 @@ export default define(class BitwiseExpression {
   }
 
   isDisjunction() {
-    return this.disjection;
+    return this.disjunction;
   }
 
   getLeftExpression() {
@@ -39,9 +39,9 @@ export default define(class BitwiseExpression {
   evaluate(context) {
     let expression;
 
-    const bitwiseExpressionString = this.string; ///
+    const logicalExpressionString = this.string; ///
 
-    context.trace(`Evaluating the '${bitwiseExpressionString}' bitwise expression...`);
+    context.trace(`Evaluating the '${logicalExpressionString}' logical expression...`);
 
     const { Expression } = elements,
           leftExpression = this.leftExpression.evaluate(context),
@@ -67,48 +67,48 @@ export default define(class BitwiseExpression {
 
     const leftExpressionBoolean = leftExpression.getBoolean(),
           rightExpressionBoolean = rightExpression.getBoolean(),
-          boolean = this.disjection ?
+          boolean = this.disjunction ?
                       (leftExpressionBoolean || rightExpressionBoolean) :
                         (leftExpressionBoolean && rightExpressionBoolean);
 
     expression = Expression.fromBoolean(boolean, context);  ///
 
-    context.debug(`...evaluated the '${bitwiseExpressionString}' bitwise expression.`);
+    context.debug(`...evaluated the '${logicalExpressionString}' logical expression.`);
 
     return expression;
   }
 
-  static name = "BitwiseExpression";
+  static name = "LogicalExpression";
 
   static fromExpressionNode(expressionNode, context) {
-    let bitwiseExpression = null;
+    let logicalExpression = null;
 
-    const bitwiseExpressionNode = expressionNode.getBitwiseExpressionNode();
+    const logicalExpressionNode = expressionNode.getLogicalExpressionNode();
 
-    if (bitwiseExpressionNode !== null) {
-      bitwiseExpression = bitwiseExpressionFromBitwiseExpressionNode(bitwiseExpressionNode, context);
+    if (logicalExpressionNode !== null) {
+      logicalExpression = logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context);
     }
 
-    return bitwiseExpression;
+    return logicalExpression;
   }
 });
 
-function bitwiseExpressionFromBitwiseExpressionNode(bitwiseExpressionNode, context) {
-  const { Expression, BitwiseExpression } = elements,
-        leftExpressionNode = bitwiseExpressionNode.getLeftExpressionNode(),
-        rightExpressionNode = bitwiseExpressionNode.getRightExpressionNode(),
+function logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
+  const { Expression, LogicalExpression } = elements,
+        leftExpressionNode = logicalExpressionNode.getLeftExpressionNode(),
+        rightExpressionNode = logicalExpressionNode.getRightExpressionNode(),
         type = BOOLEAN_TYPE,
-        disjection = disjunctionFromBitwiseExpressionNode(bitwiseExpressionNode, context),
+        disjunction = disjunctionFromLogicalExpressionNode(logicalExpressionNode, context),
         leftExpression = Expression.fromExpressionNode(leftExpressionNode, context),
         rightExpression = Expression.fromExpressionNode(rightExpressionNode, context),
-        string = bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context),
-        bitwiseExpression = new BitwiseExpression(string, type, disjection, leftExpression, rightExpression);
+        string = logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjunction, leftExpression, rightExpression, context),
+        logicalExpression = new LogicalExpression(string, type, disjunction, leftExpression, rightExpression);
 
-  return bitwiseExpression;
+  return logicalExpression;
 }
 
-function disjunctionFromBitwiseExpressionNode(bitwiseExpressionNode, context) {
-  const disjection = bitwiseExpressionNode.isDisjunction();
+function disjunctionFromLogicalExpressionNode(logicalExpressionNode, context) {
+  const disjunction = logicalExpressionNode.isDisjunction();
 
-  return disjection;
+  return disjunction;
 }

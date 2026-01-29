@@ -25,7 +25,7 @@ import ReturnStatement from "./element/statement/return";
 import NamedParameters from "./element/parameters/named";
 import ObjectAssignment from "./element/assignment/object";
 import NegatedExpression from "./element/expression/negated";
-import BitwiseExpression from "./element/expression/bitwise";
+import LogicalExpression from "./element/expression/logical";
 import AnonymousProcedure from "./element/procedure/anonymous";
 import VariableAssignment from "./element/assignment/variable";
 import BracketedExpression from "./element/expression/bracketed";

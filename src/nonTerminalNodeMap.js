@@ -22,9 +22,10 @@ import ReturnBlockNode from "./node/returnBlock";
 import ProcedureCallNode from "./node/procedureCall";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
-import BitwiseExpresionNode from "./node/expression/bitwise";
+import LogicalExpresionNode from "./node/expression/logical";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
+import BracketedExpressionNode from "./node/expression/bracketed";
 
 import { STEP_RULE_NAME,
          SOME_RULE_NAME,
@@ -48,9 +49,10 @@ import { STEP_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
          ARRAY_ASSIGNMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
-         BITWISE_EXPRESSION_RULE_NAME,
+         LOGICAL_EXPRESSION_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
-         VARIABLE_ASSIGNMENTS_RULE_NAME } from "./ruleNames";
+         VARIABLE_ASSIGNMENTS_RULE_NAME,
+         BRACKETED_EXPRESSION_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
   [STEP_RULE_NAME]: StepNode,
@@ -75,9 +77,10 @@ const NonTerminalNodeMap = {
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
   [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
-  [BITWISE_EXPRESSION_RULE_NAME]: BitwiseExpresionNode,
+  [LOGICAL_EXPRESSION_RULE_NAME]: LogicalExpresionNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
-  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode
+  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode,
+  [BRACKETED_EXPRESSION_RULE_NAME]: BracketedExpressionNode
 };
 
 export default NonTerminalNodeMap;

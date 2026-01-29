@@ -5,23 +5,25 @@ import { arrayUtilities } from "necessary";
 import elements from "../elements";
 import nullNode from "../nullNode";
 
+import { NULL } from "../constants";
 import { define } from "../elements";
 import { nodeQuery } from "../utilities/query";
-import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
 import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
+import { nodeFromExpressionNode,
+         nodesFromExpressionNode,
+         stringFromExpressionNode,
+         numberFromExpressionNode,
+         booleanFromExpressionNode } from "../utilities/element";
 
 const { match } = arrayUtilities;
 
-const numberTerminalNodeQuery = nodeQuery("/expression/@number"),
-      reduceExpressionNodeQuery = nodeQuery("/reduce/expression"),
-      primitiveTerminalNodeQuery = nodeQuery("/expression/@primitive"),
+const reduceExpressionNodeQuery = nodeQuery("/reduce/expression"),
       ternaryExpressionNodeQuery = nodeQuery("/ternary/expression"),
-      stringLiteralTerminalNodeQuery = nodeQuery("/expression/@string-literal"),
       returnStatementExpressionNodeQuery = nodeQuery("/returnStatement/expression"),
       variableAssignmentExpressionNodeQuery = nodeQuery("/variableAssignment/expression");
 
 export default define(class Expression {
-  constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression) {
+  constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
     this.node = node;
     this.nodes = nodes;
     this.number = number;
@@ -38,7 +40,7 @@ export default define(class Expression {
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
     this.negatedExpression = negatedExpression;
-    this.bitwiseExpression = bitwiseExpression;
+    this.logicalExpression = logicalExpression;
     this.bracketedExpression = bracketedExpression;
   }
 
@@ -106,8 +108,8 @@ export default define(class Expression {
     return this.negatedExpression;
   }
 
-  getBitwiseExpression() {
-    return this.bitwiseExpression;
+  getLogiclExpression() {
+    return this.logicalExpression;
   }
 
   getBracketedExpression() {
@@ -151,8 +153,8 @@ export default define(class Expression {
       type = this.procedureCall.getType();
     } else if (this.negatedExpression !== null) {
       type = this.negatedExpression.getType();
-    } else if (this.bitwiseExpression !== null) {
-      type = this.bitwiseExpression.getType();
+    } else if (this.logicalExpression !== null) {
+      type = this.logicalExpression.getType();
     } else if (this.bracketedExpression !== null) {
       type = this.bracketedExpression.getType();
     }
@@ -197,8 +199,8 @@ export default define(class Expression {
       string = this.procedureCall.getString();
     } else if (this.negatedExpression !== null) {
       string = this.negatedExpression.getString();
-    } else if (this.bitwiseExpression !== null) {
-      string = this.bitwiseExpression.getString();
+    } else if (this.logicalExpression !== null) {
+      string = this.logicalExpression.getString();
     } else if (this.bracketedExpression !== null) {
       string = this.bracketedExpression.getString();
     }
@@ -239,8 +241,8 @@ export default define(class Expression {
       expression = this.procedureCall.evaluate(context);
     } else if (this.negatedExpression !== null) {
       expression = this.negatedExpression.evaluate(context);
-    } else if (this.bitwiseExpression !== null) {
-      expression = this.bitwiseExpression.evaluate(context);
+    } else if (this.logicalExpression !== null) {
+      expression = this.logicalExpression.evaluate(context);
     } else if (this.bracketedExpression !== null) {
       expression = this.bracketedExpression.evaluate(context);
     }
@@ -318,9 +320,9 @@ export default define(class Expression {
           returnBlock = null,
           procedureCall = null,
           negatedExpression = null,
-          bitwiseExpression = null,
+          logicalExpression = null,
           bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
     return expression;
   }
@@ -341,9 +343,9 @@ export default define(class Expression {
           returnBlock = null,
           procedureCall = null,
           negatedExpression = null,
-          bitwiseExpression = null,
+          logicalExpression = null,
           bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
     return expression;
   }
@@ -364,9 +366,9 @@ export default define(class Expression {
           returnBlock = null,
           procedureCall = null,
           negatedExpression = null,
-          bitwiseExpression = null,
+          logicalExpression = null,
           bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
     return expression;
   }
@@ -387,9 +389,9 @@ export default define(class Expression {
           returnBlock = null,
           procedureCall = null,
           negatedExpression = null,
-          bitwiseExpression = null,
+          logicalExpression = null,
           bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
+          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
     return expression;
   }
@@ -506,7 +508,7 @@ function booleanAsString(boolean) {
 }
 
 function expressionFromExpressionNode(expressionNode, context) {
-  const { Some, Every, Reduce, Expression, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ReturnBlock, ProcedureCall, NegatedExpression, BitwiseExpression, BracketedExpression } = elements,
+  const { Some, Every, Reduce, Expression, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ReturnBlock, ProcedureCall, NegatedExpression, LogicalExpression, BracketedExpression } = elements,
         node = nodeFromExpressionNode(expressionNode, context),
         nodes = nodesFromExpressionNode(expressionNode, context),
         number = numberFromExpressionNode(expressionNode, context),
@@ -523,62 +525,9 @@ function expressionFromExpressionNode(expressionNode, context) {
         returnBlock = ReturnBlock.fromExpressionNode(expressionNode, context),
         procedureCall = ProcedureCall.fromExpressionNode(expressionNode, context),
         negatedExpression = NegatedExpression.fromExpressionNode(expressionNode, context),
-        bitwiseExpression = BitwiseExpression.fromExpressionNode(expressionNode, context),
+        logicalExpression = LogicalExpression.fromExpressionNode(expressionNode, context),
         bracketedExpression = BracketedExpression.fromExpressionNode(expressionNode, context),
-        expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, bitwiseExpression, bracketedExpression);
+        expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
-}
-
-function nodeFromExpressionNode(expressionNode, context) {
-  const node = expressionNode.getNode();
-
-  return node;
-}
-
-function nodesFromExpressionNode(expressionNode, context) {
-  const nodes = null;  ///
-
-  return nodes;
-}
-
-function numberFromExpressionNode(expressionNode, context) {
-  let number = null;
-
-  const numberTerminalNode = numberTerminalNodeQuery(expressionNode);
-
-  if (numberTerminalNode !== null) {
-    const numberTerminalNodeContent = numberTerminalNode.getContent();
-
-    number = Number(numberTerminalNodeContent);
-  }
-
-  return number;
-}
-
-function stringFromExpressionNode(expressionNode, context) {
-  let string = null;
-
-  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(expressionNode);
-
-  if (stringLiteralTerminalNode !== null) {
-    const stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
-          stringLiteral = stringLiteralTerminalNodeContent; ///
-
-    string = stringFromStringLiteral(stringLiteral, context);
-  }
-
-  return string;
-}
-
-function booleanFromExpressionNode(expressionNode, context) {
-  const boolean = expressionNode.getBoolean();
-
-  return boolean;
-}
-
-function stringFromStringLiteral(stringLiteral, context) {
-  const string = stringLiteral.replace(/(^"|"$)/g, EMPTY_STRING);
-
-  return string;
 }

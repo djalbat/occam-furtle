@@ -9,6 +9,13 @@ export function procedureDeclarationStringFromProcedure(procedure) {
   return procedureDeclarationString;
 }
 
+export function bracketedExpressionStringFromBExpression(expression, context) {
+  const expressionString = expression.asString(context),
+        bracketedExpressionString = `(${expressionString})`;
+
+  return bracketedExpressionString;
+}
+
 export function arrayAssignmentStringFromVariableAndParameters(variable, parameters) {
   const variableString = variable.getString(),
         parametersString = parameters.getString(),
@@ -48,13 +55,13 @@ export function varaibleAssignmentsStringFromVariableAssignmentsArray(variableAs
   return string;
 }
 
-export function bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {
+export function logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {
   const operatorString = disjection ?
                            DISJUNCTION_OPERATOR :
                              CONJUNCTION_OPERATOR,
         leftExpressionString = leftExpression.asString(context),
         rightExpressionString = rightExpression.asString(context),
-        bitwiseExpressionString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
+        logicalExpressionString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
 
-  return bitwiseExpressionString;
+  return logicalExpressionString;
 }

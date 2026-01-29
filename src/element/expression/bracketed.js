@@ -3,10 +3,7 @@
 import elements from "../../elements";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
-
-const expressionNodeQuery = nodeQuery("/bracketedExpression/expression"),
-      expressionBracketedExpressionNodeQuery = nodeQuery("/expression/bracketedExpression");
+import { bracketedExpressionStringFromBExpression } from "../../utilities/string";
 
 export default define(class BracketedExpression {
   constructor(string, expression) {
@@ -43,11 +40,9 @@ export default define(class BracketedExpression {
   static fromExpressionNode(expressionNode, context) {
     let bracketedExpression = null;
 
-    const expressionBracketedExpressionNode = expressionBracketedExpressionNodeQuery(expressionNode);
+    const bracketedExpressionNode = expressionNode.getBracketedExpressionNode();
 
-    if (expressionBracketedExpressionNode !== null) {
-      const bracketedExpressionNode = expressionBracketedExpressionNode; ///
-
+    if (bracketedExpressionNode !== null) {
       bracketedExpression = bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context);
     }
 
@@ -57,17 +52,12 @@ export default define(class BracketedExpression {
 
 function bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
   const { Expression, BracketedExpression } = elements,
-        expressionNode = expressionNodeQuery(bracketedExpressionNode),
+        expressionNode = bracketedExpressionNode.getExpressionNode(),
         expression = Expression.fromExpressionNode(expressionNode, context),
-        string = stringFromExpression(expression, context),
+        bracketedExpressionString = bracketedExpressionStringFromBExpression(expression, context),
+        string = bracketedExpressionString, ///
         bracketedExpression = new BracketedExpression(string, expression);
 
   return bracketedExpression;
 }
 
-function stringFromExpression(expression, context) {
-  const expressionString = expression.asString(context),
-        string = `(${expressionString})`;
-
-  return string;
-}

@@ -3,63 +3,84 @@
 import nullNode from "../nullNode";
 import NonTerminalNode from "../nonTerminalNode";
 
-import { NULL, TRUE, FALSE } from "../constants";
-import { PRIMITIVE_TOKEN_TYPE } from "../tokenTypes";
-import { SOME_RULE_NAME, BITWISE_EXPRESSION_RULE_NAME } from "../ruleNames";
+import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
+import { NUMBER_TOKEN_TYPE, PRIMITIVE_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
+import { SOME_RULE_NAME, LOGICAL_EXPRESSION_RULE_NAME, BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
   getNode() {
     let node = null;
 
-    this.someChildNode((childNode) => {
-      const childNodeTerminalNode = childNode.isTerminalNode();
+    const type = PRIMITIVE_TOKEN_TYPE;
 
-      if (childNodeTerminalNode) {
-        const terminalNode = childNode, ///
-              terminalNodeType = terminalNode.getType();
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
 
-        if (terminalNodeType === PRIMITIVE_TOKEN_TYPE) {
-          const content = terminalNode.getContent();
+      if (content === NULL) {
+        node = nullNode;
 
-          if (content === NULL) {
-            node = nullNode;
-
-            return true;
-          }
-        }
+        return true;
       }
-    });
+    }, type);
 
     return node;
+  }
+
+  getString() {
+    let string = null;
+
+    const type = STRING_LITERAL_TOKEN_TYPE;
+
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent(),
+            stringLiteral = content;  ///
+
+      string = stringFromStringLiteral(stringLiteral);
+
+      return true;
+    }, type);
+
+    return string;
+  }
+
+  getNumber() {
+    let number = null;
+
+    const type = NUMBER_TOKEN_TYPE; ///
+
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
+
+      if (content === TRUE) {
+        number = Number(content);
+
+        return true;
+      }
+    }, type);
+
+    return number;
   }
 
   getBoolean() {
     let boolean = null;
 
-    this.someChildNode((childNode) => {
-      const childNodeTerminalNode = childNode.isTerminalNode();
+    const type = PRIMITIVE_TOKEN_TYPE;
 
-      if (childNodeTerminalNode) {
-        const terminalNode = childNode, ///
-              terminalNodeType = terminalNode.getType();
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
 
-        if (terminalNodeType === PRIMITIVE_TOKEN_TYPE) {
-          const content = terminalNode.getContent();
+      if (content === TRUE) {
+        boolean = true;
 
-          if (content === TRUE) {
-            boolean = true;
-
-            return true;
-          }
-
-          if (content === FALSE) {
-            boolean = false;
-
-            return true;
-          }
-        }
+        return true;
       }
-    });
+
+      if (content === FALSE) {
+        boolean = false;
+
+        return true;
+      }
+    }, type);
 
     return boolean;
   }
@@ -71,11 +92,18 @@ export default class ExpressionNode extends NonTerminalNode {
     return someNode;
   }
 
-  getBitwiseExpressionNode() {
-    const ruleName = BITWISE_EXPRESSION_RULE_NAME,
-          bitwiseExpressionRuleName = this.getNodeByRuleName(ruleName);
+  getLogicalExpressionNode() {
+    const ruleName = LOGICAL_EXPRESSION_RULE_NAME,
+          logicalExpressionRuleName = this.getNodeByRuleName(ruleName);
 
-    return bitwiseExpressionRuleName;
+    return logicalExpressionRuleName;
+  }
+
+  getBracketedExpressionNode() {
+    const ruleName = BRACKETED_EXPRESSION_RULE_NAME,
+          bracketedExpressionRuleName = this.getNodeByRuleName(ruleName);
+
+    return bracketedExpressionRuleName;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
@@ -95,4 +123,10 @@ export default class ExpressionNode extends NonTerminalNode {
 
     return expressionNode;
   }
+}
+
+function stringFromStringLiteral(stringLiteral) {
+  const string = stringLiteral.replace(/(^"|"$)/g, EMPTY_STRING);
+
+  return string;
 }

@@ -89,17 +89,18 @@ function ternaryFromTernaryNode(ternaryNode, context) {
         expression = Expression.fromTernaryNode(ternaryNode, context),
         ifExpression = Expression.fromExpressionNode(ifExpressionNode, context),
         elseExpression = Expression.fromExpressionNode(elseExpressionNode, context),
-        string = stringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context),
+        ternaryString = ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context),
+        string = ternaryString, ///
         ternary = new Ternary(string, expression, ifExpression, elseExpression);
 
   return ternary;
 }
 
-function stringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
+function ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
   const expressionString = expression.asString(context),
         ifExpressionString = ifExpression.asString(context),
         elseExpressionString = elseExpression.asString(context),
-        string = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
+        ternaryString = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
 
-  return string;
+  return ternaryString;
 }

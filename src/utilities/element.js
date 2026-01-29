@@ -8,6 +8,36 @@ import { procedureDeclarationStringFromProcedure,
          objectAssignmentStringFromVariableAndNamedParameters,
          varaibleAssignmentsStringFromVariableAssignmentsArray } from "../utilities/string";
 
+export function nodeFromExpressionNode(expressionNode, context) {
+  const node = expressionNode.getNode();
+
+  return node;
+}
+
+export function nodesFromExpressionNode(expressionNode, context) {
+  const nodes = null;  ///
+
+  return nodes;
+}
+
+export function stringFromExpressionNode(expressionNode, context) {
+  const string = expressionNode.getString();
+
+  return string;
+}
+
+export function numberFromExpressionNode(expressionNode, context) {
+  const number = expressionNode.getNumber();
+
+  return number;
+}
+
+export function booleanFromExpressionNode(expressionNode, context) {
+  const boolean = expressionNode.getBoolean();
+
+  return boolean;
+}
+
 export function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
   const { Variable, Parameters, ArrayAssignment } = elements,
         parameters = Parameters.fromArrayAssignmentNode(arrayAssignmentNode, context),
