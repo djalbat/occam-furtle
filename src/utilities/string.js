@@ -1,5 +1,7 @@
 "use strict";
 
+import {CONJUNCTION_OPERATOR, DISJUNCTION_OPERATOR} from "../constants";
+
 export function procedureDeclarationStringFromProcedure(procedure) {
   const procedureString = procedure.getString(),
         procedureDeclarationString = `${procedureString};`;
@@ -44,4 +46,15 @@ export function varaibleAssignmentsStringFromVariableAssignmentsArray(variableAs
         string = variableAssignmentsString; ///
 
   return string;
+}
+
+export function bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {
+  const operatorString = disjection ?
+                           DISJUNCTION_OPERATOR :
+                             CONJUNCTION_OPERATOR,
+        leftExpressionString = leftExpression.asString(context),
+        rightExpressionString = rightExpression.asString(context),
+        bitwiseExpressionString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
+
+  return bitwiseExpressionString;
 }

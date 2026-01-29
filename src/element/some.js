@@ -4,10 +4,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-
-const expressionSomeNodeQuery = nodeQuery("/expression/some");
 
 export default define(class Some {
   constructor(string, variable, anonymousProcedure) {
@@ -88,11 +85,9 @@ export default define(class Some {
   static fromExpressionNode(expressionNode, context) {
     let some = null;
 
-    const expressionSomeNode = expressionSomeNodeQuery(expressionNode);
+    const someNode = expressionNode.getSomeNode();
 
-    if (expressionSomeNode !== null) {
-      const someNode = expressionSomeNode; ///
-
+    if (someNode !== null) {
       some = someFromSomeNode(someNode, context);
     }
 

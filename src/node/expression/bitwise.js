@@ -1,38 +1,82 @@
 "use strict";
 
+import { arrayUtilities } from "necessary";
+
 import ExpressionNode from "../../node/expression";
 
-import { COMPARISON_TOKEN_TYPE } from "../../tokenTypes";
-import { VARIABLE_ASSIGNMENT_RULE_NAME } from "../../ruleNames";
+import { EXPRESSION_RULE_NAME } from "../../ruleNames";
+import { CONJUNCTION_OPERATOR, DISJUNCTION_OPERATOR } from "../../constants";
 
-export default class VariableExpressionNode extends ExpressionNode {
-  getType() {
-    let type = null;
+const { first, last } = arrayUtilities;
+
+export default class BitwiseExpressionNode extends ExpressionNode {
+  getOperator() {
+    let operator = null;
 
     this.someChildNode((childNode, index) => {
-      const terminalNode = childNode, ///
-            terminalNodeType = terminalNode.getType();
+      const childNodeTerminalNode = childNode.isTerminalNode();
 
-      if (terminalNodeType === COMPARISON_TOKEN_TYPE) {
-        const content = terminalNode.getContent();
+      if (childNodeTerminalNode) {
+        const terminalNode = childNode,
+              content = terminalNode.getContent();
 
-        type = content;  ///
-      }
+        operator = content; ///
 
-      if (index === 0) {
         return true;
       }
     });
 
-    return type;
+    return operator;
   }
 
-  getVariableAssignmentNodes() {
-    const ruleName = VARIABLE_ASSIGNMENT_RULE_NAME,
-          variableAssingnmentNodss = this.getNodesByRuleName(ruleName);
+  isConjection() {
+    const operator = this.getOperator(),
+          conjection = (operator === CONJUNCTION_OPERATOR);
 
-    return variableAssingnmentNodss;
+    return conjection;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ExpressionNode.fromRuleNameChildNodesOpacityAndPrecedence(VariableExpressionNode, ruleName, childNodes, opacity, precedence); }
+  isDisjunction() {
+    const operator = this.getOperator(),
+          disjunction = (operator === DISJUNCTION_OPERATOR);
+
+    return disjunction;
+  }
+
+  getExpressionNodes() {
+    const ruleName = EXPRESSION_RULE_NAME,
+          expressionNodes = this.getNodesByRuleName(ruleName);
+
+    return expressionNodes;
+  }
+
+  getLeftExpressionNode() {
+    const firstExpresionNode = this.getFirstExpressionNode(),
+          leftExpressionNode = firstExpresionNode;  ///
+
+    return leftExpressionNode;
+  }
+
+  getRightExpressionNode() {
+    const lastExpressionNode = this.getLastExpressionNode(),
+          rightExpressionNode = lastExpressionNode; ///
+
+    return rightExpressionNode;
+  }
+
+  getLastExpressionNode() {
+    const expressionNodes = this.getExpressionNodes(),
+          lastExpressionNode = last(expressionNodes);
+
+    return lastExpressionNode;
+  }
+
+  getFirstExpressionNode() {
+    const expressionNodes = this.getExpressionNodes(),
+          firstExpressionNode = first(expressionNodes);
+
+    return firstExpressionNode;
+  }
+
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ExpressionNode.fromRuleNameChildNodesOpacityAndPrecedence(BitwiseExpressionNode, ruleName, childNodes, opacity, precedence); }
 }

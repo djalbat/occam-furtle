@@ -4,20 +4,14 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
 import { BOOLEAN_TYPE } from "../../types";
-import { CONJUNCTION, DISJUNCTION } from "../../constants";
-
-const terminalNodeQuery = nodeQuery("/bitwiseExpression/@*"),
-      leftExpressionNodeQuery = nodeQuery("/bitwiseExpression/expression[0]"),
-      rightExpressionNodeQuery = nodeQuery("/bitwiseExpression/expression[1]"),
-      expressionBitwiseExpressionNodeQuery = nodeQuery("/expression/bitwiseExpression");
+import { bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression } from "../../utilities/string";
 
 export default define(class BitwiseExpression {
-  constructor(string, type, disjoint, leftExpression, rightExpression) {
+  constructor(string, type, disjection, leftExpression, rightExpression) {
     this.string = string;
     this.type = type;
-    this.disjoint = disjoint;
+    this.disjection = disjection;
     this.leftExpression = leftExpression;
     this.rightExpression = rightExpression;
   }
@@ -30,8 +24,8 @@ export default define(class BitwiseExpression {
     return this.type;
   }
 
-  isDisjoint() {
-    return this.disjoint;
+  isDisjunction() {
+    return this.disjection;
   }
 
   getLeftExpression() {
@@ -73,7 +67,7 @@ export default define(class BitwiseExpression {
 
     const leftExpressionBoolean = leftExpression.getBoolean(),
           rightExpressionBoolean = rightExpression.getBoolean(),
-          boolean = this.disjoint ?
+          boolean = this.disjection ?
                       (leftExpressionBoolean || rightExpressionBoolean) :
                         (leftExpressionBoolean && rightExpressionBoolean);
 
@@ -89,11 +83,9 @@ export default define(class BitwiseExpression {
   static fromExpressionNode(expressionNode, context) {
     let bitwiseExpression = null;
 
-    const expressionBitwiseExpressionNode = expressionBitwiseExpressionNodeQuery(expressionNode);
+    const bitwiseExpressionNode = expressionNode.getBitwiseExpressionNode();
 
-    if (expressionBitwiseExpressionNode !== null) {
-      const bitwiseExpressionNode = expressionBitwiseExpressionNode; ///
-
+    if (bitwiseExpressionNode !== null) {
       bitwiseExpression = bitwiseExpressionFromBitwiseExpressionNode(bitwiseExpressionNode, context);
     }
 
@@ -103,33 +95,20 @@ export default define(class BitwiseExpression {
 
 function bitwiseExpressionFromBitwiseExpressionNode(bitwiseExpressionNode, context) {
   const { Expression, BitwiseExpression } = elements,
-        leftExpressionNode = leftExpressionNodeQuery(bitwiseExpressionNode),
-        rightExpressionNode = rightExpressionNodeQuery(bitwiseExpressionNode),
+        leftExpressionNode = bitwiseExpressionNode.getLeftExpressionNode(),
+        rightExpressionNode = bitwiseExpressionNode.getRightExpressionNode(),
         type = BOOLEAN_TYPE,
-        disjoint = disjointFromBitwiseExpressionNode(bitwiseExpressionNode, context),
+        disjection = disjunctionFromBitwiseExpressionNode(bitwiseExpressionNode, context),
         leftExpression = Expression.fromExpressionNode(leftExpressionNode, context),
         rightExpression = Expression.fromExpressionNode(rightExpressionNode, context),
-        string = stringFromTypeDisjointLeftExpressionAndRightExpression(disjoint, leftExpression, rightExpression, context),
-        bitwiseExpression = new BitwiseExpression(string, type, disjoint, leftExpression, rightExpression);
+        string = bitwiseExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context),
+        bitwiseExpression = new BitwiseExpression(string, type, disjection, leftExpression, rightExpression);
 
   return bitwiseExpression;
 }
 
-function disjointFromBitwiseExpressionNode(bitwiseExpressionNode, context) {
-  const terminalNode = terminalNodeQuery(bitwiseExpressionNode),
-        terminalNodeContent = terminalNode.getContent(),
-        disjoint = (terminalNodeContent === DISJUNCTION);
+function disjunctionFromBitwiseExpressionNode(bitwiseExpressionNode, context) {
+  const disjection = bitwiseExpressionNode.isDisjunction();
 
-  return disjoint;
-}
-
-function stringFromTypeDisjointLeftExpressionAndRightExpression(disjoint, leftExpression, rightExpression, context) {
-  const operatorString = disjoint ?
-                           DISJUNCTION :
-                             CONJUNCTION,
-        leftExpressionString = leftExpression.asString(context),
-        rightExpressionString = rightExpression.asString(context),
-        string = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
-
-  return string;
+  return disjection;
 }
