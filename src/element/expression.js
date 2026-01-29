@@ -531,21 +531,7 @@ function expressionFromExpressionNode(expressionNode, context) {
 }
 
 function nodeFromExpressionNode(expressionNode, context) {
-  let node = null;
-
-  const primitiveTerminalNode = primitiveTerminalNodeQuery(expressionNode);
-
-  if (primitiveTerminalNode !== null) {
-    const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
-
-    switch (primitiveTerminalNodeContent) {
-      case NULL: {
-        node = nullNode;
-
-        break;
-      }
-    }
-  }
+  const node = expressionNode.getNode();
 
   return node;
 }
@@ -586,27 +572,7 @@ function stringFromExpressionNode(expressionNode, context) {
 }
 
 function booleanFromExpressionNode(expressionNode, context) {
-  let boolean = null;
-
-  const primitiveTerminalNode = primitiveTerminalNodeQuery(expressionNode);
-
-  if (primitiveTerminalNode !== null) {
-    const primitiveTerminalNodeContent = primitiveTerminalNode.getContent();
-
-    switch (primitiveTerminalNodeContent) {
-      case TRUE: {
-        boolean = true;
-
-        break;
-      }
-
-      case FALSE: {
-        boolean = false;
-
-        break;
-      }
-    }
-  }
+  const boolean = expressionNode.getBoolean();
 
   return boolean;
 }
