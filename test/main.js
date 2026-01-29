@@ -1,7 +1,5 @@
 "use strict";
 
-const { assert } = require("chai");
-
 const ReleaseContext = require("./context/release");
 
 const { furtleFileFromNothing } = require("./helpers/furtle"),
@@ -9,47 +7,38 @@ const { furtleFileFromNothing } = require("./helpers/furtle"),
       { procedureFromReleaseContext } = require("./helpers/procedure"),
       { nominalFileContextFromReleaseContext } = require("./helpers/nominal");
 
-describe("src/main", () => {
-  let fileContext,
-      releaseContext;
+let fileContext,
+    releaseContext;
 
-  before(() => {
-    releaseContext = ReleaseContext.fromNothing();
+releaseContext = ReleaseContext.fromNothing();
 
-    const furtleFile = furtleFileFromNothing(),
-          file = furtleFile;  ///
+const furtleFile = furtleFileFromNothing(),
+      file = furtleFile;  ///
 
-    releaseContext.addFile(file);
+releaseContext.addFile(file);
 
-    releaseContext.verify();
-  });
+releaseContext.verify();
 
-  before(() => {
-    const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext);
+const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext);
 
-    fileContext = nominalFileContext; ///
+fileContext = nominalFileContext; ///
 
-    releaseContext.addFileContext(fileContext);
-  });
+releaseContext.addFileContext(fileContext);
 
-  it("returns true", () => {
-    const free = true,
-          procedure = procedureFromReleaseContext(releaseContext),
-          expressions = expressionsFromFileContext(fileContext, free);
+const free = true,
+      procedure = procedureFromReleaseContext(releaseContext),
+      expressions = expressionsFromFileContext(fileContext, free);
 
 // try {
-    const context = fileContext,  ///
-          expression = procedure.call(expressions, context),
-          boolean = expression.getBoolean();
+const context = fileContext,  ///
+      expression = procedure.call(expressions, context),
+      boolean = expression.getBoolean();
 
-    assert.isTrue(boolean);
+assert.isTrue(boolean);
 
-    console.log(boolean);
+console.log(boolean);
 // } catch (exception) {
 //   const message = exception.getMessage();
 //
 //   console.log(message);
 // }
-
-  });
-});
