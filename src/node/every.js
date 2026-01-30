@@ -2,14 +2,14 @@
 
 import NonTerminalNode from "../nonTerminalNode";
 
-import { EVERY_RULE_NAME, ANONYMOUS_PROCEDURE_RULE_NAME } from "../ruleNames";
+import { VARIABLE_RULE_NAME, ANONYMOUS_PROCEDURE_RULE_NAME } from "../ruleNames";
 
-export default class QueryNode extends NonTerminalNode {
+export default class EveryNode extends NonTerminalNode {
   getVariableNode() {
-    const ruleName = EVERY_RULE_NAME,
-          everyNode = this.getNodeByRuleName(ruleName);
+    const ruleName = VARIABLE_RULE_NAME,
+          variableNode = this.getNodeByRuleName(ruleName);
 
-    return everyNode;
+    return variableNode;
   }
 
   getAnonymousProcedureNode() {
@@ -19,5 +19,5 @@ export default class QueryNode extends NonTerminalNode {
     return anonymousProcedureNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(QueryNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(EveryNode, ruleName, childNodes, opacity, precedence); }
 }

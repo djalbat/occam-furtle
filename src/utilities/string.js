@@ -44,6 +44,13 @@ export function paramtersStringFromParametersArray(array) {
   return parametersString;
 }
 
+export function negatedExpressionStringFromExpression(expression, context) {
+  const expressionString = expression.asString(context),
+       negatedExpressionString = `!${expressionString}`;
+
+  return negatedExpressionString;
+}
+
 export function procedureDeclarationStringFromProcedure(procedure) {
   const procedureString = procedure.getString(),
         procedureDeclarationString = `${procedureString};`;
@@ -127,6 +134,24 @@ export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, p
         anonymousProcedureString = `${typeString} (${parametersString}) ${returnBlockString}`;
 
   return anonymousProcedureString;
+}
+
+export function ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
+  const expressionString = expression.asString(context),
+        ifExpressionString = ifExpression.asString(context),
+        elseExpressionString = elseExpression.asString(context),
+        ternaryString = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
+
+  return ternaryString;
+}
+
+export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {
+  const variableString = variable.getString(),
+        initialExpressionString = initialExpression.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        reduceString = `Reduce(${variableString}, ${anonymousProcedureString}, ${initialExpressionString})`;
+
+  return reduceString;
 }
 
 export function logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {

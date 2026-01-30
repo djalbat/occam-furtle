@@ -390,22 +390,6 @@ export default define(class Expression {
     return expression;
   }
 
-  static fromReduceNode(reduceNode, context) {
-    const reduceExpressionNode = reduceExpressionNodeQuery(reduceNode),
-          expressionNode = reduceExpressionNode, ///
-          expression = expressionFromExpressionNode(expressionNode, context);
-
-    return expression;
-  }
-
-  static fromTernaryNode(ternaryNode, context) {
-    const ternaryExpressionNode = ternaryExpressionNodeQuery(ternaryNode),
-          expressionNode = ternaryExpressionNode, ///
-          expression = expressionFromExpressionNode(expressionNode, context);
-
-    return expression;
-  }
-
   static fromExpressionNode(expressionNode, context) {
     const expression = expressionFromExpressionNode(expressionNode, context);
 

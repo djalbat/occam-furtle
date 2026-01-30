@@ -81,16 +81,4 @@ export default define(class Every {
   }
 
   static name = "Every";
-
-  static fromExpressionNode(expressionNode, context) {
-    let every = null;
-
-    const everyNode = expressionNode.getEveryNode();
-
-    if (everyNode !== null) {
-      every = everyFromEveryNode(everyNode, context);
-    }
-
-    return every;
-  }
 });

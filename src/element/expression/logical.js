@@ -5,7 +5,6 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression } from "../../utilities/string";
 
 export default define(class LogicalExpression {
   constructor(string, type, disjunction, leftExpression, rightExpression) {
@@ -79,36 +78,4 @@ export default define(class LogicalExpression {
   }
 
   static name = "LogicalExpression";
-
-  static fromExpressionNode(expressionNode, context) {
-    let logicalExpression = null;
-
-    const logicalExpressionNode = expressionNode.getLogicalExpressionNode();
-
-    if (logicalExpressionNode !== null) {
-      logicalExpression = logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context);
-    }
-
-    return logicalExpression;
-  }
 });
-
-function logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
-  const { Expression, LogicalExpression } = elements,
-        leftExpressionNode = logicalExpressionNode.getLeftExpressionNode(),
-        rightExpressionNode = logicalExpressionNode.getRightExpressionNode(),
-        type = BOOLEAN_TYPE,
-        disjunction = disjunctionFromLogicalExpressionNode(logicalExpressionNode, context),
-        leftExpression = Expression.fromExpressionNode(leftExpressionNode, context),
-        rightExpression = Expression.fromExpressionNode(rightExpressionNode, context),
-        string = logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjunction, leftExpression, rightExpression, context),
-        logicalExpression = new LogicalExpression(string, type, disjunction, leftExpression, rightExpression);
-
-  return logicalExpression;
-}
-
-function disjunctionFromLogicalExpressionNode(logicalExpressionNode, context) {
-  const disjunction = logicalExpressionNode.isDisjunction();
-
-  return disjunction;
-}

@@ -4,11 +4,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
 import { BOOLEAN_TYPE } from "../../types";
-
-const expressionNodeQuery = nodeQuery("/negatedExpression/expression"),
-      expressionNegatedExpressionNodeQuery = nodeQuery("/expression/negatedExpression");
 
 export default define(class NegatedExpression {
   constructor(string, type, expression) {
@@ -62,36 +58,4 @@ export default define(class NegatedExpression {
   }
 
   static name = "NegatedExpression";
-
-  static fromExpressionNode(expressionNode, context) {
-    let negatedExpression = null;
-
-    const expressionNegatedExpressionNode = expressionNegatedExpressionNodeQuery(expressionNode);
-
-    if (expressionNegatedExpressionNode !== null) {
-      const negatedExpressionNode = expressionNegatedExpressionNode; ///
-
-      negatedExpression = negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context);
-    }
-
-    return negatedExpression;
-  }
 });
-
-function negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context) {
-  const { Expression, NegatedExpression } = elements,
-        expressionNode = expressionNodeQuery(negatedExpressionNode),
-        expression = Expression.fromExpressionNode(expressionNode, context),
-        type = BOOLEAN_TYPE,
-        string = stringFromExpression(expression, context),
-        negatedExpression = new NegatedExpression(string, type, expression);
-
-  return negatedExpression;
-}
-
-function stringFromExpression(expression, context) {
-  const expressionString = expression.asString(context),
-        string = `!${expressionString}`;
-
-  return string;
-}

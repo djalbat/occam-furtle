@@ -7,11 +7,7 @@ import { nodeQuery } from "../utilities/query";
 import { variableStringFromName } from "../utilities/string";
 import { variableFromVariableNode, variableFromTypeAndVariableNode } from "../utilities/element";
 
-const reduceVariableNodeQuery = nodeQuery("/reduce/variable"),
-      nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
-      expressionVariableNodeQuery = nodeQuery("/expression/variable"),
-      nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
-      arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
+const arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
       objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
       variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
 
@@ -118,30 +114,6 @@ export default define(class Variable {
     return variable;
   }
 
-  static fromReduceNode(reduceNode, context) {
-    const reduceVariableNode = reduceVariableNodeQuery(reduceNode),
-          variableNode = reduceVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromNodeQueryNode(nodeQueryNode, context) {
-    const nodeQueryVariableNode = nodeQueryVariableNodeQuery(nodeQueryNode),
-          variableNode = nodeQueryVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromNodesQueryNode(nodesQueryNode, context) {
-    const nodesQueryVariableNode = nodesQueryVariableNodeQuery(nodesQueryNode),
-          variableNode = nodesQueryVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
   static fromNamedParameter(namedParameter, context) {
     const asName = namedParameter.getAsName(),
           type = namedParameter.getType(),
@@ -152,20 +124,6 @@ export default define(class Variable {
           variableString = variableStringFromName(name, context),
           string = variableString,  ///
           variable = new Variable(string, type, name, expression);
-
-    return variable;
-  }
-
-  static fromExpressionNode(expressionNode, context) {
-    let variable = null;
-
-    const expressionVariableNode = expressionVariableNodeQuery(expressionNode);
-
-    if (expressionVariableNode !== null) {
-      const variableNode = expressionVariableNode; ///
-
-      variable = variableFromVariableNode(variableNode, context);
-    }
 
     return variable;
   }

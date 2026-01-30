@@ -1,19 +1,10 @@
 "use strict";
 
-import { Query } from "occam-query";
-import { contentUtilities } from "occam-entities";
-
 import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
 import { NODE_TYPE } from "../../types";
-
-const { trimDoubleQuotes } = contentUtilities;
-
-const expressionNodesQueryNodeQuery = nodeQuery("/expression/nodesQuery"),
-      stringLiteralTerminalNodesQuery = nodeQuery("/nodesQuery/@string-literal");
 
 export default define(class NodesQuery {
   constructor(string, variable, query) {
@@ -86,38 +77,4 @@ export default define(class NodesQuery {
   }
 
   static name = "NodesQuery";
-
-  static fromExpressionNode(expressionNode, context) {
-    let nodesQuery = null;
-
-    const expressionNodesQueryNode = expressionNodesQueryNodeQuery(expressionNode);
-
-    if (expressionNodesQueryNode !== null) {
-      const nodesQueryNode = expressionNodesQueryNode; ///
-
-      nodesQuery = nodesQueryFromNodesQueryNode(nodesQueryNode, context);
-    }
-
-    return nodesQuery;
-  }
 });
-
-function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
-  const { Variable, NodesQuery } = elements,
-        node = nodesQueryNode,  ///
-        string = context.nodeAsString(node),
-        expressionString = expressionStringFromNodesQueryNode(nodesQueryNode, context),
-        variable = Variable.fromNodesQueryNode(nodesQueryNode, context),
-        query = Query.fromExpressionString(expressionString),
-        nodesQuery = new NodesQuery(string, variable, query);
-
-  return nodesQuery;
-}
-
-function expressionStringFromNodesQueryNode(nodesQueryNode, context) {
-  const stringLiteralTerminalNode = stringLiteralTerminalNodesQuery(nodesQueryNode),
-        stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
-        expressionString = trimDoubleQuotes(stringLiteralTerminalNodeContent);
-
-  return expressionString;
-}

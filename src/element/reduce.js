@@ -4,10 +4,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
 import { NODES_TYPE } from "../types";
-
-const expressionReduceNodeQuery = nodeQuery("/expression/reduce");
 
 export default define(class Reduce {
   constructor(string, variable, initialExpression, anonymousProcedure) {
@@ -79,39 +76,4 @@ export default define(class Reduce {
   }
 
   static name = "Reduce";
-
-  static fromExpressionNode(expressionNode, context) {
-    let reduce = null;
-
-    const expressionReduceNode = expressionReduceNodeQuery(expressionNode);
-
-    if (expressionReduceNode !== null) {
-      const reduceNode = expressionReduceNode; ///
-
-      reduce = reduceFromReduceNode(reduceNode, context);
-    }
-
-    return reduce;
-  }
 });
-
-function reduceFromReduceNode(reduceNode, context) {
-  const { Reduce, Variable, Expression, AnonymousProcedure } = elements,
-        expression = Expression.fromReduceNode(reduceNode, context),
-        variable = Variable.fromReduceNode(reduceNode, context),
-        initialExpression = expression, ///
-        anonymousProcedure = anonymousProcedureFromReduceNode(reduceNode, context),
-        string = stringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure),
-        reduce = new Reduce(string, variable, initialExpression, anonymousProcedure);
-
-  return reduce;
-}
-
-function stringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {
-  const variableString = variable.getString(),
-        initialExpressionString = initialExpression.getString(),
-        anonymousProcedureString = anonymousProcedure.getString(),
-        string = `Reduce(${variableString}, ${anonymousProcedureString}, ${initialExpressionString})`;
-
-  return string;
-}

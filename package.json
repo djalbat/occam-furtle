@@ -21,7 +21,6 @@
     "express": "^5.1.0",
     "lively-cli": "^2.0.77",
     "occam-custom-grammars": "^5.0.1358",
-    "occam-entities": "^1.0.472",
     "occam-query": "^4.1.142",
     "watchful-cli": "^1.7.67"
   },

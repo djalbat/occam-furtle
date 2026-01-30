@@ -5,7 +5,16 @@ import NonTerminalNode from "../nonTerminalNode";
 
 import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
 import { NUMBER_TOKEN_TYPE, PRIMITIVE_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
-import { SOME_RULE_NAME, EVERY_RULE_NAME, LOGICAL_EXPRESSION_RULE_NAME, BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
+import { SOME_RULE_NAME,
+         EVERY_RULE_NAME,
+         REDUCE_RULE_NAME,
+         TERNARY_RULE_NAME,
+         VARIABLE_RULE_NAME,
+         NODE_QUERY_RULE_NAME,
+         NODES_QUERY_RULE_NAME,
+         NEGATED_EXPRESSION_RULE_NAME,
+         LOGICAL_EXPRESSION_RULE_NAME,
+         BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
   getNode() {
@@ -26,21 +35,20 @@ export default class ExpressionNode extends NonTerminalNode {
     return node;
   }
 
-  getString() {
-    let string = null;
+  getStringLiteral() {
+    let stringLiteral = null;
 
     const tokenType = STRING_LITERAL_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent(),
-            stringLiteral = content;  ///
+      const content = terminalNode.getContent();
 
-      string = stringFromStringLiteral(stringLiteral);
+      stringLiteral = content;  ///
 
       return true;
     }, tokenType);
 
-    return string;
+    return stringLiteral;
   }
 
   getNumber() {
@@ -99,6 +107,48 @@ export default class ExpressionNode extends NonTerminalNode {
     return everyNode;
   }
 
+  getReduceNode() {
+    const ruleName = REDUCE_RULE_NAME,
+          reduceNode = this.getNodeByRuleName(ruleName);
+
+    return reduceNode;
+  }
+
+  getTernaryNode() {
+    const ruleName = TERNARY_RULE_NAME,
+          ternaryNode = this.getNodeByRuleName(ruleName);
+
+    return ternaryNode;
+  }
+
+  getVariableNode() {
+    const ruleName = VARIABLE_RULE_NAME,
+          variableNode = this.getNodeByRuleName(ruleName);
+
+    return variableNode;
+  }
+
+  getNodeQueryNode() {
+    const ruleName = NODE_QUERY_RULE_NAME,
+          nodeQueryNode = this.getNodeByRuleName(ruleName);
+
+    return nodeQueryNode;
+  }
+
+  getNodesQueryNode() {
+    const ruleName = NODES_QUERY_RULE_NAME,
+          nodeSQueryNode = this.getNodeByRuleName(ruleName);
+
+    return nodeSQueryNode;
+  }
+
+  getNegatedExpressionNode() {
+    const ruleName = NEGATED_EXPRESSION_RULE_NAME,
+          negatedExpressionNode = this.getNodeByRuleName(ruleName);
+
+    return negatedExpressionNode;
+  }
+
   getLogicalExpressionNode() {
     const ruleName = LOGICAL_EXPRESSION_RULE_NAME,
           logicalExpressionRuleName = this.getNodeByRuleName(ruleName);
@@ -130,10 +180,4 @@ export default class ExpressionNode extends NonTerminalNode {
 
     return expressionNode;
   }
-}
-
-function stringFromStringLiteral(stringLiteral) {
-  const string = stringLiteral.replace(/(^"|"$)/g, EMPTY_STRING);
-
-  return string;
 }

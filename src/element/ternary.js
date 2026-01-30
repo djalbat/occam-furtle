@@ -1,15 +1,9 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
 import { BOOLEAN_TYPE } from "../types";
-
-const ifExpressionNodeQuery = nodeQuery("/ternary/expression[1]"),
-      elseExpressionNodeQuery = nodeQuery("/ternary/expression[2]"),
-      expressionTernaryNodeQuery = nodeQuery("/expression/ternary");
 
 export default define(class Ternary {
   constructor(string, expression, ifExpression, elseExpression) {
@@ -66,41 +60,4 @@ export default define(class Ternary {
   }
 
   static name = "Ternary";
-
-  static fromExpressionNode(expressionNode, context) {
-    let ternary = null;
-
-    const expressionTernaryNode = expressionTernaryNodeQuery(expressionNode);
-
-    if (expressionTernaryNode !== null) {
-      const ternaryNode = expressionTernaryNode; ///
-
-      ternary = ternaryFromTernaryNode(ternaryNode, context);
-    }
-
-    return ternary;
-  }
 });
-
-function ternaryFromTernaryNode(ternaryNode, context) {
-  const { Expression, Ternary } = elements,
-        ifExpressionNode = ifExpressionNodeQuery(ternaryNode),
-        elseExpressionNode = elseExpressionNodeQuery(ternaryNode),
-        expression = Expression.fromTernaryNode(ternaryNode, context),
-        ifExpression = Expression.fromExpressionNode(ifExpressionNode, context),
-        elseExpression = Expression.fromExpressionNode(elseExpressionNode, context),
-        ternaryString = ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context),
-        string = ternaryString, ///
-        ternary = new Ternary(string, expression, ifExpression, elseExpression);
-
-  return ternary;
-}
-
-function ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
-  const expressionString = expression.asString(context),
-        ifExpressionString = ifExpression.asString(context),
-        elseExpressionString = elseExpression.asString(context),
-        ternaryString = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
-
-  return ternaryString;
-}

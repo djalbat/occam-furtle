@@ -1,21 +1,14 @@
 "use strict";
 
-import { Query } from "occam-query";
 import { arrayUtilities } from "necessary";
-import { contentUtilities } from "occam-entities";
 
 import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { NODE_TYPE } from "../../types";
-import { nodeQuery } from "../../utilities/query";
 
-const { first } = arrayUtilities,
-      { trimDoubleQuotes } = contentUtilities;
-
-const expressionNodeQueryNodeQuery = nodeQuery("/expression/nodeQuery"),
-      stringLiteralTerminalNodeQuery = nodeQuery("/nodeQuery/@string-literal");
+const { first } = arrayUtilities;
 
 export default define(class NodeQuery {
   constructor(string, variable, query) {
@@ -100,38 +93,4 @@ export default define(class NodeQuery {
   }
 
   static name = "NodeQuery";
-
-  static fromExpressionNode(expressionNode, context) {
-    let nodeQuery = null;
-
-    const expressionNodeQueryNode = expressionNodeQueryNodeQuery(expressionNode);
-
-    if (expressionNodeQueryNode !== null) {
-      const nodeQueryNode = expressionNodeQueryNode; ///
-
-      nodeQuery = nodeQueryFromNodeQueryNode(nodeQueryNode, context);
-    }
-
-    return nodeQuery;
-  }
 });
-
-function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
-  const { Variable, NodeQuery } = elements,
-        node = nodeQueryNode, ///
-        string = context.nodeAsString(node),
-        expressionString = expressionStringFromNodeQueryNode(nodeQueryNode, context),
-        variable = Variable.fromNodeQueryNode(nodeQueryNode, context),
-        query = Query.fromExpressionString(expressionString),
-        nodeQuery = new NodeQuery(string, variable, query);
-
-  return nodeQuery;
-}
-
-function expressionStringFromNodeQueryNode(nodeQueryNode, context) {
-  const stringLiteralTerminalNode = stringLiteralTerminalNodeQuery(nodeQueryNode),
-        stringLiteralTerminalNodeContent = stringLiteralTerminalNode.getContent(),
-        expressionString = trimDoubleQuotes(stringLiteralTerminalNodeContent);
-
-  return expressionString;
-}
