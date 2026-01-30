@@ -81,34 +81,4 @@ export default define(class Some {
   }
 
   static name = "Some";
-
-  static fromExpressionNode(expressionNode, context) {
-    let some = null;
-
-    const someNode = expressionNode.getSomeNode();
-
-    if (someNode !== null) {
-      some = someFromSomeNode(someNode, context);
-    }
-
-    return some;
-  }
 });
-
-function someFromSomeNode(someNode, context) {
-  const { Some, Variable, AnonymousProcedure } = elements,
-        anonymousProcedure = AnonymousProcedure.fromSomeNode(someNode, context),
-        variable = Variable.fromSomeNode(someNode, context),
-        string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context),
-        some = new Some(string, variable, anonymousProcedure);
-
-  return some;
-}
-
-function stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
-  const variableString = variable.getString(),
-        anonymousProcedureString = anonymousProcedure.getString(),
-        string = `Some(${variableString}, ${anonymousProcedureString}) `;
-
-  return string;
-}

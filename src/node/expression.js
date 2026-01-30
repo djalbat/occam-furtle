@@ -5,13 +5,13 @@ import NonTerminalNode from "../nonTerminalNode";
 
 import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
 import { NUMBER_TOKEN_TYPE, PRIMITIVE_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
-import { SOME_RULE_NAME, LOGICAL_EXPRESSION_RULE_NAME, BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
+import { SOME_RULE_NAME, EVERY_RULE_NAME, LOGICAL_EXPRESSION_RULE_NAME, BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
   getNode() {
     let node = null;
 
-    const type = PRIMITIVE_TOKEN_TYPE;
+    const tokenType = PRIMITIVE_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
@@ -21,7 +21,7 @@ export default class ExpressionNode extends NonTerminalNode {
 
         return true;
       }
-    }, type);
+    }, tokenType);
 
     return node;
   }
@@ -29,7 +29,7 @@ export default class ExpressionNode extends NonTerminalNode {
   getString() {
     let string = null;
 
-    const type = STRING_LITERAL_TOKEN_TYPE;
+    const tokenType = STRING_LITERAL_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent(),
@@ -38,7 +38,7 @@ export default class ExpressionNode extends NonTerminalNode {
       string = stringFromStringLiteral(stringLiteral);
 
       return true;
-    }, type);
+    }, tokenType);
 
     return string;
   }
@@ -46,7 +46,7 @@ export default class ExpressionNode extends NonTerminalNode {
   getNumber() {
     let number = null;
 
-    const type = NUMBER_TOKEN_TYPE; ///
+    const tokenType = NUMBER_TOKEN_TYPE; ///
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
@@ -56,7 +56,7 @@ export default class ExpressionNode extends NonTerminalNode {
 
         return true;
       }
-    }, type);
+    }, tokenType);
 
     return number;
   }
@@ -64,7 +64,7 @@ export default class ExpressionNode extends NonTerminalNode {
   getBoolean() {
     let boolean = null;
 
-    const type = PRIMITIVE_TOKEN_TYPE;
+    const tokenType = PRIMITIVE_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
@@ -80,7 +80,7 @@ export default class ExpressionNode extends NonTerminalNode {
 
         return true;
       }
-    }, type);
+    }, tokenType);
 
     return boolean;
   }
@@ -90,6 +90,13 @@ export default class ExpressionNode extends NonTerminalNode {
           someNode = this.getNodeByRuleName(ruleName);
 
     return someNode;
+  }
+
+  getEveryNode() {
+    const ruleName = EVERY_RULE_NAME,
+          everyNode = this.getNodeByRuleName(ruleName);
+
+    return everyNode;
   }
 
   getLogicalExpressionNode() {

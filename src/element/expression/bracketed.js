@@ -1,9 +1,6 @@
 "use strict";
 
-import elements from "../../elements";
-
 import { define } from "../../elements";
-import { bracketedExpressionStringFromBExpression } from "../../utilities/string";
 
 export default define(class BracketedExpression {
   constructor(string, expression) {
@@ -36,28 +33,4 @@ export default define(class BracketedExpression {
   }
 
   static name = "BracketedExpression";
-
-  static fromExpressionNode(expressionNode, context) {
-    let bracketedExpression = null;
-
-    const bracketedExpressionNode = expressionNode.getBracketedExpressionNode();
-
-    if (bracketedExpressionNode !== null) {
-      bracketedExpression = bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context);
-    }
-
-    return bracketedExpression;
-  }
 });
-
-function bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
-  const { Expression, BracketedExpression } = elements,
-        expressionNode = bracketedExpressionNode.getExpressionNode(),
-        expression = Expression.fromExpressionNode(expressionNode, context),
-        bracketedExpressionString = bracketedExpressionStringFromBExpression(expression, context),
-        string = bracketedExpressionString, ///
-        bracketedExpression = new BracketedExpression(string, expression);
-
-  return bracketedExpression;
-}
-

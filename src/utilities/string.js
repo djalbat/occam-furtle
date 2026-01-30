@@ -1,6 +1,48 @@
 "use strict";
 
-import {CONJUNCTION_OPERATOR, DISJUNCTION_OPERATOR} from "../constants";
+import { EMPTY_STRING, UNDERSCORE, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
+
+export function stepStringFromNothing(context) {
+  const stepString = EMPTY_STRING;
+
+  return stepString;
+}
+
+export function variableStringFromName(name, context) {
+  const nameString = name,  ///
+        string = nameString;  ///
+
+  return string;
+}
+
+export function parameterStringFromTypeAndName(type, name) {
+  const parameterString = `${type} ${name}`;
+
+  return parameterString;
+}
+
+export function returnBlockStringFromExpression(expression, context) {
+  const expressionString = expression.asString(context),
+        returnBlockString = `Return ${expressionString};`;
+
+  return returnBlockString;
+}
+
+export function paramtersStringFromParametersArray(array) {
+  const parametersString = array.reduce((parametersString, parameter) => {
+    const parameterString = (parameter !== null)?
+                               parameter.getString() :
+                                 UNDERSCORE;
+
+    parametersString = (parametersString === null) ?
+                         parameterString :
+                          `${parametersString}, ${parameterString}`;
+
+    return parametersString;
+  }, null);
+
+  return parametersString;
+}
 
 export function procedureDeclarationStringFromProcedure(procedure) {
   const procedureString = procedure.getString(),
@@ -14,6 +56,29 @@ export function bracketedExpressionStringFromBExpression(expression, context) {
         bracketedExpressionString = `(${expressionString})`;
 
   return bracketedExpressionString;
+}
+
+export function returnBlockStringFromReturnStatementNode(returnStatement, context) {
+  const returnStatementString = returnStatement.getString(),
+        returnBlockString = `{ ... ${returnStatementString} }`;
+
+  return returnBlockString;
+}
+
+export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+  const variableString = variable.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        someString = `Some(${variableString}, ${anonymousProcedureString}) `;
+
+  return someString;
+}
+
+export function everyStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+  const variableString = variable.getString(),
+        anonymousProcedureString = anonymousProcedure.getString(),
+        everyString = `Every(${variableString}, ${anonymousProcedureString}) `;
+
+  return everyString;
 }
 
 export function arrayAssignmentStringFromVariableAndParameters(variable, parameters) {
@@ -53,6 +118,15 @@ export function varaibleAssignmentsStringFromVariableAssignmentsArray(variableAs
         string = variableAssignmentsString; ///
 
   return string;
+}
+
+export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock, context) {
+  const typeString = type,  ///
+        parametersString = parameters.getString(),
+        returnBlockString = returnBlock.getString(),
+        anonymousProcedureString = `${typeString} (${parametersString}) ${returnBlockString}`;
+
+  return anonymousProcedureString;
 }
 
 export function logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {

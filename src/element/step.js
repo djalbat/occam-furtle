@@ -3,7 +3,7 @@
 import elements from "../elements";
 
 import { define } from "../elements";
-import { EMPTY_STRING } from "../constants";
+import { stepStringFromNothing } from "../utilities/string";
 import { arrayAssignmentFromStepNode, objectAssignmentFromStepNode, variableAssignmentsFromStepNode } from "../utilities/element";
 
 export default define(class Step {
@@ -50,20 +50,3 @@ export default define(class Step {
     return step;
   }
 });
-
-function stepFromStepNode(stepNode, context) {
-  const { Step } = elements,
-        string = stringFromNothing(context),
-        arrayAssignment = arrayAssignmentFromStepNode(stepNode, context),
-        objectAssigment = objectAssignmentFromStepNode(stepNode, context),
-        variablesDeclaration = variableAssignmentsFromStepNode(stepNode, context),
-        step = new Step(string, arrayAssignment, objectAssigment, variablesDeclaration);
-
-  return step;
-}
-
-function stringFromNothing(context) {
-  const string = EMPTY_STRING;
-
-  return string;
-}

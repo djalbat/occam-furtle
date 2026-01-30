@@ -7,7 +7,7 @@ import { NonTerminalNode as NonTerminalNodeBase } from "occam-parsers";
 const { first } = arrayUtilities;
 
 export default class NonTerminalNode extends NonTerminalNodeBase {
-  someTerminalNode(callback, type) {
+  someTerminalNode(callback, tokenType) {
     return this.someChildNode((childNode, index) => {
       const childNodeTerminalNode = childNode.isTerminalNode();
 
@@ -15,7 +15,7 @@ export default class NonTerminalNode extends NonTerminalNodeBase {
         const terminalNode = childNode, ///
               terminalNodeType = terminalNode.getType();
 
-        if (terminalNodeType === type) {
+        if (terminalNodeType === tokenType) {
           return callback(terminalNode, index);
         }
       }

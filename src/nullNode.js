@@ -11,4 +11,3 @@ class NullNode {
 const nullNode = NullNode.fromNothing();
 
 export default nullNode;
-

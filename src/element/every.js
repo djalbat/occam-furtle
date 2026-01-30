@@ -4,10 +4,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-
-const expressionEveryNodeQuery = nodeQuery("/expression/every");
 
 export default define(class Every {
   constructor(string, variable, anonymousProcedure) {
@@ -88,32 +85,12 @@ export default define(class Every {
   static fromExpressionNode(expressionNode, context) {
     let every = null;
 
-    const expressionEveryNode = expressionEveryNodeQuery(expressionNode);
+    const everyNode = expressionNode.getEveryNode();
 
-    if (expressionEveryNode !== null) {
-      const everyNode = expressionEveryNode; ///
-
+    if (everyNode !== null) {
       every = everyFromEveryNode(everyNode, context);
     }
 
     return every;
   }
 });
-
-function everyFromEveryNode(everyNode, context) {
-  const { Every, Variable, AnonymousProcedure } = elements,
-        anonymousProcedure = AnonymousProcedure.fromEveryNode(everyNode, context),
-        variable = Variable.fromEveryNode(everyNode, context),
-        string = stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context),
-        every = new Every(string, variable, anonymousProcedure);
-
-  return every;
-}
-
-function stringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
-  const variableString = variable.getString(),
-        anonymousProcedureString = anonymousProcedure.getString(),
-        string = `Every(${variableString}, ${anonymousProcedureString}) `;
-
-  return string;
-}

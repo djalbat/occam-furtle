@@ -1,16 +1,8 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { UNDERSCORE } from "../constants";
-import { nodeQuery, nodesQuery } from "../utilities/query";
-
-const parameterNodesQuery = nodesQuery("/parameters/parameter"),
-      arrayAssignmentParametersNodeQuery = nodeQuery("/arrayAssignment/parameters"),
-      anonymousProcedureParametersNodeQuery = nodeQuery("/anonymousProcedure/parameters"),
-      procedureDeclarationParametersNodeQuery = nodeQuery("/procedureDeclaration/parameters");
 
 export default define(class Parameters {
   constructor(string, array) {
@@ -68,66 +60,4 @@ export default define(class Parameters {
   }
 
   static name = "Parameters";
-
-  static fromArrayAssignmentNode(arrayAssignmentNode, context) {
-    const arrayAssignmentParametersNode = arrayAssignmentParametersNodeQuery(arrayAssignmentNode),
-          parametersNode = arrayAssignmentParametersNode,  ///
-          parameters = parametersFromParametersNode(parametersNode, context);
-
-    return parameters;
-  }
-
-  static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
-    const anonymousProcedureParametersNode = anonymousProcedureParametersNodeQuery(anonymousProcedureNode),
-          parametersNode = anonymousProcedureParametersNode,  ///
-          parameters = parametersFromParametersNode(parametersNode, context);
-
-    return parameters;
-  }
-
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const procedureDeclarationParametersNode = procedureDeclarationParametersNodeQuery(procedureDeclarationNode),
-          parametersNode = procedureDeclarationParametersNode,  ///
-          parameters = parametersFromParametersNode(parametersNode, context);
-
-    return parameters;
-  }
 });
-
-function parametersFromParametersNode(parametersNode, context) {
-  const { Parameters } = elements,
-        array = arrayFromParametersNode(parametersNode, context),
-        string = stringFromArray(array, context),
-        parameters = new Parameters(string, array);
-
-  return parameters;
-}
-
-function arrayFromParametersNode(parametersNode, context) {
-  const parameterNodes = parameterNodesQuery(parametersNode),
-        array = parameterNodes.map((parameterNode) => { ///
-          const { Parameter } = elements,
-                parameter = Parameter.fromParameterNode(parameterNode, context);
-
-          return parameter;
-        });
-
-  return array;
-}
-
-function stringFromArray(array, context) {
-  const parametersString = array.reduce((parametersString, parameter) => {
-          const parameterString = (parameter !== null)?
-                                    parameter.getString() :
-                                      UNDERSCORE;
-
-          parametersString = (parametersString === null) ?
-                               parameterString :
-                                `${parametersString}, ${parameterString}`;
-
-          return parametersString;
-        }, null),
-        string = parametersString;  ///
-
-  return string;
-}

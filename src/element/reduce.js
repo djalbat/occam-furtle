@@ -100,7 +100,7 @@ function reduceFromReduceNode(reduceNode, context) {
         expression = Expression.fromReduceNode(reduceNode, context),
         variable = Variable.fromReduceNode(reduceNode, context),
         initialExpression = expression, ///
-        anonymousProcedure = AnonymousProcedure.fromReduceNode(reduceNode, context),
+        anonymousProcedure = anonymousProcedureFromReduceNode(reduceNode, context),
         string = stringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure),
         reduce = new Reduce(string, variable, initialExpression, anonymousProcedure);
 

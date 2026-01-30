@@ -2,24 +2,18 @@
 
 import { arrayUtilities } from "necessary";
 
-import elements from "../elements";
 import nullNode from "../nullNode";
 
 import { NULL } from "../constants";
 import { define } from "../elements";
 import { nodeQuery } from "../utilities/query";
+import { expressionFromExpressionNode } from "../utilities/element";
 import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
-import { nodeFromExpressionNode,
-         nodesFromExpressionNode,
-         stringFromExpressionNode,
-         numberFromExpressionNode,
-         booleanFromExpressionNode } from "../utilities/element";
 
 const { match } = arrayUtilities;
 
 const reduceExpressionNodeQuery = nodeQuery("/reduce/expression"),
       ternaryExpressionNodeQuery = nodeQuery("/ternary/expression"),
-      returnStatementExpressionNodeQuery = nodeQuery("/returnStatement/expression"),
       variableAssignmentExpressionNodeQuery = nodeQuery("/variableAssignment/expression");
 
 export default define(class Expression {
@@ -418,14 +412,6 @@ export default define(class Expression {
     return expression;
   }
 
-  static fromReturnStatementNode(returnStatementNode, context) {
-    const returnStatementExpressionNode = returnStatementExpressionNodeQuery(returnStatementNode),
-          expressionNode = returnStatementExpressionNode, ///
-          expression = expressionFromExpressionNode(expressionNode, context);
-
-    return expression;
-  }
-
   static fromVariableAssignmentNode(variableAssigmentNode, context) {
     const variableAssignmentExpressionNode = variableAssignmentExpressionNodeQuery(variableAssigmentNode),
           expressionNode = variableAssignmentExpressionNode,  ///
@@ -505,29 +491,4 @@ function booleanAsString(boolean) {
   string = `'${boolean}'`;
 
   return string;
-}
-
-function expressionFromExpressionNode(expressionNode, context) {
-  const { Some, Every, Reduce, Expression, Ternary, Variable, NodeQuery, NodesQuery, Comparison, ReturnBlock, ProcedureCall, NegatedExpression, LogicalExpression, BracketedExpression } = elements,
-        node = nodeFromExpressionNode(expressionNode, context),
-        nodes = nodesFromExpressionNode(expressionNode, context),
-        number = numberFromExpressionNode(expressionNode, context),
-        string = stringFromExpressionNode(expressionNode, context),
-        boolean = booleanFromExpressionNode(expressionNode, context),
-        some = Some.fromExpressionNode(expressionNode, context),
-        every = Every.fromExpressionNode(expressionNode, context),
-        reduce = Reduce.fromExpressionNode(expressionNode, context),
-        ternary = Ternary.fromExpressionNode(expressionNode, context),
-        variable = Variable.fromExpressionNode(expressionNode, context),
-        nodeQuery = NodeQuery.fromExpressionNode(expressionNode, context),
-        nodesQuery = NodesQuery.fromExpressionNode(expressionNode, context),
-        comparison = Comparison.fromExpressionNode(expressionNode, context),
-        returnBlock = ReturnBlock.fromExpressionNode(expressionNode, context),
-        procedureCall = ProcedureCall.fromExpressionNode(expressionNode, context),
-        negatedExpression = NegatedExpression.fromExpressionNode(expressionNode, context),
-        logicalExpression = LogicalExpression.fromExpressionNode(expressionNode, context),
-        bracketedExpression = BracketedExpression.fromExpressionNode(expressionNode, context),
-        expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-  return expression;
 }

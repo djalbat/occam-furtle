@@ -1,16 +1,13 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 import BlockContext from "../context/block";
 
 import { define } from "../elements";
-import { nodeQuery, nodesQuery } from "../utilities/query";
+import { nodeQuery } from "../utilities/query";
+import { returnBlockFromReturnBlockNode } from "../utilities/element";
 
-const stepNodesQuery = nodesQuery("/returnBlock/step"),
-      nonsenseNodesQuery = nodesQuery("/returnBlock/nonsense"),
-      expressionReturnBlockNodeQuery = nodeQuery("/expression/returnBlock"),
-      anonymousProcedureReturnBlockNodeQuery = nodeQuery("/anonymousProcedure/returnBlock"),
+const expressionReturnBlockNodeQuery = nodeQuery("/expression/returnBlock"),
       procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
 
 export default define(class ReturnBlock {
@@ -80,14 +77,6 @@ export default define(class ReturnBlock {
     return returnBlock;
   }
 
-  static fromAnonymousProcedureNode(anonymousProcedureNode, context) {
-    const anonymousProcedureReturnBlockNode = anonymousProcedureReturnBlockNodeQuery(anonymousProcedureNode),
-          returnBlockNode = anonymousProcedureReturnBlockNode,  ///
-          returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
-
-    return returnBlock;
-  }
-
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const procedureDeclarationReturnBlockNode = procedureDeclarationReturnBlockNodeQuery(procedureDeclarationNode),
           returnBlockNode = procedureDeclarationReturnBlockNode,  ///
@@ -96,41 +85,3 @@ export default define(class ReturnBlock {
     return returnBlock;
   }
 });
-
-function stringFromReturnStatement(returnStatement, context) {
-  const returnStatementString = returnStatement.getString(),
-        string = `{ ... ${returnStatementString} }`;
-
-  return string;
-}
-
-function stepsFromReturnBlockNode(returnBlockNode, context) {
-  const { Step } = elements,
-        stepNodes = stepNodesQuery(returnBlockNode),
-        steps = stepNodes.map((stepNode) => {
-          const step = Step.fromStepNode(stepNode, context);
-
-          return step;
-        });
-
-  return steps;
-}
-
-function returnBlockFromReturnBlockNode(returnBlockNode, context) {
-  const { ReturnBlock, ReturnStatement } = elements,
-        returnStatement = ReturnStatement.fromReturnBlockNode(returnBlockNode, context),
-        nonsensical = nonsensicalFromReturnBlockNode(returnBlockNode, context),
-        steps = stepsFromReturnBlockNode(returnBlockNode, context),
-        string = stringFromReturnStatement(returnStatement, context),
-        returnBlock = new ReturnBlock(string, steps, nonsensical, returnStatement);
-
-  return returnBlock;
-}
-
-function nonsensicalFromReturnBlockNode(returnBlockNode, context) {
-  const nonsenseNodes = nonsenseNodesQuery(returnBlockNode),
-        nonsenseNodesLength = nonsenseNodes.length,
-        nonsensical = (nonsenseNodesLength > 0);
-
-  return nonsensical;
-}

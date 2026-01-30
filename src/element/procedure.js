@@ -6,6 +6,7 @@ import Exception from "../exception";
 import { define } from "../elements";
 import { nodeQuery } from "../utilities/query";
 import { BOOLEAN_TYPE } from "../types";
+import { parametersFromProcedureDeclarationNode } from "../utilities/element";
 
 const typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
 
@@ -100,9 +101,9 @@ export function variablesFromExpressionsAndParameters(expressions, parameters, c
 }
 
 function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Label, ReturnBlock, Parameters, Procedure } = elements,
+  const { Label, ReturnBlock, Procedure } = elements,
         returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-        parameters = Parameters.fromProcedureDeclarationNode(procedureDeclarationNode, context),
+        parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
         label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
         type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
         string = stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),

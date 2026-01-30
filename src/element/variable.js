@@ -1,18 +1,16 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { nodeQuery } from "../utilities/query";
+import { variableStringFromName } from "../utilities/string";
+import { variableFromVariableNode, variableFromTypeAndVariableNode } from "../utilities/element";
 
-const someVariableNodeQuery = nodeQuery("/some/variable"),
-      everyVariableNodeQuery = nodeQuery("/every/variable"),
-      reduceVariableNodeQuery = nodeQuery("/reduce/variable"),
+const reduceVariableNodeQuery = nodeQuery("/reduce/variable"),
       nodeQueryVariableNodeQuery = nodeQuery("/nodeQuery/variable"),
       expressionVariableNodeQuery = nodeQuery("/expression/variable"),
       nodesQueryVariableNodeQuery = nodeQuery("/nodesQuery/variable"),
-      variableNameTerminalNodeQuery = nodeQuery("/variable/@name"),
       arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
       objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
       variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
@@ -109,27 +107,12 @@ export default define(class Variable {
 
   static name = "Variable";
 
-  static fromSomeNode(someNode, context) {
-    const someVariableNode = someVariableNodeQuery(someNode),
-          variableNode = someVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromEveryNode(everyNode, context) {
-    const everyVariableNode = everyVariableNodeQuery(everyNode),
-          variableNode = everyVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
           expression = null,
-          string = stringFromName(name, context),
+          variableString = variableStringFromName(name, context),
+          string = variableString,  ///
           variable = new Variable(string, type, name, expression);
 
     return variable;
@@ -166,7 +149,8 @@ export default define(class Variable {
                    asName : ///
                      namedParameter.getName(),
           expression = null,
-          string = stringFromName(name, context),
+          variableString = variableStringFromName(name, context),
+          string = variableString,  ///
           variable = new Variable(string, type, name, expression);
 
     return variable;
@@ -204,9 +188,10 @@ export default define(class Variable {
 
   static fromExpressionAndParameter(expression, parameter, context) {
     const type = parameter.getType(),
-      name = parameter.getName(),
-      string = stringFromName(name, context),
-      variable = new Variable(string, type, name, expression);
+          name = parameter.getName(),
+          variableString = variableStringFromName(name, context),
+          string = variableString,  ///
+          variable = new Variable(string, type, name, expression);
 
     return variable;
   }
@@ -219,39 +204,3 @@ export default define(class Variable {
     return variable;
   }
 });
-
-function variableFromTypeAndVariableNode(type, variableNode, context) {
-  const { Variable } = elements,
-        name = nameFromVariableNode(variableNode),
-        expression = null,
-        string = stringFromName(name, context),
-        variable = new Variable(string, type, name, expression);
-
-  return variable;
-}
-
-function variableFromVariableNode(variableNode, context) {
-  const { Variable } = elements,
-        type = null,
-        name = nameFromVariableNode(variableNode),
-        expression = null,
-        string = stringFromName(name, context),
-        variable = new Variable(string, type, name, expression);
-
-  return variable;
-}
-
-function nameFromVariableNode(variableNode) {
-  const variableNameTerminalNode = variableNameTerminalNodeQuery(variableNode),
-        variableNameTerminalNodeContent = variableNameTerminalNode.getContent(),
-        name = variableNameTerminalNodeContent; ///
-
-  return name;
-}
-
-function stringFromName(name, context) {
-  const nameString = name,  ///
-        string = nameString;  ///
-
-  return string;
-}

@@ -1,11 +1,6 @@
 "use strict";
 
-import elements from "../../elements";
-
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
-
-const returnBlockReturnStatementNodeQuery = nodeQuery("/returnBlock/returnStatement");
 
 export default define(class ReturnStatement {
   constructor(string, expression) {
@@ -36,28 +31,4 @@ export default define(class ReturnStatement {
   }
 
   static name = "ReturnStatement";
-
-  static fromReturnBlockNode(returnBlockNode, context) {
-    const returnBlockReturnStatementNode = returnBlockReturnStatementNodeQuery(returnBlockNode),
-          returnStatementNode = returnBlockReturnStatementNode, ///
-          returnStatement = returnStatementFromReturnStatementNode(returnStatementNode, context);
-
-    return returnStatement;
-  }
 });
-
-function returnStatementFromReturnStatementNode(returnStatementNode, context) {
-  const { Expression, ReturnStatement } = elements,
-        expression = Expression.fromReturnStatementNode(returnStatementNode, context),
-        string = stringFromExpression(expression, context),
-        returnStatement = new ReturnStatement(string, expression);
-
-  return returnStatement;
-}
-
-function stringFromExpression(expression, context) {
-  const expressionString = expression.asString(context),
-        string = `Return ${expressionString};`;
-
-  return string;
-}
