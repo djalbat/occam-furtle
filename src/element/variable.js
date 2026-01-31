@@ -3,13 +3,6 @@
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
-import { variableStringFromName } from "../utilities/string";
-import { variableFromVariableNode, variableFromTypeAndVariableNode } from "../utilities/element";
-
-const arrayAssignmentVariableNodeQuery = nodeQuery("/arrayAssignment/variable"),
-      objectAssignmentVariableNodeQuery = nodeQuery("/objectAssignment/variable"),
-      variableAssignmentVariableNodeQuery = nodeQuery("/variableAssignment/variable");
 
 export default define(class Variable {
   constructor(string, type, name, expression) {
@@ -102,63 +95,4 @@ export default define(class Variable {
   }
 
   static name = "Variable";
-
-  static fromParameter(parameter, context) {
-    const type = parameter.getType(),
-          name = parameter.getName(),
-          expression = null,
-          variableString = variableStringFromName(name, context),
-          string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
-
-    return variable;
-  }
-
-  static fromNamedParameter(namedParameter, context) {
-    const asName = namedParameter.getAsName(),
-          type = namedParameter.getType(),
-          name = (asName !== null) ?
-                   asName : ///
-                     namedParameter.getName(),
-          expression = null,
-          variableString = variableStringFromName(name, context),
-          string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
-
-    return variable;
-  }
-
-  static fromArrayAssignmentNode(arrayAssignmentNode, context) {
-    const arrayAssignmentVariableNode = arrayAssignmentVariableNodeQuery(arrayAssignmentNode),
-          variableNode = arrayAssignmentVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromObjectAssignmentNode(objectAssignmentNode, context) {
-    const objectAssignmentVariableNode = objectAssignmentVariableNodeQuery(objectAssignmentNode),
-          variableNode = objectAssignmentVariableNode, ///
-          variable = variableFromVariableNode(variableNode, context);
-
-    return variable;
-  }
-
-  static fromExpressionAndParameter(expression, parameter, context) {
-    const type = parameter.getType(),
-          name = parameter.getName(),
-          variableString = variableStringFromName(name, context),
-          string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
-
-    return variable;
-  }
-
-  static fromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-    const variableAssignmentVariableNode = variableAssignmentVariableNodeQuery(variableAssignmentNode),
-          variableNode = variableAssignmentVariableNode,  ///
-          variable = variableFromTypeAndVariableNode(type, variableNode, context);
-
-    return variable;
-  }
 });

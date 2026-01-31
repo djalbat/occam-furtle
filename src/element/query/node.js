@@ -2,11 +2,11 @@
 
 import { arrayUtilities } from "necessary";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { NODE_TYPE } from "../../types";
+import { expressionFromNode } from "../../utilities/element";
 
 const { first } = arrayUtilities;
 
@@ -83,9 +83,7 @@ export default define(class NodeQuery {
 
     node = firstNode; ///
 
-    const { Expression } = elements;
-
-    expression = Expression.fromNode(node, context);
+    expression = expressionFromNode(node, context);
 
     context.debug(`...evaluated the '${nodeQueryString}' node query.`);
 

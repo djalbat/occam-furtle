@@ -6,15 +6,9 @@ import nullNode from "../nullNode";
 
 import { NULL } from "../constants";
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
-import { expressionFromExpressionNode } from "../utilities/element";
 import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const { match } = arrayUtilities;
-
-const reduceExpressionNodeQuery = nodeQuery("/reduce/expression"),
-      ternaryExpressionNodeQuery = nodeQuery("/ternary/expression"),
-      variableAssignmentExpressionNodeQuery = nodeQuery("/variableAssignment/expression");
 
 export default define(class Expression {
   constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
@@ -293,116 +287,6 @@ export default define(class Expression {
   }
 
   static name = "Expression";
-
-  static fromNode(node, context) {
-    if (node === null) {
-      node = nullNode;
-    }
-
-    const nodes = null,
-          number = null,
-          string = null,
-          boolean = null,
-          some = null,
-          every = null,
-          reduce = null,
-          ternary = null,
-          variable = null,
-          nodeQuery = null,
-          nodesQuery = null,
-          comparison = null,
-          returnBlock = null,
-          procedureCall = null,
-          negatedExpression = null,
-          logicalExpression = null,
-          bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-    return expression;
-  }
-
-  static fromNodes(nodes, context) {
-    const node = null,
-          number = null,
-          string = null,
-          boolean = null,
-          ternary = null,
-          some = null,
-          every = null,
-          reduce = null,
-          variable = null,
-          nodeQuery = null,
-          nodesQuery = null,
-          comparison = null,
-          returnBlock = null,
-          procedureCall = null,
-          negatedExpression = null,
-          logicalExpression = null,
-          bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-    return expression;
-  }
-
-  static fromString(string, context) {
-    const node = null,
-          nodes = null,
-          number = null,
-          boolean = null,
-          some = null,
-          every = null,
-          reduce = null,
-          ternary = null,
-          variable = null,
-          nodeQuery = null,
-          nodesQuery = null,
-          comparison = null,
-          returnBlock = null,
-          procedureCall = null,
-          negatedExpression = null,
-          logicalExpression = null,
-          bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-    return expression;
-  }
-
-  static fromBoolean(boolean, context) {
-    const node = null,
-          nodes = null,
-          number = null,
-          string = null,
-          some = null,
-          every = null,
-          reduce = null,
-          ternary = null,
-          variable = null,
-          nodeQuery = null,
-          nodesQuery = null,
-          comparison = null,
-          returnBlock = null,
-          procedureCall = null,
-          negatedExpression = null,
-          logicalExpression = null,
-          bracketedExpression = null,
-          expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-    return expression;
-  }
-
-  static fromExpressionNode(expressionNode, context) {
-    const expression = expressionFromExpressionNode(expressionNode, context);
-
-    return expression;
-  }
-
-  static fromVariableAssignmentNode(variableAssigmentNode, context) {
-    const variableAssignmentExpressionNode = variableAssignmentExpressionNodeQuery(variableAssigmentNode),
-          expressionNode = variableAssignmentExpressionNode,  ///
-          expression = expressionFromExpressionNode(expressionNode, context);
-
-    return expression;
-  }
 });
 
 function matchNode(nodeA, nodeB) {

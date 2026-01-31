@@ -1,14 +1,10 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
 import { BOOLEAN_TYPE } from "../types";
-import { parametersFromProcedureDeclarationNode } from "../utilities/element";
-
-const typeTerminalNodeQuery = nodeQuery("/procedureDeclaration/@type");
+import { variableFromExpressionAndParameter } from "../utilities/element";
 
 export default define(class Procedure {
   constructor(string, type, label, parameters, returnBlock) {
@@ -75,57 +71,20 @@ export default define(class Procedure {
   }
 
   static name = "Procedure";
-
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const procedureDeclaration = procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context);
-
-    return procedureDeclaration;
-  }
 });
 
 export function variablesFromExpressionsAndParameters(expressions, parameters, context) {
   const variables = [];
 
   expressions.forEachExpression((expression, index) => {
-    const { Variable } = elements,
-          parameter = parameters.getParameter(index);
+    const parameter = parameters.getParameter(index);
 
     if (parameter !== null) {
-      const variable = Variable.fromExpressionAndParameter(expression, parameter, context);
+      const variable = variableFromExpressionAndParameter(expression, parameter, context);
 
       variables.push(variable);
     }
   });
 
   return variables;
-}
-
-function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Label, ReturnBlock, Procedure } = elements,
-        returnBlock = ReturnBlock.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-        parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        label = Label.fromProcedureDeclarationNode(procedureDeclarationNode, context),
-        type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        string = stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
-        procedureDeclaration = new Procedure(string, type, label, parameters, returnBlock);
-
-  return procedureDeclaration;
-}
-
-function stringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock) {
-  const typeString = type,  ///
-        labelString = label.getString(),
-        parametersString = parameters.getString(),
-        returnBlockString = returnBlock.getString(),
-        string = `${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
-
-  return string;
-}
-
-function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(procedureDeclarationNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
-
-  return type;
 }

@@ -1,10 +1,6 @@
 "use strict";
 
-import elements from "../elements";
-
 import { define } from "../elements";
-import { stepStringFromNothing } from "../utilities/string";
-import { arrayAssignmentFromStepNode, objectAssignmentFromStepNode, variableAssignmentsFromStepNode } from "../utilities/element";
 
 export default define(class Step {
   constructor(string, arrayAssignment, objectAssigment, variablesDeclaration) {
@@ -43,10 +39,4 @@ export default define(class Step {
   }
 
   static name = "Step";
-
-  static fromStepNode(stepNode, context) {
-    const step = stepFromStepNode(stepNode, context);
-
-    return step;
-  }
 });

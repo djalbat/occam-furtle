@@ -7,22 +7,15 @@ import { VARIABLE_ASSIGNMENT_RULE_NAME } from "../../ruleNames";
 
 export default class VariableAssignmentsNode extends AssignmentsNode {
   getType() {
-    let type = null;
+    let type;
 
-    this.someChildNode((childNode, index) => {
-      const terminalNode = childNode, ///
-            terminalNodeType = terminalNode.getType();
+    const tokenType = TYPE_TOKEN_TYPE;
 
-      if (terminalNodeType === TYPE_TOKEN_TYPE) {
-        const content = terminalNode.getContent();
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
 
-        type = content;  ///
-      }
-
-      if (index === 0) {
-        return true;
-      }
-    });
+      type = content;  ///
+    }, tokenType);
 
     return type;
   }

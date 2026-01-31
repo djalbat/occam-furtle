@@ -4,10 +4,6 @@ import Exception from "../exception";
 import BlockContext from "../context/block";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
-import { returnBlockFromReturnBlockNode } from "../utilities/element";
-
-const procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
 
 export default define(class ReturnBlock {
   constructor(string, steps, nonsensical, returnStatement) {
@@ -61,12 +57,4 @@ export default define(class ReturnBlock {
   }
 
   static name = "ReturnBlock";
-
-  static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
-    const procedureDeclarationReturnBlockNode = procedureDeclarationReturnBlockNodeQuery(procedureDeclarationNode),
-          returnBlockNode = procedureDeclarationReturnBlockNode,  ///
-          returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
-
-    return returnBlock;
-  }
 });

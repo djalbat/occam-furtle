@@ -1,9 +1,10 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
+import { expressionFromNode } from "../../utilities/element";
+import { variableFromParameter } from "../../utilities/element";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment {
@@ -56,9 +57,8 @@ export default define(class ArrayAssigment {
 
     this.parameters.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const { Expression } = elements,
-              node = nodes[index],
-              expression = Expression.fromNode(node, context);
+        const node = nodes[index],
+              expression = expressionFromNode(node, context);
 
         this.evaluateParameter(parameter, expression, context);
       }
@@ -82,8 +82,7 @@ export default define(class ArrayAssigment {
       throw exception;
     }
 
-    const { Variable } = elements,
-          variable = Variable.fromParameter(parameter, context);
+    const variable = variableFromParameter(parameter, context);
 
     variable.assign(expression, context);
 

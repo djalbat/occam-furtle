@@ -2,9 +2,16 @@
 
 import AssignmentrNode from "../../node/assignment";
 
-import { PARAMETERS_RULE_NAME } from "../../ruleNames";
+import { VARIABLE_RULE_NAME, PARAMETERS_RULE_NAME } from "../../ruleNames";
 
 export default class ArrayAssignmentNode extends AssignmentrNode {
+  getVariableNode() {
+    const ruleName = VARIABLE_RULE_NAME,
+          variableNode = this.getNodeByRuleName(ruleName);
+
+    return variableNode;
+  }
+
   getParametersNode() {
     const ruleName = PARAMETERS_RULE_NAME,
           parametersNode = this.getNodeByRuleName(ruleName);

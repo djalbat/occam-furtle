@@ -1,14 +1,8 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery } from "../../utilities/query";
-
-const typeTerminalNodeQuery = nodeQuery("/namedParameter/@type"),
-      nameTerminalNodeQuery = nodeQuery("/namedParameter/@name[0]"),
-      asNameTerminalNodeQuery = nodeQuery("/namedParameter/@name[1]");
 
 export default define(class NamedParameter {
   constructor(string, type, name, asName) {
@@ -76,69 +70,4 @@ export default define(class NamedParameter {
   }
 
   static name = "NamedParameter";
-
-  static fromNamedParameterNode(namedParameterNode, context) {
-    const namedParameter = namedParameterFromNamedParameterNode(namedParameterNode, context);
-
-    return namedParameter;
-  }
 });
-
-function namedParameterFromNamedParameterNode(namedParameterNode, context) {
-  const { NamedParameter } = elements,
-        type = typeFromNamedParameterNode(namedParameterNode, context),
-        name = nameFromNamedParameterNode(namedParameterNode, context),
-        asName = asNameFromNamedParameterNode(namedParameterNode, context),
-        string = stringFromTypeNameAndAsName(type, name, asName, context),
-        namedParameter = new NamedParameter(string, type, name, asName);
-
-  return namedParameter;
-}
-
-function stringFromTypeNameAndAsName(type, name, asName, context) {
-  let string;
-
-  const typeString = type,  ///
-        nameString = name;  ///
-
-  string = `${typeString} ${nameString}`;
-
-  if (asName !== null) {
-    const asNameString = asName;  ///
-
-    string = `${string} As ${asNameString}`;
-  }
-
-  return string;
-}
-
-
-function typeFromNamedParameterNode(namedParameterNode, context) {
-  const typeTerminalNode = typeTerminalNodeQuery(namedParameterNode),
-        typeTerminalNodeContent = typeTerminalNode.getContent(),
-        type = typeTerminalNodeContent; ///
-
-  return type;
-}
-
-function nameFromNamedParameterNode(namedParameterNode, context) {
-  const nameTerminalNode = nameTerminalNodeQuery(namedParameterNode),
-        nameTerminalNodeContent = nameTerminalNode.getContent(),
-        name = nameTerminalNodeContent; ///
-
-  return name;
-}
-
-function asNameFromNamedParameterNode(namedParameterNode, context) {
-  let asName = null;
-
-  const asNameTerminalNode = asNameTerminalNodeQuery(namedParameterNode);
-
-  if (asNameTerminalNode !== null) {
-    const asNameTerminalNodeContent = asNameTerminalNode.getContent();
-
-    asName = asNameTerminalNodeContent; ///
-  }
-
-  return asName;
-}

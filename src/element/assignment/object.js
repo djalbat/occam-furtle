@@ -1,12 +1,12 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
 import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
+import { expressionFromNodes, expressionFromString, expressionFromBoolean, variableFromNamedParameter } from "../../utilities/element";
 
 export default define(class ObjectAssigment {
   constructor(string, variable, namedParameters) {
@@ -80,8 +80,7 @@ export default define(class ObjectAssigment {
       }
     }
 
-    const { Variable } = elements,
-          variable = Variable.fromNamedParameter(namedParameter, context);
+    const variable = variableFromNamedParameter(namedParameter, context);
 
     variable.assign(expression, context);
 
@@ -110,12 +109,11 @@ export default define(class ObjectAssigment {
       throw exception;
     }
 
-    const { Expression } = elements,
-          terminalNode = node,  ///
+    const terminalNode = node,  ///
           content = terminalNode.getContent(),
           string = content;  ///
 
-    expression = Expression.fromString(string, context);  ///
+    expression = expressionFromString(string, context);
 
     return expression;
   }
@@ -135,10 +133,9 @@ export default define(class ObjectAssigment {
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
-    const { Expression } = elements,
-          boolean = terminal; ///
+    const boolean = terminal; ///
 
-    expression = Expression.fromBoolean(boolean, context);  ///
+    expression = expressionFromBoolean(boolean, context);  ///
 
     return expression;
   }
@@ -165,12 +162,11 @@ export default define(class ObjectAssigment {
       throw exception;
     }
 
-    const { Expression } = elements,
-          nonTerminalNode = node,  ///
+    const nonTerminalNode = node,  ///
           childNodes = nonTerminalNode.getChildNodes(),
           nodes = childNodes;  ///
 
-    expression = Expression.fromNodes(nodes, context);  ///
+    expression = expressionFromNodes(nodes, context);
 
     return expression;
   }

@@ -14,3 +14,4 @@ export { default as queryUtilities } from "./utilities/query";
 export { default as lexersUtilities } from "./utilities/lexers";
 export { default as parsersUtilities } from "./utilities/parsers";
 export { default as contextUtilities } from "./utilities/context";
+export { default as elementUtilities } from "./utilities/element";

@@ -2,9 +2,7 @@
 
 import { nodeQuery } from "../utilities/query";
 
-import elements from "../elements";
-
-import { procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
+import { errorFromErrorNode, procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
 
 const nonTerminalNodeQuery = nodeQuery("/*");
 
@@ -114,8 +112,7 @@ class TopLevelPass extends Pass {
       run: (errorNode, context) => {
         let success = false;
 
-        const { Error } = elements,
-              error = Error.fromErrorNode(errorNode, context),
+        const error = errorFromErrorNode(errorNode, context),
               errorVerifies = error.verify(context);
 
         if (errorVerifies) {

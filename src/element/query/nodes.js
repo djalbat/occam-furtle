@@ -1,10 +1,10 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { NODE_TYPE } from "../../types";
+import { expressionFromNodes } from "../../utilities/element";
 
 export default define(class NodesQuery {
   constructor(string, variable, query) {
@@ -67,9 +67,7 @@ export default define(class NodesQuery {
 
     const nodes = this.query.execute(node);
 
-    const { Expression } = elements;
-
-    expression = Expression.fromNodes(nodes, context);
+    expression = expressionFromNodes(nodes, context);
 
     context.debug(`...evaluated the '${nodesQueryString}' nodes query.`);
 

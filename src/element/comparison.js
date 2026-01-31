@@ -1,9 +1,9 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { expressionFromBoolean } from "../utilities/element";
 
 export default define(class Comparison {
   constructor(string, negated, leftExpression, rightExpression) {
@@ -58,9 +58,7 @@ export default define(class Comparison {
       boolean = !boolean; ///
     }
 
-    const { Expression } = elements;
-
-    expression = Expression.fromBoolean(boolean, context);
+    expression = expressionFromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${comparisonString}' comparison.`);
 

@@ -1,13 +1,8 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { nodeQuery, nodesQuery } from "../../utilities/query";
-
-const namedParameterNodesQuery = nodesQuery("/namedParameters/namedParameter"),
-      objectAssignmentNamedParametersNodeQuery = nodeQuery("/objectAssignment/namedParameters");
 
 export default define(class NamedParameters {
   constructor(string, array) {
@@ -103,48 +98,4 @@ export default define(class NamedParameters {
   }
 
   static name = "NamedParameters";
-
-  static fromObjectAssignmentNode(objectAssignmentNode, context) {
-    const objectAssignmentNamedParametersNode = objectAssignmentNamedParametersNodeQuery(objectAssignmentNode),
-          namedParametersNode = objectAssignmentNamedParametersNode,  ///
-          namedParameters = namedParametersFromNamedParametersNode(namedParametersNode, context);
-
-    return namedParameters;
-  }
 });
-
-function namedParametersFromNamedParametersNode(namedParametersNode, context) {
-  const { NamedParameters } = elements,
-        namedParameterNodes = namedParameterNodesQuery(namedParametersNode),
-        array = arrayFromNamedParameterNodes(namedParameterNodes, context),
-        string = stringFromArray(array, context),
-        namedParameters = new NamedParameters(string, array);
-
-  return namedParameters;
-}
-
-function arrayFromNamedParameterNodes(namedParameterNodes, context) {
-  const { NamedParameter } = elements,
-        array = namedParameterNodes.map((namedParameterNode) => { ///
-          const namedParameter = NamedParameter.fromNamedParameterNode(namedParameterNode, context);
-
-          return namedParameter;
-        });
-
-  return array;
-}
-
-function stringFromArray(array, context) {
-  const namedParametersSString = array.reduce((namedParametersSString, namedParameter) => {
-          const namedParameterString = namedParameter.getString();
-
-          namedParametersSString = (namedParametersSString === null) ?
-                                     namedParameterString :
-                                      `${namedParametersSString}, ${namedParameterString}`;
-
-          return namedParametersSString;
-        }, null),
-        string = namedParametersSString;  ///
-
-  return string;
-}

@@ -5,6 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
+import { expressionFromNode, expressionFromBoolean } from "../utilities/element";
 
 export default define(class Every {
   constructor(string, variable, anonymousProcedure) {
@@ -48,9 +49,9 @@ export default define(class Every {
           boolean = nodes.every((node) => {
             let expression;
 
-            const { Expression, Expressions } = elements;
+            const { Expressions } = elements;
 
-            expression = Expression.fromNode(node, context);
+            expression = expressionFromNode(node, context);
 
             const expressions = Expressions.fromExpression(expression, context);
 
@@ -71,9 +72,7 @@ export default define(class Every {
             return boolean;
           });
 
-    const { Expression } = elements;
-
-    expression = Expression.fromBoolean(boolean, context);
+    expression = expressionFromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${everyString}' every.`);
 

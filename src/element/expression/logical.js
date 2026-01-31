@@ -5,6 +5,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
+import { expressionFromBoolean } from "../../utilities/element";
 
 export default define(class LogicalExpression {
   constructor(string, type, disjunction, leftExpression, rightExpression) {
@@ -70,7 +71,7 @@ export default define(class LogicalExpression {
                       (leftExpressionBoolean || rightExpressionBoolean) :
                         (leftExpressionBoolean && rightExpressionBoolean);
 
-    expression = Expression.fromBoolean(boolean, context);  ///
+    expression = expressionFromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${logicalExpressionString}' logical expression.`);
 

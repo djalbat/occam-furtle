@@ -2,6 +2,12 @@
 
 import { EQUAL_TO, UNDERSCORE, NOT_EQUAL_TO, EMPTY_STRING, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
 
+export function stringFromName(name, context) {
+  const string = name;  ///
+
+  return string;
+}
+
 export function stepStringFromNothing(context) {
   const stepString = EMPTY_STRING;
 
@@ -86,6 +92,23 @@ export function returnBlockStringFromReturnStatementNode(returnStatement, contex
   return returnBlockString;
 }
 
+export function namedParameterStringFromTypeNameAndAsName(type, name, asName, context) {
+  let namedParamterString;
+
+  const typeString = type,  ///
+        nameString = name;  ///
+
+  namedParamterString = `${typeString} ${nameString}`;
+
+  if (asName !== null) {
+    const asNameString = asName;  ///
+
+    namedParamterString = `${namedParamterString} As ${asNameString}`;
+  }
+
+  return namedParamterString;
+}
+
 export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
   const variableString = variable.getString(),
         anonymousProcedureString = anonymousProcedure.getString(),
@@ -100,6 +123,20 @@ export function everyStringFromVariableAndAnonymousProcedure(variable, anonymous
         everyString = `Every(${variableString}, ${anonymousProcedureString}) `;
 
   return everyString;
+}
+
+export function namedParametersStringFromNamedParamtersArray(namedParametersArray, context) {
+  const namedParametersString = namedParametersArray.reduce((namedParametersString, namedParameter) => {
+    const namedParameterString = namedParameter.getString();
+
+    namedParametersString = (namedParametersString === null) ?
+                              namedParameterString :
+                               `${namedParametersString}, ${namedParameterString}`;
+
+    return namedParametersString;
+  }, null);
+
+  return namedParametersString;
 }
 
 export function arrayAssignmentStringFromVariableAndParameters(variable, parameters) {
@@ -124,6 +161,16 @@ export function variableAssignmentStringFromExpressionAndVariable(expression, va
         variableAssignmentString = `${variableString} = ${expressionString};`;
 
   return variableAssignmentString;
+}
+
+export function procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock) {
+  const typeString = type,  ///
+        labelString = label.getString(),
+        parametersString = parameters.getString(),
+        returnBlockString = returnBlock.getString(),
+        procedureString = `${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
+
+  return procedureString;
 }
 
 export function objectAssignmentStringFromVariableAndNamedParameters(variable, namedParameters) {

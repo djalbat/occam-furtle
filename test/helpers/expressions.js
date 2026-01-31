@@ -1,10 +1,11 @@
 "use strict";
 
 const { Query } = require("occam-query"),
-      { Expressions } = require("../../lib/index"), ///
-      { arrayUtilities } = require("necessary");
+      { arrayUtilities } = require("necessary"),
+      { elementUtilities } = require("../../lib/index");  ///
 
-const { first } = arrayUtilities;
+const { first } = arrayUtilities,
+      { expressionsFromNodes } = elementUtilities;
 
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");
@@ -12,7 +13,7 @@ const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
 function expressionsFromFileContext(fileContext, free = true) {
   const context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext, free),
-        expressions = Expressions.fromNodes(nodes, context);
+        expressions = expressionsFromNodes(nodes, context);
 
   return expressions;
 }

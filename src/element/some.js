@@ -1,10 +1,10 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
+import { expressionFromNode, expressionFromBoolean, expressionsFromExpression } from "../utilities/element";
 
 export default define(class Some {
   constructor(string, variable, anonymousProcedure) {
@@ -48,11 +48,9 @@ export default define(class Some {
           boolean = nodes.some((node) => {
             let expression;
 
-            const { Expression, Expressions } = elements;
+            expression = expressionFromNode(node, context);
 
-            expression = Expression.fromNode(node, context);
-
-            const expressions = Expressions.fromExpression(expression, context);
+            const expressions = expressionsFromExpression(expression, context);
 
             expression = this.anonymousProcedure.call(expressions, context);
 
@@ -71,9 +69,7 @@ export default define(class Some {
             return boolean;
           });
 
-    const { Expression } = elements;
-
-    expression = Expression.fromBoolean(boolean, context);
+    expression = expressionFromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${someString}' some.`);
 

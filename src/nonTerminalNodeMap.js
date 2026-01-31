@@ -19,6 +19,8 @@ import NodesQueryNode from "./node/nodesQuery";
 import ExpressionsNode from "./node/expressions";
 import ReturnBlockNode from "./node/returnBlock";
 import ProcedureCallNode from "./node/procedureCall";
+import NamedParameterNode from "./node/parameter/named";
+import NamedParametersNode from "./node/parameters/named";
 import ReturnStatementNode from "./node/statement/return";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
@@ -49,6 +51,8 @@ import { STEP_RULE_NAME,
          EXPRESSIONS_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
+         NAMED_PARAMETER_RULE_NAME,
+         NAMED_PARAMETERS_RULE_NAME,
          RETURN_STATEMENT_RULE_NAME,
          ARRAY_ASSIGNMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
@@ -80,6 +84,8 @@ const NonTerminalNodeMap = {
   [EXPRESSIONS_RULE_NAME]: ExpressionsNode,
   [RETURN_BLOCK_RULE_NAME]: ReturnBlockNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
+  [NAMED_PARAMETER_RULE_NAME]: NamedParameterNode,
+  [NAMED_PARAMETERS_RULE_NAME]: NamedParametersNode,
   [RETURN_STATEMENT_RULE_NAME]: ReturnStatementNode,
   [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,

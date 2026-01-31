@@ -5,6 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE } from "../types";
+import { expressionFromNode } from "../utilities/element";
 
 export default define(class Reduce {
   constructor(string, variable, initialExpression, anonymousProcedure) {
@@ -55,13 +56,13 @@ export default define(class Reduce {
     expression = nodes.reduce((currentExpression, node) => {
       let expression;
 
-      const { Expression, Expressions } = elements;
+      const { Expressions } = elements;
 
       expression = currentExpression; ///
 
       const expressions = Expressions.fromExpression(expression, context);
 
-      expression = Expression.fromNode(node, context);
+      expression = expressionFromNode(node, context);
 
       expressions.addExpression(expression);
 

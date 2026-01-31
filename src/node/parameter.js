@@ -37,5 +37,21 @@ export default class ParamterNode extends NonTerminalNode {
     return type;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ParamterNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
+    if (precedence === undefined) {
+      precedence = opacity; ///
+
+      opacity = childNodes; ///
+
+      childNodes = ruleName;  ///
+
+      ruleName = Class; ///
+
+      Class = ParamterNode;
+    }
+
+    const parameterNode = NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence);
+
+    return parameterNode;
+  }
 }
