@@ -4,6 +4,7 @@ import { arrayUtilities } from "necessary";
 
 import ExpressionNode from "../../node/expression";
 
+import { SPECIAL_TOKEN_TYPE } from "../../tokenTypes";
 import { EXPRESSION_RULE_NAME } from "../../ruleNames";
 import { CONJUNCTION_OPERATOR, DISJUNCTION_OPERATOR } from "../../constants";
 
@@ -13,18 +14,15 @@ export default class LogicalExpressionNode extends ExpressionNode {
   getOperator() {
     let operator = null;
 
-    this.someChildNode((childNode, index) => {
-      const childNodeTerminalNode = childNode.isTerminalNode();
+    const tokenType = SPECIAL_TOKEN_TYPE;
 
-      if (childNodeTerminalNode) {
-        const terminalNode = childNode,
-              content = terminalNode.getContent();
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
 
-        operator = content; ///
+      operator = content; ///
 
-        return true;
-      }
-    });
+      return true;
+    }, tokenType);
 
     return operator;
   }

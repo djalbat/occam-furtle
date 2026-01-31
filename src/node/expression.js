@@ -3,15 +3,18 @@
 import nullNode from "../nullNode";
 import NonTerminalNode from "../nonTerminalNode";
 
-import { NULL, TRUE, FALSE, EMPTY_STRING } from "../constants";
+import { NULL, TRUE, FALSE } from "../constants";
 import { NUMBER_TOKEN_TYPE, PRIMITIVE_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
 import { SOME_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
          VARIABLE_RULE_NAME,
+         COMPARISON_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          NODES_QUERY_RULE_NAME,
+         RETURN_BLOCK_RULE_NAME,
+         PROCEDURE_CALL_RULE_NAME,
          NEGATED_EXPRESSION_RULE_NAME,
          LOGICAL_EXPRESSION_RULE_NAME,
          BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
@@ -140,6 +143,27 @@ export default class ExpressionNode extends NonTerminalNode {
           nodeSQueryNode = this.getNodeByRuleName(ruleName);
 
     return nodeSQueryNode;
+  }
+
+  getComparisonNode() {
+    const ruleName = COMPARISON_RULE_NAME,
+      comparisonNode = this.getNodeByRuleName(ruleName);
+
+    return comparisonNode;
+  }
+
+  getReturnBlockNode() {
+    const ruleName = RETURN_BLOCK_RULE_NAME,
+          returnBlockNode = this.getNodeByRuleName(ruleName);
+
+    return returnBlockNode;
+  }
+
+  getProcedureCallNode() {
+    const ruleName = PROCEDURE_CALL_RULE_NAME,
+          procedureCallNode = this.getNodeByRuleName(ruleName);
+
+    return procedureCallNode;
   }
 
   getNegatedExpressionNode() {

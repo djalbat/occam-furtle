@@ -1,6 +1,6 @@
 "use strict";
 
-import { EMPTY_STRING, UNDERSCORE, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
+import { EQUAL_TO, UNDERSCORE, NOT_EQUAL_TO, EMPTY_STRING, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
 
 export function stepStringFromNothing(context) {
   const stepString = EMPTY_STRING;
@@ -42,6 +42,20 @@ export function paramtersStringFromParametersArray(array) {
   }, null);
 
   return parametersString;
+}
+
+export function expressionsStringFromExpressionsArray(array, context) {
+  const expressionsString = array.reduce((expressionsString, expression) => {
+    const expressionString = expression.asString(context);
+
+    expressionsString = (expressionsString === null) ?
+                          expressionString :
+                            `${expressionsString}, ${expressionString}`;
+
+    return expressionsString;
+  }, null); ///
+
+  return expressionsString;
 }
 
 export function negatedExpressionStringFromExpression(expression, context) {
@@ -96,6 +110,14 @@ export function arrayAssignmentStringFromVariableAndParameters(variable, paramet
   return arrayAssignmentString;
 }
 
+export function procedureCallStringFromReferenceAndExpressions(reference, expressions, context) {
+  const expressionsString = expressions.getString(),
+        referenceString = reference.getString(),
+        procedureCallString = `${referenceString}(${expressionsString})`;
+
+  return procedureCallString;
+}
+
 export function variableAssignmentStringFromExpressionAndVariable(expression, variable, context) {
   const variableString = variable.getString(),
         expressionString = expression.asString(context),
@@ -143,6 +165,17 @@ export function ternaryStringFromExpressionIfExpressionAndElseExpression(express
         ternaryString = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
 
   return ternaryString;
+}
+
+export function comparisonStringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context) {
+  const operatorString = negated ?
+                           EQUAL_TO :
+                             NOT_EQUAL_TO,
+        leftExpressionString = leftExpression.asString(context),
+        rightExpressionString = rightExpression.asString(context),
+        comparisonString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
+
+  return comparisonString;
 }
 
 export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {

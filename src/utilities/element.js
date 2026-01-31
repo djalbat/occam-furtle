@@ -11,6 +11,7 @@ import { stepStringFromNothing,
          parameterStringFromTypeAndName,
          returnBlockStringFromExpression,
          paramtersStringFromParametersArray,
+         expressionsStringFromExpressionsArray,
          negatedExpressionStringFromExpression,
          procedureDeclarationStringFromProcedure,
          bracketedExpressionStringFromBExpression,
@@ -18,11 +19,13 @@ import { stepStringFromNothing,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
          arrayAssignmentStringFromVariableAndParameters,
+         procedureCallStringFromReferenceAndExpressions,
          variableAssignmentStringFromExpressionAndVariable,
          objectAssignmentStringFromVariableAndNamedParameters,
          varaibleAssignmentsStringFromVariableAssignmentsArray,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
          ternaryStringFromExpressionIfExpressionAndElseExpression,
+         comparisonStringFromNegatedLeftExpressionAndRightExpression,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure,
          logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression } from "../utilities/string";
 
@@ -99,6 +102,15 @@ export function variableFromVariableNode(variableNode, context) {
   return variable;
 }
 
+export function referenceFromReferenceNode(referenceNode, context) {
+  const { Reference } = elements,
+        name = nameFromReferenceNode(referenceNode, context),
+        string = name,  ///
+        reference = new Reference(string, name);
+
+  return reference;
+}
+
 export function parameterFromParameterNode(parameterNode, context) {
   let parameter = null;
 
@@ -138,6 +150,20 @@ export function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   return nodesQuery;
 }
 
+export function comparisonFromComparisonNode(comparisonNode, context) {
+  const { Comparison } = elements,
+        leftExpressionNode = comparisonNode.getLeftExpressionNode(),
+        rightExpressionNode = comparisonNode.getRightExpressionNode(),
+        negated = comparisonNode.isNegated(),
+        leftExpression = expressionFromExpressionNode(leftExpressionNode, context),
+        rightExpression = expressionFromExpressionNode(rightExpressionNode, context),
+        comparisonString = comparisonStringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context),
+        string = comparisonString,  ///
+        comparison = new Comparison(string, negated, leftExpression, rightExpression);
+
+  return comparison;
+}
+
 export function parametersFromParametersNode(parametersNode, context) {
   const { Parameters } = elements,
         paramtersArray = paramtersArrayFromParametersNode(parametersNode, context),
@@ -150,7 +176,7 @@ export function parametersFromParametersNode(parametersNode, context) {
 }
 
 export function expressionFromExpressionNode(expressionNode, context) {
-  const { Expression, NodesQuery, Comparison, ReturnBlock, ProcedureCall } = elements,
+  const { Expression } = elements,
         node = nodeFromExpressionNode(expressionNode, context),
         nodes = nodesFromExpressionNode(expressionNode, context),
         number = numberFromExpressionNode(expressionNode, context),
@@ -163,38 +189,27 @@ export function expressionFromExpressionNode(expressionNode, context) {
         variable = variableFromExpressionNode(expressionNode, context),
         nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
         nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
-        comparison = Comparison.fromExpressionNode(expressionNode, context),
-        returnBlock = ReturnBlock.fromExpressionNode(expressionNode, context),
-        procedureCall = ProcedureCall.fromExpressionNode(expressionNode, context),
+        comparison = comparisonFromExpressionNode(expressionNode, context),
+        returnBlock = returnBlockFromExpressionNode(expressionNode, context),
+        procedureCall = procedureCallFromExpressionNode(expressionNode, context),
         negatedExpression = negatedExpressionFromExpressionNode(expressionNode, context),
         logicalExpression = logicalExpressionFromExpressionNode(expressionNode, context),
         bracketedExpression = bracketedExpressionFromExpressionNode(expressionNode, context),
         expression = new Expression(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
-  if ((node === null) &&
-      (nodes === null) &&
-      (number === null) &&
-      (string === null) &&
-      (boolean === null) &&
-      (some === null) &&
-      (every === null) &&
-      (reduce === null) &&
-      (ternary === null) &&
-      (variable === null) &&
-      (nodeQuery === null) &&
-      (nodesQuery === null) &&
-      (comparison === null) &&
-      (returnBlock === null) &&
-      (procedureCall === null) &&
-      (negatedExpression === null) &&
-      (logicalExpression === null) &&
-      (bracketedExpression === null)) {
-
-    debugger
-  }
-
-
   return expression;
+}
+
+export function expressionsFromExpressionsNode(expressionsNode, context) {
+  const { Expressions } = elements,
+        expressionNodes = expressionsNode.getExpressionNodes(),
+        expressionsArray = expressionsArrayFromExpressionNodes(expressionNodes, context),
+        expressionsString = expressionsStringFromExpressionsArray(expressionsArray, context),
+        string = expressionsString, ///
+        array = expressionsArray,
+        expressions = new Expressions(string, array);
+
+  return expressions;
 }
 
 export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
@@ -207,6 +222,24 @@ export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
         returnBlock = new ReturnBlock(string, steps, nonsensical, returnStatement);
 
   return returnBlock;
+}
+
+export function expressionsFromProcedureCallNode(procedureCallNode, context) {
+  const expressionsNode = procedureCallNode.getExpressionsNode(),
+        expressions = expressionsFromExpressionsNode(expressionsNode, context);
+
+  return expressions;
+}
+
+export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
+  const { ProcedureCall } = elements,
+        reference = referenceFromProcedureCallNode(procedureCallNode, context),
+        expressions = expressionsFromProcedureCallNode(procedureCallNode, context),
+        procedureCallString = procedureCallStringFromReferenceAndExpressions(reference, expressions, context),
+        string = procedureCallString,  ///
+        procedureCall = new ProcedureCall(string, reference, expressions);
+
+  return procedureCall;
 }
 
 export function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
@@ -320,6 +353,12 @@ export function typeFromParaneterNode(parameterNode, context) {
 
 export function nameFromParaneterNode(parameterNode, context) {
   const name = parameterNode.getName();
+
+  return name;
+}
+
+export function nameFromReferenceNode(referenceNode, context) {
+  const name = referenceNode.getName();
 
   return name;
 }
@@ -532,6 +571,30 @@ export function nodesQueryFromExpressionNode(expressionNode, context) {
   return nodesQuery;
 }
 
+export function comparisonFromExpressionNode(expressionNOde, context) {
+  let comparison = null;
+
+  const comparisonNode = expressionNOde.getComparisonNode();
+
+  if (comparisonNode !== null) {
+    comparison = comparisonFromComparisonNode(comparisonNode, context);
+  }
+
+  return comparison;
+}
+
+export function returnBlockFromExpressionNode(expressionNode, context) {
+  let returnBlock = null;
+
+  const returnBlockNode = expressionNode.getReturnBlockNode();
+
+  if (returnBlockNode !== null) {
+    returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
+  }
+
+  return returnBlock;
+}
+
 export function typeFromNegatedExpressionNode(negatedExpressionNode, context) {
   const type = BOOLEAN_TYPE;
 
@@ -557,16 +620,11 @@ export function nonsensicalFromReturnBlockNode(returnBlockNode, context) {
   return nonsensical;
 }
 
-export function variableAssignmentsFromStepNode(stepNode, context) {
-  let variableAssignments = null;
+export function referenceFromProcedureCallNode(procedureCallNode, context) {
+  const referenceNode = procedureCallNode.getReferenceNode(),
+        reference = referenceFromReferenceNode(referenceNode, context);
 
-  const variableAssignmentsNode = stepNode.getVariableAssignmentsNode();
-
-  if (variableAssignmentsNode !== null) {
-    variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
-  }
-
-  return variableAssignments;
+  return reference;
 }
 
 export function variableFromTypeAndVariableNode(type, variableNode, context) {
@@ -578,6 +636,18 @@ export function variableFromTypeAndVariableNode(type, variableNode, context) {
         variable = new Variable(string, type, name, expression);
 
   return variable;
+}
+
+export function variableAssignmentsFromStepNode(stepNode, context) {
+  let variableAssignments = null;
+
+  const variableAssignmentsNode = stepNode.getVariableAssignmentsNode();
+
+  if (variableAssignmentsNode !== null) {
+    variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
+  }
+
+  return variableAssignments;
 }
 
 export function anonymousProcedureFromEveryNode(everyNode, context) {
@@ -592,6 +662,18 @@ export function initialExpressionFromReduceNode(reduceNode, context) {
         initialExpression = expression; ///
 
   return initialExpression;
+}
+
+export function procedureCallFromExpressionNode(expressionNode, context) {
+  let procedureCall = null;
+
+  const procedureCallNode = expressionNode.getProcedureCallNode();
+
+  if (procedureCallNode !== null) {
+    procedureCall = procedureCallFromProcedureCallNode(procedureCallNode, context);
+  }
+
+  return procedureCall;
 }
 
 export function anonymousProcedureFromReduceNode(reduceNode, context) {
@@ -756,3 +838,12 @@ export function paramtersArrayFromParametersNode(parametersNode, context) {
   return paramtersArray;
 }
 
+export function expressionsArrayFromExpressionNodes(expressionNodes, context) {
+  const expressionsArray = expressionNodes.map((expressionNode) => { ///
+          const expression = expressionFromExpressionNode(expressionNode, context);
+
+          return expression;
+        });
+
+  return expressionsArray;
+}

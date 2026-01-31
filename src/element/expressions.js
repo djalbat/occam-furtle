@@ -3,10 +3,8 @@
 import elements from "../elements";
 
 import { define } from "../elements";
-import { nodeQuery, nodesQuery } from "../utilities/query";
-
-const expressionNodesQuery = nodesQuery("/expressions/expression"),
-      procedureCallExpressionsNodeQuery = nodeQuery("/procedureCall/expressions");
+import { expressionsFromExpressionsNode } from "../utilities/element";
+import { expressionsStringFromExpressionsArray } from "../utilities/string";
 
 export default define(class Expressions {
   constructor(string, array) {
@@ -57,14 +55,14 @@ export default define(class Expressions {
 
   static fromNodes(nodes, context) {
     const array = arrayFromNodes(nodes, context),
-          string = stringFromArray(array, context),
+          string = expressionsStringFromExpressionsArray(array, context),
           expressions = new Expressions(string, array);
 
     return expressions;
   }
 
   static fromArray(array, context) {
-    const string = stringFromArray(array, context),
+    const string = expressionsStringFromExpressionsArray(array, context),
           expressions = new Expressions(string, array);
 
     return expressions;
@@ -74,16 +72,8 @@ export default define(class Expressions {
     const array = [
             expression
           ],
-          string = stringFromArray(array, context),
+          string = expressionsStringFromExpressionsArray(array, context),
           expressions = new Expressions(string, array);
-
-    return expressions;
-  }
-
-  static fromProcedureCallNode(procedureCallNode, context) {
-    const procedureCallExpressionsNode = procedureCallExpressionsNodeQuery(procedureCallNode),
-          expressionsNode = procedureCallExpressionsNode, ///
-          expressions = expressionsFromExpressionsNode(expressionsNode, context);
 
     return expressions;
   }
@@ -98,41 +88,4 @@ function arrayFromNodes(nodes, context) {
         });
 
   return array;
-}
-
-function stringFromArray(array, context) {
-  const expressionsString = array.reduce((expressionsString, expression) => {
-          const expressionString = expression.asString(context);
-
-          expressionsString = (expressionsString === null) ?
-                           expressionString :
-                            `${expressionsString}, ${expressionString}`;
-
-          return expressionsString;
-        }, null),
-        string = expressionsString;  ///
-
-  return string;
-}
-
-function arrayFromExpressionNodes(expressionNodes, context) {
-  const { Expression } = elements,
-        array = expressionNodes.map((expressionNode) => { ///
-          const expression = Expression.fromExpressionNode(expressionNode, context);
-
-          return expression;
-        });
-
-  return array;
-}
-
-function expressionsFromExpressionsNode(expressionsNode, context) {
-  const { Expressions } = elements,
-        node = expressionsNode, ///
-        string = context.nodeAsString(node),
-        expressionNodes = expressionNodesQuery(expressionsNode),
-        array = arrayFromExpressionNodes(expressionNodes, context),
-        expressions = new Expressions(string, array);
-
-  return expressions;
 }

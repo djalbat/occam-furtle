@@ -1,12 +1,8 @@
 "use strict";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
-
-const expressionProcedureCallNodeQuery = nodeQuery("/expression/procedureCall");
 
 export default define(class ProcedureCall {
   constructor(string, reference, expressions) {
@@ -54,36 +50,4 @@ export default define(class ProcedureCall {
   }
 
   static name = "ProcedureCall";
-
-  static fromExpressionNode(expressionNode, context) {
-    let procedureCall = null;
-
-    const expressionProcedureCallNode = expressionProcedureCallNodeQuery(expressionNode);
-
-    if (expressionProcedureCallNode !== null) {
-      const procedureCallNode = expressionProcedureCallNode; ///
-
-      procedureCall = procedureCallFromProcedureCallNode(procedureCallNode, context);
-    }
-
-    return procedureCall;
-  }
 });
-
-function procedureCallFromProcedureCallNode(procedureCallNode, context) {
-  const { Reference, Expressions, ProcedureCall } = elements,
-        expressions = Expressions.fromProcedureCallNode(procedureCallNode, context),
-        reference = Reference.fromProcedureCallNode(procedureCallNode, context),
-        string = stringFromReferenceAndExpressions(reference, expressions, context),
-        procedureCall = new ProcedureCall(string, reference, expressions);
-
-  return procedureCall;
-}
-
-function stringFromReferenceAndExpressions(reference, expressions, context) {
-  const expressionsString = expressions.getString(),
-        referenceString = reference.getString(),
-        string = `${referenceString}(${expressionsString})`;
-
-  return string;
-}

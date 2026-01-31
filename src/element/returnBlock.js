@@ -7,8 +7,7 @@ import { define } from "../elements";
 import { nodeQuery } from "../utilities/query";
 import { returnBlockFromReturnBlockNode } from "../utilities/element";
 
-const expressionReturnBlockNodeQuery = nodeQuery("/expression/returnBlock"),
-      procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
+const procedureDeclarationReturnBlockNodeQuery = nodeQuery("/procedureDeclaration/returnBlock");
 
 export default define(class ReturnBlock {
   constructor(string, steps, nonsensical, returnStatement) {
@@ -62,20 +61,6 @@ export default define(class ReturnBlock {
   }
 
   static name = "ReturnBlock";
-
-  static fromExpressionNode(expressionNode, context) {
-    let returnBlock = null;
-
-    const expressionReturnBlockNode = expressionReturnBlockNodeQuery(expressionNode);
-
-    if (expressionReturnBlockNode !== null) {
-      const returnBlockNode = expressionReturnBlockNode;  ///
-
-      returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
-    }
-
-    return returnBlock;
-  }
 
   static fromProcedureDeclarationNode(procedureDeclarationNode, context) {
     const procedureDeclarationReturnBlockNode = procedureDeclarationReturnBlockNodeQuery(procedureDeclarationNode),

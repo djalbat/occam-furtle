@@ -4,13 +4,6 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { nodeQuery } from "../utilities/query";
-import { EQUAL_TO, NOT_EQUAL_TO } from "../constants";
-
-const terminalNodeQuery = nodeQuery("/comparison/@*"),
-      leftExpressionNodeQuery = nodeQuery("/comparison/expression[0]"),
-      rightExpressionNodeQuery = nodeQuery("/comparison/expression[1]"),
-      expressionComparisonNodeQuery = nodeQuery("/expression/comparison");
 
 export default define(class Comparison {
   constructor(string, negated, leftExpression, rightExpression) {
@@ -75,50 +68,4 @@ export default define(class Comparison {
   }
 
   static name = "Comparison";
-
-  static fromExpressionNode(valudNode, context) {
-    let comparison = null;
-
-    const expressionComparisonNode = expressionComparisonNodeQuery(valudNode);
-
-    if (expressionComparisonNode !== null) {
-      const comparisonNode = expressionComparisonNode; ///
-
-      comparison = comparisonFromComparisonNode(comparisonNode, context);
-    }
-
-    return comparison;
-  }
 });
-
-function negatedFromComparisonNode(comparisonNode) {
-  const terminalNode = terminalNodeQuery(comparisonNode),
-        terminalNodeContent = terminalNode.getContent(),
-        negated = (terminalNodeContent !== EQUAL_TO);
-
-  return negated;
-}
-
-function comparisonFromComparisonNode(comparisonNode, context) {
-  const { Expression, Comparison } = elements,
-        leftExpressionNode = leftExpressionNodeQuery(comparisonNode),
-        rightExpressionNode = rightExpressionNodeQuery(comparisonNode),
-        rightExpression = Expression.fromExpressionNode(rightExpressionNode, context),
-        leftExpression = Expression.fromExpressionNode(leftExpressionNode, context),
-        negated = negatedFromComparisonNode(comparisonNode, context),
-        string = stringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context),
-        comparison = new Comparison(string, negated, leftExpression, rightExpression);
-
-  return comparison;
-}
-
-function stringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context) {
-  const operatorString = negated ?
-                           EQUAL_TO :
-                            NOT_EQUAL_TO,
-        leftExpressionString = leftExpression.asString(context),
-        rightExpressionString = rightExpression.asString(context),
-        string = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
-
-  return string;
-}
