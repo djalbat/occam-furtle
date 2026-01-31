@@ -1,24 +1,36 @@
 "use strict";
 
-import { EQUAL_TO, UNDERSCORE, NOT_EQUAL_TO, EMPTY_STRING, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
+import nullNode from "../nullNode";
 
-export function stringFromName(name, context) {
-  const string = name;  ///
+import { stringFromStringLiteral } from "./stringLiteral";
+import { NULL, EQUAL_TO, UNDERSCORE, NOT_EQUAL_TO, DISJUNCTION_OPERATOR, CONJUNCTION_OPERATOR } from "../constants";
 
-  return string;
-}
-
-export function stepStringFromNothing(context) {
-  const stepString = EMPTY_STRING;
-
-  return stepString;
-}
-
-export function variableStringFromName(name, context) {
+export function variableStringFromName(name) {
   const nameString = name,  ///
         string = nameString;  ///
 
   return string;
+}
+
+export function expressionStringFromNode(node, context) {
+  const expressionString = (node === nullNode) ?
+                             NULL :
+                               context.nodeAsString(node);
+
+  return expressionString;
+}
+
+export function expressionStringFromNodes(nodes, context) {
+  const string = context.nodesAsString(nodes),
+        expressionString = string;  ///
+
+  return expressionString;
+}
+
+export function expressionStringFromBoolean(boolean) {
+  const expresssionString = `${boolean}`;
+
+  return expresssionString;
 }
 
 export function parameterStringFromTypeAndName(type, name) {
@@ -27,11 +39,18 @@ export function parameterStringFromTypeAndName(type, name) {
   return parameterString;
 }
 
-export function returnBlockStringFromExpression(expression, context) {
-  const expressionString = expression.asString(context),
+export function returnBlockStringFromExpression(expression) {
+  const expressionString = expression.getString(),
         returnBlockString = `Return ${expressionString};`;
 
   return returnBlockString;
+}
+
+export function expressionStringFromStringLiteral(stringLiteral) {
+  const string = stringFromStringLiteral(stringLiteral),
+        expressionString = string;  ///
+
+  return expressionString;
 }
 
 export function paramtersStringFromParametersArray(array) {
@@ -50,9 +69,9 @@ export function paramtersStringFromParametersArray(array) {
   return parametersString;
 }
 
-export function expressionsStringFromExpressionsArray(array, context) {
+export function expressionsStringFromExpressionsArray(array) {
   const expressionsString = array.reduce((expressionsString, expression) => {
-    const expressionString = expression.asString(context);
+    const expressionString = expression.getString();
 
     expressionsString = (expressionsString === null) ?
                           expressionString :
@@ -64,8 +83,8 @@ export function expressionsStringFromExpressionsArray(array, context) {
   return expressionsString;
 }
 
-export function negatedExpressionStringFromExpression(expression, context) {
-  const expressionString = expression.asString(context),
+export function negatedExpressionStringFromExpression(expression) {
+  const expressionString = expression.getString(),
        negatedExpressionString = `!${expressionString}`;
 
   return negatedExpressionString;
@@ -78,21 +97,21 @@ export function procedureDeclarationStringFromProcedure(procedure) {
   return procedureDeclarationString;
 }
 
-export function bracketedExpressionStringFromBExpression(expression, context) {
-  const expressionString = expression.asString(context),
+export function bracketedExpressionStringFromBExpression(expression) {
+  const expressionString = expression.getString(),
         bracketedExpressionString = `(${expressionString})`;
 
   return bracketedExpressionString;
 }
 
-export function returnBlockStringFromReturnStatementNode(returnStatement, context) {
+export function returnBlockStringFromReturnStatementNode(returnStatement) {
   const returnStatementString = returnStatement.getString(),
         returnBlockString = `{ ... ${returnStatementString} }`;
 
   return returnBlockString;
 }
 
-export function namedParameterStringFromTypeNameAndAsName(type, name, asName, context) {
+export function namedParameterStringFromTypeNameAndAsName(type, name, asName) {
   let namedParamterString;
 
   const typeString = type,  ///
@@ -109,7 +128,7 @@ export function namedParameterStringFromTypeNameAndAsName(type, name, asName, co
   return namedParamterString;
 }
 
-export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure) {
   const variableString = variable.getString(),
         anonymousProcedureString = anonymousProcedure.getString(),
         someString = `Some(${variableString}, ${anonymousProcedureString}) `;
@@ -117,7 +136,7 @@ export function someStringFromVariableAndAnonymousProcedure(variable, anonymousP
   return someString;
 }
 
-export function everyStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure, context) {
+export function everyStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure) {
   const variableString = variable.getString(),
         anonymousProcedureString = anonymousProcedure.getString(),
         everyString = `Every(${variableString}, ${anonymousProcedureString}) `;
@@ -125,7 +144,7 @@ export function everyStringFromVariableAndAnonymousProcedure(variable, anonymous
   return everyString;
 }
 
-export function namedParametersStringFromNamedParamtersArray(namedParametersArray, context) {
+export function namedParametersStringFromNamedParamtersArray(namedParametersArray) {
   const namedParametersString = namedParametersArray.reduce((namedParametersString, namedParameter) => {
     const namedParameterString = namedParameter.getString();
 
@@ -147,7 +166,7 @@ export function arrayAssignmentStringFromVariableAndParameters(variable, paramet
   return arrayAssignmentString;
 }
 
-export function procedureCallStringFromReferenceAndExpressions(reference, expressions, context) {
+export function procedureCallStringFromReferenceAndExpressions(reference, expressions) {
   const expressionsString = expressions.getString(),
         referenceString = reference.getString(),
         procedureCallString = `${referenceString}(${expressionsString})`;
@@ -155,9 +174,9 @@ export function procedureCallStringFromReferenceAndExpressions(reference, expres
   return procedureCallString;
 }
 
-export function variableAssignmentStringFromExpressionAndVariable(expression, variable, context) {
+export function variableAssignmentStringFromExpressionAndVariable(expression, variable) {
   const variableString = variable.getString(),
-        expressionString = expression.asString(context),
+        expressionString = expression.getString(),
         variableAssignmentString = `${variableString} = ${expressionString};`;
 
   return variableAssignmentString;
@@ -196,7 +215,7 @@ export function varaibleAssignmentsStringFromVariableAssignmentsArray(variableAs
   return string;
 }
 
-export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock, context) {
+export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock) {
   const typeString = type,  ///
         parametersString = parameters.getString(),
         returnBlockString = returnBlock.getString(),
@@ -205,21 +224,21 @@ export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, p
   return anonymousProcedureString;
 }
 
-export function ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression, context) {
-  const expressionString = expression.asString(context),
-        ifExpressionString = ifExpression.asString(context),
-        elseExpressionString = elseExpression.asString(context),
+export function ternaryStringFromExpressionIfExpressionAndElseExpression(expression, ifExpression, elseExpression) {
+  const expressionString = expression.getString(),
+        ifExpressionString = ifExpression.getString(),
+        elseExpressionString = elseExpression.getString(),
         ternaryString = `If (${expressionString}) ${ifExpressionString} Else ${elseExpressionString};`;
 
   return ternaryString;
 }
 
-export function comparisonStringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression, context) {
+export function comparisonStringFromNegatedLeftExpressionAndRightExpression(negated, leftExpression, rightExpression) {
   const operatorString = negated ?
                            EQUAL_TO :
                              NOT_EQUAL_TO,
-        leftExpressionString = leftExpression.asString(context),
-        rightExpressionString = rightExpression.asString(context),
+        leftExpressionString = leftExpression.getString(),
+        rightExpressionString = rightExpression.getString(),
         comparisonString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
 
   return comparisonString;
@@ -234,12 +253,40 @@ export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(v
   return reduceString;
 }
 
-export function logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression, context) {
+export function expressionStringFromNodeNodesNumberBooleanStringLiteralAndProperties(node, nodes, number, boolean, stringLiteral, properties, context) {
+  let expressionString;
+
+  if (false) {
+    ///
+  } else if (node !== null) {
+    expressionString = expressionStringFromNode(node, context);
+  } else if (nodes !== null) {
+    expressionString = expressionStringFromNodes(nodes, context);
+  } else if (number !== null) {
+    expressionString = expressionStringFromNumber(number);
+  } else if (boolean !== null) {
+    expressionString = expressionStringFromBoolean(boolean);
+  } else if (stringLiteral !== null) {
+    expressionString = expressionStringFromStringLiteral(stringLiteral);
+  } else {
+    properties.forEach((property) => {
+      if (property !== null) {
+        const propertyString = property.getString();
+
+        expressionString = propertyString;  ///
+      }
+    });
+  }
+
+  return expressionString;
+}
+
+export function logicalExpressionStringFromTypeDisjunctionLeftExpressionAndRightExpression(disjection, leftExpression, rightExpression) {
   const operatorString = disjection ?
                            DISJUNCTION_OPERATOR :
                              CONJUNCTION_OPERATOR,
-        leftExpressionString = leftExpression.asString(context),
-        rightExpressionString = rightExpression.asString(context),
+        leftExpressionString = leftExpression.getString(),
+        rightExpressionString = rightExpression.getString(),
         logicalExpressionString = `${leftExpressionString} ${operatorString} ${rightExpressionString}`;
 
   return logicalExpressionString;

@@ -48,7 +48,7 @@ export default define(class NodeQuery {
     const expressionType = expression.getType();
 
     if (expressionType !== NODE_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
@@ -58,7 +58,7 @@ export default define(class NodeQuery {
     const expressionNode = expression.getNode();
 
     if (expressionNode === null) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's node is null.`,
             exception = Exception.fromMessage(message);
 

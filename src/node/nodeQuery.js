@@ -3,11 +3,19 @@
 import NonTerminalNode from "../nonTerminalNode";
 
 import { VARIABLE_RULE_NAME } from "../ruleNames";
+import { stringFromStringLiteral } from "../utilities/stringLiteral";
 import { STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
 
 export default class NodeQueryNode extends NonTerminalNode {
+  getString() {
+    const stringLiteral = this.getStringLiteral(),
+          string = stringFromStringLiteral(stringLiteral);
+
+    return string;
+  }
+
   getStringLiteral() {
-    let stringLiteral = null;
+    let stringLiteral;
 
     const tokenType = STRING_LITERAL_TOKEN_TYPE;
 

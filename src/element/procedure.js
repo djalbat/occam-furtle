@@ -58,7 +58,7 @@ export default define(class Procedure {
           expressionType = expression.getType();
 
     if (this.type !== expressionType) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 

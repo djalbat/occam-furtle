@@ -24,7 +24,7 @@ export default define(class Parameter {
   }
 
   matchExpression(expression, context) {
-    const expressionString = expression.asString(context),
+    const expressionString = expression.getString(),
           parameterString = this.string;  ///
 
     context.trace(`Matching the ${expressionString} expression against the '${parameterString}' parameter...`);

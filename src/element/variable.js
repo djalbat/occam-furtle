@@ -52,7 +52,7 @@ export default define(class Variable {
 
     const variable = context.findVariableByVariableName(variableName),
           expression = variable.getExpression(),
-          expressionString = expression.asString(context);
+          expressionString = expression.getString();
 
     context.debug(`...evaluated the '${variableString}' variable to the ${expressionString} expression.`);
 
@@ -61,7 +61,7 @@ export default define(class Variable {
 
   assign(expression, context) {
     const nested = false,
-          expressionString = expression.asString(context), ///
+          expressionString = expression.getString(),
           variableName = this.name, ///
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);

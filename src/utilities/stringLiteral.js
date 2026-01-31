@@ -7,3 +7,9 @@ export function stringFromStringLiteral(stringLiteral) {
 
   return string;
 }
+
+export function stringLiteralFromString(string) {
+  const stringLiteral = `"${string}"`;
+
+  return stringLiteral;
+}

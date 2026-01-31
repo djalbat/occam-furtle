@@ -43,7 +43,7 @@ export default define(class Reduce {
     const expressionType = expression.getType();
 
     if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 

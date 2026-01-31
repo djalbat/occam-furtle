@@ -4,9 +4,10 @@ import Exception from "../../exception";
 import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
+import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
-import { expressionFromNodes, expressionFromString, expressionFromBoolean, variableFromNamedParameter } from "../../utilities/element";
+import { expressionFromNodes, expressionFromStringLiteral, expressionFromBoolean, variableFromNamedParameter } from "../../utilities/element";
 
 export default define(class ObjectAssigment {
   constructor(string, variable, namedParameters) {
@@ -36,7 +37,7 @@ export default define(class ObjectAssigment {
           expressionType = expression.getType();
 
     if (expressionType !== NODE_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
@@ -53,7 +54,7 @@ export default define(class ObjectAssigment {
   }
 
   evaluateNamedParameter(namedParameter, expression, context) {
-    const expressionString = expression.asString(context),
+    const expressionString = expression.getString(),
           namedParameterString = namedParameter.getString();
 
     context.trace(`Evaluating the '${namedParameterString}' named parameter against the ${expressionString} expression...`);
@@ -102,7 +103,7 @@ export default define(class ObjectAssigment {
           nodeTerminalNode = node.isTerminalNode();
 
     if (!nodeTerminalNode) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's node must be terminal.`,
             exception = Exception.fromMessage(message);
 
@@ -111,9 +112,10 @@ export default define(class ObjectAssigment {
 
     const terminalNode = node,  ///
           content = terminalNode.getContent(),
-          string = content;  ///
+          string = content,  ///
+          stringLiteral = stringLiteralFromString(string);
 
-    expression = expressionFromString(string, context);
+    expression = expressionFromStringLiteral(stringLiteral, context);
 
     return expression;
   }
@@ -155,7 +157,7 @@ export default define(class ObjectAssigment {
           nodeNonTerminalNode = node.isNonTerminalNode();
 
     if (!nodeNonTerminalNode) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's node must be non-terminal.`,
             exception = Exception.fromMessage(message);
 

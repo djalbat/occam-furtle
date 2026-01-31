@@ -4,19 +4,19 @@ import { arrayUtilities } from "necessary";
 
 import nullNode from "../nullNode";
 
-import { NULL } from "../constants";
 import { define } from "../elements";
 import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
 
 const { match } = arrayUtilities;
 
 export default define(class Expression {
-  constructor(node, nodes, number, string, boolean, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
+  constructor(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
+    this.string = string;
     this.node = node;
     this.nodes = nodes;
     this.number = number;
-    this.string = string;
     this.boolean = boolean;
+    this.stringLiteral = stringLiteral;
     this.some = some;
     this.every = every;
     this.reduce = reduce;
@@ -32,6 +32,10 @@ export default define(class Expression {
     this.bracketedExpression = bracketedExpression;
   }
 
+  getString() {
+    return this.string;
+  }
+
   getNode() {
     return this.node;
   }
@@ -44,12 +48,12 @@ export default define(class Expression {
     return this.number;
   }
 
-  getString() {
-    return this.string;
-  }
-
   getBoolean() {
     return this.boolean;
+  }
+
+  getStringLiteral() {
+    return this.stringLiteral;
   }
 
   getSome() {
@@ -115,10 +119,10 @@ export default define(class Expression {
       type = NODES_TYPE;
     } else if (this.number !== null) {
       type = NUMBER_TYPE;
-    } else if (this.string !== null) {
-      type = STRING_TYPE;
     } else if (this.boolean !== null) {
       type = BOOLEAN_TYPE;
+    } else if (this.stringLiteral !== null) {
+      type = STRING_TYPE;
     } else if (this.some !== null) {
       type = this.some.getType();
     } else if (this.every !== null) {
@@ -150,52 +154,6 @@ export default define(class Expression {
     return type;
   }
 
-  asString(context) {
-    let string;
-
-    if (false) {
-      ///
-    } else if (this.node !== null) {
-      string = nodeAsString(this.node, context);
-    } else if (this.nodes !== null) {
-      string = nodesAsString(this.nodes, context);
-    } else if (this.number !== null) {
-      string = numberAsString(this.number);
-    } else if (this.string !== null) {
-      string = stringAsString(this.string)
-    } else if (this.boolean !== null) {
-      string = booleanAsString(this.boolean)
-    } else if (this.some !== null) {
-      string = this.some.getString();
-    } else if (this.every !== null) {
-      string = this.every.getString();
-    } else if (this.reduce !== null) {
-      string = this.reduce.getString();
-    } else if (this.ternary !== null) {
-      string = this.ternary.getString();
-    } else if (this.variable !== null) {
-      string = this.variable.getString();
-    } else if (this.nodeQuery !== null) {
-      string = this.nodeQuery.getString();
-    } else if (this.nodesQuery !== null) {
-      string = this.nodesQuery.getString();
-    } else if (this.comparison !== null) {
-      string = this.comparison.getString();
-    } else if (this.returnBlock !== null) {
-      string = this.returnBlock.getString();
-    } else if (this.procedureCall !== null) {
-      string = this.procedureCall.getString();
-    } else if (this.negatedExpression !== null) {
-      string = this.negatedExpression.getString();
-    } else if (this.logicalExpression !== null) {
-      string = this.logicalExpression.getString();
-    } else if (this.bracketedExpression !== null) {
-      string = this.bracketedExpression.getString();
-    }
-
-    return string;
-  }
-
   evaluate(context) {
     let expression;
 
@@ -204,8 +162,8 @@ export default define(class Expression {
     } else if ((this.node !== null)  ||
                (this.nodes !== null) ||
                (this.number !== null) ||
-               (this.string !== null) ||
-               (this.boolean !== null)) {
+               (this.boolean !== null) ||
+               (this.stringLiteral !== null)) {
       expression = this;
     } else if (this.some !== null) {
       expression = this.some.evaluate(context);
@@ -271,14 +229,14 @@ export default define(class Expression {
       const number = expression.getNumber();
 
       equalTo = (this.number === number);
-    } else if (this.string !== null) {
-      const string = expression.getString();
-
-      equalTo = (this.string === string);
     } else if (this.boolean !== null) {
       const boolean = expression.getBoolean();
 
       equalTo = (this.boolean === boolean);
+    } else if (this.stringLiteral !== null) {
+      const stringLiteral = expression.getStringLiteral();
+
+      equalTo = (this.stringLiteral === stringLiteral);
     } else {
       debugger
     }
@@ -315,48 +273,4 @@ function matchNodes(nodesA, nodesB) {
   });
 
   return nodesMatch;
-}
-
-function nodeAsString(node, context) {
-  let string;
-
-  const nodeString  = (node === nullNode) ?
-                        NULL :
-                          context.nodeAsString(node);
-
-  string = `'${nodeString}'`;
-
-  return string;
-}
-
-function nodesAsString(nodes, context) {
-  let string;
-
-  const nodesString = context.nodesAsString(nodes);
-
-  string = `'${nodesString}'`;
-
-  return string;
-}
-
-function numberAsString(number) {
-  let string;
-
-  string = `${number}`;
-
-  return string;
-}
-
-function stringAsString(string) {
-  string = `"${string}"`; ///
-
-  return string;
-}
-
-function booleanAsString(boolean) {
-  let string;
-
-  string = `'${boolean}'`;
-
-  return string;
 }

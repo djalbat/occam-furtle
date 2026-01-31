@@ -29,7 +29,7 @@ export default define(class NamedParameter {
   }
 
   matchExpression(expression, context) {
-    const expressionString = expression.asString(context),
+    const expressionString = expression.getString(),
           namedParameterString = this.string;  ///
 
     context.trace(`Matching the ${expressionString} expression against the '${namedParameterString}' named parameter...`);

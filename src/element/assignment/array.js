@@ -35,7 +35,7 @@ export default define(class ArrayAssigment {
           expressionType = expression.getType();
 
     if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
@@ -68,7 +68,7 @@ export default define(class ArrayAssigment {
   }
 
   evaluateParameter(parameter, expression, context) {
-    const expressionString = expression.asString(context),
+    const expressionString = expression.getString(),
           parameterString = parameter.getString();
 
     context.trace(`Evaluating the '${parameterString}' parameter against the ${expressionString} expression...`);

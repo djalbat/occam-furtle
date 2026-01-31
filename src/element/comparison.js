@@ -42,8 +42,8 @@ export default define(class Comparison {
           rightExpressionType = rightExpression.getType();
 
     if (leftExpressionType !== rightExpressionType) {
-      const leftExpressionString = leftExpression.asString(context),
-            rightExpressionString = rightExpression.asString(context),
+      const leftExpressionString = leftExpression.getString(),
+            rightExpressionString = rightExpression.getString(),
             message = `The ${leftExpressionString} left expression's type is '${leftExpressionType}' whereas the ${rightExpressionString} right expression's type is '${rightExpressionType}'.`,
             exception = Exception.fromMessage(message);
 

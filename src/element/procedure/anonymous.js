@@ -41,7 +41,7 @@ export default define(class AnonymousProcedure {
           expressionType = expression.getType();
 
     if (this.type !== expressionType) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 

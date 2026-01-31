@@ -38,7 +38,7 @@ export default define(class Every {
     const expressionType = expression.getType();
 
     if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
@@ -60,7 +60,7 @@ export default define(class Every {
             const expressionType = expression.getType();
 
             if (expressionType !== BOOLEAN_TYPE) {
-              const expressionString = expression.asString(context),
+              const expressionString = expression.getString(),
                     message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 

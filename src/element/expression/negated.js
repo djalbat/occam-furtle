@@ -37,7 +37,7 @@ export default define(class NegatedExpression {
     const expressionType = expression.getType();
 
     if (expressionType !== BOOLEAN_TYPE) {
-      const expressionString = expression.asString(context),
+      const expressionString = expression.getString(),
             message = `The ${expressionString} left expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
