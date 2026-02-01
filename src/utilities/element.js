@@ -96,9 +96,9 @@ export function variableFromVariableNode(variableNode, context) {
   const { Variable } = elements,
         node = variableNode,  ///
         string = context.nodeAsString(node),
-        type = null,
+        type = typeFromVariableNode(variableNode, context),
         name = nameFromVariableNode(variableNode, context),
-        expression = null,
+        expression = expressionFromVariableNode(variableNode, context),
         variable = new Variable(string, type, name, expression);
 
   return variable;
@@ -390,6 +390,12 @@ export function nameFromVariableNode(variableNode) {
   return name;
 }
 
+export function typeFromVariableNode(variableNode, context) {
+  const type = null;
+
+  return type;
+}
+
 export function variableFromEveryNode(everyNode, context) {
   const variableNode = everyNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -457,7 +463,7 @@ export function queryFromNodesQueryNode(nodesQueryNode, context) {
 }
 
 export function nodesFromExpressionNode(expressionNode, context) {
-  const nodes = null;  ///
+  const nodes = null;
 
   return nodes;
 }
@@ -546,6 +552,12 @@ export function negatedFromComparisonNode(comparisonNode, context) {
   const negated = comparisonNode.isNegated();
 
   return negated;
+}
+
+export function expressionFromVariableNode(variableNode, context) {
+  const expression = null;
+
+  return expression;
 }
 
 export function variableFromNodesQueryNode(nodesQueryNode, context) {
@@ -706,7 +718,7 @@ export function referenceFromProcedureCallNode(procedureCallNode, context) {
 export function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = elements,
         name = nameFromVariableNode(variableNode),
-        expression = null,
+        expression = expressionFromTypeAndVariableNode(type, variableNode, context),
         variableString = variableStringFromName(name),
         string = variableString,  ///
         variable = new Variable(string, type, name, expression);
@@ -797,6 +809,12 @@ export function typeFromProcedureDeclarationNode(procedureDeclarationNode, conte
   const type = procedureDeclarationNode.getType();
 
   return type;
+}
+
+export function expressionFromTypeAndVariableNode(type, variableNode, context) {
+  const expression = null;
+
+  return expression;
 }
 
 export function rightExpressionFromCompzrisonNode(comparisonNode, context) {
@@ -946,14 +964,14 @@ export function returnBlockFromProcedureDeclarationNode(procedureDeclarationNode
 
 export function leftExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
   const leftExpressionNode = logicalExpressionNode.getLeftExpressionNode(),
-    leftExpression = expressionFromExpressionNode(leftExpressionNode, context);
+        leftExpression = expressionFromExpressionNode(leftExpressionNode, context);
 
   return leftExpression;
 }
 
 export function rightExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
   const rightExpressionNode = logicalExpressionNode.getRightExpressionNode(),
-    rightExpression = expressionFromExpressionNode(rightExpressionNode, context);
+        rightExpression = expressionFromExpressionNode(rightExpressionNode, context);
 
   return rightExpression;
 }
