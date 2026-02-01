@@ -2,14 +2,14 @@
 
 import StatementNode from "../../node/statement";
 
-import { PRIMITIVE_RULE_NAME } from "../../ruleNames";
+import { TERM_RULE_NAME } from "../../ruleNames";
 
 export default class ReturnStatementNode extends StatementNode {
-  getPrimitiveNode() {
-    const ruleName = PRIMITIVE_RULE_NAME,
-          expressionNode = this.getNodeByRuleName(ruleName);
+  getTermNode() {
+    const ruleName = TERM_RULE_NAME,
+          termNode = this.getNodeByRuleName(ruleName);
 
-    return expressionNode;
+    return termNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return StatementNode.fromRuleNameChildNodesOpacityAndPrecedence(ReturnStatementNode, ruleName, childNodes, opacity, precedence); }

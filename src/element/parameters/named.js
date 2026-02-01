@@ -34,17 +34,17 @@ export default define(class NamedParameters {
 
   forEachNamedParameter(callback) { this.array.forEach(callback); }
 
-  matchExpressions(expressions, context) {
-    const expressionsString = expressions.getString(),
+  matchTerms(terms, context) {
+    const termsString = terms.getString(),
           namedParametersString = this.string; ///
 
-    context.trace(`Matching the ${expressionsString} expressions against the '${namedParametersString}' named parameters...`);
+    context.trace(`Matching the ${termsString} terms against the '${namedParametersString}' named parameters...`);
 
-    const expressionsLength = expressions.getLength(),
+    const termsLength = terms.getLength(),
           namedParametersLength = this.getLength();
 
-    if (expressionsLength !== namedParametersLength) {
-      const message = `The ${expressionsString} expressions and '${namedParametersString}' named parameters are not of the same length.`,
+    if (termsLength !== namedParametersLength) {
+      const message = `The ${termsString} terms and '${namedParametersString}' named parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -52,13 +52,13 @@ export default define(class NamedParameters {
 
     this.forEachNamedParameter((namedParameter, index) => {
       if (namedParameter !== null) {
-        const expression = expressions.getExpression(index);
+        const term = terms.getTerm(index);
 
-        namedParameter.matchExpression(expression, context);
+        namedParameter.matchTerm(term, context);
       }
     });
 
-    context.debug(`...matched the ${expressionsString} expressions against the '${namedParametersString}' named parameters.`);
+    context.debug(`...matched the ${termsString} terms against the '${namedParametersString}' named parameters.`);
   }
 
   matchNamedParameter(namedParameter, context) {

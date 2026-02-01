@@ -6,12 +6,12 @@ import { termFromNode } from "../utilities/term";
 import { termsStringFromTermsArray } from "../utilities/string";
 
 export function termsFromNodes(nodes, context) {
-  const { Primitives } = elements,
+  const { Terms } = elements,
         termsArray = termsArrayFromNodes(nodes, context),
         termsString = termsStringFromTermsArray(termsArray),
         string = termsString, ///
         array = termsArray, ///
-        terms = new Primitives(string, array);
+        terms = new Terms(string, array);
 
   return terms;
 }

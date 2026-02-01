@@ -29,13 +29,24 @@ export function stepFromStepNode(stepNode, context) {
 
 export function someFromSomeNode(someNode, context) {
   const { Some } = elements,
-        variable = variableFromSomeNode(someNode, context),
-        anonymousProcedure = anonymousProcedureFromSomeNode(someNode, context),
-        someString = someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure),
-        string = someString,  ///
-        some = new Some(string, variable, anonymousProcedure);
+    variable = variableFromSomeNode(someNode, context),
+    anonymousProcedure = anonymousProcedureFromSomeNode(someNode, context),
+    someString = someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure),
+    string = someString,  ///
+    some = new Some(string, variable, anonymousProcedure);
 
   return some;
+}
+
+export function termFromTermNode(termNode, context) {
+  const { Term } = elements,
+        node = termNode,  ///
+        string = context.nodeAsString(node),
+        variable = variableFromTermNode(termNode, context),
+        primitive = primitiveFromTermNode(termNode, context),
+        term = new Term(string, variable, primitive);
+
+  return term;
 }
 
 export function termsFromTermsNode(termsNode, context) {
@@ -302,8 +313,8 @@ export function returnStatementFromReturnStatementNode(returnStatementNode, cont
   const { ReturnStatement } = elements,
         node = returnStatementNode, ///
         string = context.nodeAsString(node),
-        primitive = primitiveFromReturnStatementNode(returnStatementNode, context),
-        returnStatement = new ReturnStatement(string, primitive);
+        term = termFromReturnStatementNode(returnStatementNode, context),
+        returnStatement = new ReturnStatement(string, term);
 
   return returnStatement;
 }
@@ -394,6 +405,18 @@ export function variableFromSomeNode(someNode, context) {
   return variable;
 }
 
+export function variableFromTermNode(termNode, context) {
+  let variable = null;
+
+  const variableNode = termNode.getVariableNode();
+
+  if (variableNode !== null) {
+    variable = variableFromVariableNode(variableNode, context);
+  }
+
+  return variable;
+}
+
 export function nameFromVariableNode(variableNode) {
   const name = variableNode.getName();
 
@@ -404,6 +427,18 @@ export function typeFromVariableNode(variableNode, context) {
   const type = null;
 
   return type;
+}
+
+export function primitiveFromTermNode(termNode, context) {
+  let primitive = null;
+
+  const primitiveNode = termNode.getPrimitiveNode();
+
+  if (primitiveNode !== null) {
+    primitive = primitiveFromPrimitiveNode(primitiveNode, context);
+  }
+
+  return primitive;
 }
 
 export function variableFromEveryNode(everyNode, context) {
@@ -657,6 +692,13 @@ export function aliasFromNamedParameterNode(namedParameterNode, context) {
   return alias;
 }
 
+export function termFromReturnStatementNode(returnStatementNode, context) {
+  const termNode = returnStatementNode.getTermNode(),
+        term = termFromTermNode(termNode, context);
+
+  return term;
+}
+
 export function objectAssignmentFromStepNode(stepNode, context) {
   let objectAssignment = null;
 
@@ -831,13 +873,6 @@ export function typeFromProcedureDeclarationNode(procedureDeclarationNode, conte
   const type = procedureDeclarationNode.getType();
 
   return type;
-}
-
-export function primitiveFromReturnStatementNode(returnStatementNode, context) {
-  const primitiveNode = returnStatementNode.getPrimitiveNode(),
-        primitive = primitiveFromPrimitiveNode(primitiveNode, context);
-
-  return primitive;
 }
 
 export function expressionFromTypeAndVariableNode(type, variableNode, context) {
@@ -1031,7 +1066,7 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
 
 export function termsArrayFromTermNodes(termNodes, context) {
   const termsArray = termNodes.map((termNode) => { ///
-    const term = termFromTermode(termNode, context);
+    const term = termFromTermNode(termNode, context);
 
     return term;
   });

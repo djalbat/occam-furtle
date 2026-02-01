@@ -51,7 +51,7 @@ export default define(class Procedure {
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    this.parameters.matchExpressions(terms, context);
+    this.parameters.matchTerms(terms, context);
 
     const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
           expression = this.returnBlock.evaluate(variables, context),

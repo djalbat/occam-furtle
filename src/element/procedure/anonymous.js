@@ -3,7 +3,7 @@
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { variablesFromExpressionsAndParameters } from "../procedure";
+import { variablesFromTermsAndParameters } from "../procedure";
 
 export default define(class AnonymousProcedure {
   constructor(string, type, parameters, returnBlock) {
@@ -29,20 +29,20 @@ export default define(class AnonymousProcedure {
     return this.returnBlock;
   }
 
-  call(expressions, context) {
+  call(terms, context) {
     const anonymousProcedureString = this.string; ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
 
-    this.parameters.matchExpressions(expressions, context);
+    this.parameters.matchTerms(terms, context);
 
-    const variables = variablesFromExpressionsAndParameters(expressions, this.parameters, context),
-          expression = this.returnBlock.evaluate(variables, context),
-          expressionType = expression.getType();
+    const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
+          term = this.returnBlock.evaluate(variables, context),
+          termType = term.getType();
 
-    if (this.type !== expressionType) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
+    if (this.type !== termType) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -50,7 +50,7 @@ export default define(class AnonymousProcedure {
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
 
-    return expression;
+    return term;
   }
 
   static name = "AnonymousProcedure";
