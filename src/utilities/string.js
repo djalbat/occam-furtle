@@ -6,10 +6,9 @@ import { NULL } from "../constants";
 import { stringFromStringLiteral } from "./stringLiteral";
 
 export function variableStringFromName(name) {
-  const nameString = name,  ///
-        string = nameString;  ///
+  const variableString = name;  ///
 
-  return string;
+  return variableString;
 }
 
 export function expressionStringFromNode(node, context) {

@@ -4,7 +4,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { expressionFromBoolean } from "../../utilities/element";
+import { expressionFromBoolean } from "../../utilities/expression";
 
 export default define(class NegatedExpression {
   constructor(string, type, expression) {

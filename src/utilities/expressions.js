@@ -2,7 +2,7 @@
 
 import elements from "../elements";
 
-import { expressionsArrayFromNodes } from "../utilities/element";
+import { expressionFromNode } from "../utilities/expression";
 import { expressionsStringFromExpressionsArray } from "../utilities/string";
 
 export function expressionsFromNodes(nodes, context) {
@@ -16,6 +16,31 @@ export function expressionsFromNodes(nodes, context) {
   return expressions;
 }
 
+export function expressionsFromExpression(expression, context) {
+  const { Expressions } = elements,
+        expressionsArray = [
+          expression
+        ],
+        expressionsString = expressionsStringFromExpressionsArray(expressionsArray),
+        string = expressionsString, ///
+        array = expressionsArray, ///
+        expressions = new Expressions(string, array);
+
+  return expressions;
+}
+
 export default {
-  expressionsFromNodes
+  expressionsFromNodes,
+  expressionsFromExpression
 };
+
+function expressionsArrayFromNodes(nodes, context) {
+  const expressionsArray = nodes.map((node) => { ///
+    const expression = expressionFromNode(node, context);
+
+    return expression;
+  });
+
+  return expressionsArray;
+}
+

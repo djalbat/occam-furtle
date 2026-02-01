@@ -1,10 +1,10 @@
 "use strict";
 
+import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
-import { variableFromExpressionAndParameter } from "../utilities/element";
 
 export default define(class Procedure {
   constructor(string, type, label, parameters, returnBlock) {
@@ -80,7 +80,8 @@ export function variablesFromExpressionsAndParameters(expressions, parameters, c
     const parameter = parameters.getParameter(index);
 
     if (parameter !== null) {
-      const variable = variableFromExpressionAndParameter(expression, parameter, context);
+      const { Variable } = elements,
+            variable = Variable.fromExpressionAndParameter(expression, parameter, context);
 
       variables.push(variable);
     }

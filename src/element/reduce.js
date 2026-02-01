@@ -5,7 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE } from "../types";
-import { expressionFromNode } from "../utilities/element";
+import { expressionFromNode } from "../utilities/expression";
 
 export default define(class Reduce {
   constructor(string, variable, initialExpression, anonymousProcedure) {

@@ -1,16 +1,12 @@
 "use strict";
 
-import { arrayUtilities } from "necessary";
+import Exception from "../exception";
 
-import Exception from "../../exception";
+import { define } from "../elements";
+import { NODE_TYPE } from "../types";
+import { expressionFromNodes } from "../utilities/expression";
 
-import { define } from "../../elements";
-import { NODE_TYPE } from "../../types";
-import { expressionFromNode } from "../../utilities/element";
-
-const { first } = arrayUtilities;
-
-export default define(class NodeQuery {
+export default define(class NodesQuery {
   constructor(string, variable, query) {
     this.string = string;
     this.variable = variable;
@@ -32,12 +28,12 @@ export default define(class NodeQuery {
   evaluate(context) {
     let expression;
 
-    const nodeQueryString = this.string;  ///
+    const nodesQueryString = this.string;  ///
 
-    context.trace(`Evaluating the '${nodeQueryString}' node query...`);
+    context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
 
     if (this.query === null) {
-      const message = `Cannot evaluate the '${nodeQueryString}' node query because its expression is malformed.`,
+      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its expression is malformed.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -69,26 +65,14 @@ export default define(class NodeQuery {
 
     node = expressionNode; ///
 
-    const nodes = this.query.execute(node),
-          nodesLength = nodes.length;
+    const nodes = this.query.execute(node);
 
-    if (nodesLength !== 1) {
-      const message = `The length of the returned nodes is ${nodesLength} when it should be 1.`,
-            exception = Exception.fromMessage(message);
+    expression = expressionFromNodes(nodes, context);
 
-      throw exception;
-    }
-
-    const firstNode = first(nodes);
-
-    node = firstNode; ///
-
-    expression = expressionFromNode(node, context);
-
-    context.debug(`...evaluated the '${nodeQueryString}' node query.`);
+    context.debug(`...evaluated the '${nodesQueryString}' nodes query.`);
 
     return expression;
   }
 
-  static name = "NodeQuery";
+  static name = "NodesQuery";
 });

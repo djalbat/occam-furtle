@@ -6,11 +6,6 @@ import elements from "../elements";
 
 import { BOOLEAN_TYPE } from "../types";
 import { variableStringFromName,
-         expressionStringFromNode,
-         expressionStringFromNodes,
-         expressionStringFromBoolean,
-         expressionStringFromStringLiteral,
-         expressionsStringFromExpressionsArray,
          returnBlockStringFromReturnStatementNode,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
@@ -382,58 +377,6 @@ export function nameFromLabelNode(labelNode, context) {
   return name;
 }
 
-export function expressionFromNode(node, context) {
-  const { Expression } = elements,
-        expressionString = expressionStringFromNode(node, context),
-        string = expressionString,  ///
-        nodes = null,
-        number = null,
-        boolean = null,
-        stringLiteral = null,
-        some = null,
-        every = null,
-        reduce = null,
-        ternary = null,
-        variable = null,
-        nodeQuery = null,
-        nodesQuery = null,
-        comparison = null,
-        returnBlock = null,
-        procedureCall = null,
-        negatedExpression = null,
-        logicalExpression = null,
-        bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-  return expression;
-}
-
-export function expressionFromNodes(nodes, context) {
-  const { Expression } = elements,
-        expressionString = expressionStringFromNodes(nodes, context),
-        string = expressionString,  ///
-        node = null,
-        number = null,
-        boolean = null,
-        ternary = null,
-        stringLiteral = null,
-        some = null,
-        every = null,
-        reduce = null,
-        variable = null,
-        nodeQuery = null,
-        nodesQuery = null,
-        comparison = null,
-        returnBlock = null,
-        procedureCall = null,
-        negatedExpression = null,
-        logicalExpression = null,
-        bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-  return expression;
-}
-
 export function variableFromSomeNode(someNode, context) {
   const variableNode = someNode.getVariableNode(), ///
         variable = variableFromVariableNode(variableNode, context);
@@ -445,44 +388,6 @@ export function nameFromVariableNode(variableNode) {
   const name = variableNode.getName();
 
   return name;
-}
-
-export function expressionFromBoolean(boolean, context) {
-  const { Expression } = elements,
-        expressionString = expressionStringFromBoolean(boolean),
-        node = null,
-        nodes = null,
-        number = null,
-        stringLiteral = null,
-        some = null,
-        every = null,
-        reduce = null,
-        ternary = null,
-        variable = null,
-        nodeQuery = null,
-        nodesQuery = null,
-        comparison = null,
-        returnBlock = null,
-        procedureCall = null,
-        negatedExpression = null,
-        logicalExpression = null,
-        bracketedExpression = null,
-        string = expressionString,  ///
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-  return expression;
-}
-
-export function variableFromParameter(parameter, context) {
-  const { Variable } = elements,
-        type = parameter.getType(),
-        name = parameter.getName(),
-        expression = null,
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        variable = new Variable(string, type, name, expression);
-
-  return variable;
 }
 
 export function variableFromEveryNode(everyNode, context) {
@@ -605,19 +510,6 @@ export function stepsFromReturnBlockNode(returnBlockNode, context) {
   return steps;
 }
 
-export function expressionsFromExpression(expression, context) {
-  const { Expressions } = elements,
-        expressionsArray = [
-          expression
-        ],
-        expressionsString = expressionsStringFromExpressionsArray(expressionsArray),
-        string = expressionsString, ///
-        array = expressionsArray, ///
-        expressions = new Expressions(string, array);
-
-  return expressions;
-}
-
 export function expressionFromTernaryNode(ternaryNode, context) {
   const expressionNode = ternaryNode.getExpressionNode(),
         expression = expressionFromExpressionNode(expressionNode, context);
@@ -654,19 +546,6 @@ export function negatedFromComparisonNode(comparisonNode, context) {
   const negated = comparisonNode.isNegated();
 
   return negated;
-}
-
-export function variableFromNamedParameter(namedParameter, context) {
-  const { Variable } = elements,
-        aliasedName = namedParameter.getAliasedName(),
-        type = namedParameter.getType(),
-        name = aliasedName, ///
-        expression = null,
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        variable = new Variable(string, type, name, expression);
-
-  return variable;
 }
 
 export function variableFromNodesQueryNode(nodesQueryNode, context) {
@@ -719,32 +598,6 @@ export function ifExpressionFromTernaryNode(ternaryNode, context) {
   return ifExpression;
 }
 
-export function expressionFromStringLiteral(stringLiteral, context) {
-  const { Expression } = elements,
-        expressionString = expressionStringFromStringLiteral(stringLiteral),
-        string = expressionString,  ///
-        node = null,
-        nodes = null,
-        number = null,
-        boolean = null,
-        some = null,
-        every = null,
-        reduce = null,
-        ternary = null,
-        variable = null,
-        nodeQuery = null,
-        nodesQuery = null,
-        comparison = null,
-        returnBlock = null,
-        procedureCall = null,
-        negatedExpression = null,
-        logicalExpression = null,
-        bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
-
-  return expression;
-}
-
 export function nodeQueryFromExpressionNode(expressionNode, context) {
   let nodeQuery = null;
 
@@ -755,6 +608,12 @@ export function nodeQueryFromExpressionNode(expressionNode, context) {
   }
 
   return nodeQuery;
+}
+
+export function aliasFromNamedParameterNode(namedParameterNode, context) {
+  const alias = namedParameterNode.getAlias();
+
+  return alias;
 }
 
 export function objectAssignmentFromStepNode(stepNode, context) {
@@ -791,12 +650,6 @@ export function comparisonFromExpressionNode(expressionNOde, context) {
   }
 
   return comparison;
-}
-
-export function aliasFromNamedParameterNode(namedParameterNode, context) {
-  const alias = namedParameterNode.getAlias();
-
-  return alias;
 }
 
 export function elseExpressionFromTernaryNode(ternaryNode, context) {
@@ -981,17 +834,6 @@ export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
   return returnStatement;
 }
 
-export function variableFromExpressionAndParameter(expression, parameter, context) {
-  const { Variable } = elements,
-        type = parameter.getType(),
-        name = parameter.getName(),
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        variable = new Variable(string, type, name, expression);
-
-  return variable;
-}
-
 export function negatedExpressionFromExpressionNode(expressionNode, context) {
   let negatedExpression = null;
 
@@ -1145,16 +987,6 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
         assignment = new VariableAssignment(string, variable, expression);
 
   return assignment;
-}
-
-export function expressionsArrayFromNodes(nodes, context) {
-  const expressionsArray = nodes.map((node) => { ///
-    const expression = expressionFromNode(node, context);
-
-    return expression;
-  });
-
-  return expressionsArray;
 }
 
 export function paramtersArrayFromParametersNode(parametersNode, context) {

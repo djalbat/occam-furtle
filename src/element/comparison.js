@@ -3,7 +3,7 @@
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { expressionFromBoolean } from "../utilities/element";
+import { expressionFromBoolean } from "../utilities/expression";
 
 export default define(class Comparison {
   constructor(string, negated, leftExpression, rightExpression) {

@@ -1,13 +1,14 @@
 "use strict";
 
+import elements from "../../elements";
 import Exception from "../../exception";
 import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
+import { expressionFromNodes, expressionFromBoolean, expressionFromStringLiteral } from "../../utilities/expression";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
-import { expressionFromNodes, expressionFromStringLiteral, expressionFromBoolean, variableFromNamedParameter } from "../../utilities/element";
 
 export default define(class ObjectAssigment {
   constructor(string, variable, namedParameters) {
@@ -81,7 +82,8 @@ export default define(class ObjectAssigment {
       }
     }
 
-    const variable = variableFromNamedParameter(namedParameter, context);
+    const { Variable } = elements,
+          variable = Variable.fromNamedParameter(namedParameter, context);
 
     variable.assign(expression, context);
 

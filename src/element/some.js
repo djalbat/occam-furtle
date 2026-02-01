@@ -4,7 +4,8 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-import { expressionFromNode, expressionFromBoolean, expressionsFromExpression } from "../utilities/element";
+import { expressionsFromExpression } from "../utilities/expressions";
+import { expressionFromNode, expressionFromBoolean } from "../utilities/expression";
 
 export default define(class Some {
   constructor(string, variable, anonymousProcedure) {

@@ -1,10 +1,10 @@
 "use strict";
 
+import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { expressionFromNode } from "../../utilities/element";
-import { variableFromParameter } from "../../utilities/element";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment {
@@ -82,7 +82,8 @@ export default define(class ArrayAssigment {
       throw exception;
     }
 
-    const variable = variableFromParameter(parameter, context);
+    const { Variable } = elements,
+          variable = Variable.fromParameter(parameter, context);
 
     variable.assign(expression, context);
 

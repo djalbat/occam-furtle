@@ -5,7 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-import { expressionFromNode, expressionFromBoolean } from "../utilities/element";
+import { expressionFromNode, expressionFromBoolean } from "../utilities/expression";
 
 export default define(class Every {
   constructor(string, variable, anonymousProcedure) {

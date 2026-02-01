@@ -3,6 +3,7 @@
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { variableStringFromName } from "../utilities/string";
 
 export default define(class Variable {
   constructor(string, type, name, expression) {
@@ -95,4 +96,37 @@ export default define(class Variable {
   }
 
   static name = "Variable";
+
+  static fromParameter(parameter, context) {
+    const type = parameter.getType(),
+          name = parameter.getName(),
+          expression = null,
+          variableString = variableStringFromName(name),
+          string = variableString,  ///
+          variable = new Variable(string, type, name, expression);
+
+    return variable;
+  }
+
+  static fromNamedParameter(namedParameter, context) {
+    const aliasedName = namedParameter.getAliasedName(),
+          type = namedParameter.getType(),
+          name = aliasedName, ///
+          expression = null,
+          variableString = variableStringFromName(name),
+          string = variableString,  ///
+          variable = new Variable(string, type, name, expression);
+
+    return variable;
+  }
+
+  static fromExpressionAndParameter(expression, parameter, context) {
+    const type = parameter.getType(),
+          name = parameter.getName(),
+          variableString = variableStringFromName(name),
+          string = variableString,  ///
+          variable = new Variable(string, type, name, expression);
+
+    return variable;
+  }
 });
