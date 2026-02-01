@@ -2,6 +2,8 @@
 
 export const STEP_RULE_NAME = "step";
 export const SOME_RULE_NAME = "some";
+export const TERM_RULE_NAME = "term";
+export const TERMS_RULE_NAME = "terms";
 export const EVERY_RULE_NAME = "every";
 export const LABEL_RULE_NAME = "label";
 export const ERROR_RULE_NAME = "error";
@@ -12,7 +14,6 @@ export const NONSENSE_RULE_NAME = "nonsense";
 export const PRIMITIVE_RULE_NAME = "primitive";
 export const REFERENCE_RULE_NAME = "reference";
 export const PARAMETER_RULE_NAME = "parameter";
-export const PRIMITIVES_RULE_NAME = "primitives";
 export const NODE_QUERY_RULE_NAME = "nodeQuery";
 export const EXPRESSION_RULE_NAME = "expression";
 export const COMPARISON_RULE_NAME = "comparison";

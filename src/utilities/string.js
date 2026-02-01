@@ -32,25 +32,25 @@ export function primtiveStringFromBoolean(boolean) {
   return expresssionString;
 }
 
+export function termsStringFromTermsArray(termsArray) {
+  const termsString = termsArray.reduce((termsString, term) => {
+    const termString = term.getString();
+
+    termsString = (termsString === null) ?
+                    termString :
+                     `${termsString}, ${termString}`;
+
+    return termsString;
+  }, null); ///
+
+  return termsString;
+}
+
 export function primtiveStringFromStringLiteral(stringLiteral) {
   const string = stringFromStringLiteral(stringLiteral),
         primtiveString = string;  ///
 
   return primtiveString;
-}
-
-export function primitivesStringFromPrimitivesArray(primitivesArray) {
-  const primitivesString = primitivesArray.reduce((primitivesString, primitive) => {
-    const primitiveString = primitive.getString();
-
-    primitivesString = (primitivesString === null) ?
-                         primitiveString :
-                           `${primitivesString}, ${primitiveString}`;
-
-    return primitivesString;
-  }, null); ///
-
-  return primitivesString;
 }
 
 export function returnBlockStringFromReturnStatementNode(returnStatement) {

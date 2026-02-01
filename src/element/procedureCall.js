@@ -41,12 +41,12 @@ export default define(class ProcedureCall {
     }
 
     const procedure = context.findProcedureByName(name),
-          expressions = this.expressions.evaluate(context),
-          expression = procedure.call(expressions, context);
+          terms = this.expressions.evaluate(context),
+          term = procedure.call(terms, context);
 
     context.debug(`...evaluated the '${procedureCallString}' procedure call.`);
 
-    return expression;
+    return term;
   }
 
   static name = "ProcedureCall";

@@ -19,17 +19,17 @@ export default define(class BracketedExpression {
   getType() { return this.expression.getType(); }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const bracketedExpressionString = this.string; ///
 
     context.trace(`Evaluating the '${bracketedExpressionString}' bracketed expression...`);
 
-    expression = this.expression.evaluate(context);
+    term = this.expression.evaluate(context);
 
     context.debug(`...evaluated the '${bracketedExpressionString}' bracketed expression.`);
 
-    return expression;
+    return term;
   }
 
   static name = "BracketedExpression";

@@ -2,6 +2,8 @@
 
 import StepNode from "./node/step";
 import SomeNode from "./node/some";
+import TermNode from "./node/term";
+import TermsNode from "./node/terms";
 import EveryNode from "./node/every";
 import LabelNode from "./node/label";
 import ErrorNode from "./node/error";
@@ -17,7 +19,6 @@ import ExpressionNode from "./node/expression";
 import ComparisonNode from "./node/comparison";
 import ParametersNode from "./node/parameters";
 import NodesQueryNode from "./node/nodesQuery";
-import PrimitivesNode from "./node/primitives";
 import ReturnBlockNode from "./node/returnBlock";
 import ProcedureCallNode from "./node/procedureCall";
 import NamedParameterNode from "./node/parameter/named";
@@ -35,6 +36,8 @@ import ProcedureDeclarationNode from "./node/declaration/procedure";
 
 import { STEP_RULE_NAME,
          SOME_RULE_NAME,
+         TERM_RULE_NAME,
+         TERMS_RULE_NAME,
          EVERY_RULE_NAME,
          LABEL_RULE_NAME,
          ERROR_RULE_NAME,
@@ -49,7 +52,6 @@ import { STEP_RULE_NAME,
          EXPRESSION_RULE_NAME,
          COMPARISON_RULE_NAME,
          PARAMETERS_RULE_NAME,
-         PRIMITIVES_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
@@ -69,6 +71,8 @@ import { STEP_RULE_NAME,
 const NonTerminalNodeMap = {
   [STEP_RULE_NAME]: StepNode,
   [SOME_RULE_NAME]: SomeNode,
+  [TERM_RULE_NAME]: TermNode,
+  [TERMS_RULE_NAME]: TermsNode,
   [EVERY_RULE_NAME]: EveryNode,
   [LABEL_RULE_NAME]: LabelNode,
   [ERROR_RULE_NAME]: ErrorNode,
@@ -83,7 +87,6 @@ const NonTerminalNodeMap = {
   [EXPRESSION_RULE_NAME]: ExpressionNode,
   [COMPARISON_RULE_NAME]: ComparisonNode,
   [PARAMETERS_RULE_NAME]: ParametersNode,
-  [PRIMITIVES_RULE_NAME]: PrimitivesNode,
   [NODES_QUERY_RULE_NAME]: NodesQueryNode,
   [RETURN_BLOCK_RULE_NAME]: ReturnBlockNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,

@@ -3,7 +3,7 @@
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { expressionFromBoolean } from "../utilities/expression";
+import { termFromBoolean } from "../utilities/term";
 
 export default define(class Comparison {
   constructor(string, negated, leftExpression, rightExpression) {
@@ -30,7 +30,7 @@ export default define(class Comparison {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const comparisonString = this.string; ///
 
@@ -58,11 +58,11 @@ export default define(class Comparison {
       boolean = !boolean; ///
     }
 
-    expression = expressionFromBoolean(boolean, context);
+    term = termFromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${comparisonString}' comparison.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Comparison";

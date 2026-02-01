@@ -3,14 +3,14 @@
 import { define } from "../elements";
 
 export default define(class Expression {
-  constructor(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
+  constructor(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
     this.string = string;
+    this.variable = variable;
     this.primitive = primitive;
     this.some = some;
     this.every = every;
     this.reduce = reduce;
     this.ternary = ternary;
-    this.variable = variable;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
     this.comparison = comparison;
@@ -23,6 +23,10 @@ export default define(class Expression {
 
   getString() {
     return this.string;
+  }
+
+  getVariable() {
+    return this.variable;
   }
 
   getPrimitive() {
@@ -43,10 +47,6 @@ export default define(class Expression {
 
   getTernary() {
     return this.ternay;
-  }
-
-  getVariable() {
-    return this.variable;
   }
 
   getNodeQuery() {
@@ -96,6 +96,8 @@ export default define(class Expression {
 
     if (false) {
       ///
+    } else if (this.variable !== null) {
+      type = this.variable.getType();
     } else if (this.primitive !== null) {
       type = this.primitive.getType();
     } else if (this.some !== null) {
@@ -106,8 +108,6 @@ export default define(class Expression {
       type = this.reduce.getType();
     } else if (this.ternary !== null) {
       type = this.ternary.getType();
-    } else if (this.variable !== null) {
-      type = this.variable.getType();
     } else if (this.nodeQuery !== null) {
       type = this.nodeQuery.getType();
     } else if (this.nodesQuery !== null) {
@@ -130,41 +130,41 @@ export default define(class Expression {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     if (false) {
       ///
-    } else if (this.primitive !== null) {
-      expression = this.primitive.evaluate(context);
-    } else if (this.some !== null) {
-      expression = this.some.evaluate(context);
-    } else if (this.every !== null) {
-      expression = this.every.evaluate(context);
-    } else if (this.reduce !== null) {
-      expression = this.reduce.evaluate(context);
-    } else if (this.ternary !== null) {
-      expression = this.ternary.evaluate(context);
     } else if (this.variable !== null) {
-      expression = this.variable.evaluate(context);
+      term = this.variable.evaluate(context);
+    } else if (this.primitive !== null) {
+      term = this.primitive.evaluate(context);
+    } else if (this.some !== null) {
+      term = this.some.evaluate(context);
+    } else if (this.every !== null) {
+      term = this.every.evaluate(context);
+    } else if (this.reduce !== null) {
+      term = this.reduce.evaluate(context);
+    } else if (this.ternary !== null) {
+      term = this.ternary.evaluate(context);
     } else if (this.nodeQuery !== null) {
-      expression = this.nodeQuery.evaluate(context);
+      term = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
-      expression = this.nodesQuery.evaluate(context);
+      term = this.nodesQuery.evaluate(context);
     } else if (this.comparison !== null) {
-      expression = this.comparison.evaluate(context);
+      term = this.comparison.evaluate(context);
     } else if (this.returnBlock !== null) {
-      expression = this.returnBlock.evaluate(context);
+      term = this.returnBlock.evaluate(context);
     } else if (this.procedureCall !== null) {
-      expression = this.procedureCall.evaluate(context);
+      term = this.procedureCall.evaluate(context);
     } else if (this.negatedExpression !== null) {
-      expression = this.negatedExpression.evaluate(context);
+      term = this.negatedExpression.evaluate(context);
     } else if (this.logicalExpression !== null) {
-      expression = this.logicalExpression.evaluate(context);
+      term = this.logicalExpression.evaluate(context);
     } else if (this.bracketedExpression !== null) {
-      expression = this.bracketedExpression.evaluate(context);
+      term = this.bracketedExpression.evaluate(context);
     }
 
-    return expression;
+    return term;
   }
 
   isEqualTo(expression) {

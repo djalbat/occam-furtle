@@ -22,19 +22,19 @@ export default define(class VariableAssignment {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const variableAssignmentString = this.string; ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    expression = this.expression.evaluate(context);
+    term = this.expression.evaluate(context);
 
-    this.variable.assign(expression, context);
+    this.variable.assign(term, context);
 
     context.debug(`...evaluated the '${variableAssignmentString}' variable assignment.`);
 
-    return expression;
+    return term;
   }
 
   static name = "VariableAssignment";

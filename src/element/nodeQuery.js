@@ -6,7 +6,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODE_TYPE } from "../types";
-import { expressionFromNode } from "../utilities/expression";
+import { termFromNode } from "../utilities/term";
 
 const { first } = arrayUtilities;
 
@@ -30,7 +30,7 @@ export default define(class NodeQuery {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const nodeQueryString = this.string;  ///
 
@@ -43,23 +43,23 @@ export default define(class NodeQuery {
       throw exception;
     }
 
-    expression = this.variable.evaluate(context);
+    term = this.variable.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== NODE_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
+    if (termType !== NODE_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const expressionNode = expression.getNode();
+    const termNode = term.getNode();
 
-    if (expressionNode === null) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's node is null.`,
+    if (termNode === null) {
+      const termString = term.getString(),
+            message = `The ${termString} term's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -67,7 +67,7 @@ export default define(class NodeQuery {
 
     let node;
 
-    node = expressionNode; ///
+    node = termNode; ///
 
     const nodes = this.query.execute(node),
           nodesLength = nodes.length;
@@ -83,11 +83,11 @@ export default define(class NodeQuery {
 
     node = firstNode; ///
 
-    expression = expressionFromNode(node, context);
+    term = termFromNode(node, context);
 
     context.debug(`...evaluated the '${nodeQueryString}' node query.`);
 
-    return expression;
+    return term;
   }
 
   static name = "NodeQuery";

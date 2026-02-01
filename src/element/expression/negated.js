@@ -4,7 +4,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { expressionFromBoolean } from "../../utilities/expression";
+import { termFromBoolean } from "../../utilities/term";
 
 export default define(class NegatedExpression {
   constructor(string, type, expression) {
@@ -26,33 +26,33 @@ export default define(class NegatedExpression {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const negatedExpressionString = this.string; ///
 
     context.trace(`Evaluating the '${negatedExpressionString}' negated expression...`);
 
-    expression = this.expression.evaluate(context);
+    term = this.term.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== BOOLEAN_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} left expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (termType !== BOOLEAN_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} left term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    let boolean = expression.getBoolean();
+    let boolean = term.getBoolean();
 
     boolean = !boolean;
 
-    expression = expressionFromBoolean(boolean, context);
+    term = termFromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${negatedExpressionString}' negated expression.`);
 
-    return expression;
+    return term;
   }
 
   static name = "NegatedExpression";

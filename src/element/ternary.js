@@ -30,33 +30,33 @@ export default define(class Ternary {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const ternaryString = this.string; ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    expression = this.expression.evaluate(context);
+    term = this.expression.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== BOOLEAN_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (termType !== BOOLEAN_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const boolean = expression.getBoolean();
+    const boolean = term.getBoolean();
 
-    expression = boolean ?
+    term = boolean ?
               this.ifExpression.evaluate(context) :
                 this.elseExpression.evaluate(context);
 
     context.debug(`...evaluated the '${ternaryString}' ternary.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Ternary";

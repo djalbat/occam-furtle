@@ -1,11 +1,10 @@
 "use strict";
 
-import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { expressionFromBoolean } from "../../utilities/expression";
+import { termFromBoolean } from "../../utilities/term";
 
 export default define(class LogicalExpression {
   constructor(string, type, disjunction, leftExpression, rightExpression) {
@@ -37,14 +36,13 @@ export default define(class LogicalExpression {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const logicalExpressionString = this.string; ///
 
     context.trace(`Evaluating the '${logicalExpressionString}' logical expression...`);
 
-    const { Expression } = elements,
-          leftExpression = this.leftExpression.evaluate(context),
+    const leftExpression = this.leftExpression.evaluate(context),
           rightExpression = this.rightExpression.evaluate(context),
           leftExpressionType = leftExpression.getType(),
           rightExpressionType = rightExpression.getType();
@@ -71,11 +69,11 @@ export default define(class LogicalExpression {
                       (leftExpressionBoolean || rightExpressionBoolean) :
                         (leftExpressionBoolean && rightExpressionBoolean);
 
-    expression = expressionFromBoolean(boolean, context);
+    term = termFromBoolean(boolean, context);
 
     context.debug(`...evaluated the '${logicalExpressionString}' logical expression.`);
 
-    return expression;
+    return term;
   }
 
   static name = "LogicalExpression";

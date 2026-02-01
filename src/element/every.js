@@ -5,7 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-import { expressionFromNode, expressionFromBoolean } from "../utilities/expression";
+import { termFromNode, termFromBoolean } from "../utilities/term";
 
 export default define(class Every {
   constructor(string, variable, anonymousProcedure) {
@@ -27,56 +27,56 @@ export default define(class Every {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const everyString = this.getString();
 
     context.trace(`Evaluating the '${everyString}' every...`);
 
-    expression = this.variable.evaluate(context);
+    term = this.variable.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
+    if (termType !== NODES_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = expression.getNodes(),
+    const nodes = term.getNodes(),
           boolean = nodes.every((node) => {
-            let expression;
+            let term;
 
-            const { Expressions } = elements;
+            const { Terms } = elements;
 
-            expression = expressionFromNode(node, context);
+            term = termFromNode(node, context);
 
-            const expressions = Expressions.fromExpression(expression, context);
+            const terms = Terms.fromTerm(term, context);
 
-            expression = this.anonymousProcedure.call(expressions, context);
+            term = this.anonymousProcedure.call(terms, context);
 
-            const expressionType = expression.getType();
+            const termType = term.getType();
 
-            if (expressionType !== BOOLEAN_TYPE) {
-              const expressionString = expression.getString(),
-                    message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            if (termType !== BOOLEAN_TYPE) {
+              const termString = term.getString(),
+                    message = `The ${termString} term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;
             }
 
-            const boolean = expression.getBoolean();
+            const boolean = term.getBoolean();
 
             return boolean;
           });
 
-    expression = expressionFromBoolean(boolean, context);
+    term = termFromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${everyString}' every.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Every";

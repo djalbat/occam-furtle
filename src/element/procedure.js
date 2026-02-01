@@ -46,14 +46,14 @@ export default define(class Procedure {
 
   matchName(name) { return this.label.matchName(name); }
 
-  call(primitives, context) {
+  call(terms, context) {
     const procedureString = this.string;  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    this.parameters.matchExpressions(primitives, context);
+    this.parameters.matchExpressions(terms, context);
 
-    const variables = variablesFromPrimitivesAndParameters(primitives, this.parameters, context),
+    const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
           expression = this.returnBlock.evaluate(variables, context),
           expressionType = expression.getType();
 
@@ -73,15 +73,15 @@ export default define(class Procedure {
   static name = "Procedure";
 });
 
-export function variablesFromPrimitivesAndParameters(primitives, parameters, context) {
+export function variablesFromTermsAndParameters(terms, parameters, context) {
   const variables = [];
 
-  primitives.forEachPrimitive((primitive, index) => {
+  terms.forEachTerm((term, index) => {
     const parameter = parameters.getParameter(index);
 
     if (parameter !== null) {
       const { Variable } = elements,
-            variable = Variable.fromPrimitiveAndParameter(primitive, parameter, context);
+            variable = Variable.fromTermAndParameter(term, parameter, context);
 
       variables.push(variable);
     }

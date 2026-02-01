@@ -64,9 +64,9 @@ export default define(class Primitive {
   }
 
   evaluate(context) {
-    const expression = this;  ///
+    const term = this;  ///
 
-    return expression;
+    return term;
   }
 
   isEqualTo(primitive) {

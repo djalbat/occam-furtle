@@ -2,6 +2,8 @@
 
 import Step from "./element/step";
 import Some from "./element/some";
+import Term from "./element/term";
+import Terms from "./element/terms";
 import Label from "./element/label";
 import Error from "./element/error";
 import Every from "./element/every";
@@ -17,7 +19,6 @@ import Parameters from "./element/parameters";
 import NodesQuery from "./element/nodesQuery";
 import Comparison from "./element/comparison";
 import Expression from "./element/expression";
-import Primitives from "./element/primitives";
 import ReturnBlock from "./element/returnBlock";
 import ProcedureCall from "./element/procedureCall";
 import NamedParameter from "./element/parameter/named";

@@ -4,7 +4,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { expressionFromNode } from "../../utilities/element";
+import { termFromNode } from "../../utilities/element";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment {
@@ -31,18 +31,18 @@ export default define(class ArrayAssigment {
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
 
-    const expression = this.variable.evaluate(context),
-          expressionType = expression.getType();
+    const term = this.variable.evaluate(context),
+          termType = term.getType();
 
-    if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
+    if (termType !== NODES_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = expression.getNodes(),
+    const nodes = term.getNodes(),
           nodesLength = nodes.length,
           parametersLength = this.parameters.getLength();
 
@@ -58,9 +58,9 @@ export default define(class ArrayAssigment {
     this.parameters.forEachParameter((parameter, index) => {
       if (parameter !== null) {
         const node = nodes[index],
-              expression = expressionFromNode(node, context);
+              term = termFromNode(node, context);
 
-        this.evaluateParameter(parameter, expression, context);
+        this.evaluateParameter(parameter, term, context);
       }
     });
 

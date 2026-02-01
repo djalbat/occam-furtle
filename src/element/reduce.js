@@ -5,7 +5,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE } from "../types";
-import { expressionFromNode } from "../utilities/expression";
+import { termFromNode } from "../utilities/term";
 
 export default define(class Reduce {
   constructor(string, variable, initialExpression, anonymousProcedure) {
@@ -32,48 +32,48 @@ export default define(class Reduce {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const reduceString = this.getString();
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    expression = this.variable.evaluate(context);
+    term = this.variable.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
+    if (termType !== NODES_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${expressionType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = expression.getNodes(),
+    const nodes = term.getNodes(),
           initialExpression = this.initialExpression.evaluate(context);
 
-    expression = nodes.reduce((currentExpression, node) => {
-      let expression;
+    term = nodes.reduce((currentExpression, node) => {
+      let term;
 
-      const { Expressions } = elements;
+      const { Terms } = elements;
 
-      expression = currentExpression; ///
+      term = currentTerm; ///
 
-      const expressions = Expressions.fromExpression(expression, context);
+      const terms = Terms.fromTerm(term, context);
 
-      expression = expressionFromNode(node, context);
+      term = termFromNode(node, context);
 
-      expressions.addExpression(expression);
+      terms.addTerm(term);
 
-      expression = this.anonymousProcedure.call(expressions, context);
+      term = this.anonymousProcedure.call(terms, context);
 
-      return expression;
+      return term;
     }, initialExpression);
 
     context.trace(`...evaluated the '${reduceString}' reduce.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Reduce";

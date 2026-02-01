@@ -1,11 +1,11 @@
 "use strict";
 
+import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { termFromNode } from "../utilities/term";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-import { expressionsFromExpression } from "../utilities/primitives";
-import { expressionFromNode, expressionFromBoolean } from "../utilities/expression";
 
 export default define(class Some {
   constructor(string, variable, anonymousProcedure) {
@@ -27,54 +27,55 @@ export default define(class Some {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const someString = this.getString();
 
     context.trace(`Evaluating the '${someString}' some...`);
 
-    expression = this.variable.evaluate(context);
+    term = this.variable.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== NODES_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODES_TYPE}'.`,
+    if (termType !== NODES_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = expression.getNodes(),
+    const nodes = term.getNodes(),
           boolean = nodes.some((node) => {
-            let expression;
+            let term;
 
-            expression = expressionFromNode(node, context);
+            term = termFromNode(node, context);
 
-            const expressions = expressionsFromExpression(expression, context);
+            const { Terms } = elements,
+                  terms = Terms.fromTerm(term, context);
 
-            expression = this.anonymousProcedure.call(expressions, context);
+            term = this.anonymousProcedure.call(terms, context);
 
-            const expressionType = expression.getType();
+            const termType = term.getType();
 
-            if (expressionType !== BOOLEAN_TYPE) {
-              const expressionString = expression.getString(),
-                    message = `The ${expressionString} expression's type is '${expressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            if (termType !== BOOLEAN_TYPE) {
+              const termString = term.getString(),
+                    message = `The ${termString} term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;
             }
 
-            const boolean = expression.getBoolean();
+            const boolean = term.getBoolean();
 
             return boolean;
           });
 
-    expression = expressionFromBoolean(boolean, context);
+    term = termFromBoolean(boolean, context);
 
     context.trace(`...evaluated the '${someString}' some.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Some";

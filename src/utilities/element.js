@@ -38,6 +38,18 @@ export function someFromSomeNode(someNode, context) {
   return some;
 }
 
+export function termsFromTermsNode(termsNode, context) {
+  const { Terms } = elements,
+        node = termsNode, ///
+        string = context.nodeAsString(node),
+        termNodes = termsNode.getTermNodes(),
+        termsArray = termsArrayFromTermNodes(termNodes, context),
+        array = termsArray, ///
+        terms = new Terms(string, array);
+
+  return terms;
+}
+
 export function errorFromErrorNode(errorNode, context) {
   const { Error } = elements,
         node = errorNode, ///
@@ -192,12 +204,12 @@ export function parametersFromParametersNode(parametersNode, context) {
 
 export function expressionFromExpressionNode(expressionNode, context) {
   const { Expression } = elements,
+        variable = variableFromExpressionNode(expressionNode, context),
         primitive = primitiveFromExpressionNode(expressionNode, context),
         some = someFromExpressionNode(expressionNode, context),
         every = everyFromExpressionNode(expressionNode, context),
         reduce = reduceFromExpressionNode(expressionNode, context),
         ternary = ternaryFromExpressionNode(expressionNode, context),
-        variable = variableFromExpressionNode(expressionNode, context),
         nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
         nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
         comparison = comparisonFromExpressionNode(expressionNode, context),
@@ -223,21 +235,9 @@ export function expressionFromExpressionNode(expressionNode, context) {
         ],
         expressionString = expressionStringFromPrimitiveAndProperties(primitive, properties, context),
         string = expressionString,  ///
-        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
-}
-
-export function expressionsFromExpressionsNode(expressionsNode, context) {
-  const { Expressions } = elements,
-        node = expressionsNode, ///
-        string = context.nodeAsString(node),
-        expressionNodes = expressionsNode.getExpressionNodes(),
-        expressionsArray = expressionsArrayFromExpressionNodes(expressionNodes, context),
-        array = expressionsArray,
-        expressions = new Expressions(string, array);
-
-  return expressions;
 }
 
 export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
@@ -257,7 +257,7 @@ export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
         node = procedureCallNode, ///
         string = context.nodeAsString(node),
         reference = referenceFromProcedureCallNode(procedureCallNode, context),
-        expressions = expressionsFromProcedureCallNode(procedureCallNode, context),
+        expressions = termsFromProcedureCallNode(procedureCallNode, context),
         procedureCall = new ProcedureCall(string, reference, expressions);
 
   return procedureCall;
@@ -589,6 +589,13 @@ export function variableFromExpressionNode(expressionNode, context) {
   return variable;
 }
 
+export function termsFromProcedureCallNode(procedureCallNode, context) {
+  const termsNode = procedureCallNode.getTermsNode(),
+        terms = termsFromTermsNode(termsNode, context);
+
+  return terms;
+}
+
 export function typeFromNamedParameterNode(namedParameterNode, context) {
   const type = namedParameterNode.getType();
 
@@ -820,13 +827,6 @@ export function variableFromObjectAssignmentNode(objectAssignmentNode, context) 
   return variable;
 }
 
-export function expressionsFromProcedureCallNode(procedureCallNode, context) {
-  const expressionsNode = procedureCallNode.getExpressionsNode(),
-        expressions = expressionsFromExpressionsNode(expressionsNode, context);
-
-  return expressions;
-}
-
 export function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const type = procedureDeclarationNode.getType();
 
@@ -1029,6 +1029,16 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
   return assignment;
 }
 
+export function termsArrayFromTermNodes(termNodes, context) {
+  const termsArray = termNodes.map((termNode) => { ///
+    const term = termFromTermode(termNode, context);
+
+    return term;
+  });
+
+  return termsArray;
+}
+
 export function paramtersArrayFromParametersNode(parametersNode, context) {
   const parameterNodes = parametersNode.getParameterNodes(),
         paramtersArray = parameterNodes.map((parameterNode) => { ///
@@ -1038,16 +1048,6 @@ export function paramtersArrayFromParametersNode(parametersNode, context) {
         });
 
   return paramtersArray;
-}
-
-export function expressionsArrayFromExpressionNodes(expressionNodes, context) {
-  const expressionsArray = expressionNodes.map((expressionNode) => { ///
-          const expression = expressionFromExpressionNode(expressionNode, context);
-
-          return expression;
-        });
-
-  return expressionsArray;
 }
 
 export function namedParamtersArrayFromNamedParameterNodes(namedParameterNodes, context) {

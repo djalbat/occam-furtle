@@ -4,7 +4,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODE_TYPE } from "../types";
-import { expressionFromNodes } from "../utilities/expression";
+import { termFromNodes } from "../utilities/term";
 
 export default define(class NodesQuery {
   constructor(string, variable, query) {
@@ -26,36 +26,36 @@ export default define(class NodesQuery {
   }
 
   evaluate(context) {
-    let expression;
+    let term;
 
     const nodesQueryString = this.string;  ///
 
     context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
 
     if (this.query === null) {
-      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its expression is malformed.`,
+      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its term is malformed.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    expression = this.variable.evaluate(context);
+    term = this.variable.evaluate(context);
 
-    const expressionType = expression.getType();
+    const termType = term.getType();
 
-    if (expressionType !== NODE_TYPE) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type should be '${NODE_TYPE}'.`,
+    if (termType !== NODE_TYPE) {
+      const termString = term.getString(),
+            message = `The ${termString} term's '${termType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const expressionNode = expression.getNode();
+    const termNode = term.getNode();
 
-    if (expressionNode === null) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's node is null.`,
+    if (termNode === null) {
+      const termString = term.getString(),
+            message = `The ${termString} term's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -63,15 +63,15 @@ export default define(class NodesQuery {
 
     let node;
 
-    node = expressionNode; ///
+    node = termNode; ///
 
     const nodes = this.query.execute(node);
 
-    expression = expressionFromNodes(nodes, context);
+    term = termFromNodes(nodes, context);
 
     context.debug(`...evaluated the '${nodesQueryString}' nodes query.`);
 
-    return expression;
+    return term;
   }
 
   static name = "NodesQuery";

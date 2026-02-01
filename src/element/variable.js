@@ -6,11 +6,11 @@ import { define } from "../elements";
 import { variableStringFromName } from "../utilities/string";
 
 export default define(class Variable {
-  constructor(string, type, name, prmitive) {
+  constructor(string, type, name, term) {
     this.string = string;
     this.type = type;
     this.name = name;
-    this.prmitive = prmitive;
+    this.term = term;
   }
 
   getString() {
@@ -25,8 +25,8 @@ export default define(class Variable {
     return this.name;
   }
 
-  getPrimitive() {
-    return this.prmitive;
+  getTerm() {
+    return this.term;
   }
 
   matchVariableName(variableName) {
@@ -52,22 +52,22 @@ export default define(class Variable {
     }
 
     const variable = context.findVariableByVariableName(variableName),
-          prmitive = variable.getExpression(),
-          prmitiveString = prmitive.getString();
+          term = variable.getTerm(),
+          termString = term.getString();
 
-    context.debug(`...evaluated the '${variableString}' variable to the '${prmitiveString}' prmitive.`);
+    context.debug(`...evaluated the '${variableString}' variable to the '${termString}' term.`);
 
-    return prmitive;
+    return term;
   }
 
-  assign(prmitive, context) {
+  assign(term, context) {
     const nested = false,
-          prmitiveString = prmitive.getString(),
+          termString = term.getString(),
           variableName = this.name, ///
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
-    context.trace(`Assigning the '${prmitiveString}' prmitive to the '${variableString}' variable...`);
+    context.trace(`Assigning the '${termString}' term to the '${variableString}' variable...`);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.`,
@@ -76,23 +76,23 @@ export default define(class Variable {
       throw exception;
     }
 
-    const prmitiveType = prmitive.getType(),
+    const termType = term.getType(),
           variableType = this.type;
 
-    if (prmitiveType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not match the prmitive's '${prmitiveType}' type.'`,
+    if (termType !== variableType) {
+      const message = `The '${variableString} variable's '${variableType}' type does not match the term's '${termType}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.prmitive = prmitive;
+    this.term = term;
 
     const variable = this;  ///
 
     context.addVariable(variable);
 
-    context.debug(`...assigned the '${prmitiveString}' prmitive to the '${variableString}' variable.`);
+    context.debug(`...assigned the '${termString}' term to the '${variableString}' variable.`);
   }
 
   static name = "Variable";
@@ -100,10 +100,10 @@ export default define(class Variable {
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
-          prmitive = null,
+          primitive = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, prmitive);
+          variable = new Variable(string, type, name, primitive);
 
     return variable;
   }
@@ -112,20 +112,20 @@ export default define(class Variable {
     const aliasedName = namedParameter.getAliasedName(),
           type = namedParameter.getType(),
           name = aliasedName, ///
-          prmitive = null,
+          primitive = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, prmitive);
+          variable = new Variable(string, type, name, primitive);
 
     return variable;
   }
 
-  static fromPrimitiveAndParameter(primitive, parameter, context) {
+  static fromTermAndParameter(term, parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, prmitive);
+          variable = new Variable(string, type, name, term);
 
     return variable;
   }
