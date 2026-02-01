@@ -2,24 +2,24 @@
 
 const { Query } = require("occam-query"),
       { arrayUtilities } = require("necessary"),
-      { expressionsUtilities } = require("../../lib/index");  ///
+      { primitivesUtilities } = require("../../lib/index");  ///
 
 const { first } = arrayUtilities,
-      { expressionsFromNodes } = expressionsUtilities;
+      { primitivesFromNodes } = primitivesUtilities;
 
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");
 
-function expressionsFromFileContext(fileContext, free = true) {
+function primitivesFromFileContext(fileContext, free = true) {
   const context = fileContext,  ///
         nodes = nodesFromFileContext(fileContext, free),
-        expressions = expressionsFromNodes(nodes, context);
+        primitives = primitivesFromNodes(nodes, context);
 
-  return expressions;
+  return primitives;
 }
 
 module.exports = {
-  expressionsFromFileContext
+  primitivesFromFileContext
 };
 
 function nodesFromFileContext(fileContext, free) {

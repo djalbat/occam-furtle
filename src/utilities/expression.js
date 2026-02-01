@@ -2,7 +2,7 @@
 
 import elements from "../elements";
 
-import { primtiveStringFromNode, primtiveStringFromNodes, primtiveStringFromBoolean, primtiveStringFromStringLiteral } from "../utilities/string";
+import { primitiveFromNode, primitiveFromNodes, primitiveFromBoolean, primitiveFromStringLiteral } from "../utilities/primitive";
 
 export function expressionFromNode(node, context) {
   const { Expression } = elements,
@@ -90,56 +90,4 @@ export function expressionFromStringLiteral(stringLiteral, context) {
         expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
-}
-
-function primitiveFromNode(node, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromNode(node, context),
-        string = primitiveString,  ///
-        nodes = null,
-        number = null,
-        boolean = null,
-        stringLiteral = null,
-        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
-
-  return primitive;
-}
-
-function primitiveFromNodes(nodes, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromNodes(nodes, context),
-        string = primitiveString,  ///
-        node = null,
-        number = null,
-        boolean = null,
-        stringLiteral = null,
-        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
-
-  return primitive;
-}
-
-function primitiveFromBoolean(boolean, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromBoolean(boolean),
-        string = primitiveString,  ///
-        node = null,
-        nodes = null,
-        number = null,
-        stringLiteral = null,
-        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
-
-  return primitive;
-}
-
-function primitiveFromStringLiteral(stringLiteral, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromStringLiteral(stringLiteral),
-        string = primitiveString,  ///
-        node = null,
-        nodes = null,
-        number = null,
-        boolean = null,
-        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
-
-  return primitive;
 }

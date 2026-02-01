@@ -2,7 +2,7 @@
 
 import NonTerminalNode from "../nonTerminalNode";
 
-import { REFERENCE_RULE_NAME, EXPRESSIONS_RULE_NAME } from "../ruleNames";
+import { REFERENCE_RULE_NAME, PRIMITIVES_RULE_NAME } from "../ruleNames";
 
 export default class ProcedureCallNode extends NonTerminalNode {
   getReferenceNode() {
@@ -12,11 +12,11 @@ export default class ProcedureCallNode extends NonTerminalNode {
     return referenceNode;
   }
 
-  getExpressionsNode() {
-    const ruleName = EXPRESSIONS_RULE_NAME,
-      expressionsNode = this.getNodeByRuleName(ruleName);
+  getPrimitivesNode() {
+    const ruleName = PRIMITIVES_RULE_NAME,
+          primitivesNode = this.getNodeByRuleName(ruleName);
 
-    return expressionsNode;
+    return primitivesNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ProcedureCallNode, ruleName, childNodes, opacity, precedence); }

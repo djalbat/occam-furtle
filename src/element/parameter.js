@@ -23,22 +23,22 @@ export default define(class Parameter {
     return this.name;
   }
 
-  matchExpression(expression, context) {
-    const expressionString = expression.getString(),
+  matchPrimitive(primitive, context) {
+    const primitiveString = primitive.getString(),
           parameterString = this.string;  ///
 
-    context.trace(`Matching the ${expressionString} expression against the '${parameterString}' parameter...`);
+    context.trace(`Matching the ${primitiveString} primitive against the '${parameterString}' parameter...`);
 
-    const expressionType = expression.getType();
+    const primitiveType = primitive.getType();
 
-    if (this.type !== expressionType) {
-      const message = `The ${expressionString} expression's '${expressionType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
+    if (this.type !== primitiveType) {
+      const message = `The ${primitiveString} primitive's '${primitiveType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the ${expressionString} expression against the '${parameterString}' parameter.`);
+    context.debug(`...matched the ${primitiveString} primitive against the '${parameterString}' parameter.`);
   }
 
   static name = "Parameter";

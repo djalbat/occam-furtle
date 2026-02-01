@@ -39,18 +39,18 @@ export function primtiveStringFromStringLiteral(stringLiteral) {
   return primtiveString;
 }
 
-export function expressionsStringFromExpressionsArray(expressionsArray) {
-  const expressionsString = expressionsArray.reduce((expressionsString, expression) => {
-    const expressionString = expression.getString();
+export function primitivesStringFromPrimitivesArray(primitivesArray) {
+  const primitivesString = primitivesArray.reduce((primitivesString, primitive) => {
+    const primitiveString = primitive.getString();
 
-    expressionsString = (expressionsString === null) ?
-                          expressionString :
-                            `${expressionsString}, ${expressionString}`;
+    primitivesString = (primitivesString === null) ?
+                         primitiveString :
+                           `${primitivesString}, ${primitiveString}`;
 
-    return expressionsString;
+    return primitivesString;
   }, null); ///
 
-  return expressionsString;
+  return primitivesString;
 }
 
 export function returnBlockStringFromReturnStatementNode(returnStatement) {

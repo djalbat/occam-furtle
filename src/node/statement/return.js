@@ -2,11 +2,11 @@
 
 import StatementNode from "../../node/statement";
 
-import { EXPRESSION_RULE_NAME } from "../../ruleNames";
+import { PRIMITIVE_RULE_NAME } from "../../ruleNames";
 
 export default class ReturnStatementNode extends StatementNode {
-  getExpressionNode() {
-    const ruleName = EXPRESSION_RULE_NAME,
+  getPrimitiveNode() {
+    const ruleName = PRIMITIVE_RULE_NAME,
           expressionNode = this.getNodeByRuleName(ruleName);
 
     return expressionNode;

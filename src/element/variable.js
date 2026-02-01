@@ -6,11 +6,11 @@ import { define } from "../elements";
 import { variableStringFromName } from "../utilities/string";
 
 export default define(class Variable {
-  constructor(string, type, name, expression) {
+  constructor(string, type, name, prmitive) {
     this.string = string;
     this.type = type;
     this.name = name;
-    this.expression = expression;
+    this.prmitive = prmitive;
   }
 
   getString() {
@@ -25,8 +25,8 @@ export default define(class Variable {
     return this.name;
   }
 
-  getExpression() {
-    return this.expression;
+  getPrimitive() {
+    return this.prmitive;
   }
 
   matchVariableName(variableName) {
@@ -52,22 +52,22 @@ export default define(class Variable {
     }
 
     const variable = context.findVariableByVariableName(variableName),
-          expression = variable.getExpression(),
-          expressionString = expression.getString();
+          prmitive = variable.getExpression(),
+          prmitiveString = prmitive.getString();
 
-    context.debug(`...evaluated the '${variableString}' variable to the '${expressionString}' expression.`);
+    context.debug(`...evaluated the '${variableString}' variable to the '${prmitiveString}' prmitive.`);
 
-    return expression;
+    return prmitive;
   }
 
-  assign(expression, context) {
+  assign(prmitive, context) {
     const nested = false,
-          expressionString = expression.getString(),
+          prmitiveString = prmitive.getString(),
           variableName = this.name, ///
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
-    context.trace(`Assigning the '${expressionString}' expression to the '${variableString}' variable...`);
+    context.trace(`Assigning the '${prmitiveString}' prmitive to the '${variableString}' variable...`);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.`,
@@ -76,23 +76,23 @@ export default define(class Variable {
       throw exception;
     }
 
-    const expressionType = expression.getType(),
+    const prmitiveType = prmitive.getType(),
           variableType = this.type;
 
-    if (expressionType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not match the expression's '${expressionType}' type.'`,
+    if (prmitiveType !== variableType) {
+      const message = `The '${variableString} variable's '${variableType}' type does not match the prmitive's '${prmitiveType}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.expression = expression;
+    this.prmitive = prmitive;
 
     const variable = this;  ///
 
     context.addVariable(variable);
 
-    context.debug(`...assigned the '${expressionString}' expression to the '${variableString}' variable.`);
+    context.debug(`...assigned the '${prmitiveString}' prmitive to the '${variableString}' variable.`);
   }
 
   static name = "Variable";
@@ -100,10 +100,10 @@ export default define(class Variable {
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
-          expression = null,
+          prmitive = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
+          variable = new Variable(string, type, name, prmitive);
 
     return variable;
   }
@@ -112,20 +112,20 @@ export default define(class Variable {
     const aliasedName = namedParameter.getAliasedName(),
           type = namedParameter.getType(),
           name = aliasedName, ///
-          expression = null,
+          prmitive = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
+          variable = new Variable(string, type, name, prmitive);
 
     return variable;
   }
 
-  static fromExpressionAndParameter(expression, parameter, context) {
+  static fromPrimitiveAndParameter(primitive, parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, expression);
+          variable = new Variable(string, type, name, prmitive);
 
     return variable;
   }

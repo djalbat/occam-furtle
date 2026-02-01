@@ -32,17 +32,17 @@ export default define(class Parameters {
 
   forEachParameter(callback) { this.array.forEach(callback); }
 
-  matchExpressions(expressions, context) {
-    const expressionsString = expressions.getString(),
+  matchPrimitives(primitives, context) {
+    const primitivesString = primitives.getString(),
           parametersString = this.string; ///
 
-    context.trace(`Matching the ${expressionsString} expressions against the '${parametersString}' parameters...`);
+    context.trace(`Matching the ${primitivesString} primitives against the '${parametersString}' parameters...`);
 
-    const expressionsLength = expressions.getLength(),
+    const primitivesLength = primitives.getLength(),
           parametersLength = this.getLength();
 
-    if (expressionsLength !== parametersLength) {
-      const message = `The ${expressionsString} expressions and '${parametersString}' parameters are not of the same length.`,
+    if (primitivesLength !== parametersLength) {
+      const message = `The ${primitivesString} expressions and '${parametersString}' parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -50,13 +50,13 @@ export default define(class Parameters {
 
     this.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const expression = expressions.getExpression(index);
+        const primitive = primitives.getExpression(index);
 
-        parameter.matchExpression(expression, context);
+        parameter.matchPrimitive(primitive, context);
       }
     });
 
-    context.debug(`...matched the ${expressionsString} expressions against the '${parametersString}' parameters.`);
+    context.debug(`...matched the ${primitivesString} primitives against the '${parametersString}' parameters.`);
   }
 
   static name = "Parameters";

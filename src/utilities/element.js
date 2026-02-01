@@ -145,7 +145,7 @@ export function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
 export function primitiveFromPrimitiveNode(primitiveNode, context) {
   const { Primitive } = elements,
         primitiveString = context.nodeAsString(primitiveNode),
-        string = primitiveString,
+        string = primitiveString, ///
         node = nodeFromPrimitiveNode(primitiveNode, context),
         nodes = nodesFromPrimitiveNode(primitiveNode, context),
         number = numberFromPrimitiveNode(primitiveNode, context),
@@ -302,8 +302,8 @@ export function returnStatementFromReturnStatementNode(returnStatementNode, cont
   const { ReturnStatement } = elements,
         node = returnStatementNode, ///
         string = context.nodeAsString(node),
-        expression = expressionFromReturnStatementNode(returnStatementNode, context),
-        returnStatement = new ReturnStatement(string, expression);
+        primitive = primitiveFromReturnStatementNode(returnStatementNode, context),
+        returnStatement = new ReturnStatement(string, primitive);
 
   return returnStatement;
 }
@@ -833,6 +833,13 @@ export function typeFromProcedureDeclarationNode(procedureDeclarationNode, conte
   return type;
 }
 
+export function primitiveFromReturnStatementNode(returnStatementNode, context) {
+  const primitiveNode = returnStatementNode.getPrimitiveNode(),
+        primitive = primitiveFromPrimitiveNode(primitiveNode, context);
+
+  return primitive;
+}
+
 export function expressionFromTypeAndVariableNode(type, variableNode, context) {
   const expression = null;
 
@@ -844,13 +851,6 @@ export function rightExpressionFromCompzrisonNode(comparisonNode, context) {
         rightExpression = expressionFromExpressionNode(rightExpressionNode, context);
 
   return rightExpression;
-}
-
-export function expressionFromReturnStatementNode(returnStatementNode, context) {
-  const expressionNode = returnStatementNode.getExpressionNode(),
-        expression = expressionFromExpressionNode(expressionNode, context);
-
-  return expression;
 }
 
 export function parametersFromArrayAssignmentNode(arrayAssignmentNode, context) {

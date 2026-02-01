@@ -17,7 +17,7 @@ import ExpressionNode from "./node/expression";
 import ComparisonNode from "./node/comparison";
 import ParametersNode from "./node/parameters";
 import NodesQueryNode from "./node/nodesQuery";
-import ExpressionsNode from "./node/expressions";
+import PrimitivesNode from "./node/primitives";
 import ReturnBlockNode from "./node/returnBlock";
 import ProcedureCallNode from "./node/procedureCall";
 import NamedParameterNode from "./node/parameter/named";
@@ -49,8 +49,8 @@ import { STEP_RULE_NAME,
          EXPRESSION_RULE_NAME,
          COMPARISON_RULE_NAME,
          PARAMETERS_RULE_NAME,
+         PRIMITIVES_RULE_NAME,
          NODES_QUERY_RULE_NAME,
-         EXPRESSIONS_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
          NAMED_PARAMETER_RULE_NAME,
@@ -83,8 +83,8 @@ const NonTerminalNodeMap = {
   [EXPRESSION_RULE_NAME]: ExpressionNode,
   [COMPARISON_RULE_NAME]: ComparisonNode,
   [PARAMETERS_RULE_NAME]: ParametersNode,
+  [PRIMITIVES_RULE_NAME]: PrimitivesNode,
   [NODES_QUERY_RULE_NAME]: NodesQueryNode,
-  [EXPRESSIONS_RULE_NAME]: ExpressionsNode,
   [RETURN_BLOCK_RULE_NAME]: ReturnBlockNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
   [NAMED_PARAMETER_RULE_NAME]: NamedParameterNode,

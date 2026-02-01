@@ -3,7 +3,7 @@
 const ReleaseContext = require("./context/release");
 
 const { furtleFileFromNothing } = require("./helpers/furtle"),
-      { expressionsFromFileContext } = require("./helpers/expressions"),
+      { primitivesFromFileContext } = require("./helpers/primitives"),
       { procedureFromReleaseContext } = require("./helpers/procedure"),
       { nominalFileContextFromReleaseContext } = require("./helpers/nominal");
 
@@ -27,11 +27,11 @@ releaseContext.addFileContext(fileContext);
 
 const free = true,
       procedure = procedureFromReleaseContext(releaseContext),
-      expressions = expressionsFromFileContext(fileContext, free);
+      primitives = primitivesFromFileContext(fileContext, free);
 
 // try {
 const context = fileContext,  ///
-      expression = procedure.call(expressions, context),
+      expression = procedure.call(primitives, context),
       boolean = expression.getBoolean();
 
 console.log(boolean);

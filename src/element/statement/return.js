@@ -3,9 +3,9 @@
 import { define } from "../../elements";
 
 export default define(class ReturnStatement {
-  constructor(string, expression) {
+  constructor(string, primitive) {
     this.string = string;
-    this.expression = expression;
+    this.primitive = primitive;
   }
 
   getString() {
@@ -13,21 +13,21 @@ export default define(class ReturnStatement {
   }
 
   getExpression() {
-    return this.expression;
+    return this.primitive;
   }
 
   evaluate(context) {
-    let expression;
+    let primitive;
 
     const returnStatementString = this.string;  ///
 
     context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 
-    expression = this.expression.evaluate(context);
+    primitive = this.primitive; ///
 
     context.debug(`...evaluated the '${returnStatementString}' return statement.`);
 
-    return expression;
+    return primitive;
   }
 
   static name = "ReturnStatement";
