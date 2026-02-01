@@ -4,7 +4,7 @@ import nullNode from "../nullNode";
 import NonTerminalNode from "../nonTerminalNode";
 
 import { NULL, TRUE, FALSE } from "../constants";
-import { NUMBER_TOKEN_TYPE, PRIMITIVE_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
+import { NULL_TOKEN_TYPE, NUMBER_TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
 import { SOME_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
@@ -23,7 +23,7 @@ export default class ExpressionNode extends NonTerminalNode {
   getNode() {
     let node = null;
 
-    const tokenType = PRIMITIVE_TOKEN_TYPE;
+    const tokenType = NULL_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
@@ -75,7 +75,7 @@ export default class ExpressionNode extends NonTerminalNode {
   getBoolean() {
     let boolean = null;
 
-    const tokenType = PRIMITIVE_TOKEN_TYPE;
+    const tokenType = BOOLEAN_TOKEN_TYPE;
 
     this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
