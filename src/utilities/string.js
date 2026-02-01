@@ -11,32 +11,32 @@ export function variableStringFromName(name) {
   return variableString;
 }
 
-export function expressionStringFromNode(node, context) {
-  const expressionString = (node === nullNode) ?
+export function primtiveStringFromNode(node, context) {
+  const primtiveString = (node === nullNode) ?
                              NULL :
                                context.nodeAsString(node);
 
-  return expressionString;
+  return primtiveString;
 }
 
-export function expressionStringFromNodes(nodes, context) {
+export function primtiveStringFromNodes(nodes, context) {
   const string = context.nodesAsString(nodes),
-        expressionString = string;  ///
+        primtiveString = string;  ///
 
-  return expressionString;
+  return primtiveString;
 }
 
-export function expressionStringFromBoolean(boolean) {
+export function primtiveStringFromBoolean(boolean) {
   const expresssionString = `${boolean}`;
 
   return expresssionString;
 }
 
-export function expressionStringFromStringLiteral(stringLiteral) {
+export function primtiveStringFromStringLiteral(stringLiteral) {
   const string = stringFromStringLiteral(stringLiteral),
-        expressionString = string;  ///
+        primtiveString = string;  ///
 
-  return expressionString;
+  return primtiveString;
 }
 
 export function expressionsStringFromExpressionsArray(expressionsArray) {
@@ -58,6 +58,28 @@ export function returnBlockStringFromReturnStatementNode(returnStatement) {
         returnBlockString = `{ ... ${returnStatementString} }`;
 
   return returnBlockString;
+}
+
+export function expressionStringFromPrimitiveAndProperties(primitive, properties) {
+  let expressionString;
+
+  if (false) {
+    ///
+  } else if (primitive !== null) {
+    const primitiveString = primitive.toString();
+
+    expressionString = primitiveString; ///
+  } else {
+    properties.forEach((property) => {
+      if (property !== null) {
+        const propertyString = property.getString();
+
+        expressionString = propertyString;  ///
+      }
+    });
+  }
+
+  return expressionString;
 }
 
 export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure) {
@@ -112,30 +134,3 @@ export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(v
   return reduceString;
 }
 
-export function expressionStringFromNodeNodesNumberBooleanStringLiteralAndProperties(node, nodes, number, boolean, stringLiteral, properties, context) {
-  let expressionString;
-
-  if (false) {
-    ///
-  } else if (node !== null) {
-    expressionString = expressionStringFromNode(node, context);
-  } else if (nodes !== null) {
-    expressionString = expressionStringFromNodes(nodes, context);
-  } else if (number !== null) {
-    expressionString = expressionStringFromNumber(number);
-  } else if (boolean !== null) {
-    expressionString = expressionStringFromBoolean(boolean);
-  } else if (stringLiteral !== null) {
-    expressionString = expressionStringFromStringLiteral(stringLiteral);
-  } else {
-    properties.forEach((property) => {
-      if (property !== null) {
-        const propertyString = property.getString();
-
-        expressionString = propertyString;  ///
-      }
-    });
-  }
-
-  return expressionString;
-}

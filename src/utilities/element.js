@@ -7,13 +7,13 @@ import elements from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 import { variableStringFromName,
          returnBlockStringFromReturnStatementNode,
+         expressionStringFromPrimitiveAndProperties,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
          variableAssignmentStringFromExpressionAndVariable,
          procedureStringFromTypeLabelParametersAndReturnBlock,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
-         reduceStringFromVariableInitialExpressionAndAnonymousProcedure,
-         expressionStringFromNodeNodesNumberBooleanStringLiteralAndProperties } from "../utilities/string";
+         reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
 
 export function stepFromStepNode(stepNode, context) {
   const { Step } = elements,
@@ -142,6 +142,20 @@ export function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
   return nodeQuery;
 }
 
+export function primitiveFromPrimitiveNode(primitiveNode, context) {
+  const { Primitive } = elements,
+        primitiveString = context.nodeAsString(primitiveNode),
+        string = primitiveString,
+        node = nodeFromPrimitiveNode(primitiveNode, context),
+        nodes = nodesFromPrimitiveNode(primitiveNode, context),
+        number = numberFromPrimitiveNode(primitiveNode, context),
+        boolean = booleanFromPrimitiveNode(primitiveNode, context),
+        stringLiteral = stringLiteralFromPrimitiveNode(primitiveNode, context),
+        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+
+  return primitive;
+}
+
 export function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   const { NodesQuery } = elements,
         node = nodesQueryNode,  ///
@@ -178,11 +192,7 @@ export function parametersFromParametersNode(parametersNode, context) {
 
 export function expressionFromExpressionNode(expressionNode, context) {
   const { Expression } = elements,
-        node = nodeFromExpressionNode(expressionNode, context),
-        nodes = nodesFromExpressionNode(expressionNode, context),
-        number = numberFromExpressionNode(expressionNode, context),
-        boolean = booleanFromExpressionNode(expressionNode, context),
-        stringLiteral = stringLiteralFromExpressionNode(expressionNode, context),
+        primitive = primitiveFromExpressionNode(expressionNode, context),
         some = someFromExpressionNode(expressionNode, context),
         every = everyFromExpressionNode(expressionNode, context),
         reduce = reduceFromExpressionNode(expressionNode, context),
@@ -211,9 +221,9 @@ export function expressionFromExpressionNode(expressionNode, context) {
           logicalExpression,
           bracketedExpression
         ],
-        expressionString = expressionStringFromNodeNodesNumberBooleanStringLiteralAndProperties(node, nodes, number, boolean, stringLiteral,properties, context),
+        expressionString = expressionStringFromPrimitiveAndProperties(primitive, properties, context),
         string = expressionString,  ///
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
 }
@@ -421,17 +431,23 @@ export function nameFromReferenceNode(referenceNode, context) {
   return name;
 }
 
+export function nodeFromPrimitiveNode(primitiveNode, context) {
+  const node = primitiveNode.getNode();
+
+  return node;
+}
+
+export function nodesFromPrimitiveNode(primitiveNode, context) {
+  const nodes = null;
+
+  return nodes;
+}
+
 export function variableFromReduceNode(reduceNode, context) {
   const variableNode = reduceNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
-}
-
-export function nodeFromExpressionNode(expressionNode, context) {
-  const node = expressionNode.getNode();
-
-  return node;
 }
 
 export function someFromExpressionNode(expressionNode, context) {
@@ -454,18 +470,18 @@ export function queryFromNodeQueryNode(nodeQueryNode, context) {
   return query;
 }
 
+export function numberFromPrimitiveNode(primitiveNode, context) {
+  const number = primitiveNode.getNumber();
+
+  return number;
+}
+
 export function queryFromNodesQueryNode(nodesQueryNode, context) {
   const string = nodesQueryNode.getString(),
         expressionString = string,  ///
         query = Query.fromExpressionString(expressionString);
 
   return query;
-}
-
-export function nodesFromExpressionNode(expressionNode, context) {
-  const nodes = null;
-
-  return nodes;
 }
 
 export function everyFromExpressionNode(expressionNode, context) {
@@ -478,6 +494,12 @@ export function everyFromExpressionNode(expressionNode, context) {
   }
 
   return every;
+}
+
+export function booleanFromPrimitiveNode(primitiveNode, context) {
+  const boolean = primitiveNode.getBoolean();
+
+  return boolean;
 }
 
 export function expressionFromReduceNode(reduceNode, context) {
@@ -497,12 +519,6 @@ export function reduceFromExpressionNode(expressionNode, context) {
   }
 
   return reduce;
-}
-
-export function numberFromExpressionNode(expressionNode, context) {
-  const number = expressionNode.getNumber();
-
-  return number;
 }
 
 export function stepsFromReturnBlockNode(returnBlockNode, context) {
@@ -528,12 +544,6 @@ export function variableFromNodeQueryNode(nodeQueryNode, context) {
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
-}
-
-export function booleanFromExpressionNode(expressionNode, context) {
-  const boolean = expressionNode.getBoolean();
-
-  return boolean;
 }
 
 export function ternaryFromExpressionNode(expressionNode, context) {
@@ -608,6 +618,18 @@ export function ifExpressionFromTernaryNode(ternaryNode, context) {
         ifExpression = expressionFromExpressionNode(ifExpressionNode, context);
 
   return ifExpression;
+}
+
+export function primitiveFromExpressionNode(expressionNode, context) {
+  let primitive = null;
+
+  const primitiveNode = expressionNode.getPrimitiveNode();
+
+  if (primitiveNode !== null) {
+    primitive = primitiveFromPrimitiveNode(primitiveNode, context);
+  }
+
+  return primitive;
 }
 
 export function nodeQueryFromExpressionNode(expressionNode, context) {
@@ -715,6 +737,12 @@ export function referenceFromProcedureCallNode(procedureCallNode, context) {
   return reference;
 }
 
+export function stringLiteralFromPrimitiveNode(primitiveNode, context) {
+  const stringLiteral = primitiveNode.getStringLiteral();
+
+  return stringLiteral;
+}
+
 export function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = elements,
         name = nameFromVariableNode(variableNode),
@@ -750,12 +778,6 @@ export function initialExpressionFromReduceNode(reduceNode, context) {
         initialExpression = expression; ///
 
   return initialExpression;
-}
-
-export function stringLiteralFromExpressionNode(expressionNode, context) {
-  const stringLiteral = expressionNode.getStringLiteral();
-
-  return stringLiteral;
 }
 
 export function procedureCallFromExpressionNode(expressionNode, context) {

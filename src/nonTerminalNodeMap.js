@@ -9,6 +9,7 @@ import ReduceNode from "./node/reduce";
 import TernaryNode from "./node/ternary";
 import VariableNode from "./node/variable";
 import NonsenseNode from "./node/nonsense";
+import PrimitiveNode from "./node/primitive";
 import ReferenceNode from "./node/reference";
 import ParameterNode from "./node/parameter";
 import NodeQueryNode from "./node/nodeQuery";
@@ -41,6 +42,7 @@ import { STEP_RULE_NAME,
          TERNARY_RULE_NAME,
          VARIABLE_RULE_NAME,
          NONSENSE_RULE_NAME,
+         PRIMITIVE_RULE_NAME,
          REFERENCE_RULE_NAME,
          PARAMETER_RULE_NAME,
          NODE_QUERY_RULE_NAME,
@@ -74,6 +76,7 @@ const NonTerminalNodeMap = {
   [TERNARY_RULE_NAME]: TernaryNode,
   [VARIABLE_RULE_NAME]: VariableNode,
   [NONSENSE_RULE_NAME]: NonsenseNode,
+  [PRIMITIVE_RULE_NAME]: PrimitiveNode,
   [REFERENCE_RULE_NAME]: ReferenceNode,
   [PARAMETER_RULE_NAME]: ParameterNode,
   [NODE_QUERY_RULE_NAME]: NodeQueryNode,

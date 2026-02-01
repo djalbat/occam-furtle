@@ -8,6 +8,7 @@ import Every from "./element/every";
 import Reduce from "./element/reduce";
 import Ternary from "./element/ternary";
 import Variable from "./element/variable";
+import Primitive from "./element/primitive";
 import Reference from "./element/reference";
 import Procedure from "./element/procedure";
 import NodeQuery from "./element/nodeQuery";

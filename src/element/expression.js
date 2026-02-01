@@ -1,22 +1,11 @@
 "use strict";
 
-import { arrayUtilities } from "necessary";
-
-import nullNode from "../nullNode";
-
 import { define } from "../elements";
-import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
-
-const { match } = arrayUtilities;
 
 export default define(class Expression {
-  constructor(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
+  constructor(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression) {
     this.string = string;
-    this.node = node;
-    this.nodes = nodes;
-    this.number = number;
-    this.boolean = boolean;
-    this.stringLiteral = stringLiteral;
+    this.primitive = primitive;
     this.some = some;
     this.every = every;
     this.reduce = reduce;
@@ -36,24 +25,8 @@ export default define(class Expression {
     return this.string;
   }
 
-  getNode() {
-    return this.node;
-  }
-
-  getNodes() {
-    return this.nodes;
-  }
-
-  getNumber() {
-    return this.number;
-  }
-
-  getBoolean() {
-    return this.boolean;
-  }
-
-  getStringLiteral() {
-    return this.stringLiteral;
+  getPrimitive() {
+    return this.primitive;
   }
 
   getSome() {
@@ -108,21 +81,23 @@ export default define(class Expression {
     return this.bracketedExpression;
   }
 
+  getNode() { return this.primitive.getNode(); }
+
+  getNodes() { return this.primitive.getNodes(); }
+
+  getNumber() { return this.primitive.getNumber(); }
+
+  getBoolean() { return this.primitive.getBoolean(); }
+
+  getStringLiteral() { return this.primitive.getStringLiteral(); }
+
   getType() {
     let type;
 
     if (false) {
       ///
-    } else if (this.node !== null) {
-      type = NODE_TYPE;
-    } else if (this.nodes !== null) {
-      type = NODES_TYPE;
-    } else if (this.number !== null) {
-      type = NUMBER_TYPE;
-    } else if (this.boolean !== null) {
-      type = BOOLEAN_TYPE;
-    } else if (this.stringLiteral !== null) {
-      type = STRING_TYPE;
+    } else if (this.primitive !== null) {
+      type = this.primitive.getType();
     } else if (this.some !== null) {
       type = this.some.getType();
     } else if (this.every !== null) {
@@ -159,12 +134,8 @@ export default define(class Expression {
 
     if (false) {
       ///
-    } else if ((this.node !== null)  ||
-               (this.nodes !== null) ||
-               (this.number !== null) ||
-               (this.boolean !== null) ||
-               (this.stringLiteral !== null)) {
-      expression = this;
+    } else if (this.primitive !== null) {
+      expression = this.primitive.evaluate(context);
     } else if (this.some !== null) {
       expression = this.some.evaluate(context);
     } else if (this.every !== null) {
@@ -197,82 +168,11 @@ export default define(class Expression {
   }
 
   isEqualTo(expression) {
-    let equalTo;
-
-    if (false) {
-      ///
-    } else if (this.node !== null) {
-      const node = expression.getNode();
-
-      if (node === null) {
-        equalTo = false;
-      } else {
-        const nodeA = this.node,  ///
-              nodeB = node, ///
-              nodeMatches = matchNode(nodeA, nodeB);
-
-        equalTo = nodeMatches;  ///
-      }
-    } else if (this.nodes !== null) {
-      const nodes = expression.getNode();
-
-      if (nodes === null) {
-        equalTo = false;
-      } else {
-        const nodesA = this.nodes,  ///
-              nodesB = nodes, ///
-              nodesMatch = matchNodes(nodesA, nodesB);
-
-        equalTo = nodesMatch; ///
-      }
-    } else if (this.number !== null) {
-      const number = expression.getNumber();
-
-      equalTo = (this.number === number);
-    } else if (this.boolean !== null) {
-      const boolean = expression.getBoolean();
-
-      equalTo = (this.boolean === boolean);
-    } else if (this.stringLiteral !== null) {
-      const stringLiteral = expression.getStringLiteral();
-
-      equalTo = (this.stringLiteral === stringLiteral);
-    } else {
-      debugger
-    }
+    const primitive = expression.getPrimitive(),
+          equalTo = this.primitive.isEqualTo(primitive);
 
     return equalTo;
   }
 
   static name = "Expression";
 });
-
-function matchNode(nodeA, nodeB) {
-  let nodeMatches;
-
-  if ((nodeA === nullNode) || (nodeB === nullNode)) {
-    nodeMatches = (nodeA === nodeB);
-  } else if (nodeA === nullNode) {
-    nodeMatches = false;
-  } else if (nodeB === nullNode) {
-    nodeMatches = false;
-  } else {
-    const nodeAMatchesNodeB = nodeA.match(nodeB);
-
-    nodeMatches = nodeAMatchesNodeB;  ///
-  }
-
-  return nodeMatches;
-}
-
-function matchNodes(nodesA, nodesB) {
-  const nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
-    const nodeMatches = matchNode(nodeA, nodeB);
-
-    if (nodeMatches) {
-      return true;
-    }
-  });
-
-  return nodesMatch;
-}

@@ -9,6 +9,7 @@ export const REDUCE_RULE_NAME = "reduce";
 export const TERNARY_RULE_NAME = "ternary";
 export const VARIABLE_RULE_NAME = "variable";
 export const NONSENSE_RULE_NAME = "nonsense";
+export const PRIMITIVE_RULE_NAME = "primitive";
 export const REFERENCE_RULE_NAME = "reference";
 export const PARAMETER_RULE_NAME = "parameter";
 export const NODE_QUERY_RULE_NAME = "nodeQuery";

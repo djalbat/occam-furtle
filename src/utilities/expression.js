@@ -2,16 +2,12 @@
 
 import elements from "../elements";
 
-import { expressionStringFromNode, expressionStringFromNodes, expressionStringFromBoolean, expressionStringFromStringLiteral } from "../utilities/string";
+import { primtiveStringFromNode, primtiveStringFromNodes, primtiveStringFromBoolean, primtiveStringFromStringLiteral } from "../utilities/string";
 
 export function expressionFromNode(node, context) {
   const { Expression } = elements,
-        expressionString = expressionStringFromNode(node, context),
-        string = expressionString,  ///
-        nodes = null,
-        number = null,
-        boolean = null,
-        stringLiteral = null,
+        primitive = primitiveFromNode(node, context),
+        string = primitive.getString(),
         some = null,
         every = null,
         reduce = null,
@@ -25,23 +21,19 @@ export function expressionFromNode(node, context) {
         negatedExpression = null,
         logicalExpression = null,
         bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
 }
 
 export function expressionFromNodes(nodes, context) {
   const { Expression } = elements,
-        expressionString = expressionStringFromNodes(nodes, context),
-        string = expressionString,  ///
-        node = null,
-        number = null,
-        boolean = null,
-        ternary = null,
-        stringLiteral = null,
+        primitive = primitiveFromNodes(nodes, context),
+        string = primitive.getString(),
         some = null,
         every = null,
         reduce = null,
+        ternary = null,
         variable = null,
         nodeQuery = null,
         nodesQuery = null,
@@ -51,18 +43,15 @@ export function expressionFromNodes(nodes, context) {
         negatedExpression = null,
         logicalExpression = null,
         bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
 }
 
 export function expressionFromBoolean(boolean, context) {
   const { Expression } = elements,
-        expressionString = expressionStringFromBoolean(boolean),
-        node = null,
-        nodes = null,
-        number = null,
-        stringLiteral = null,
+        primitive = primitiveFromBoolean(boolean, context),
+        string = primitive.getString(),
         some = null,
         every = null,
         reduce = null,
@@ -76,20 +65,15 @@ export function expressionFromBoolean(boolean, context) {
         negatedExpression = null,
         logicalExpression = null,
         bracketedExpression = null,
-        string = expressionString,  ///
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
 }
 
 export function expressionFromStringLiteral(stringLiteral, context) {
   const { Expression } = elements,
-        expressionString = expressionStringFromStringLiteral(stringLiteral),
-        string = expressionString,  ///
-        node = null,
-        nodes = null,
-        number = null,
-        boolean = null,
+        primitive = primitiveFromStringLiteral(stringLiteral, context),
+        string = primitive.getString(),
         some = null,
         every = null,
         reduce = null,
@@ -103,8 +87,59 @@ export function expressionFromStringLiteral(stringLiteral, context) {
         negatedExpression = null,
         logicalExpression = null,
         bracketedExpression = null,
-        expression = new Expression(string, node, nodes, number, boolean, stringLiteral, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
+        expression = new Expression(string, primitive, some, every, reduce, ternary, variable, nodeQuery, nodesQuery, comparison, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression);
 
   return expression;
 }
 
+function primitiveFromNode(node, context) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromNode(node, context),
+        string = primitiveString,  ///
+        nodes = null,
+        number = null,
+        boolean = null,
+        stringLiteral = null,
+        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+
+  return primitive;
+}
+
+function primitiveFromNodes(nodes, context) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromNodes(nodes, context),
+        string = primitiveString,  ///
+        node = null,
+        number = null,
+        boolean = null,
+        stringLiteral = null,
+        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+
+  return primitive;
+}
+
+function primitiveFromBoolean(boolean, context) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromBoolean(boolean),
+        string = primitiveString,  ///
+        node = null,
+        nodes = null,
+        number = null,
+        stringLiteral = null,
+        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+
+  return primitive;
+}
+
+function primitiveFromStringLiteral(stringLiteral, context) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromStringLiteral(stringLiteral),
+        string = primitiveString,  ///
+        node = null,
+        nodes = null,
+        number = null,
+        boolean = null,
+        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+
+  return primitive;
+}
