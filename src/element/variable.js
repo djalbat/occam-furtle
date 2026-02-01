@@ -54,7 +54,7 @@ export default define(class Variable {
           expression = variable.getExpression(),
           expressionString = expression.getString();
 
-    context.debug(`...evaluated the '${variableString}' variable to the ${expressionString} expression.`);
+    context.debug(`...evaluated the '${variableString}' variable to the '${expressionString}' expression.`);
 
     return expression;
   }
@@ -66,7 +66,7 @@ export default define(class Variable {
           variableString = this.string, ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
-    context.trace(`Assigning the ${expressionString} expression to the '${variableString}' variable...`);
+    context.trace(`Assigning the '${expressionString}' expression to the '${variableString}' variable...`);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.`,
@@ -91,7 +91,7 @@ export default define(class Variable {
 
     context.addVariable(variable);
 
-    context.debug(`...assigned the ${expressionString} expression to the '${variableString}' variable.`);
+    context.debug(`...assigned the '${expressionString}' expression to the '${variableString}' variable.`);
   }
 
   static name = "Variable";

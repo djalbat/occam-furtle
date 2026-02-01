@@ -2,10 +2,10 @@
 
 const { Query } = require("occam-query"),
       { arrayUtilities } = require("necessary"),
-      { elementUtilities } = require("../../lib/index");  ///
+      { expressionsUtilities } = require("../../lib/index");  ///
 
 const { first } = arrayUtilities,
-      { expressionsFromNodes } = elementUtilities;
+      { expressionsFromNodes } = expressionsUtilities;
 
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");

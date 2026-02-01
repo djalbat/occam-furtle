@@ -5,11 +5,11 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 
 export default define(class NamedParameter {
-  constructor(string, type, name, asName) {
+  constructor(string, type, name, alias) {
     this.string = string;
     this.type = type;
     this.name = name;
-    this.asName = asName;
+    this.alias = alias;
   }
 
   getString() {
@@ -24,8 +24,8 @@ export default define(class NamedParameter {
     return this.name;
   }
 
-  getAsName() {
-    return this.asName;
+  getAlias() {
+    return this.alias;
   }
 
   matchExpression(expression, context) {

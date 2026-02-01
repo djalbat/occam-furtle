@@ -252,19 +252,21 @@ function matchNode(nodeA, nodeB) {
 
   if ((nodeA === nullNode) || (nodeB === nullNode)) {
     nodeMatches = (nodeA === nodeB);
+  } else if (nodeA === nullNode) {
+    nodeMatches = false;
+  } else if (nodeB === nullNode) {
+    nodeMatches = false;
   } else {
-    const nodeAEqualToNodeA = nodeA.isEqualTo(nodeB);
+    const nodeAMatchesNodeB = nodeA.match(nodeB);
 
-    nodeMatches = nodeAEqualToNodeA;  ///
+    nodeMatches = nodeAMatchesNodeB;  ///
   }
 
   return nodeMatches;
 }
 
 function matchNodes(nodesA, nodesB) {
-  let nodesMatch;
-
-  nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
+  const nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
     const nodeMatches = matchNode(nodeA, nodeB);
 
     if (nodeMatches) {
