@@ -39,7 +39,7 @@ export default define(class ObjectAssigment {
 
     if (termType !== NODE_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${termType}' type should be '${NODE_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -58,7 +58,7 @@ export default define(class ObjectAssigment {
     const termString = term.getString(),
           namedParameterString = namedParameter.getString();
 
-    context.trace(`Evaluating the '${namedParameterString}' named parameter against the ${termString} term...`);
+    context.trace(`Evaluating the '${namedParameterString}' named parameter against the '${termString}' term...`);
 
     const name = namedParameter.getName();
 
@@ -87,7 +87,7 @@ export default define(class ObjectAssigment {
 
     variable.assign(term, context);
 
-    context.debug(`...evaluated the '${namedParameterString}' parameter named against the ${termString} term.`);
+    context.debug(`...evaluated the '${namedParameterString}' parameter named against the '${termString}' term.`);
   }
 
   evaluateContentNamedParameter(namedParameter, term, context) {
@@ -106,7 +106,7 @@ export default define(class ObjectAssigment {
 
     if (!nodeTerminalNode) {
       const termString = term.getString(),
-            message = `The ${termString} term's node must be terminal.`,
+            message = `The '${termString}' term's node must be terminal.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -160,7 +160,7 @@ export default define(class ObjectAssigment {
 
     if (!nodeNonTerminalNode) {
       const termString = term.getString(),
-            message = `The ${termString} term's node must be non-terminal.`,
+            message = `The '${termString}' term's node must be non-terminal.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

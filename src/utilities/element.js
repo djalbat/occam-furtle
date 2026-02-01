@@ -6,12 +6,14 @@ import elements from "../elements";
 
 import { BOOLEAN_TYPE } from "../types";
 import { variableStringFromName,
+         procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
          expressionStringFromPrimitiveAndProperties,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
-         variableAssignmentStringFromExpressionAndVariable,
+         variableAssignmentStringFromVariable,
          procedureStringFromTypeLabelParametersAndReturnBlock,
+         variableAssignmentStringFromVariableAssignmentsArray,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
 
@@ -373,10 +375,10 @@ export function bracketedExpressionFromBracketedExpressionNode(bracketedExpressi
 
 export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context) {
   const { VariableAssignments } = elements,
-        node = variableAssignmentsNode, ///
-        string = context.nodeAsString(node),
         variableAssignmentsArray = variableAssignmentsArrayFromVariableAssignmentsNode(variableAssignmentsNode, context),
+        variableAssignmentString = variableAssignmentStringFromVariableAssignmentsArray(variableAssignmentsArray),
         array = variableAssignmentsArray, ///
+        string = variableAssignmentString,  ///
         variableAssignments = new VariableAssignments(string, array);
 
   return variableAssignments;
@@ -384,9 +386,9 @@ export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmen
 
 export function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
   const { ProcedureDeclaration } = elements,
-        node = procedureDeclarationNode,  ///
-        string = context.nodeAsString(node),
         procedure = procedureFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        procedureDeclarationString = procedureDeclarationStringFromProcedure(procedure),
+        string = procedureDeclarationString,  ///
         procedureDeclaration = new ProcedureDeclaration(string, procedure);
 
   return procedureDeclaration;
@@ -1057,7 +1059,7 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
   const { VariableAssignment } = elements,
         variable = variableFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
         expression = expressionFromVariableAssignmentNode(variableAssignmentNode, context),
-        variableAssignmentString = variableAssignmentStringFromExpressionAndVariable(expression, variable, context),
+        variableAssignmentString = variableAssignmentStringFromVariable(expression, variable, context),
         string = variableAssignmentString,  ///
         assignment = new VariableAssignment(string, variable, expression);
 

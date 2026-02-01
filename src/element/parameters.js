@@ -36,13 +36,13 @@ export default define(class Parameters {
     const termsString = terms.getString(),
           parametersString = this.string; ///
 
-    context.trace(`Matching the ${termsString} terms against the '${parametersString}' parameters...`);
+    context.trace(`Matching the '${termsString}' terms against the '${parametersString}' parameters...`);
 
     const termsLength = terms.getLength(),
           parametersLength = this.getLength();
 
     if (termsLength !== parametersLength) {
-      const message = `The ${termsString} expressions and '${parametersString}' parameters are not of the same length.`,
+      const message = `The '${termsString}' expressions and '${parametersString}' parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -56,7 +56,7 @@ export default define(class Parameters {
       }
     });
 
-    context.debug(`...matched the ${termsString} terms against the '${parametersString}' parameters.`);
+    context.debug(`...matched the '${termsString}' terms against the '${parametersString}' parameters.`);
   }
 
   static name = "Parameters";

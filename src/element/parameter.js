@@ -27,18 +27,18 @@ export default define(class Parameter {
     const termString = term.getString(),
           parameterString = this.string;  ///
 
-    context.trace(`Matching the ${termString} term against the '${parameterString}' parameter...`);
+    context.trace(`Matching the '${termString}' term against the '${parameterString}' parameter...`);
 
     const termType = term.getType();
 
     if (this.type !== termType) {
-      const message = `The ${termString} term's '${termType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
+      const message = `The '${termString}' term's '${termType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the ${termString} term against the '${parameterString}' parameter.`);
+    context.debug(`...matched the '${termString}' term against the '${parameterString}' parameter.`);
   }
 
   static name = "Parameter";

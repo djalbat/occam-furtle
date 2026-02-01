@@ -44,6 +44,8 @@ export default define(class Procedure {
 
   getName() { return this.label.getName(); }
 
+  getReturnStatement() { return this.returnBlock.getReturnStatement(); }
+
   matchName(name) { return this.label.matchName(name); }
 
   call(terms, context) {
@@ -54,12 +56,12 @@ export default define(class Procedure {
     this.parameters.matchTerms(terms, context);
 
     const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
-          expression = this.returnBlock.evaluate(variables, context),
-          expressionType = expression.getType();
+          term = this.returnBlock.evaluate(variables, context),
+          termType = term.getType();
 
-    if (this.type !== expressionType) {
-      const expressionString = expression.getString(),
-            message = `The ${expressionString} expression's '${expressionType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
+    if (this.type !== termType) {
+      const termString = term.getString(),
+            message = `The '${termString}' term's '${termType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -67,7 +69,7 @@ export default define(class Procedure {
 
     context.debug(`...called the '${procedureString}' procedure.`);
 
-    return expression;
+    return term;
   }
 
   static name = "Procedure";

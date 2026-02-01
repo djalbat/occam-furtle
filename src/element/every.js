@@ -39,7 +39,7 @@ export default define(class Every {
 
     if (termType !== NODES_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${termType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -61,7 +61,7 @@ export default define(class Every {
 
             if (termType !== BOOLEAN_TYPE) {
               const termString = term.getString(),
-                    message = `The ${termString} term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+                    message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;

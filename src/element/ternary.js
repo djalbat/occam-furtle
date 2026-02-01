@@ -42,7 +42,7 @@ export default define(class Ternary {
 
     if (termType !== BOOLEAN_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

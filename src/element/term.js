@@ -59,5 +59,12 @@ export default define(class Term {
     return term;
   }
 
+  isEqualTo(expression) {
+    const primitive = expression.getPrimitive(),
+          equalTo = this.primitive.isEqualTo(primitive);
+
+    return equalTo;
+  }
+
   static name = "Term";
 });

@@ -44,7 +44,7 @@ export default define(class Reduce {
 
     if (termType !== NODES_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${expressionType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

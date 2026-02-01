@@ -36,23 +36,23 @@ export default define(class Comparison {
 
     context.trace(`Evaluating the '${comparisonString}' comparison...`);
 
-    const leftExpression = this.leftExpression.evaluate(context),
-          rightExpression = this.rightExpression.evaluate(context),
-          leftExpressionType = leftExpression.getType(),
-          rightExpressionType = rightExpression.getType();
+    const leftTerm = this.leftExpression.evaluate(context),
+          rightTerm = this.rightExpression.evaluate(context),
+          leftTermType = leftTerm.getType(),
+          rightTermType = rightTerm.getType();
 
-    if (leftExpressionType !== rightExpressionType) {
-      const leftExpressionString = leftExpression.getString(),
-            rightExpressionString = rightExpression.getString(),
-            message = `The ${leftExpressionString} left expression's type is '${leftExpressionType}' whereas the ${rightExpressionString} right expression's type is '${rightExpressionType}'.`,
+    if (leftTermType !== rightTermType) {
+      const leftTermString = leftTerm.getString(),
+            rightTermString = rightTerm.getString(),
+            message = `The '${leftTermString}' left expression's type is '${leftTermType}' whereas the '${rightTermString}' right expression's type is '${rightTermType}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const leftExpressionEqualToRightExpression = leftExpression.isEqualTo(rightExpression);
+    const leftTermEqualToRightTerm = leftTerm.isEqualTo(rightTerm);
 
-    let boolean = leftExpressionEqualToRightExpression; ///
+    let boolean = leftTermEqualToRightTerm; ///
 
     if (this.negated) {
       boolean = !boolean; ///

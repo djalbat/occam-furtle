@@ -38,7 +38,7 @@ export default define(class NegatedExpression {
 
     if (termType !== BOOLEAN_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} left term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${termString}' left term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

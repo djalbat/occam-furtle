@@ -45,7 +45,7 @@ export default define(class Variable {
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     if (!variablePresent) {
-      const message = `The '${variableString}; variable is not present.'`,
+      const message = `The '${variableString}' variable is not present.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;

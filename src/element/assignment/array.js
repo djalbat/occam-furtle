@@ -36,7 +36,7 @@ export default define(class ArrayAssigment {
 
     if (termType !== NODES_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${termType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -71,7 +71,7 @@ export default define(class ArrayAssigment {
     const expressionString = expression.getString(),
           parameterString = parameter.getString();
 
-    context.trace(`Evaluating the '${parameterString}' parameter against the ${expressionString} expression...`);
+    context.trace(`Evaluating the '${parameterString}' parameter against the '${expressionString}' expression...`);
 
     const parameterType = parameter.getType();
 
@@ -87,7 +87,7 @@ export default define(class ArrayAssigment {
 
     variable.assign(expression, context);
 
-    context.debug(`...evaluated the '${parameterString}' parameter against the ${expressionString} expression.`);
+    context.debug(`...evaluated the '${parameterString}' parameter against the '${expressionString}' expression.`);
   }
 
   static name = "ArrayAssignment";

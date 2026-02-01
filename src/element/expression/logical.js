@@ -49,7 +49,7 @@ export default define(class LogicalExpression {
 
     if (leftExpressionType !== BOOLEAN_TYPE) {
       const leftExpressionString = leftExpression.getString(),
-            message = `The ${leftExpressionString} left expression's type is '${leftExpressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${leftExpressionString}' left expression's type is '${leftExpressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -57,7 +57,7 @@ export default define(class LogicalExpression {
 
     if (rightExpressionType !== BOOLEAN_TYPE) {
       const rightExpressionString = rightExpression.getString(),
-            message = `The ${rightExpressionString} right expression's type is '${rightExpressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${rightExpressionString}' right expression's type is '${rightExpressionType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

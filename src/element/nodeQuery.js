@@ -49,7 +49,7 @@ export default define(class NodeQuery {
 
     if (termType !== NODE_TYPE) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${termType}' type should be '${NODE_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NODE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -59,7 +59,7 @@ export default define(class NodeQuery {
 
     if (termNode === null) {
       const termString = term.getString(),
-            message = `The ${termString} term's node is null.`,
+            message = `The '${termString}' term's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

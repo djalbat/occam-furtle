@@ -38,13 +38,13 @@ export default define(class NamedParameters {
     const termsString = terms.getString(),
           namedParametersString = this.string; ///
 
-    context.trace(`Matching the ${termsString} terms against the '${namedParametersString}' named parameters...`);
+    context.trace(`Matching the '${termsString}' terms against the '${namedParametersString}' named parameters...`);
 
     const termsLength = terms.getLength(),
           namedParametersLength = this.getLength();
 
     if (termsLength !== namedParametersLength) {
-      const message = `The ${termsString} terms and '${namedParametersString}' named parameters are not of the same length.`,
+      const message = `The '${termsString}' terms and '${namedParametersString}' named parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -58,7 +58,7 @@ export default define(class NamedParameters {
       }
     });
 
-    context.debug(`...matched the ${termsString} terms against the '${namedParametersString}' named parameters.`);
+    context.debug(`...matched the '${termsString}' terms against the '${namedParametersString}' named parameters.`);
   }
 
   matchNamedParameter(namedParameter, context) {

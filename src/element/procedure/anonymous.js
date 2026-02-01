@@ -42,7 +42,7 @@ export default define(class AnonymousProcedure {
 
     if (this.type !== termType) {
       const termString = term.getString(),
-            message = `The ${termString} term's '${termType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
+            message = `The '${termString}' term's '${termType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

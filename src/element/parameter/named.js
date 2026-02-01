@@ -32,18 +32,18 @@ export default define(class NamedParameter {
     const termString = term.getString(),
           namedParameterString = this.string;  ///
 
-    context.trace(`Matching the ${termString} term against the '${namedParameterString}' named parameter...`);
+    context.trace(`Matching the '${termString}' term against the '${namedParameterString}' named parameter...`);
 
     const termType = term.getType();
 
     if (this.type !== termType) {
-      const message = `The ${termString} term's '${termType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
+      const message = `The '${termString}' term's '${termType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the ${termString} term against the '${namedParameterString}' named parameter.`);
+    context.debug(`...matched the '${termString}' term against the '${namedParameterString}' named parameter.`);
   }
 
   matchNamedParameter(namedParameter, context) {
