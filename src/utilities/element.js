@@ -15,8 +15,8 @@ import { ternaryStringFromTerm,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
          procedureStringFromTypeLabelParametersAndReturnBlock,
-         variableAssignmentStringFromVariableAssignmentsArray,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
+         variableAssignmentStringFromTypeAndVariableAssignmentsArray,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
 
 export function stepFromStepNode(stepNode, context) {
@@ -184,12 +184,9 @@ export function primitiveFromPrimitiveNode(primitiveNode, context) {
   const { Primitive } = elements,
         primitiveString = context.nodeAsString(primitiveNode),
         string = primitiveString, ///
-        node = nodeFromPrimitiveNode(primitiveNode, context),
-        nodes = nodesFromPrimitiveNode(primitiveNode, context),
-        number = numberFromPrimitiveNode(primitiveNode, context),
-        boolean = booleanFromPrimitiveNode(primitiveNode, context),
-        stringLiteral = stringLiteralFromPrimitiveNode(primitiveNode, context),
-        primitive = new Primitive(string, node, nodes, number, boolean, stringLiteral);
+        type = typeFromPrimitiveNode(primitiveNode, context),
+        value = valueFromPrimitiveNode(primitiveNode, context),
+        primitive = new Primitive(string, type, value);
 
   return primitive;
 }
@@ -379,8 +376,9 @@ export function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureN
 
 export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context) {
   const { VariableAssignments } = elements,
-        variableAssignmentsArray = variableAssignmentsArrayFromVariableAssignmentsNode(variableAssignmentsNode, context),
-        variableAssignmentString = variableAssignmentStringFromVariableAssignmentsArray(variableAssignmentsArray),
+        type = typeFromVariableAssignmentsNode(variableAssignmentsNode, context),
+        variableAssignmentsArray = variableAssignmentsArrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context),
+        variableAssignmentString = variableAssignmentStringFromTypeAndVariableAssignmentsArray(type, variableAssignmentsArray),
         array = variableAssignmentsArray, ///
         string = variableAssignmentString,  ///
         variableAssignments = new VariableAssignments(string, array);
@@ -501,16 +499,10 @@ export function nameFromReferenceNode(referenceNode, context) {
   return name;
 }
 
-export function nodeFromPrimitiveNode(primitiveNode, context) {
-  const node = primitiveNode.getNode();
+export function typeFromPrimitiveNode(primitiveNode, context) {
+  const type = primitiveNode.getType();
 
-  return node;
-}
-
-export function nodesFromPrimitiveNode(primitiveNode, context) {
-  const nodes = null;
-
-  return nodes;
+  return type;
 }
 
 export function variableFromReduceNode(reduceNode, context) {
@@ -540,10 +532,10 @@ export function queryFromNodeQueryNode(nodeQueryNode, context) {
   return query;
 }
 
-export function numberFromPrimitiveNode(primitiveNode, context) {
-  const number = primitiveNode.getNumber();
+export function valueFromPrimitiveNode(primitiveNode, context) {
+  const value = primitiveNode.getValue();
 
-  return number;
+  return value;
 }
 
 export function queryFromNodesQueryNode(nodesQueryNode, context) {
@@ -601,12 +593,6 @@ export function termFromNegatedTermNode(negatedTermNode, context) {
     term = termFromTermNode(termNode, context);
 
   return term;
-}
-
-export function booleanFromPrimitiveNode(primitiveNode, context) {
-  const boolean = primitiveNode.getBoolean();
-
-  return boolean;
 }
 
 export function expressionFromReduceNode(reduceNode, context) {
@@ -884,12 +870,6 @@ export function referenceFromProcedureCallNode(procedureCallNode, context) {
   return reference;
 }
 
-export function stringLiteralFromPrimitiveNode(primitiveNode, context) {
-  const stringLiteral = primitiveNode.getStringLiteral();
-
-  return stringLiteral;
-}
-
 export function leftTermFromCompzrisonTermNode(comparisonTermNode, context) {
   const leftTermNode = comparisonTermNode.getLeftTermNode(),
         leftTerm = termFromTermNode(leftTermNode, context);
@@ -977,6 +957,13 @@ export function procedureCallFromExpressionNode(expressionNode, context) {
   return procedureCall;
 }
 
+export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
+  const rightTermNode = comparisonTermNode.getLeftTermNode(),
+        rightTerm = termFromTermNode(rightTermNode, context);
+
+  return rightTerm;
+}
+
 export function variableFromArrayAssignmentNode(arrayAssignmentNode, context) {
   const variableNode = arrayAssignmentNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -984,11 +971,10 @@ export function variableFromArrayAssignmentNode(arrayAssignmentNode, context) {
   return variable;
 }
 
-export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
-  const rightTermNode = comparisonTermNode.getLeftTermNode(),
-        rightTerm = termFromTermNode(rightTermNode, context);
+export function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
+  const type = variableAssignmentsNode.getType();
 
-  return rightTerm;
+  return type;
 }
 
 export function anonymousProcedureFromReduceNode(reduceNode, context) {
@@ -1265,9 +1251,8 @@ export function namedParamtersArrayFromNamedParameterNodes(namedParameterNodes, 
   return namedParamtersArray;
 }
 
-export function variableAssignmentsArrayFromVariableAssignmentsNode(variableAssignmentsNode, context) {
-  const type = variableAssignmentsNode.getType(),
-        variableAssignmentNodes = variableAssignmentsNode.getVariableAssignmentNodes(),
+export function variableAssignmentsArrayFromTypeAndVariableAssignmentsNode(type, variableAssignmentsNode, context) {
+  const variableAssignmentNodes = variableAssignmentsNode.getVariableAssignmentNodes(),
         variableAssignmentsArray = variableAssignmentNodes.map((variableAssignmentNode) => {
           const variableAssignment = variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context);
 

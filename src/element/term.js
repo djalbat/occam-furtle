@@ -118,4 +118,17 @@ export default define(class Term {
   }
 
   static name = "Term";
+
+  static fromPrimitive(primitive, context) {
+    const primitiveString = primitive.getString(),
+          string = primitiveString, ///
+          variable = null,
+          negatedTerm = null,
+          logicalTerm = null,
+          bracketedTerm = null,
+          comparisonTerm = null,
+          term = new Term(string, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
+
+    return term;
+  }
 });

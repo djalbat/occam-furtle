@@ -82,13 +82,6 @@ export function termStringFromPrimitiveAndProperties(primitive, properties) {
   return termString;
 }
 
-export function variableAssignmentStringFromTypeAndVariable(type, variable) {
-  const variableString = variable.getString(),
-        variableAssignmentString = `${type} ${variableString} = ... ;`;
-
-  return variableAssignmentString;
-}
-
 export function procedureDeclarationStringFromProcedure(procedure) {
   const type = procedure.getType(),
         label = procedure.getLabel(),
@@ -131,6 +124,13 @@ export function expressionStringFromPrimitiveAndProperties(primitive, properties
   return expressionString;
 }
 
+export function variableAssignmentStringFromTypeAndVariable(type, variable) {
+  const variableString = variable.getString(),
+        variableAssignmentString = `${type} ${variableString} = ... ;`;
+
+  return variableAssignmentString;
+}
+
 export function someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure) {
   const variableString = variable.getString(),
         anonymousProcedureString = anonymousProcedure.getString(),
@@ -165,20 +165,6 @@ export function procedureStringFromTypeLabelParametersAndReturnBlock(type, label
   return procedureString;
 }
 
-export function variableAssignmentStringFromVariableAssignmentsArray(variableAssignmentsArray) {
-  const variableAssignmentsString = variableAssignmentsArray.reduce((variableAssignmentsString, variableAssignment) => {
-    const variableAssignmentString = variableAssignmentStringFromVariableAssignment(variableAssignment);
-
-    variableAssignmentsString = (variableAssignmentsString === null) ?
-                                  variableAssignmentString :
-                                   `${variableAssignmentsString}, ${variableAssignmentString}`;
-
-    return variableAssignmentsString;
-  }, null); ///
-
-  return variableAssignmentsString;
-}
-
 export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock) {
   const typeString = type,  ///
         parametersString = parameters.getString(),
@@ -186,6 +172,22 @@ export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, p
         anonymousProcedureString = `${typeString} (${parametersString}) ${returnBlockString}`;
 
   return anonymousProcedureString;
+}
+
+export function variableAssignmentStringFromTypeAndVariableAssignmentsArray(type, variableAssignmentsArray) {
+  let variableAssignmentsString = variableAssignmentsArray.reduce((variableAssignmentsString, variableAssignment) => {
+    const variableAssignmentString = variableAssignmentStringFromVariableAssignment(variableAssignment);
+
+    variableAssignmentsString = (variableAssignmentsString === null) ?
+      variableAssignmentString :
+      `${variableAssignmentsString}, ${variableAssignmentString}`;
+
+    return variableAssignmentsString;
+  }, null); ///
+
+  variableAssignmentsString = `${type} ${variableAssignmentsString}`; ///
+
+  return variableAssignmentsString;
 }
 
 export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {

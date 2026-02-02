@@ -2,69 +2,87 @@
 
 import { arrayUtilities } from "necessary";
 
+import elements from "../elements";
 import nullNode from "../nullNode";
 
 import { define } from "../elements";
-import { NODE_TYPE, NODES_TYPE, NUMBER_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
+import { NODE_TYPE, NODES_TYPE, STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE  } from "../types";
 
 const { match } = arrayUtilities;
 
 export default define(class Primitive {
-  constructor(string, node, nodes, number, boolean, stringLiteral) {
+  constructor(string, type, value) {
     this.string = string;
-    this.node = node;
-    this.nodes = nodes;
-    this.number = number;
-    this.boolean = boolean;
-    this.stringLiteral = stringLiteral;
+    this.type = type;
+    this.value = value;
   }
 
   getString() {
     return this.string;
   }
 
+  getType() {
+    return this.type;
+  }
+
+  getValue() {
+    return this.value;
+  }
+
   getNode() {
-    return this.node;
+    let node = null;
+
+    if (this.type === NODE_TYPE) {
+      node = this.value;  ///
+    }
+
+    return node;
   }
 
   getNodes() {
-    return this.nodes;
+    let nodes = null;
+
+    if (this.type === NODES_TYPE) {
+      nodes = this.value; ///
+    }
+
+    return nodes;
   }
 
   getNumber() {
-    return this.number;
+    let number = null;
+
+    if (this.type === NUMBER_TYPE) {
+      number = this.value;  ///
+    }
+
+    return number;
   }
 
   getBoolean() {
-    return this.boolean;
+    let boolean = null;
+
+    if (this.type === BOOLEAN_TYPE) {
+      boolean = this.value; ///
+    }
+
+    return boolean;
   }
 
   getStringLiteral() {
-    return this.stringLiteral;
-  }
+    let stringLiteral = null;
 
-  getType() {
-    let type;
-
-    if (false) {
-      ///
-    } else if (this.node !== null) {
-      type = NODE_TYPE;
-    } else if (this.nodes !== null) {
-      type = NODES_TYPE;
-    } else if (this.number !== null) {
-      type = NUMBER_TYPE;
-    } else if (this.boolean !== null) {
-      type = BOOLEAN_TYPE;
-    } else if (this.stringLiteral !== null) {
-      type = STRING_TYPE;
+    if (this.type === STRING_TYPE) {
+      stringLiteral = this.value; ///
     }
 
-    return type;
+    return stringLiteral;
   }
 
   evaluate(context) {
-    const term = this;  ///
+    const { Term } = elements,
+          primitive = this,
+          term = Term.fromPrimitive(primitive, context);
 
     return term;
   }
@@ -72,44 +90,69 @@ export default define(class Primitive {
   isEqualTo(primitive) {
     let equalTo = false;
 
-    if (false) {
-      ///
-    } else if (this.node !== null) {
-      const node = primitive.getNode();
+    const type = primitive.getType();
 
-      if (node !== null) {
-        const nodeA = this.node,  ///
-              nodeB = node, ///
-              nodeMatches = matchNode(nodeA, nodeB);
+    if (this.type === type) {
+      const value = primitive.getValue();
 
-        if (nodeMatches) {
-          equalTo = true;
+      switch (type) {
+        case NODE_TYPE: {
+          const nodeA = this.value, ///
+                nodeB = value,  ///
+                nodeMatches = matchNode(nodeA, nodeB);
+
+          if (nodeMatches) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
+        case NODES_TYPE: {
+          const nodesA = this.value, ///
+                nodesB = value,  ///
+                nodesMatch = matchNodes(nodesA, nodesB);
+
+          if (nodesMatch) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
+        case STRING_TYPE: {
+          const stringLiteralA = this.value, ///
+                stringLiteralB = value;  ///
+
+          if (stringLiteralA === stringLiteralB) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
+        case NUMBER_TYPE: {
+          const numberA = this.value, ///
+                numberB = value;  ///
+
+          if (numberA === numberB) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
+        case BOOLEAN_TYPE: {
+          const booleanA = this.value, ///
+                booleanB = value;  ///
+
+          if (booleanA === booleanB) {
+            equalTo = true;
+          }
+
+          break;
         }
       }
-    } else if (this.nodes !== null) {
-      const nodes = primitive.getNode();
-
-      if (nodes !== null) {
-        const nodesA = this.nodes,  ///
-              nodesB = nodes, ///
-              nodesMatch = matchNodes(nodesA, nodesB);
-
-        if (nodesMatch) {
-          equalTo = true;
-        }
-      }
-    } else if (this.number !== null) {
-      const number = primitive.getNumber();
-
-      equalTo = (this.number === number);
-    } else if (this.boolean !== null) {
-      const boolean = primitive.getBoolean();
-
-      equalTo = (this.boolean === boolean);
-    } else if (this.stringLiteral !== null) {
-      const stringLiteral = primitive.getStringLiteral();
-
-      equalTo = (this.stringLiteral === stringLiteral);
     }
 
     return equalTo;

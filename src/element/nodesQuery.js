@@ -33,7 +33,7 @@ export default define(class NodesQuery {
     context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
 
     if (this.query === null) {
-      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its term is malformed.`,
+      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its expression is malformed.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
