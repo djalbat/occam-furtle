@@ -95,15 +95,23 @@ export default define(class Term {
     return term;
   }
 
-  isEqualTo(expression) {
-    let equalTo;
+  isEqualTo(term) {
+    let equalTo = false;
 
     if (false) {
       ///
     } else if (this.variable !== null) {
-      equalTo = this.variable.isEqualTo();
+      const variable = term.getVariable();
+
+      if (variable !== null) {
+        equalTo = this.variable.isEqualTo(variable);
+      }
     } else if (this.primitive !== null) {
-      equalTo = this.primitive.isEqualTo();
+      const primitive = term.getPrimitive();
+
+      if (primitive !== null) {
+        equalTo = this.primitive.isEqualTo(primitive);
+      }
     }
 
     return equalTo;

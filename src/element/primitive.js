@@ -70,33 +70,33 @@ export default define(class Primitive {
   }
 
   isEqualTo(primitive) {
-    let equalTo;
+    let equalTo = false;
 
     if (false) {
       ///
     } else if (this.node !== null) {
       const node = primitive.getNode();
 
-      if (node === null) {
-        equalTo = false;
-      } else {
+      if (node !== null) {
         const nodeA = this.node,  ///
               nodeB = node, ///
               nodeMatches = matchNode(nodeA, nodeB);
 
-        equalTo = nodeMatches;  ///
+        if (nodeMatches) {
+          equalTo = true;
+        }
       }
     } else if (this.nodes !== null) {
       const nodes = primitive.getNode();
 
-      if (nodes === null) {
-        equalTo = false;
-      } else {
+      if (nodes !== null) {
         const nodesA = this.nodes,  ///
               nodesB = nodes, ///
               nodesMatch = matchNodes(nodesA, nodesB);
 
-        equalTo = nodesMatch; ///
+        if (nodesMatch) {
+          equalTo = true;
+        }
       }
     } else if (this.number !== null) {
       const number = primitive.getNumber();

@@ -5,7 +5,8 @@ import { Query } from "occam-query";
 import elements from "../elements";
 
 import { BOOLEAN_TYPE } from "../types";
-import { variableStringFromName,
+import { ternaryStringFromTerm,
+         variableStringFromName,
          variableAssignmentStringFromVariable,
          termStringFromPrimitiveAndProperties,
          procedureDeclarationStringFromProcedure,
@@ -119,12 +120,12 @@ export function reduceFromReduceNode(reduceNode, context) {
 
 export function ternaryFromTernaryNode(ternaryNode, context) {
   const { Ternary } = elements,
-        node = ternaryNode, ///
-        string = context.nodeAsString(node),
-        expression = termFromTernaryNode(ternaryNode, context),
+        term = termFromTernaryNode(ternaryNode, context),
         ifExpression = ifExpressionFromTernaryNode(ternaryNode, context),
         elseExpression = elseExpressionFromTernaryNode(ternaryNode, context),
-        ternary = new Ternary(string, expression, ifExpression, elseExpression);
+        ternaryString = ternaryStringFromTerm(term),
+        string = ternaryString, ///
+        ternary = new Ternary(string, term, ifExpression, elseExpression);
 
   return ternary;
 }
@@ -215,6 +216,44 @@ export function parametersFromParametersNode(parametersNode, context) {
   return parameters;
 }
 
+export function expressionFromExpressionNode(expressionNode, context) {
+  const { Expression } = elements,
+        variable = variableFromExpressionNode(expressionNode, context),
+        primitive = primitiveFromExpressionNode(expressionNode, context),
+        some = someFromExpressionNode(expressionNode, context),
+        every = everyFromExpressionNode(expressionNode, context),
+        reduce = reduceFromExpressionNode(expressionNode, context),
+        ternary = ternaryFromExpressionNode(expressionNode, context),
+        nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
+        nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
+        returnBlock = returnBlockFromExpressionNode(expressionNode, context),
+        procedureCall = procedureCallFromExpressionNode(expressionNode, context),
+        negatedExpression = negatedExpressionFromExpressionNode(expressionNode, context),
+        logicalExpression = logicalExpressionFromExpressionNode(expressionNode, context),
+        bracketedExpression = bracketedExpressionFromExpressionNode(expressionNode, context),
+        comparisonExpression = comparisonExpressionFromExpressionNode(expressionNode, context),
+        properties = [
+          some,
+          every,
+          reduce,
+          ternary,
+          variable,
+          nodeQuery,
+          nodesQuery,
+          returnBlock,
+          procedureCall,
+          negatedExpression,
+          logicalExpression,
+          bracketedExpression,
+          comparisonExpression
+        ],
+        expressionString = expressionStringFromPrimitiveAndProperties(primitive, properties, context),
+        string = expressionString,  ///
+        expression = new Expression(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression, comparisonExpression);
+
+  return expression;
+}
+
 export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
   const { ReturnBlock } = elements,
         steps = stepsFromReturnBlockNode(returnBlockNode, context),
@@ -301,6 +340,31 @@ export function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, c
   return objectAssignment;
 }
 
+export function negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context) {
+  const { NegatedExpression } = elements,
+        node = negatedExpressionNode, ///
+        string = context.nodeAsString(node),
+        expressionNode = negatedExpressionNode.getExpressionNode(),
+        type = typeFromNegatedExpressionNode(expressionNode, context),
+        expression = expressionFromNegatedExpressionNode(negatedExpressionNode, context),
+        negatedExpression = new NegatedExpression(string, type, expression);
+
+  return negatedExpression;
+}
+
+export function logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
+  const { LogicalExpression } = elements,
+        node = logicalExpressionNode, ///
+        string = context.nodeAsString(node),
+        type = typeFromLogicalExpressionNode(logicalExpressionNode, context),
+        disjunction = disjunctionFromLogicalExpressionNode(logicalExpressionNode, context),
+        leftExpression = leftExpressionFromLogicalExpressionNode(logicalExpressionNode, context),
+        rightExpression = rightExpressionFromLogicalExpressionNode(logicalExpressionNode, context),
+        logicalExpression = new LogicalExpression(string, type, disjunction, leftExpression, rightExpression);
+
+  return logicalExpression;
+}
+
 export function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const { AnonymousProcedure } = elements,
         type = typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context),
@@ -322,6 +386,28 @@ export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmen
         variableAssignments = new VariableAssignments(string, array);
 
   return variableAssignments;
+}
+
+export function bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
+  const { BracketedExpression } = elements,
+        node = bracketedExpressionNode, ///
+        string = context.nodeAsString(node),  ///
+        expression = expressionFromBracketedExpressionNode(bracketedExpressionNode, context),
+        bracketedExpression = new BracketedExpression(string, expression);
+
+  return bracketedExpression;
+}
+
+export function comparisonExpressionFromComparisonExpressionNode(comparisonExpressionNode, context) {
+  const { ComparisonExpression } = elements,
+        node = comparisonExpressionNode,  ///
+        string = context.nodeAsString(node),
+        negated = negatedFromComparisonExpressionNode(comparisonExpressionNode, context),
+        leftExpression = leftExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context),
+        rightExpression = rightExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context),
+        comparisonExpression = new ComparisonExpression(string, negated, leftExpression, rightExpression);
+
+  return comparisonExpression;
 }
 
 export function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
@@ -480,6 +566,43 @@ export function everyFromExpressionNode(expressionNode, context) {
   return every;
 }
 
+export function negatedTermFromTermNode(termNode, context) {
+  let negatedTerm = null;
+
+  const negatedTermNode = termNode.getNegatedTermNode();
+
+  if (negatedTermNode !== null) {
+    negatedTerm = negatedTermFromNegatedTermNode(negatedTermNode, context);
+  }
+
+  return negatedTerm;
+}
+
+export function logicalTermFromTermNode(termNode, context) {
+  let logicalTerm = null;
+
+  const logicalTermNode = termNode.getLogicalTermNode();
+
+  if (logicalTermNode !== null) {
+    logicalTerm = logicalTermFromLogicalTermNode(logicalTermNode, context);
+  }
+
+  return logicalTerm;
+}
+
+export function typeFromLogicalTermNode(logicalTermNode, context) {
+  const type = BOOLEAN_TYPE;
+
+  return type;
+}
+
+export function termFromNegatedTermNode(negatedTermNode, context) {
+  const termNode = negatedTermNode.getTermNode(),
+    term = termFromTermNode(termNode, context);
+
+  return term;
+}
+
 export function booleanFromPrimitiveNode(primitiveNode, context) {
   const boolean = primitiveNode.getBoolean();
 
@@ -535,6 +658,37 @@ export function ternaryFromExpressionNode(expressionNode, context) {
   return ternary;
 }
 
+export function bracketedTermFromTermNode(termNode, context) {
+  let bracketedTerm = null;
+
+  const bracketedTermNode = termNode.getBracketedTermNode();
+
+  if (bracketedTermNode !== null) {
+    bracketedTerm = bracketedTermFromBracketedTermNode(bracketedTermNode, context);
+  }
+
+  return bracketedTerm;
+}
+
+export function termFromBracketedTermNode(bracketedTermNode, context) {
+  const termNode = bracketedTermNode.getTermNode(),
+    term = termFromTermNode(termNode, context);
+
+  return term;
+}
+
+export function comparisonTermFromTermNode(termNOde, context) {
+  let comparisonTerm = null;
+
+  const comparisonTermNode = termNOde.getComparisonTermNode();
+
+  if (comparisonTermNode !== null) {
+    comparisonTerm = comparisonTermFromComparisonTermNode(comparisonTermNode, context);
+  }
+
+  return comparisonTerm;
+}
+
 export function expressionFromVariableNode(variableNode, context) {
   const expression = null;
 
@@ -577,6 +731,13 @@ export function nameFromNamedParameterNode(namedParameterNode, context) {
   const name = namedParameterNode.getName();
 
   return name;
+}
+
+export function leftTermFromLogicalTermNode(logicalTermNode, context) {
+  const leftTermNode = logicalTermNode.getLeftTermNode(),
+    leftTerm = termFromTermNode(leftTermNode, context);
+
+  return leftTerm;
 }
 
 export function arrayAssignmentFromStepNode(stepNode, context) {
@@ -659,6 +820,19 @@ export function nodesQueryFromExpressionNode(expressionNode, context) {
   return nodesQuery;
 }
 
+export function rightTermFromLogicalTermNode(logicalTermNode, context) {
+  const rightTermNode = logicalTermNode.getRightTermNode(),
+       rightTerm = termFromTermNode(rightTermNode, context);
+
+  return rightTerm;
+}
+
+export function negatedFromComparisonTermNode(comparisonTermNode, context) {
+  const negated = comparisonTermNode.isNegated();
+
+  return negated;
+}
+
 export function elseExpressionFromTernaryNode(ternaryNode, context) {
   const elseExpressionNode = ternaryNode.getElseExpressionNode(),
         elseExpression = expressionFromExpressionNode(elseExpressionNode, context);
@@ -714,6 +888,44 @@ export function stringLiteralFromPrimitiveNode(primitiveNode, context) {
   const stringLiteral = primitiveNode.getStringLiteral();
 
   return stringLiteral;
+}
+
+export function leftTermFromCompzrisonTermNode(comparisonTermNode, context) {
+  const leftTermNode = comparisonTermNode.getLeftTermNode(),
+        leftTerm = termFromTermNode(leftTermNode, context);
+
+  return leftTerm;
+}
+
+export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
+  const disjunction = logicalTermNode.isDisjunction();
+
+  return disjunction;
+}
+
+export function negatedTermFromNegatedTermNode(negatedTermNode, context) {
+  const { NegatedTerm } = elements,
+        node = negatedTermNode, ///
+        string = context.nodeAsString(node),
+        termNode = negatedTermNode.getTermNode(),
+        type = typeFromNegatedTermNode(termNode, context),
+        term = termFromNegatedTermNode(negatedTermNode, context),
+        negatedTerm = new NegatedTerm(string, type, term);
+
+  return negatedTerm;
+}
+
+export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
+  const { LogicalTerm } = elements,
+        node = logicalTermNode, ///
+        string = context.nodeAsString(node),
+        type = typeFromLogicalTermNode(logicalTermNode, context),
+        disjunction = disjunctionFromLogicalTermNode(logicalTermNode, context),
+        leftTerm = leftTermFromLogicalTermNode(logicalTermNode, context),
+        rightTerm = rightTermFromLogicalTermNode(logicalTermNode, context),
+        logicalTerm = new LogicalTerm(string, type, disjunction, leftTerm, rightTerm);
+
+  return logicalTerm;
 }
 
 export function variableFromTypeAndVariableNode(type, variableNode, context) {
@@ -772,6 +984,13 @@ export function variableFromArrayAssignmentNode(arrayAssignmentNode, context) {
   return variable;
 }
 
+export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
+  const rightTermNode = comparisonTermNode.getLeftTermNode(),
+        rightTerm = termFromTermNode(rightTermNode, context);
+
+  return rightTerm;
+}
+
 export function anonymousProcedureFromReduceNode(reduceNode, context) {
   const anonymousProcedureNode = reduceNode.getAnonymousProcedureNode(),
         anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
@@ -819,6 +1038,53 @@ export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
   return returnStatement;
 }
 
+export function bracketedTermFromBracketedTermNode(bracketedTermNode, context) {
+  const { BracketedTerm } = elements,
+        node = bracketedTermNode, ///
+        string = context.nodeAsString(node),  ///
+        term = termFromBracketedTermNode(bracketedTermNode, context),
+        bracketedTerm = new BracketedTerm(string, term);
+
+  return bracketedTerm;
+}
+
+export function negatedExpressionFromExpressionNode(expressionNode, context) {
+  let negatedExpression = null;
+
+  const negatedExpressionNode = expressionNode.getNegatedExpressionNode();
+
+  if (negatedExpressionNode !== null) {
+    negatedExpression = negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context);
+  }
+
+  return negatedExpression;
+}
+
+export function expressionFromNegatedExpressionNode(negatedExpressionNode, context) {
+  const expressionNode = negatedExpressionNode.getExpressionNode(),
+        expression = expressionFromExpressionNode(expressionNode, context);
+
+  return expression;
+}
+
+export function negatedFromComparisonExpressionNode(comparisonExpressionNode, context) {
+  const negated = comparisonExpressionNode.isNegated();
+
+  return negated;
+}
+
+export function logicalExpressionFromExpressionNode(expressionNode, context) {
+  let logicalExpression = null;
+
+  const logicalExpressionNode = expressionNode.getLogicalExpressionNode();
+
+  if (logicalExpressionNode !== null) {
+    logicalExpression = logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context);
+  }
+
+  return logicalExpression;
+}
+
 export function expressionFromVariableAssignmentNode(variableAssigmentNode, context) {
   const expressionNode = variableAssigmentNode.getExpressionNode(),
         expression = expressionFromExpressionNode(expressionNode, context);
@@ -839,6 +1105,18 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
   return parameters;
 }
 
+export function comparisonTermFromComparisonTermNode(comparisonTermNode, context) {
+  const { ComparisonTerm } = elements,
+        node = comparisonTermNode,  ///
+        string = context.nodeAsString(node),
+        negated = negatedFromComparisonTermNode(comparisonTermNode, context),
+        leftTerm = leftTermFromCompzrisonTermNode(comparisonTermNode, context),
+        rightTerm = rightTermFromCompzrisonTermNode(comparisonTermNode, context),
+        comparisonTerm = new ComparisonTerm(string, negated, leftTerm, rightTerm);
+
+  return comparisonTerm;
+}
+
 export function returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const returnBlockNode = anonymousProcedureNode.getReturnBlockNode(),
         returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
@@ -857,6 +1135,37 @@ export function procedureFromProcedureDeclarationNode(procedureDeclarationNode, 
         procedure = new Procedure(string, type, label, parameters, returnBlock);
 
   return procedure;
+}
+
+export function bracketedExpressionFromExpressionNode(expressionNode, context) {
+  let bracketedExpression = null;
+
+  const bracketedExpressionNode = expressionNode.getBracketedExpressionNode();
+
+  if (bracketedExpressionNode !== null) {
+    bracketedExpression = bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context);
+  }
+
+  return bracketedExpression;
+}
+
+export function expressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
+  const expressionNode = bracketedExpressionNode.getExpressionNode(),
+    expression = expressionFromExpressionNode(expressionNode, context);
+
+  return expression;
+}
+
+export function comparisonExpressionFromExpressionNode(expressionNOde, context) {
+  let comparisonExpression = null;
+
+  const comparisonExpressionNode = expressionNOde.getComparisonExpressionNode();
+
+  if (comparisonExpressionNode !== null) {
+    comparisonExpression = comparisonExpressionFromComparisonExpressionNode(comparisonExpressionNode, context);
+  }
+
+  return comparisonExpression;
 }
 
 export function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
@@ -898,6 +1207,20 @@ export function variableFromTypeAndVariableAssignmentNode(type, variableAssignme
         variable = variableFromTypeAndVariableNode(type, variableNode, context);
 
   return variable;
+}
+
+export function leftExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context) {
+  const leftExpressionNode = comparisonExpressionNode.getLeftExpressionNode(),
+        leftExpression = expressionFromExpressionNode(leftExpressionNode, context);
+
+  return leftExpression;
+}
+
+export function rightExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context) {
+  const rightExpressionNode = comparisonExpressionNode.getLeftExpressionNode(),
+        rightExpression = expressionFromExpressionNode(rightExpressionNode, context);
+
+  return rightExpression;
 }
 
 export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
@@ -953,337 +1276,3 @@ export function variableAssignmentsArrayFromVariableAssignmentsNode(variableAssi
 
   return variableAssignmentsArray;
 }
-
-
-
-export function expressionFromExpressionNode(expressionNode, context) {
-  const { Expression } = elements,
-        variable = variableFromExpressionNode(expressionNode, context),
-        primitive = primitiveFromExpressionNode(expressionNode, context),
-        some = someFromExpressionNode(expressionNode, context),
-        every = everyFromExpressionNode(expressionNode, context),
-        reduce = reduceFromExpressionNode(expressionNode, context),
-        ternary = ternaryFromExpressionNode(expressionNode, context),
-        nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
-        nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
-        returnBlock = returnBlockFromExpressionNode(expressionNode, context),
-        procedureCall = procedureCallFromExpressionNode(expressionNode, context),
-        negatedExpression = negatedExpressionFromExpressionNode(expressionNode, context),
-        logicalExpression = logicalExpressionFromExpressionNode(expressionNode, context),
-        bracketedExpression = bracketedExpressionFromExpressionNode(expressionNode, context),
-        comparisonExpression = comparisonExpressionFromExpressionNode(expressionNode, context),
-        properties = [
-          some,
-          every,
-          reduce,
-          ternary,
-          variable,
-          nodeQuery,
-          nodesQuery,
-          returnBlock,
-          procedureCall,
-          negatedExpression,
-          logicalExpression,
-          bracketedExpression,
-          comparisonExpression
-        ],
-        expressionString = expressionStringFromPrimitiveAndProperties(primitive, properties, context),
-        string = expressionString,  ///
-        expression = new Expression(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression, comparisonExpression);
-
-  return expression;
-}
-
-
-export function negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context) {
-  const { NegatedExpression } = elements,
-    node = negatedExpressionNode, ///
-    string = context.nodeAsString(node),
-    expressionNode = negatedExpressionNode.getExpressionNode(),
-    type = typeFromNegatedExpressionNode(expressionNode, context),
-    expression = expressionFromNegatedExpressionNode(negatedExpressionNode, context),
-    negatedExpression = new NegatedExpression(string, type, expression);
-
-  return negatedExpression;
-}
-
-export function logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context) {
-  const { LogicalExpression } = elements,
-    node = logicalExpressionNode, ///
-    string = context.nodeAsString(node),
-    type = typeFromLogicalExpressionNode(logicalExpressionNode, context),
-    disjunction = disjunctionFromLogicalExpressionNode(logicalExpressionNode, context),
-    leftExpression = leftExpressionFromLogicalExpressionNode(logicalExpressionNode, context),
-    rightExpression = rightExpressionFromLogicalExpressionNode(logicalExpressionNode, context),
-    logicalExpression = new LogicalExpression(string, type, disjunction, leftExpression, rightExpression);
-
-  return logicalExpression;
-}
-
-export function bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
-  const { BracketedExpression } = elements,
-    node = bracketedExpressionNode, ///
-    string = context.nodeAsString(node),  ///
-    expression = expressionFromBracketedExpressionNode(bracketedExpressionNode, context),
-    bracketedExpression = new BracketedExpression(string, expression);
-
-  return bracketedExpression;
-}
-
-export function comparisonExpressionFromComparisonExpressionNode(comparisonExpressionNode, context) {
-  const { ComparisonExpression } = elements,
-    node = comparisonExpressionNode,  ///
-    string = context.nodeAsString(node),
-    negated = negatedFromComparisonExpressionNode(comparisonExpressionNode, context),
-    leftExpression = leftExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context),
-    rightExpression = rightExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context),
-    comparisonExpression = new ComparisonExpression(string, negated, leftExpression, rightExpression);
-
-  return comparisonExpression;
-}
-
-
-export function negatedExpressionFromExpressionNode(expressionNode, context) {
-  let negatedExpression = null;
-
-  const negatedExpressionNode = expressionNode.getNegatedExpressionNode();
-
-  if (negatedExpressionNode !== null) {
-    negatedExpression = negatedExpressionFromNegatedExpressionNode(negatedExpressionNode, context);
-  }
-
-  return negatedExpression;
-}
-
-export function logicalExpressionFromExpressionNode(expressionNode, context) {
-  let logicalExpression = null;
-
-  const logicalExpressionNode = expressionNode.getLogicalExpressionNode();
-
-  if (logicalExpressionNode !== null) {
-    logicalExpression = logicalExpressionFromLogicalExpressionNode(logicalExpressionNode, context);
-  }
-
-  return logicalExpression;
-}
-
-export function bracketedExpressionFromExpressionNode(expressionNode, context) {
-  let bracketedExpression = null;
-
-  const bracketedExpressionNode = expressionNode.getBracketedExpressionNode();
-
-  if (bracketedExpressionNode !== null) {
-    bracketedExpression = bracketedExpressionFromBracketedExpressionNode(bracketedExpressionNode, context);
-  }
-
-  return bracketedExpression;
-}
-
-export function comparisonExpressionFromExpressionNode(expressionNOde, context) {
-  let comparisonExpression = null;
-
-  const comparisonExpressionNode = expressionNOde.getComparisonExpressionNode();
-
-  if (comparisonExpressionNode !== null) {
-    comparisonExpression = comparisonExpressionFromComparisonExpressionNode(comparisonExpressionNode, context);
-  }
-
-  return comparisonExpression;
-}
-
-
-export function negatedFromComparisonExpressionNode(comparisonExpressionNode, context) {
-  const negated = comparisonExpressionNode.isNegated();
-
-  return negated;
-}
-
-export function expressionFromNegatedExpressionNode(negatedExpressionNode, context) {
-  const expressionNode = negatedExpressionNode.getExpressionNode(),
-    expression = expressionFromExpressionNode(expressionNode, context);
-
-  return expression;
-}
-
-export function expressionFromBracketedExpressionNode(bracketedExpressionNode, context) {
-  const expressionNode = bracketedExpressionNode.getExpressionNode(),
-    expression = expressionFromExpressionNode(expressionNode, context);
-
-  return expression;
-}
-
-export function leftExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context) {
-  const leftExpressionNode = comparisonExpressionNode.getLeftExpressionNode(),
-    leftExpression = expressionFromExpressionNode(leftExpressionNode, context);
-
-  return leftExpression;
-}
-
-export function rightExpressionFromCompzrisonExpressionNode(comparisonExpressionNode, context) {
-  const rightExpressionNode = comparisonExpressionNode.getLeftExpressionNode(),
-    rightExpression = expressionFromExpressionNode(rightExpressionNode, context);
-
-  return rightExpression;
-}
-
-
-
-export function negatedTermFromNegatedTermNode(negatedTermNode, context) {
-  const { NegatedTerm } = elements,
-        node = negatedTermNode, ///
-        string = context.nodeAsString(node),
-        termNode = negatedTermNode.getTermNode(),
-        type = typeFromNegatedTermNode(termNode, context),
-        term = termFromNegatedTermNode(negatedTermNode, context),
-        negatedTerm = new NegatedTerm(string, type, term);
-
-  return negatedTerm;
-}
-
-export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
-  const { LogicalTerm } = elements,
-        node = logicalTermNode, ///
-        string = context.nodeAsString(node),
-        type = typeFromLogicalTermNode(logicalTermNode, context),
-        disjunction = disjunctionFromLogicalTermNode(logicalTermNode, context),
-        leftTerm = leftTermFromLogicalTermNode(logicalTermNode, context),
-        rightTerm = rightTermFromLogicalTermNode(logicalTermNode, context),
-        logicalTerm = new LogicalTerm(string, type, disjunction, leftTerm, rightTerm);
-
-  return logicalTerm;
-}
-
-export function bracketedTermFromBracketedTermNode(bracketedTermNode, context) {
-  const { BracketedTerm } = elements,
-        node = bracketedTermNode, ///
-        string = context.nodeAsString(node),  ///
-        term = termFromBracketedTermNode(bracketedTermNode, context),
-        bracketedTerm = new BracketedTerm(string, term);
-
-  return bracketedTerm;
-}
-
-export function comparisonTermFromComparisonTermNode(comparisonTermNode, context) {
-  const { ComparisonTerm } = elements,
-        node = comparisonTermNode,  ///
-        string = context.nodeAsString(node),
-        negated = negatedFromComparisonTermNode(comparisonTermNode, context),
-        leftTerm = leftTermFromCompzrisonTermNode(comparisonTermNode, context),
-        rightTerm = rightTermFromCompzrisonTermNode(comparisonTermNode, context),
-        comparisonTerm = new ComparisonTerm(string, negated, leftTerm, rightTerm);
-
-  return comparisonTerm;
-}
-
-
-export function negatedTermFromTermNode(termNode, context) {
-  let negatedTerm = null;
-
-  const negatedTermNode = termNode.getNegatedTermNode();
-
-  if (negatedTermNode !== null) {
-    negatedTerm = negatedTermFromNegatedTermNode(negatedTermNode, context);
-  }
-
-  return negatedTerm;
-}
-
-export function logicalTermFromTermNode(termNode, context) {
-  let logicalTerm = null;
-
-  const logicalTermNode = termNode.getLogicalTermNode();
-
-  if (logicalTermNode !== null) {
-    logicalTerm = logicalTermFromLogicalTermNode(logicalTermNode, context);
-  }
-
-  return logicalTerm;
-}
-
-export function bracketedTermFromTermNode(termNode, context) {
-  let bracketedTerm = null;
-
-  const bracketedTermNode = termNode.getBracketedTermNode();
-
-  if (bracketedTermNode !== null) {
-    bracketedTerm = bracketedTermFromBracketedTermNode(bracketedTermNode, context);
-  }
-
-  return bracketedTerm;
-}
-
-export function comparisonTermFromTermNode(termNOde, context) {
-  let comparisonTerm = null;
-
-  const comparisonTermNode = termNOde.getComparisonTermNode();
-
-  if (comparisonTermNode !== null) {
-    comparisonTerm = comparisonTermFromComparisonTermNode(comparisonTermNode, context);
-  }
-
-  return comparisonTerm;
-}
-
-
-export function negatedFromComparisonTermNode(comparisonTermNode, context) {
-  const negated = comparisonTermNode.isNegated();
-
-  return negated;
-}
-
-export function termFromNegatedTermNode(negatedTermNode, context) {
-  const termNode = negatedTermNode.getTermNode(),
-        term = termFromTermNode(termNode, context);
-
-  return term;
-}
-
-export function termFromBracketedTermNode(bracketedTermNode, context) {
-  const termNode = bracketedTermNode.getTermNode(),
-        term = termFromTermNode(termNode, context);
-
-  return term;
-}
-
-export function leftTermFromCompzrisonTermNode(comparisonTermNode, context) {
-  const leftTermNode = comparisonTermNode.getLeftTermNode(),
-        leftTerm = termFromTermNode(leftTermNode, context);
-
-  return leftTerm;
-}
-
-export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
-  const rightTermNode = comparisonTermNode.getLeftTermNode(),
-        rightTerm = termFromTermNode(rightTermNode, context);
-
-  return rightTerm;
-}
-
-export function leftTermFromLogicalTermNode(logicalTermNode, context) {
-  const leftTermNode = logicalTermNode.getLeftTermNode(),
-        leftTerm = termFromTermNode(leftTermNode, context);
-
-  return leftTerm;
-}
-
-export function rightTermFromLogicalTermNode(logicalTermNode, context) {
-  const rightTermNode = logicalTermNode.getRightTermNode(),
-        rightTerm = termFromTermNode(rightTermNode, context);
-
-  return rightTerm;
-}
-
-
-
-export function typeFromLogicalTermNode(logicalTermNode, context) {
-  const type = BOOLEAN_TYPE;
-
-  return type;
-}
-
-export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
-  const disjunction = logicalTermNode.isDisjunction();
-
-  return disjunction;
-}
-

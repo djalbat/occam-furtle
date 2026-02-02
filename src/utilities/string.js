@@ -5,6 +5,13 @@ import nullNode from "../nullNode";
 import { NULL } from "../constants";
 import { stringFromStringLiteral } from "./stringLiteral";
 
+export function ternaryStringFromTerm(term) {
+  const termString = term.getString(),
+        ternaryString = `if (${termString}) { ... } else { ... }`;
+
+  return ternaryString;
+}
+
 export function variableStringFromName(name) {
   const variableString = name;  ///
 
