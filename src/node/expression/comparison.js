@@ -2,15 +2,15 @@
 
 import { arrayUtilities } from "necessary";
 
-import NonTerminalNode from "../nonTerminalNode";
+import ExpressionNode from "../../node/expression";
 
-import { NOT_EQUAL_TO } from "../constants";
-import { SPECIAL_TOKEN_TYPE } from "../tokenTypes";
-import { EXPRESSION_RULE_NAME } from "../ruleNames";
+import { NOT_EQUAL_TO } from "../../constants";
+import { SPECIAL_TOKEN_TYPE } from "../../tokenTypes";
+import { EXPRESSION_RULE_NAME } from "../../ruleNames";
 
 const { first, second } = arrayUtilities;
 
-export default class ComparisonNode extends NonTerminalNode {
+export default class ComparisonExpressionNode extends ExpressionNode {
   isNegated() {
     let negated = false;
 
@@ -31,7 +31,7 @@ export default class ComparisonNode extends NonTerminalNode {
 
   getExpressionNodes() {
     const ruleName = EXPRESSION_RULE_NAME,
-      expressionNodes = this.getNodesByRuleName(ruleName);
+          expressionNodes = this.getNodesByRuleName(ruleName);
 
     return expressionNodes;
   }
@@ -64,5 +64,5 @@ export default class ComparisonNode extends NonTerminalNode {
     return secondExpressionNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ComparisonNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ExpressionNode.fromRuleNameChildNodesOpacityAndPrecedence(ComparisonExpressionNode, ruleName, childNodes, opacity, precedence); }
 }

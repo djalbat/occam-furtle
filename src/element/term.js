@@ -3,10 +3,14 @@
 import { define } from "../elements";
 
 export default define(class Term {
-  constructor(string, variable, primitive) {
+  constructor(string, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
     this.string = string;
     this.variable = variable;
     this.primitive = primitive;
+    this.negatedTerm = negatedTerm;
+    this.logicalTerm = logicalTerm;
+    this.bracketedTerm = bracketedTerm;
+    this.comparisonTerm = comparisonTerm;
   }
 
   getString() {
@@ -19,6 +23,22 @@ export default define(class Term {
 
   getPrimitive() {
     return this.primitive;
+  }
+
+  getNegatedTerm() {
+    return this.negatedTerm;
+  }
+
+  getLogicalTerm() {
+    return this.logicalTerm;
+  }
+
+  getBreedingTerm() {
+    return this.bracketedTerm;
+  }
+
+  getComparisonTerm() {
+    return this.comparisonTerm;
   }
 
   getNode() { return this.primitive.getNode(); }
@@ -40,6 +60,14 @@ export default define(class Term {
       type = this.variable.getType();
     } else if (this.primitive !== null) {
       type = this.primitive.getType();
+    } else if (this.negatedTerm !== null) {
+      type = this.negatedTerm.getType();
+    } else if (this.logicalTerm !== null) {
+      type = this.logicalTerm.getType();
+    } else if (this.bracketedTerm !== null) {
+      type = this.bracketedTerm.getType();
+    } else if (this.comparisonTerm !== null) {
+      type = this.comparisonTerm.getType();
     }
 
     return type;
@@ -54,14 +82,29 @@ export default define(class Term {
       term = this.variable.evaluate(context);
     } else if (this.primitive !== null) {
       term = this.primitive.evaluate(context);
+    } else if (this.negatedTerm !== null) {
+      term = this.negatedTerm.evaluate(context);
+    } else if (this.logicalTerm !== null) {
+      term = this.logicalTerm.evaluate(context);
+    } else if (this.bracketedTerm !== null) {
+      term = this.bracketedTerm.evaluate(context);
+    } else if (this.comparisonTerm !== null) {
+      term = this.comparisonTerm.evaluate(context);
     }
 
     return term;
   }
 
   isEqualTo(expression) {
-    const primitive = expression.getPrimitive(),
-          equalTo = this.primitive.isEqualTo(primitive);
+    let equalTo;
+
+    if (false) {
+      ///
+    } else if (this.variable !== null) {
+      equalTo = this.variable.isEqualTo();
+    } else if (this.primitive !== null) {
+      equalTo = this.primitive.isEqualTo();
+    }
 
     return equalTo;
   }

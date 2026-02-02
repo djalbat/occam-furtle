@@ -8,14 +8,14 @@ import { SOME_RULE_NAME,
          TERNARY_RULE_NAME,
          VARIABLE_RULE_NAME,
          PRIMITIVE_RULE_NAME,
-         COMPARISON_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
          NEGATED_EXPRESSION_RULE_NAME,
          LOGICAL_EXPRESSION_RULE_NAME,
-         BRACKETED_EXPRESSION_RULE_NAME } from "../ruleNames";
+         BRACKETED_EXPRESSION_RULE_NAME,
+         COMPARISON_EXPRESSION_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
   getSomeNode() {
@@ -74,13 +74,6 @@ export default class ExpressionNode extends NonTerminalNode {
     return nodeSQueryNode;
   }
 
-  getComparisonNode() {
-    const ruleName = COMPARISON_RULE_NAME,
-      comparisonNode = this.getNodeByRuleName(ruleName);
-
-    return comparisonNode;
-  }
-
   getReturnBlockNode() {
     const ruleName = RETURN_BLOCK_RULE_NAME,
           returnBlockNode = this.getNodeByRuleName(ruleName);
@@ -114,6 +107,13 @@ export default class ExpressionNode extends NonTerminalNode {
           bracketedExpressionRuleName = this.getNodeByRuleName(ruleName);
 
     return bracketedExpressionRuleName;
+  }
+
+  getComparisonExpressionNode() {
+    const ruleName = COMPARISON_EXPRESSION_RULE_NAME,
+          comparisonNode = this.getNodeByRuleName(ruleName);
+
+    return comparisonNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {

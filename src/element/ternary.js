@@ -6,9 +6,9 @@ import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
 export default define(class Ternary {
-  constructor(string, expression, ifExpression, elseExpression) {
+  constructor(string, term, ifExpression, elseExpression) {
     this.string = string;
-    this.expression = expression;
+    this.term = term;
     this.ifExpression = ifExpression;
     this.elseExpression = elseExpression;
   }
@@ -17,8 +17,8 @@ export default define(class Ternary {
     return this.string;
   }
 
-  getExpression() {
-    return this.expression;
+  getTerm() {
+    return this.term;
   }
 
   getIfBlock() {
@@ -36,7 +36,7 @@ export default define(class Ternary {
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    term = this.expression.evaluate(context);
+    term = this.term.evaluate(context);
 
     const termType = term.getType();
 

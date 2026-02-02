@@ -4,11 +4,18 @@ import { arrayUtilities } from "necessary";
 
 import NonTerminalNode from "../nonTerminalNode";
 
-import { EXPRESSION_RULE_NAME } from "../ruleNames";
+import { TERM_RULE_NAME, EXPRESSION_RULE_NAME } from "../ruleNames";
 
-const { first, second, third } = arrayUtilities;
+const { first, second } = arrayUtilities;
 
 export default class TernaryNode extends NonTerminalNode {
+  getTermNode() {
+    const ruleName = TERM_RULE_NAME,
+          termNode = this.getNodeByRuleName(ruleName);
+
+    return termNode;
+  }
+
   getExpressionNodes() {
     const ruleName = EXPRESSION_RULE_NAME,
           expressionNodes = this.getNodesByRuleName(ruleName);
@@ -16,23 +23,16 @@ export default class TernaryNode extends NonTerminalNode {
     return expressionNodes;
   }
 
-  getExpressionNode() {
-    const firstExpressionNode = this.getFirstExpressionNode(),
-          expressionNode = firstExpressionNode; ///
-
-    return expressionNode;
-  }
-
   getIfExpressionNode() {
-    const secondExpressionNode = this.getSecondExpressionNode(),
-          ifExpressionNode = secondExpressionNode;  ///
+    const firstExpressionNode = this.getFirstExpressionNode(),
+          ifExpressionNode = firstExpressionNode;  ///
 
     return ifExpressionNode;
   }
 
   getElseExpressionNode() {
-    const thirdExpressionNode = this.getThirdExpressionNode(),
-          elseExpressionNode = thirdExpressionNode; ///
+    const secondExpressionNode = this.getSecondExpressionNode(),
+          elseExpressionNode = secondExpressionNode; ///
 
     return elseExpressionNode;
   }
@@ -49,13 +49,6 @@ export default class TernaryNode extends NonTerminalNode {
           secondExpressionNode = second(expressionNodes);
 
     return secondExpressionNode;
-  }
-
-  getThirdExpressionNode() {
-    const expressionNodes = this.getExpressionNodes(),
-          thirdExpressionNode = third(expressionNodes);
-
-    return thirdExpressionNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(TernaryNode, ruleName, childNodes, opacity, precedence); }

@@ -16,22 +16,26 @@ import ReferenceNode from "./node/reference";
 import ParameterNode from "./node/parameter";
 import NodeQueryNode from "./node/nodeQuery";
 import ExpressionNode from "./node/expression";
-import ComparisonNode from "./node/comparison";
 import ParametersNode from "./node/parameters";
 import NodesQueryNode from "./node/nodesQuery";
 import ReturnBlockNode from "./node/returnBlock";
+import LogicalTermNode from "./node/term/logical";
+import NegatedTermNode from "./node/term/negated";
+import BracketedTermNode from "./node/term/bracketed";
+import ComparisonTermNode from "./node/term/comparison";
 import ProcedureCallNode from "./node/procedureCall";
 import NamedParameterNode from "./node/parameter/named";
 import NamedParametersNode from "./node/parameters/named";
 import ReturnStatementNode from "./node/statement/return";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
-import LogicalExpresionNode from "./node/expression/logical";
+import LogicalExpressionNode from "./node/expression/logical";
 import NegatedExpressionNode from "./node/expression/negated";
 import AnonymousProcedureNode from "./node/procedure/anoymous";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
 import BracketedExpressionNode from "./node/expression/bracketed";
+import ComparisonExpressionNode from "./node/expression/comparison";
 import ProcedureDeclarationNode from "./node/declaration/procedure";
 
 import { STEP_RULE_NAME,
@@ -50,11 +54,14 @@ import { STEP_RULE_NAME,
          PARAMETER_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          EXPRESSION_RULE_NAME,
-         COMPARISON_RULE_NAME,
          PARAMETERS_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
+         LOGICAL_TERM_RULE_NAME,
+         NEGATED_TERM_RULE_NAME,
+         BRACKETED_TERM_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
+         COMPARISON_TERM_RULE_NAME,
          NAMED_PARAMETER_RULE_NAME,
          NAMED_PARAMETERS_RULE_NAME,
          RETURN_STATEMENT_RULE_NAME,
@@ -66,6 +73,7 @@ import { STEP_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
          VARIABLE_ASSIGNMENTS_RULE_NAME,
          BRACKETED_EXPRESSION_RULE_NAME,
+         COMPARISON_EXPRESSION_RULE_NAME,
          PROCEDURE_DECLARATION_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
@@ -85,22 +93,26 @@ const NonTerminalNodeMap = {
   [PARAMETER_RULE_NAME]: ParameterNode,
   [NODE_QUERY_RULE_NAME]: NodeQueryNode,
   [EXPRESSION_RULE_NAME]: ExpressionNode,
-  [COMPARISON_RULE_NAME]: ComparisonNode,
   [PARAMETERS_RULE_NAME]: ParametersNode,
   [NODES_QUERY_RULE_NAME]: NodesQueryNode,
   [RETURN_BLOCK_RULE_NAME]: ReturnBlockNode,
+  [LOGICAL_TERM_RULE_NAME]: LogicalTermNode,
+  [NEGATED_TERM_RULE_NAME]: NegatedTermNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
+  [BRACKETED_TERM_RULE_NAME]: BracketedTermNode,
+  [COMPARISON_TERM_RULE_NAME]: ComparisonTermNode,
   [NAMED_PARAMETER_RULE_NAME]: NamedParameterNode,
   [NAMED_PARAMETERS_RULE_NAME]: NamedParametersNode,
   [RETURN_STATEMENT_RULE_NAME]: ReturnStatementNode,
   [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
-  [LOGICAL_EXPRESSION_RULE_NAME]: LogicalExpresionNode,
+  [LOGICAL_EXPRESSION_RULE_NAME]: LogicalExpressionNode,
   [NEGATED_EXPRESSION_RULE_NAME]: NegatedExpressionNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
   [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode,
   [BRACKETED_EXPRESSION_RULE_NAME]: BracketedExpressionNode,
+  [COMPARISON_EXPRESSION_RULE_NAME]: ComparisonExpressionNode,
   [PROCEDURE_DECLARATION_RULE_NAME]: ProcedureDeclarationNode
 };
 

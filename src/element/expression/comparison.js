@@ -1,11 +1,11 @@
 "use strict";
 
-import Exception from "../exception";
+import Exception from "../../exception";
 
-import { define } from "../elements";
-import { termFromBoolean } from "../utilities/term";
+import { define } from "../../elements";
+import { termFromBoolean } from "../../utilities/term";
 
-export default define(class Comparison {
+export default define(class ComparisonExpression {
   constructor(string, negated, leftExpression, rightExpression) {
     this.string = string;
     this.negated = negated;
@@ -32,9 +32,9 @@ export default define(class Comparison {
   evaluate(context) {
     let term;
 
-    const comparisonString = this.string; ///
+    const comparisonExpressionString = this.string; ///
 
-    context.trace(`Evaluating the '${comparisonString}' comparison...`);
+    context.trace(`Evaluating the '${comparisonExpressionString}' comparison expression...`);
 
     const leftTerm = this.leftExpression.evaluate(context),
           rightTerm = this.rightExpression.evaluate(context),
@@ -60,10 +60,10 @@ export default define(class Comparison {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${comparisonString}' comparison.`);
+    context.debug(`...evaluated the '${comparisonExpressionString}' comparison expression.`);
 
     return term;
   }
 
-  static name = "Comparison";
+  static name = "ComparisonExpression";
 });
