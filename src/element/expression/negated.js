@@ -32,7 +32,7 @@ export default define(class NegatedExpression {
 
     context.trace(`Evaluating the '${negatedExpressionString}' negated expression...`);
 
-    term = this.term.evaluate(context);
+    term = this.expression.evaluate(context);
 
     const termType = term.getType();
 

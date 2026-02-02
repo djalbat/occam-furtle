@@ -3,11 +3,11 @@
 import { define } from "../elements";
 
 export default define(class Step {
-  constructor(string, arrayAssignment, objectAssigment, variablesDeclaration) {
+  constructor(string, arrayAssignment, objectAssigment, variablessAssignment) {
     this.string = string;
     this.arrayAssignment = arrayAssignment;
     this.objectAssigment = objectAssigment;
-    this.variablesDeclaration = variablesDeclaration;
+    this.variablessAssignment = variablessAssignment;
   }
 
   getString() {
@@ -22,8 +22,8 @@ export default define(class Step {
     return this.objectAssigment;
   }
 
-  getVariablesDeclaration() {
-    return this.variablesDeclaration;
+  getVariablessAssignment() {
+    return this.variablessAssignment;
   }
 
   evaluate(context) {
@@ -33,8 +33,8 @@ export default define(class Step {
       this.arrayAssignment.evaluate(context);
     } else if (this.objectAssigment !== null) {
       this.objectAssigment.evaluate(context);
-    } else if (this.variablesDeclaration !== null) {
-      this.variablesDeclaration.evaluate(context);
+    } else if (this.variablessAssignment !== null) {
+      this.variablessAssignment.evaluate(context);
     }
   }
 

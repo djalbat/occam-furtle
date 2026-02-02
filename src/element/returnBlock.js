@@ -51,9 +51,9 @@ export default define(class ReturnBlock {
       step.evaluate(context);
     });
 
-    const expression = this.returnStatement.evaluate(context);
+    const term = this.returnStatement.evaluate(context);
 
-    return expression;
+    return term;
   }
 
   static name = "ReturnBlock";

@@ -82,9 +82,8 @@ export function termStringFromPrimitiveAndProperties(primitive, properties) {
   return termString;
 }
 
-export function variableAssignmentStringFromVariable(expression, variable) {
-  const type = variable.getType(),
-        variableString = variable.getString(),
+export function variableAssignmentStringFromTypeAndVariable(type, variable) {
+  const variableString = variable.getString(),
         variableAssignmentString = `${type} ${variableString} = ... ;`;
 
   return variableAssignmentString;

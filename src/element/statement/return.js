@@ -23,7 +23,7 @@ export default define(class ReturnStatement {
 
     context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 
-    term = this.term; ///
+    term = this.term.evaluate(context);
 
     context.debug(`...evaluated the '${returnStatementString}' return statement.`);
 

@@ -7,11 +7,11 @@ import elements from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 import { ternaryStringFromTerm,
          variableStringFromName,
-         variableAssignmentStringFromVariable,
          termStringFromPrimitiveAndProperties,
          procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
          expressionStringFromPrimitiveAndProperties,
+         variableAssignmentStringFromTypeAndVariable,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
          procedureStringFromTypeLabelParametersAndReturnBlock,
@@ -1227,7 +1227,7 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
   const { VariableAssignment } = elements,
         variable = variableFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
         expression = expressionFromVariableAssignmentNode(variableAssignmentNode, context),
-        variableAssignmentString = variableAssignmentStringFromVariable(expression, variable, context),
+        variableAssignmentString = variableAssignmentStringFromTypeAndVariable(type, variable, context),
         string = variableAssignmentString,  ///
         assignment = new VariableAssignment(string, variable, expression);
 
