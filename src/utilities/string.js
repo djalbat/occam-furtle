@@ -53,6 +53,28 @@ export function primtiveStringFromStringLiteral(stringLiteral) {
   return primtiveString;
 }
 
+export function termStringFromPrimitiveAndProperties(primitive, properties) {
+  let termString;
+
+  if (false) {
+    ///
+  } else if (primitive !== null) {
+    const primitiveString = primitive.toString();
+
+    termString = primitiveString; ///
+  } else {
+    properties.forEach((property) => {
+      if (property !== null) {
+        const propertyString = property.getString();
+
+        termString = propertyString;  ///
+      }
+    });
+  }
+
+  return termString;
+}
+
 export function variableAssignmentStringFromVariable(expression, variable) {
   const type = variable.getType(),
         variableString = variable.getString(),

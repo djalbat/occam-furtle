@@ -6,7 +6,7 @@ import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
 import { termFromBoolean } from "../../utilities/term";
 
-export default define(class LogicaTerm {
+export default define(class LogicalTerm {
   constructor(string, type, disjunction, leftTerm, rightTerm) {
     this.string = string;
     this.type = type;
@@ -38,9 +38,9 @@ export default define(class LogicaTerm {
   evaluate(context) {
     let term;
 
-    const logicaTermString = this.string; ///
+    const logicalTermString = this.string; ///
 
-    context.trace(`Evaluating the '${logicaTermString}' logical term...`);
+    context.trace(`Evaluating the '${logicalTermString}' logical term...`);
 
     const leftTerm = this.leftTerm.evaluate(context),
           rightTerm = this.rightTerm.evaluate(context),
@@ -71,10 +71,10 @@ export default define(class LogicaTerm {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${logicaTermString}' logical term.`);
+    context.debug(`...evaluated the '${logicalTermString}' logical term.`);
 
     return term;
   }
 
-  static name = "LogicaTerm";
+  static name = "LogicalTerm";
 });
