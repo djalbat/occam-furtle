@@ -29,12 +29,8 @@ export const NAMED_PARAMETERS_RULE_NAME = "namedParameters";
 export const RETURN_STATEMENT_RULE_NAME = "returnStatement";
 export const ARRAY_ASSIGNMENT_RULE_NAME = "arrayAssignment";
 export const OBJECT_ASSIGNMENT_RULE_NAME = "objectAssignment";
-export const LOGICAL_EXPRESSION_RULE_NAME = "logicalExpression";
-export const NEGATED_EXPRESSION_RULE_NAME = "negatedExpression";
 export const VARIABLE_ASSIGNMENT_RULE_NAME = "variableAssignment";
 export const ANONYMOUS_PROCEDURE_RULE_NAME = "anonymousProcedure";
-export const BRACKETED_EXPRESSION_RULE_NAME = "bracketedExpression";
 export const VARIABLE_ASSIGNMENTS_RULE_NAME = "variableAssignments";
 export const PROCEDURE_DECLARATION_RULE_NAME = "procedureDeclaration";
-export const COMPARISON_EXPRESSION_RULE_NAME = "comparisonExpression";
 

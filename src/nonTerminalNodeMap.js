@@ -29,13 +29,9 @@ import NamedParametersNode from "./node/parameters/named";
 import ReturnStatementNode from "./node/statement/return";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
-import LogicalExpressionNode from "./node/expression/logical";
-import NegatedExpressionNode from "./node/expression/negated";
 import AnonymousProcedureNode from "./node/procedure/anoymous";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
-import BracketedExpressionNode from "./node/expression/bracketed";
-import ComparisonExpressionNode from "./node/expression/comparison";
 import ProcedureDeclarationNode from "./node/declaration/procedure";
 
 import { STEP_RULE_NAME,
@@ -67,13 +63,9 @@ import { STEP_RULE_NAME,
          RETURN_STATEMENT_RULE_NAME,
          ARRAY_ASSIGNMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
-         LOGICAL_EXPRESSION_RULE_NAME,
-         NEGATED_EXPRESSION_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
          VARIABLE_ASSIGNMENTS_RULE_NAME,
-         BRACKETED_EXPRESSION_RULE_NAME,
-         COMPARISON_EXPRESSION_RULE_NAME,
          PROCEDURE_DECLARATION_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
@@ -106,13 +98,9 @@ const NonTerminalNodeMap = {
   [RETURN_STATEMENT_RULE_NAME]: ReturnStatementNode,
   [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
-  [LOGICAL_EXPRESSION_RULE_NAME]: LogicalExpressionNode,
-  [NEGATED_EXPRESSION_RULE_NAME]: NegatedExpressionNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
   [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode,
-  [BRACKETED_EXPRESSION_RULE_NAME]: BracketedExpressionNode,
-  [COMPARISON_EXPRESSION_RULE_NAME]: ComparisonExpressionNode,
   [PROCEDURE_DECLARATION_RULE_NAME]: ProcedureDeclarationNode
 };
 

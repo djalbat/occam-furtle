@@ -3,7 +3,7 @@
 import { define } from "../elements";
 
 export default define(class Expression {
-  constructor(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall, negatedExpression, logicalExpression, bracketedExpression, comparisonExpression) {
+  constructor(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
     this.string = string;
     this.variable = variable;
     this.primitive = primitive;
@@ -15,10 +15,6 @@ export default define(class Expression {
     this.nodesQuery = nodesQuery;
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
-    this.negatedExpression = negatedExpression;
-    this.logicalExpression = logicalExpression;
-    this.bracketedExpression = bracketedExpression;
-    this.comparisonExpression = comparisonExpression;
   }
 
   getString() {
@@ -65,22 +61,6 @@ export default define(class Expression {
     return this.procedureCall;
   }
 
-  getNegatedExpression() {
-    return this.negatedExpression;
-  }
-
-  getLogiclExpression() {
-    return this.logicalExpression;
-  }
-
-  getBracketedExpression() {
-    return this.bracketedExpression;
-  }
-
-  getComparisonExpression() {
-    return this.comparisonExpression;
-  }
-
   getNode() { return this.primitive.getNode(); }
 
   getNodes() { return this.primitive.getNodes(); }
@@ -116,14 +96,6 @@ export default define(class Expression {
       type = this.returnBlock.getType();
     } else if (this.procedureCall !== null) {
       type = this.procedureCall.getType();
-    } else if (this.negatedExpression !== null) {
-      type = this.negatedExpression.getType();
-    } else if (this.logicalExpression !== null) {
-      type = this.logicalExpression.getType();
-    } else if (this.bracketedExpression !== null) {
-      type = this.bracketedExpression.getType();
-    } else if (this.comparisonExpression !== null) {
-      type = this.comparisonExpression.getType();
     }
 
     return type;
@@ -154,14 +126,6 @@ export default define(class Expression {
       term = this.returnBlock.evaluate(context);
     } else if (this.procedureCall !== null) {
       term = this.procedureCall.evaluate(context);
-    } else if (this.negatedExpression !== null) {
-      term = this.negatedExpression.evaluate(context);
-    } else if (this.logicalExpression !== null) {
-      term = this.logicalExpression.evaluate(context);
-    } else if (this.bracketedExpression !== null) {
-      term = this.bracketedExpression.evaluate(context);
-    } else if (this.comparisonExpression !== null) {
-      term = this.comparisonExpression.evaluate(context);
     }
 
     return term;

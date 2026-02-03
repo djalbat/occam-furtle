@@ -11,11 +11,7 @@ import { SOME_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
-         PROCEDURE_CALL_RULE_NAME,
-         NEGATED_EXPRESSION_RULE_NAME,
-         LOGICAL_EXPRESSION_RULE_NAME,
-         BRACKETED_EXPRESSION_RULE_NAME,
-         COMPARISON_EXPRESSION_RULE_NAME } from "../ruleNames";
+         PROCEDURE_CALL_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
   getSomeNode() {
@@ -88,49 +84,5 @@ export default class ExpressionNode extends NonTerminalNode {
     return procedureCallNode;
   }
 
-  getNegatedExpressionNode() {
-    const ruleName = NEGATED_EXPRESSION_RULE_NAME,
-          negatedExpressionNode = this.getNodeByRuleName(ruleName);
-
-    return negatedExpressionNode;
-  }
-
-  getLogicalExpressionNode() {
-    const ruleName = LOGICAL_EXPRESSION_RULE_NAME,
-          logicalExpressionRuleName = this.getNodeByRuleName(ruleName);
-
-    return logicalExpressionRuleName;
-  }
-
-  getBracketedExpressionNode() {
-    const ruleName = BRACKETED_EXPRESSION_RULE_NAME,
-          bracketedExpressionRuleName = this.getNodeByRuleName(ruleName);
-
-    return bracketedExpressionRuleName;
-  }
-
-  getComparisonExpressionNode() {
-    const ruleName = COMPARISON_EXPRESSION_RULE_NAME,
-          comparisonNode = this.getNodeByRuleName(ruleName);
-
-    return comparisonNode;
-  }
-
-  static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
-    if (precedence === undefined) {
-      precedence = opacity; ///
-
-      opacity = childNodes; ///
-
-      childNodes = ruleName;  ///
-
-      ruleName = Class; ///
-
-      Class = ExpressionNode;
-    }
-
-    const expressionNode = NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence);
-
-    return expressionNode;
-  }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ExpressionNode, ruleName, childNodes, opacity, precedence); }
 }
