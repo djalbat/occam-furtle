@@ -5,10 +5,10 @@ import Exception from "../exception";
 import { define } from "../elements";
 
 export default define(class ProcedureCall {
-  constructor(string, reference, expressions) {
+  constructor(string, reference, terms) {
     this.string = string;
     this.reference = reference;
-    this.expressions = expressions;
+    this.terms = terms;
   }
 
   getString() {
@@ -19,8 +19,8 @@ export default define(class ProcedureCall {
     return this.reference;
   }
 
-  getExpressions() {
-    return this.expressions;
+  getTerms() {
+    return this.terms;
   }
 
   getName() { return this.reference.getName(); }
@@ -41,7 +41,7 @@ export default define(class ProcedureCall {
     }
 
     const procedure = context.findProcedureByName(name),
-          terms = this.expressions.evaluate(context),
+          terms = this.terms.evaluate(context),
           term = procedure.call(terms, context);
 
     context.debug(`...evaluated the '${procedureCallString}' procedure call.`);

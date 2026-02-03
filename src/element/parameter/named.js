@@ -28,6 +28,21 @@ export default define(class NamedParameter {
     return this.alias;
   }
 
+  isAliased() {
+    const aliased = (this.alias !== null);
+
+    return aliased;
+  }
+
+  getAliasedName() {
+    const aliased = this.isAliased(),
+          aliasedName = aliased ?
+                          this.alias :  ///
+                            this.name; ///
+
+    return aliasedName;
+  }
+
   matchTerm(term, context) {
     const termString = term.getString(),
           namedParameterString = this.string;  ///

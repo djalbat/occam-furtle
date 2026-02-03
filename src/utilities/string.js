@@ -66,7 +66,7 @@ export function termStringFromPrimitiveAndProperties(primitive, properties) {
   if (false) {
     ///
   } else if (primitive !== null) {
-    const primitiveString = primitive.toString();
+    const primitiveString = primitive.getString();
 
     termString = primitiveString; ///
   } else {
@@ -108,7 +108,7 @@ export function expressionStringFromPrimitiveAndProperties(primitive, properties
   if (false) {
     ///
   } else if (primitive !== null) {
-    const primitiveString = primitive.toString();
+    const primitiveString = primitive.getString();
 
     expressionString = primitiveString; ///
   } else {
@@ -185,7 +185,7 @@ export function variableAssignmentStringFromTypeAndVariableAssignmentsArray(type
     return variableAssignmentsString;
   }, null); ///
 
-  variableAssignmentsString = `${type} ${variableAssignmentsString}`; ///
+  variableAssignmentsString = `${type} ${variableAssignmentsString} ;`; ///
 
   return variableAssignmentsString;
 }

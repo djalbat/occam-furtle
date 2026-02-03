@@ -4,7 +4,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { termFromNode } from "../../utilities/element";
+import { termFromNode } from "../../utilities/term";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment {

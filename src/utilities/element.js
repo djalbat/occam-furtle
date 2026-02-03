@@ -268,8 +268,8 @@ export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
         node = procedureCallNode, ///
         string = context.nodeAsString(node),
         reference = referenceFromProcedureCallNode(procedureCallNode, context),
-        expressions = termsFromProcedureCallNode(procedureCallNode, context),
-        procedureCall = new ProcedureCall(string, reference, expressions);
+        terms = termsFromProcedureCallNode(procedureCallNode, context),
+        procedureCall = new ProcedureCall(string, reference, terms);
 
   return procedureCall;
 }
@@ -958,7 +958,7 @@ export function procedureCallFromExpressionNode(expressionNode, context) {
 }
 
 export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
-  const rightTermNode = comparisonTermNode.getLeftTermNode(),
+  const rightTermNode = comparisonTermNode.getRightTermNode(),
         rightTerm = termFromTermNode(rightTermNode, context);
 
   return rightTerm;
