@@ -56,16 +56,6 @@ export default define(class Expression {
     return this.procedureCall;
   }
 
-  getNode() { return this.term.getNode(); }
-
-  getNodes() { return this.term.getNodes(); }
-
-  getNumber() { return this.term.getNumber(); }
-
-  getBoolean() { return this.term.getBoolean(); }
-
-  getStringLiteral() { return this.term.getStringLiteral(); }
-
   getType() {
     let type;
 

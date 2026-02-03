@@ -42,7 +42,8 @@ export default define(class ArrayAssigment {
       throw exception;
     }
 
-    const nodes = term.getNodes(),
+    const primitiveValue = term.getPrimitiveValue(),
+          nodes = primitiveValue, ///
           nodesLength = nodes.length,
           parametersLength = this.parameters.getLength();
 

@@ -55,19 +55,19 @@ export default define(class NodeQuery {
       throw exception;
     }
 
-    const termNode = term.getNode();
+    let node;
 
-    if (termNode === null) {
+    const primitiveValue = term.getPrimitiveValue();
+
+    node = primitiveValue;  ///
+
+    if (node === null) {
       const termString = term.getString(),
             message = `The '${termString}' term's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
-
-    let node;
-
-    node = termNode; ///
 
     const nodes = this.query.execute(node),
           nodesLength = nodes.length;

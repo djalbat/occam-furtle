@@ -29,56 +29,6 @@ export default define(class Primitive {
     return this.value;
   }
 
-  getNode() {
-    let node = null;
-
-    if (this.type === NODE_TYPE) {
-      node = this.value;  ///
-    }
-
-    return node;
-  }
-
-  getNodes() {
-    let nodes = null;
-
-    if (this.type === NODES_TYPE) {
-      nodes = this.value; ///
-    }
-
-    return nodes;
-  }
-
-  getNumber() {
-    let number = null;
-
-    if (this.type === NUMBER_TYPE) {
-      number = this.value;  ///
-    }
-
-    return number;
-  }
-
-  getBoolean() {
-    let boolean = null;
-
-    if (this.type === BOOLEAN_TYPE) {
-      boolean = this.value; ///
-    }
-
-    return boolean;
-  }
-
-  getStringLiteral() {
-    let stringLiteral = null;
-
-    if (this.type === STRING_TYPE) {
-      stringLiteral = this.value; ///
-    }
-
-    return stringLiteral;
-  }
-
   evaluate(context) {
     const { Term } = elements,
           primitive = this,

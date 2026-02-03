@@ -63,11 +63,13 @@ export default define(class LogicalTerm {
       throw exception;
     }
 
-    const leftTermBoolean = leftTerm.getBoolean(),
-          rightTermBoolean = rightTerm.getBoolean(),
+    const leftTermPrimitiveValue = leftTerm.getPrimitiveValue(),
+          rightTermPrimitiveValue = rightTerm.getPrimitiveValue(),
+          leftBoolean =leftTermPrimitiveValue, ///
+          rightBoolean = rightTermPrimitiveValue, ///
           boolean = this.disjunction ?
-                      (leftTermBoolean || rightTermBoolean) :
-                        (leftTermBoolean && rightTermBoolean);
+                      (leftBoolean || rightBoolean) :
+                        (leftBoolean && rightBoolean);
 
     term = termFromBoolean(boolean, context);
 

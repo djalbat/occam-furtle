@@ -31,8 +31,9 @@ const free = true,
 
 // try {
 const context = fileContext,  ///
-      expression = procedure.call(terms, context),
-      boolean = expression.getBoolean();
+      term = procedure.call(terms, context),
+      primitiveValue = term.getPrimitiveValue(),
+      boolean = primitiveValue; ///
 
 console.log(boolean);
 // } catch (exception) {

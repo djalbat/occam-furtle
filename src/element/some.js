@@ -45,7 +45,8 @@ export default define(class Some {
       throw exception;
     }
 
-    const nodes = term.getNodes(),
+    const primitiveValue = term.getPrimitiveValue(),
+          nodes = primitiveValue, ///
           boolean = nodes.some((node) => {
             let term;
 
@@ -66,7 +67,8 @@ export default define(class Some {
               throw exception;
             }
 
-            const boolean = term.getBoolean();
+            const primitiveValue = term.getPrimitiveValue(),
+                  boolean = primitiveValue; ///
 
             return boolean;
           });

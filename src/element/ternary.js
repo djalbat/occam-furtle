@@ -48,7 +48,8 @@ export default define(class Ternary {
       throw exception;
     }
 
-    const boolean = term.getBoolean();
+    const primitiveValue = term.getPrimitiveValue(),
+          boolean = primitiveValue; ///
 
     term = boolean ?
               this.ifExpression.evaluate(context) :

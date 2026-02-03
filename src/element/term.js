@@ -41,15 +41,11 @@ export default define(class Term {
     return this.comparisonTerm;
   }
 
-  getNode() { return this.primitive.getNode(); }
+  getPrimitiveValue() {
+    const primitiveValue = this.primitive.getValue();
 
-  getNodes() { return this.primitive.getNodes(); }
-
-  getNumber() { return this.primitive.getNumber(); }
-
-  getBoolean() { return this.primitive.getBoolean(); }
-
-  getStringLiteral() { return this.primitive.getStringLiteral(); }
+    return primitiveValue;
+  }
 
   getType() {
     let type;

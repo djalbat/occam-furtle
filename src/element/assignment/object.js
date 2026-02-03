@@ -104,7 +104,8 @@ export default define(class ObjectAssigment {
       throw exception;
     }
 
-    const node = term.getNode(),
+    const primitiveValue = term.getPrimitiveValue(),
+          node = primitiveValue,  ///
           nodeTerminalNode = node.isTerminalNode();
 
     if (!nodeTerminalNode) {
@@ -143,7 +144,8 @@ export default define(class ObjectAssigment {
       throw exception;
     }
 
-    const node = term.getNode(),
+    const primitiveValue = term.getPrimitiveValue(),
+          node = primitiveValue,  ///
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
@@ -172,7 +174,8 @@ export default define(class ObjectAssigment {
       throw exception;
     }
 
-    const node = term.getNode(),
+    const primitiveValue = term.getPrimitiveValue(),
+          node = primitiveValue,  ///
           nodeNonTerminalNode = node.isNonTerminalNode();
 
     if (!nodeNonTerminalNode) {

@@ -44,7 +44,11 @@ export default define(class NegatedTerm {
       throw exception;
     }
 
-    let boolean = term.getBoolean();
+    let boolean;
+
+    const primitiveValue = term.getPrimitiveValue();
+
+    boolean = primitiveValue; ///
 
     boolean = !boolean;
 
