@@ -85,7 +85,9 @@ export default define(class NodeQuery {
 
     term = termFromNode(node, context);
 
-    context.debug(`...evaluated the '${nodeQueryString}' node query.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${nodeQueryString}' node query as '${termString}'.`);
 
     return term;
   }

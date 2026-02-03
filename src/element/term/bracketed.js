@@ -27,7 +27,9 @@ export default define(class BracketedTerm {
 
     term = this.term.evaluate(context);
 
-    context.debug(`...evaluated the '${bracketedTermString}' bracketed term.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${bracketedTermString}' bracketed term as '${termString}'.`);
 
     return term;
   }

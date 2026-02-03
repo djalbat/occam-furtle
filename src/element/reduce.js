@@ -71,7 +71,9 @@ export default define(class Reduce {
       return term;
     }, initialExpression);
 
-    context.trace(`...evaluated the '${reduceString}' reduce.`);
+    const termString = term.getString();
+
+    context.trace(`...evaluated the '${reduceString}' reduce as '${termString}'.`);
 
     return term;
   }

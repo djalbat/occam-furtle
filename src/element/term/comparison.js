@@ -60,7 +60,9 @@ export default define(class ComparisonTerm {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${comparisonTermString}' comparison term.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${comparisonTermString}' comparison term as '${termString}'.`);
 
     return term;
   }

@@ -27,7 +27,9 @@ export default define(class BracketedExpression {
 
     term = this.expression.evaluate(context);
 
-    context.debug(`...evaluated the '${bracketedExpressionString}' bracketed expression.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${bracketedExpressionString}' bracketed expression as '${termString}'.`);
 
     return term;
   }

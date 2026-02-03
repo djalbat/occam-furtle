@@ -25,7 +25,9 @@ export default define(class ReturnStatement {
 
     term = this.term.evaluate(context);
 
-    context.debug(`...evaluated the '${returnStatementString}' return statement.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${returnStatementString}' return statement as '${termString}'.`);
 
     return term;
   }

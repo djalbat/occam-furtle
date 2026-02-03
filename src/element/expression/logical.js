@@ -71,7 +71,9 @@ export default define(class LogicalExpression {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${logicalExpressionString}' logical expression.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${logicalExpressionString}' logical expression as '${termString}'.`);
 
     return term;
   }

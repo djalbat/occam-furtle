@@ -54,7 +54,9 @@ export default define(class Ternary {
               this.ifExpression.evaluate(context) :
                 this.elseExpression.evaluate(context);
 
-    context.debug(`...evaluated the '${ternaryString}' ternary.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${ternaryString}' ternary as '${termString}'.`);
 
     return term;
   }

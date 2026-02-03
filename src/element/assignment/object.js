@@ -91,7 +91,10 @@ export default define(class ObjectAssigment {
   }
 
   evaluateContentNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType();
+    const type = namedParameter.getType(),
+          namedParameterString = namedParameter.getString();
+
+    context.trace(`Evaluating the content '${namedParameterString}' named parameter...`);
 
     if (type !== STRING_TYPE) {
       const namedParameterString = namedParameter.getString(),
@@ -119,11 +122,18 @@ export default define(class ObjectAssigment {
 
     term = termFromStringLiteral(stringLiteral, context);
 
+    const termSttring = term.getString();
+
+    context.debug(`...evaluated the content '${namedParameterString}' named parameter as '${termSttring}'.`);
+
     return term;
   }
 
   evaluateTerminalNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType();
+    const type = namedParameter.getType(),
+          namedParameterString = namedParameter.getString();
+
+    context.trace(`Evaluating the terminal '${namedParameterString}' named parameter...`);
 
     if (type !== BOOLEAN_TYPE) {
       const namedParameterString = namedParameter.getString(),
@@ -141,11 +151,18 @@ export default define(class ObjectAssigment {
 
     term = termFromBoolean(boolean, context);  ///
 
+    const termSttring = term.getString();
+
+    context.debug(`...evaluated the terminal '${namedParameterString}' named parameter as '${termSttring}'.`);
+
     return term;
   }
 
   evaluateChildNodesNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType();
+    const type = namedParameter.getType(),
+          namedParameterString = namedParameter.getString();
+
+    context.trace(`Evaluating the child nodes '${namedParameterString}' named parameter...`);
 
     if (type !== NODES_TYPE) {
       const namedParameterString = namedParameter.getString(),
@@ -171,6 +188,10 @@ export default define(class ObjectAssigment {
           nodes = childNodes;  ///
 
     term = termFromNodes(nodes, context);
+
+    const termSttring = term.getString();
+
+    context.debug(`...evaluated the childNodes '${namedParameterString}' named parameter as '${termSttring}'.`);
 
     return term;
   }

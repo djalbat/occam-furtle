@@ -71,7 +71,9 @@ export default define(class LogicalTerm {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${logicalTermString}' logical term.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${logicalTermString}' logical term as '${termString}'.`);
 
     return term;
   }

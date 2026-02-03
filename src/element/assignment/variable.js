@@ -32,7 +32,9 @@ export default define(class VariableAssignment {
 
     this.variable.assign(term, context);
 
-    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${termString}'.`);
 
     return term;
   }

@@ -36,6 +36,10 @@ export default define(class ReturnBlock {
       variables = [];
     }
 
+    const returnBlockString = this.getString(); ///
+
+    context.trace(`Evaluating the '${returnBlockString}' return block...`);
+
     if (this.nonsensical) {
       const message = `The return block is nonsensical.`,
             exception = Exception.fromMessage(message);
@@ -51,7 +55,10 @@ export default define(class ReturnBlock {
       step.evaluate(context);
     });
 
-    const term = this.returnStatement.evaluate(context);
+    const term = this.returnStatement.evaluate(context),
+          termString = term.getString();
+
+    context.debug(`Evaluated... the '${returnBlockString}' return block as '${termString}'.`);
 
     return term;
   }

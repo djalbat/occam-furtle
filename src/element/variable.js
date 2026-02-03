@@ -55,7 +55,7 @@ export default define(class Variable {
           term = variable.getTerm(),
           termString = term.getString();
 
-    context.debug(`...evaluated the '${variableString}' variable to the '${termString}' term.`);
+    context.debug(`...evaluated the '${variableString}' variable as the '${termString}' term.`);
 
     return term;
   }

@@ -50,7 +50,9 @@ export default define(class NegatedExpression {
 
     term = termFromBoolean(boolean, context);
 
-    context.debug(`...evaluated the '${negatedExpressionString}' negated expression.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${negatedExpressionString}' negated expression as '${termString}'.`);
 
     return term;
   }

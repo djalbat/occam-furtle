@@ -73,7 +73,9 @@ export default define(class Some {
 
     term = termFromBoolean(boolean, context);
 
-    context.trace(`...evaluated the '${someString}' some.`);
+    const termString = term.getString();
+
+    context.trace(`...evaluated the '${someString}' some as '${termString}'.`);
 
     return term;
   }

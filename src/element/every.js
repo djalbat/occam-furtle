@@ -74,7 +74,9 @@ export default define(class Every {
 
     term = termFromBoolean(boolean, context);
 
-    context.trace(`...evaluated the '${everyString}' every.`);
+    const termString = term.getString();
+
+    context.trace(`...evaluated the '${everyString}' every as '${termString}'.`);
 
     return term;
   }

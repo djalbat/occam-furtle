@@ -44,7 +44,9 @@ export default define(class ProcedureCall {
           terms = this.terms.evaluate(context),
           term = procedure.call(terms, context);
 
-    context.debug(`...evaluated the '${procedureCallString}' procedure call.`);
+    const termString = term.getString();
+
+    context.debug(`...evaluated the '${procedureCallString}' procedure call as '${termString}'.`);
 
     return term;
   }
