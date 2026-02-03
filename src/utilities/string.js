@@ -88,6 +88,14 @@ export function primtiveStringFromStringLiteral(stringLiteral) {
   return primtiveString;
 }
 
+export function nodePropertyStringFromNameAndType(name, type) {
+  const typeString = type,  ///
+        nameString = name,  ///
+        nodePropertyString = `${typeString} ${nameString}`;
+
+  return nodePropertyString;
+}
+
 export function procedureDeclarationStringFromProcedure(procedure) {
   const type = procedure.getType(),
         label = procedure.getLabel(),
@@ -106,6 +114,20 @@ export function returnBlockStringFromReturnStatementNode(returnStatement) {
         returnBlockString = `{ ... ${returnStatementString} }`;
 
   return returnBlockString;
+}
+
+export function nodePropertiesStringFromNodePropertiesArray(nodePropertiesArray) {
+  const nodePropertiesString = nodePropertiesArray.reduce((nodePropertiesString, nodeProperty) => {
+      const nodePropertyString = nodeProperty.getString();
+
+      nodePropertiesString = (nodePropertiesString === null) ?
+                               nodePropertyString :
+                                `${nodePropertiesString}, ${nodePropertyString}`;
+
+      return nodePropertiesString;
+    }, null);
+
+  return nodePropertiesString;
 }
 
 export function variableAssignmentStringFromTypeAndVariable(type, variable) {

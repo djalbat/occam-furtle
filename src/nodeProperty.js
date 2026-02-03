@@ -1,5 +1,7 @@
 "use strict";
 
+import { nodePropertyStringFromNameAndType } from "./utilities/string";
+
 export default class NodeProperty {
   constructor(string, type, name) {
     this.string = string;
@@ -22,7 +24,7 @@ export default class NodeProperty {
   matchNamedParameter(namedParameter, context) {
     let namedParameterMatches;
 
-    const nodePropertyString = this.getString(), ///
+    const nodePropertyString = this.string, ///
           namedParameterString = namedParameter.getString();
 
     context.trace(`Matching the '${nodePropertyString}' node property against the '${namedParameterString}' named parameter...`);
@@ -41,18 +43,11 @@ export default class NodeProperty {
 
   static name = "Parameter";
 
-  static fromNameAndType(name, type, context) {
-    const string = stringFromNameAndType(name, type, context),
+  static fromNameAndType(name, type) {
+    const nodePropertyString = nodePropertyStringFromNameAndType(name, type),
+          string = nodePropertyString,  ///
           nodeProperty = new NodeProperty(string, type, name);
 
     return nodeProperty;
   }
 };
-
-function stringFromNameAndType(name, type, context) {
-  const typeString = type,  ///
-        nameString = name,  ///
-        string = `${typeString} ${nameString}`;
-
-  return string;
-}
