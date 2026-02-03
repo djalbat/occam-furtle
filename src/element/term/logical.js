@@ -1,22 +1,20 @@
 "use strict";
 
+import Element from "../../element";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
 import { termFromBoolean } from "../../utilities/term";
 
-export default define(class LogicalTerm {
-  constructor(string, type, disjunction, leftTerm, rightTerm) {
-    this.string = string;
+export default define(class LogicalTerm extends Element {
+  constructor(context, string, node, type, disjunction, leftTerm, rightTerm) {
+    super(context, string, node)
+
     this.type = type;
     this.disjunction = disjunction;
     this.leftTerm = leftTerm;
     this.rightTerm = rightTerm;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -38,7 +36,7 @@ export default define(class LogicalTerm {
   evaluate(context) {
     let term;
 
-    const logicalTermString = this.string; ///
+    const logicalTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${logicalTermString}' logical term...`);
 

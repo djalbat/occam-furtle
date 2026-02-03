@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../../element";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
 import { termFromBoolean } from "../../utilities/term";
 
-export default define(class NegatedTerm {
-  constructor(string, type, term) {
-    this.string = string;
+export default define(class NegatedTerm extends Element {
+  constructor(context, string, node, type, term) {
+    super(context, string, node)
+
     this.type = type;
     this.term = term;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -28,7 +26,7 @@ export default define(class NegatedTerm {
   evaluate(context) {
     let term;
 
-    const negatedTermString = this.string; ///
+    const negatedTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${negatedTermString}' negated term...`);
 

@@ -1,5 +1,6 @@
 "use strict";
 
+import Element from "../element";
 import elements from "../elements";
 import Exception from "../exception";
 
@@ -7,16 +8,13 @@ import { define } from "../elements";
 import { NODES_TYPE } from "../types";
 import { termFromNode } from "../utilities/term";
 
-export default define(class Reduce {
-  constructor(string, variable, initialExpression, anonymousProcedure) {
-    this.string = string;
+export default define(class Reduce extends Element {
+  constructor(context, string, node, variable, initialExpression, anonymousProcedure) {
+    super(context, string, node)
+
     this.variable = variable;
     this.initialExpression = initialExpression;
     this.anonymousProcedure = anonymousProcedure;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {

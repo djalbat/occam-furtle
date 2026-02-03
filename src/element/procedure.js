@@ -1,22 +1,20 @@
 "use strict";
 
+import Element from "../element";
 import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
-export default define(class Procedure {
-  constructor(string, type, label, parameters, returnBlock) {
-    this.string = string;
+export default define(class Procedure extends Element {
+  constructor(context, string, node, type, label, parameters, returnBlock) {
+    super(context, string, node)
+
     this.type = type;
     this.label = label;
     this.parameters = parameters;
     this.returnBlock = returnBlock;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -49,7 +47,7 @@ export default define(class Procedure {
   matchName(name) { return this.label.matchName(name); }
 
   call(terms, context) {
-    const procedureString = this.string;  ///
+    const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 

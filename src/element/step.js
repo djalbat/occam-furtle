@@ -1,17 +1,16 @@
 "use strict";
 
+import Element from "../element";
+
 import { define } from "../elements";
 
-export default define(class Step {
-  constructor(string, arrayAssignment, objectAssigment, variablessAssignment) {
-    this.string = string;
+export default define(class Step extends Element {
+  constructor(context, string, node, arrayAssignment, objectAssigment, variablessAssignment) {
+    super(context, string, node)
+
     this.arrayAssignment = arrayAssignment;
     this.objectAssigment = objectAssigment;
     this.variablessAssignment = variablessAssignment;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getArrayAssignment() {

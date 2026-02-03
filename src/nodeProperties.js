@@ -34,7 +34,7 @@ class NodeProperties {
   someNodeProperty(callback) { return this.array.some(callback); }
 
   matchNamedParameter(namedParameter, context) {
-    const nodePropertiesString = this.string, ///
+    const nodePropertiesString = this.getString(), ///
           namedParameterString = namedParameter.getString();
 
     context.trace(`Matching the '${namedParameterString}' named parameter against the '${nodePropertiesString}' node properties...`);

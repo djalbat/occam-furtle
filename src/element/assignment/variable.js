@@ -1,16 +1,15 @@
 "use strict";
 
+import Element from "../../element";
+
 import { define } from "../../elements";
 
-export default define(class VariableAssignment {
-  constructor(string, variable, expression) {
-    this.string = string;
+export default define(class VariableAssignment extends Element {
+  constructor(context, string, node, variable, expression) {
+    super(context, string, node)
+
     this.variable = variable;
     this.expression = expression;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -24,7 +23,7 @@ export default define(class VariableAssignment {
   evaluate(context) {
     let term;
 
-    const variableAssignmentString = this.string; ///
+    const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 

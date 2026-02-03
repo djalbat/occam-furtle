@@ -2,6 +2,7 @@
 
 import { arrayUtilities } from "necessary";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
@@ -10,15 +11,12 @@ import { termFromNode } from "../utilities/term";
 
 const { first } = arrayUtilities;
 
-export default define(class NodeQuery {
-  constructor(string, variable, query) {
-    this.string = string;
+export default define(class NodeQuery extends Element {
+  constructor(context, string, node, variable, query) {
+    super(context, string, node)
+
     this.variable = variable;
     this.query = query;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -32,7 +30,7 @@ export default define(class NodeQuery {
   evaluate(context) {
     let term;
 
-    const nodeQueryString = this.string;  ///
+    const nodeQueryString = this.getString();  ///
 
     context.trace(`Evaluating the '${nodeQueryString}' node query...`);
 

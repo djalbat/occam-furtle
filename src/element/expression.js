@@ -1,10 +1,13 @@
 "use strict";
 
+import Element from "../element";
+
 import { define } from "../elements";
 
-export default define(class Expression {
-  constructor(string, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
-    this.string = string;
+export default define(class Expression extends Element {
+  constructor(context, string, node, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
+    super(context, string, node)
+
     this.term = term;
     this.some = some;
     this.every = every;
@@ -14,10 +17,6 @@ export default define(class Expression {
     this.nodesQuery = nodesQuery;
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getTerm() {

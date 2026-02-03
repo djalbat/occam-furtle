@@ -32,12 +32,4 @@ export default class Element {
   }
 
   matchNode(node) { return this.node.match(node); }
-
-  isEqualTo(element) {
-    const elementNode = element.getNode(),
-          matches = this.node.match(elementNode),
-          equalTo = matches;  ///
-
-    return equalTo;
-  }
 }

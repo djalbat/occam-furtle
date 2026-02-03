@@ -1,5 +1,6 @@
 "use strict";
 
+import Element from "../element";
 import elements from "../elements";
 import Exception from "../exception";
 
@@ -7,15 +8,13 @@ import { define } from "../elements";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 import { termFromNode, termFromBoolean } from "../utilities/term";
 
-export default define(class Every {
-  constructor(string, variable, anonymousProcedure) {
+export default define(class Every extends Element {
+  constructor(context, string, node, variable, anonymousProcedure) {
+    super(context, string, node)
+
     this.string = string;
     this.variable = variable;
     this.anonymousProcedure = anonymousProcedure;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {

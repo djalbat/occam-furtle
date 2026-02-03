@@ -2,6 +2,7 @@
 
 import { arrayUtilities } from "necessary";
 
+import Element from "../element";
 import elements from "../elements";
 import nullNode from "../nullNode";
 
@@ -10,15 +11,12 @@ import { NODE_TYPE, NODES_TYPE, STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE  } from "
 
 const { match } = arrayUtilities;
 
-export default define(class Primitive {
-  constructor(string, type, value) {
-    this.string = string;
+export default define(class Primitive extends Element {
+  constructor(context, string, node, type, value) {
+    super(context, string, node)
+
     this.type = type;
     this.value = value;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {

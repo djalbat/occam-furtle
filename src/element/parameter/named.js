@@ -4,16 +4,15 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 
-export default define(class NamedParameter {
-  constructor(string, type, name, alias) {
-    this.string = string;
+import Element from "../../element";
+
+export default define(class NamedParameter extends Element {
+  constructor(context, string, node, type, name, alias) {
+    super(context, string, node)
+
     this.type = type;
     this.name = name;
     this.alias = alias;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -45,7 +44,7 @@ export default define(class NamedParameter {
 
   matchTerm(term, context) {
     const termString = term.getString(),
-          namedParameterString = this.string;  ///
+          namedParameterString = this.getString();  ///
 
     context.trace(`Matching the '${termString}' term against the '${namedParameterString}' named parameter...`);
 

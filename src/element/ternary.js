@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
-export default define(class Ternary {
-  constructor(string, term, ifExpression, elseExpression) {
-    this.string = string;
+export default define(class Ternary extends Element {
+  constructor(context, string, node, term, ifExpression, elseExpression) {
+    super(context, string, node)
+
     this.term = term;
     this.ifExpression = ifExpression;
     this.elseExpression = elseExpression;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getTerm() {
@@ -32,7 +30,7 @@ export default define(class Ternary {
   evaluate(context) {
     let term;
 
-    const ternaryString = this.string; ///
+    const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 

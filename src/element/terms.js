@@ -1,16 +1,15 @@
 "use strict";
 
+import Element from "../element";
+
 import { define } from "../elements";
 import { termsStringFromTermsArray } from "../utilities/string";
 
-export default define(class Terms {
-  constructor(string, array) {
-    this.string = string;
-    this.array = array;
-  }
+export default define(class Terms extends Element {
+  constructor(context, string, node, array) {
+    super(context, string, node)
 
-  getString() {
-    return this.string;
+    this.array = array;
   }
 
   getArray() {
@@ -46,7 +45,11 @@ export default define(class Terms {
           termsString = termsStringFromTermsArray(termsArray, context),
           string = termsString, ///
           array = termsArray, ///
-          terms = new Terms(string, array);
+          node = null;
+
+    context = null;
+
+    const terms = new Terms(context, string, node, array);
 
     return terms;
   }
@@ -60,7 +63,11 @@ export default define(class Terms {
           termsString = termsStringFromTermsArray(termsArray, context),
           string = termsString, ///
           array = termsArray, ///
-          terms = new Terms(string, array);
+          node = null;
+
+    context = null;
+
+    const terms = new Terms(context, string, node, array);
 
     return terms;
   }

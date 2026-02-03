@@ -33,6 +33,20 @@ export function primtiveStringFromNodes(nodes, context) {
   return primtiveString;
 }
 
+export function termStringFromProperties(properties) {
+  let termString;
+
+  properties.forEach((property) => {
+    if (property !== null) {
+      const propertyString = property.getString();
+
+      termString = propertyString;  ///
+    }
+  });
+
+  return termString;
+}
+
 export function primtiveStringFromBoolean(boolean) {
   const expresssionString = `${boolean}`;
 
@@ -72,28 +86,6 @@ export function primtiveStringFromStringLiteral(stringLiteral) {
         primtiveString = string;  ///
 
   return primtiveString;
-}
-
-export function termStringFromPrimitiveAndProperties(primitive, properties) {
-  let termString;
-
-  if (false) {
-    ///
-  } else if (primitive !== null) {
-    const primitiveString = primitive.getString();
-
-    termString = primitiveString; ///
-  } else {
-    properties.forEach((property) => {
-      if (property !== null) {
-        const propertyString = property.getString();
-
-        termString = propertyString;  ///
-      }
-    });
-  }
-
-  return termString;
 }
 
 export function procedureDeclarationStringFromProcedure(procedure) {

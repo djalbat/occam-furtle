@@ -1,5 +1,6 @@
 "use strict";
 
+import Element from "../../element";
 import elements from "../../elements";
 import Exception from "../../exception";
 import nodeProperties from "../../nodeProperties";
@@ -10,15 +11,12 @@ import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
 import { termFromNodes, termFromBoolean, termFromStringLiteral } from "../../utilities/term";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
-export default define(class ObjectAssigment {
-  constructor(string, variable, namedParameters) {
-    this.string = string;
+export default define(class ObjectAssigment extends Element {
+  constructor(context, string, node, variable, namedParameters) {
+    super(context, string, node)
+
     this.variable = variable;
     this.namedParameters = namedParameters;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -30,7 +28,7 @@ export default define(class ObjectAssigment {
   }
 
   evaluate(context) {
-    const objectAssignmentString = this.string; ///
+    const objectAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 

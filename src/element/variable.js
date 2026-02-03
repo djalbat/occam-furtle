@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { variableStringFromName } from "../utilities/string";
 
-export default define(class Variable {
-  constructor(string, type, name, term) {
-    this.string = string;
+export default define(class Variable extends Element {
+  constructor(context, string, node, type, name, term) {
+    super(context, string, node)
+
     this.type = type;
     this.name = name;
     this.term = term;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -36,7 +34,7 @@ export default define(class Variable {
   }
 
   evaluate(context) {
-    const variableString = this.string; ///
+    const variableString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableString}' variable...`);
 
@@ -64,7 +62,7 @@ export default define(class Variable {
     const nested = false,
           termString = term.getString(),
           variableName = this.name, ///
-          variableString = this.string, ///
+          variableString = this.getString(), ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
     context.trace(`Assigning the '${termString}' term to the '${variableString}' variable...`);
@@ -100,10 +98,14 @@ export default define(class Variable {
   static fromParameter(parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
-          primitive = null,
+          term = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, primitive);
+          node = null;
+
+    context = null;
+
+    const variable = new Variable(context, string, node, type, name, term);
 
     return variable;
   }
@@ -112,10 +114,14 @@ export default define(class Variable {
     const aliasedName = namedParameter.getAliasedName(),
           type = namedParameter.getType(),
           name = aliasedName, ///
-          primitive = null,
+          term = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, primitive);
+          node = null;
+
+    context = null;
+
+    const variable = new Variable(context, string, node, type, name, term);
 
     return variable;
   }
@@ -125,7 +131,11 @@ export default define(class Variable {
           name = parameter.getName(),
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          variable = new Variable(string, type, name, term);
+          node = null;
+
+    context = null;
+
+    const variable = new Variable(context, string, node, type, name, term);
 
     return variable;
   }

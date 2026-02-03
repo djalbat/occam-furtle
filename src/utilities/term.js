@@ -8,8 +8,13 @@ export function termFromNode(node, context) {
   const { Term } = elements,
         variable = null,
         primitive = primitiveFromNode(node, context),
-        string = primitive.getString(),
-        term = new Term(string, variable, primitive);
+        string = primitive.getString();
+
+  node = null;
+
+  context = null;
+
+  const term = new Term(context, string, node, variable, primitive);
 
   return term;
 }
@@ -19,7 +24,11 @@ export function termFromNodes(nodes, context) {
         variable = null,
         primitive = primitiveFromNodes(nodes, context),
         string = primitive.getString(),
-        term = new Term(string, variable, primitive);
+        node = null;
+
+  context = null;
+
+  const term = new Term(context, string, node, variable, primitive);
 
   return term;
 }
@@ -29,7 +38,11 @@ export function termFromBoolean(boolean, context) {
         variable = null,
         primitive = primitiveFromBoolean(boolean, context),
         string = primitive.getString(),
-        term = new Term(string, variable, primitive);
+        node = null;
+
+  context = null;
+
+  const term = new Term(context, string, node, variable, primitive);
 
   return term;
 }
@@ -39,7 +52,11 @@ export function termFromStringLiteral(stringLiteral, context) {
         variable = null,
         primitive = primitiveFromStringLiteral(stringLiteral, context),
         string = primitive.getString(),
-        term = new Term(string, variable, primitive);
+        node = null;
+
+  context = null;
+
+  const term = new Term(context, string, node, variable, primitive);
 
   return term;
 }

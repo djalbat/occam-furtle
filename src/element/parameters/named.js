@@ -4,14 +4,13 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 
-export default define(class NamedParameters {
-  constructor(string, array) {
-    this.string = string;
-    this.array = array;
-  }
+import Element from "../../element";
 
-  getString() {
-    return this.string;
+export default define(class NamedParameters extends Element {
+  constructor(context, string, node, array) {
+    super(context, string, node)
+
+    this.array = array;
   }
 
   getArray() {
@@ -36,7 +35,7 @@ export default define(class NamedParameters {
 
   matchTerms(terms, context) {
     const termsString = terms.getString(),
-          namedParametersString = this.string; ///
+          namedParametersString = this.getString(); ///
 
     context.trace(`Matching the '${termsString}' terms against the '${namedParametersString}' named parameters...`);
 
@@ -63,7 +62,7 @@ export default define(class NamedParameters {
 
   matchNamedParameter(namedParameter, context) {
     const namedParameterString = namedParameter.getString(),
-          namedParametersString = this.string; ///
+          namedParametersString = this.getString(); ///
 
     context.trace(`Matching the '${namedParameterString}' namedParameter against the '${namedParametersString}' named parameters...`);
 

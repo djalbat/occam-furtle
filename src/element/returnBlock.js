@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 import BlockContext from "../context/block";
 
 import { define } from "../elements";
 
-export default define(class ReturnBlock {
-  constructor(string, steps, nonsensical, returnStatement) {
-    this.string = string;
+export default define(class ReturnBlock extends Element {
+  constructor(context, string, node, steps, nonsensical, returnStatement) {
+    super(context, string, node)
+
     this.steps = steps;
     this.nonsensical = nonsensical;
     this.returnStatement = returnStatement;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getSteps() {

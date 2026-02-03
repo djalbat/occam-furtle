@@ -2,14 +2,13 @@
 
 import { define } from "../../elements";
 
-export default define(class VariableAssignments {
-  constructor(string, array) {
-    this.string = string;
-    this.array = array;
-  }
+import Element from "../../element";
 
-  getString() {
-    return this.string;
+export default define(class VariableAssignments extends Element {
+  constructor(context, string, node, array) {
+    super(context, string, node)
+
+    this.array = array;
   }
 
   getArray() {
@@ -17,7 +16,7 @@ export default define(class VariableAssignments {
   }
 
   evaluate(context) {
-    const variableAssignmentsString = this.string; ///
+    const variableAssignmentsString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 

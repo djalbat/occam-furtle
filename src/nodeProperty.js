@@ -22,7 +22,7 @@ export default class NodeProperty {
   matchNamedParameter(namedParameter, context) {
     let namedParameterMatches;
 
-    const nodePropertyString = this.string, ///
+    const nodePropertyString = this.getString(), ///
           namedParameterString = namedParameter.getString();
 
     context.trace(`Matching the '${nodePropertyString}' node property against the '${namedParameterString}' named parameter...`);

@@ -1,20 +1,19 @@
 "use strict";
 
+import Element from "../element";
+
 import { define } from "../elements";
 
-export default define(class Term {
-  constructor(string, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
-    this.string = string;
+export default define(class Term extends Element {
+  constructor(context, string, node, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
+    super(context, string, node)
+
     this.variable = variable;
     this.primitive = primitive;
     this.negatedTerm = negatedTerm;
     this.logicalTerm = logicalTerm;
     this.bracketedTerm = bracketedTerm;
     this.comparisonTerm = comparisonTerm;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -118,12 +117,16 @@ export default define(class Term {
   static fromPrimitive(primitive, context) {
     const primitiveString = primitive.getString(),
           string = primitiveString, ///
+          node = null,
           variable = null,
           negatedTerm = null,
           logicalTerm = null,
           bracketedTerm = null,
-          comparisonTerm = null,
-          term = new Term(string, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
+          comparisonTerm = null;
+
+    context = null;
+
+    const term = new Term(context, string, node, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
 
     return term;
   }

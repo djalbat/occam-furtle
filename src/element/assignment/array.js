@@ -1,5 +1,6 @@
 "use strict";
 
+import Element from "../../element";
 import elements from "../../elements";
 import Exception from "../../exception";
 
@@ -7,15 +8,12 @@ import { define } from "../../elements";
 import { termFromNode } from "../../utilities/term";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
-export default define(class ArrayAssigment {
-  constructor(string, variable, parameters) {
-    this.string = string;
+export default define(class ArrayAssigment extends Element {
+  constructor(context, string, node, variable, parameters) {
+    super(context, string, node)
+
     this.variable = variable;
     this.parameters = parameters;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -27,7 +25,7 @@ export default define(class ArrayAssigment {
   }
 
   evaluate(context) {
-    const arrayAssignmentString = this.string; ///
+    const arrayAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
 

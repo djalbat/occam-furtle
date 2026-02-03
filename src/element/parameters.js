@@ -1,17 +1,15 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 
-export default define(class Parameters {
-  constructor(string, array) {
-    this.string = string;
-    this.array = array;
-  }
+export default define(class Parameters extends Element {
+  constructor(context, string, node, array) {
+    super(context, string, node)
 
-  getString() {
-    return this.string;
+    this.array = array;
   }
 
   getArray() {
@@ -34,7 +32,7 @@ export default define(class Parameters {
 
   matchTerms(terms, context) {
     const termsString = terms.getString(),
-          parametersString = this.string; ///
+          parametersString = this.getString(); ///
 
     context.trace(`Matching the '${termsString}' terms against the '${parametersString}' parameters...`);
 

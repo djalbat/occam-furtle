@@ -10,8 +10,12 @@ export function termsFromNodes(nodes, context) {
         termsArray = termsArrayFromNodes(nodes, context),
         termsString = termsStringFromTermsArray(termsArray),
         string = termsString, ///
-        array = termsArray, ///
-        terms = new Terms(string, array);
+        array = termsArray,  ///
+        node = null;
+
+  context = null;
+
+  const terms = new Terms(context, string, node, array);
 
   return terms;
 }
@@ -23,8 +27,12 @@ export function termsFromExpression(term, context) {
         ],
         termsString = termsStringFromTermsArray(termsArray),
         string = termsString, ///
-        array = termsArray, ///
-        terms = new Primitives(string, array);
+        array = termsArray,  ///
+        node = null;
+
+  context = null;
+
+  const terms = new Primitives(context, string, node, array);
 
   return terms;
 }

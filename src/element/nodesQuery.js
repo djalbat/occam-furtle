@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODE_TYPE } from "../types";
 import { termFromNodes } from "../utilities/term";
 
-export default define(class NodesQuery {
-  constructor(string, variable, query) {
-    this.string = string;
+export default define(class NodesQuery extends Element {
+  constructor(context, string, node, variable, query) {
+    super(context, string, node)
+
     this.variable = variable;
     this.query = query;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getVariable() {
@@ -28,7 +26,7 @@ export default define(class NodesQuery {
   evaluate(context) {
     let term;
 
-    const nodesQueryString = this.string;  ///
+    const nodesQueryString = this.getString();  ///
 
     context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
 

@@ -2,14 +2,14 @@
 
 import { define } from "../../elements";
 
-export default define(class ProcedureDeclaration {
-  constructor(string, procedure) {
+import Element from "../../element";
+
+export default define(class ProcedureDeclaration extends Element {
+  constructor(context, string, node, procedure) {
+    super(context, string, node)
+
     this.string = string;
     this.procedure = procedure;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getProcedure() {

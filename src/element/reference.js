@@ -1,15 +1,14 @@
 "use strict";
 
+import Element from "../element";
+
 import { define } from "../elements";
 
-export default define(class Reference {
-  constructor(string, name) {
-    this.string = string;
-    this.name = name;
-  }
+export default define(class Reference extends Element {
+  constructor(context, string, node, name) {
+    super(context, string, node)
 
-  getString() {
-    return this.string;
+    this.name = name;
   }
 
   getName() {

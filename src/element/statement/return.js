@@ -2,14 +2,13 @@
 
 import { define } from "../../elements";
 
-export default define(class ReturnStatement {
-  constructor(string, term) {
-    this.string = string;
-    this.term = term;
-  }
+import Element from "../../element";
 
-  getString() {
-    return this.string;
+export default define(class ReturnStatement extends Element {
+  constructor(context, string, node, term) {
+    super(context, string, node)
+
+    this.term = term;
   }
 
   getExpression() {
@@ -19,7 +18,7 @@ export default define(class ReturnStatement {
   evaluate(context) {
     let term;
 
-    const returnStatementString = this.string;  ///
+    const returnStatementString = this.getString();  ///
 
     context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 

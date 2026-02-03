@@ -2,13 +2,11 @@
 
 import { define } from "../elements";
 
-export default define(class Error {
-  constructor(string) {
-    this.string = string;
-  }
+import Element from "../element";
 
-  getString() {
-    return this.string;
+export default define(class Error extends Element {
+  constructor(conterxt, string, node) {
+    super(context, string, node)
   }
 
   verify(context) {

@@ -1,18 +1,16 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 
-export default define(class Parameter {
-  constructor(string, type, name) {
-    this.string = string;
+export default define(class Parameter extends Element {
+  constructor(context, string, node, type, name) {
+    super(context, string, node)
+
     this.type = type;
     this.name = name;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getType() {
@@ -25,7 +23,7 @@ export default define(class Parameter {
 
   matchTerm(term, context) {
     const termString = term.getString(),
-          parameterString = this.string;  ///
+          parameterString = this.getString();  ///
 
     context.trace(`Matching the '${termString}' term against the '${parameterString}' parameter...`);
 

@@ -1,20 +1,18 @@
 "use strict";
 
+import Element from "../../element";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { termFromBoolean } from "../../utilities/term";
 
-export default define(class ComparisonTerm {
-  constructor(string, negated, leftTerm, rightTerm) {
-    this.string = string;
+export default define(class ComparisonTerm extends Element {
+  constructor(context, string, node, negated, leftTerm, rightTerm) {
+    super(context, string, node)
+
     this.negated = negated;
     this.leftTerm = leftTerm;
     this.rightTerm = rightTerm;
-  }
-
-  getString() {
-    return this.string;
   }
 
   isNegated() {
@@ -32,7 +30,7 @@ export default define(class ComparisonTerm {
   evaluate(context) {
     let term;
 
-    const comparisonTermString = this.string; ///
+    const comparisonTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${comparisonTermString}' comparison term...`);
 

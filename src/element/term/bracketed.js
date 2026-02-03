@@ -2,14 +2,13 @@
 
 import { define } from "../../elements";
 
-export default define(class BracketedTerm {
-  constructor(string, term) {
-    this.string = string;
-    this.term = term;
-  }
+import Element from "../../element";
 
-  getString() {
-    return this.string;
+export default define(class BracketedTerm extends Element {
+  constructor(context, string, node, term) {
+    super(context, string, node)
+
+    this.term = term;
   }
 
   getTerm() {
@@ -21,7 +20,7 @@ export default define(class BracketedTerm {
   evaluate(context) {
     let term;
 
-    const bracketedTermString = this.string; ///
+    const bracketedTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${bracketedTermString}' bracketed term...`);
 

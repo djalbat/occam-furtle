@@ -1,18 +1,16 @@
 "use strict";
 
+import Element from "../element";
 import Exception from "../exception";
 
 import { define } from "../elements";
 
-export default define(class ProcedureCall {
-  constructor(string, reference, terms) {
-    this.string = string;
+export default define(class ProcedureCall extends Element {
+  constructor(context, string, node, reference, terms) {
+    super(context, string, node)
+
     this.reference = reference;
     this.terms = terms;
-  }
-
-  getString() {
-    return this.string;
   }
 
   getReference() {
@@ -26,7 +24,7 @@ export default define(class ProcedureCall {
   getName() { return this.reference.getName(); }
 
   evaluate(context) {
-    const procedureCallString = this.string;  ///
+    const procedureCallString = this.getString();  ///
 
     context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
 
