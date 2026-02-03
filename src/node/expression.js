@@ -2,18 +2,24 @@
 
 import NonTerminalNode from "../nonTerminalNode";
 
-import { SOME_RULE_NAME,
+import { TERM_RULE_NAME,
+         SOME_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
-         VARIABLE_RULE_NAME,
-         PRIMITIVE_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
+  getTermNode() {
+    const ruleName = TERM_RULE_NAME,
+          termNode = this.getNodeByRuleName(ruleName);
+
+    return termNode;
+  }
+
   getSomeNode() {
     const ruleName = SOME_RULE_NAME,
           someNode = this.getNodeByRuleName(ruleName);
@@ -40,20 +46,6 @@ export default class ExpressionNode extends NonTerminalNode {
           ternaryNode = this.getNodeByRuleName(ruleName);
 
     return ternaryNode;
-  }
-
-  getVariableNode() {
-    const ruleName = VARIABLE_RULE_NAME,
-          variableNode = this.getNodeByRuleName(ruleName);
-
-    return variableNode;
-  }
-
-  getPrimitiveNode() {
-    const ruleName = PRIMITIVE_RULE_NAME,
-          primitiveNode = this.getNodeByRuleName(ruleName);
-
-    return primitiveNode;
   }
 
   getNodeQueryNode() {

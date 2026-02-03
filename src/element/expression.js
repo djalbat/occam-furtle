@@ -3,10 +3,9 @@
 import { define } from "../elements";
 
 export default define(class Expression {
-  constructor(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
+  constructor(string, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
     this.string = string;
-    this.variable = variable;
-    this.primitive = primitive;
+    this.term = term;
     this.some = some;
     this.every = every;
     this.reduce = reduce;
@@ -21,12 +20,8 @@ export default define(class Expression {
     return this.string;
   }
 
-  getVariable() {
-    return this.variable;
-  }
-
-  getPrimitive() {
-    return this.primitive;
+  getTerm() {
+    return this.term;
   }
 
   getSome() {
@@ -61,25 +56,23 @@ export default define(class Expression {
     return this.procedureCall;
   }
 
-  getNode() { return this.primitive.getNode(); }
+  getNode() { return this.term.getNode(); }
 
-  getNodes() { return this.primitive.getNodes(); }
+  getNodes() { return this.term.getNodes(); }
 
-  getNumber() { return this.primitive.getNumber(); }
+  getNumber() { return this.term.getNumber(); }
 
-  getBoolean() { return this.primitive.getBoolean(); }
+  getBoolean() { return this.term.getBoolean(); }
 
-  getStringLiteral() { return this.primitive.getStringLiteral(); }
+  getStringLiteral() { return this.term.getStringLiteral(); }
 
   getType() {
     let type;
 
     if (false) {
       ///
-    } else if (this.variable !== null) {
-      type = this.variable.getType();
-    } else if (this.primitive !== null) {
-      type = this.primitive.getType();
+    } else if (this.term !== null) {
+      type = this.term.getType();
     } else if (this.some !== null) {
       type = this.some.getType();
     } else if (this.every !== null) {
@@ -106,10 +99,8 @@ export default define(class Expression {
 
     if (false) {
       ///
-    } else if (this.variable !== null) {
-      term = this.variable.evaluate(context);
-    } else if (this.primitive !== null) {
-      term = this.primitive.evaluate(context);
+    } else if (this.term !== null) {
+      term = this.term.evaluate(context);
     } else if (this.some !== null) {
       term = this.some.evaluate(context);
     } else if (this.every !== null) {

@@ -53,6 +53,20 @@ export function termsStringFromTermsArray(termsArray) {
   return termsString;
 }
 
+export function expressionStringFromProperties(properties) {
+  let expressionString;
+
+  properties.forEach((property) => {
+    if (property !== null) {
+      const propertyString = property.getString();
+
+      expressionString = propertyString;  ///
+    }
+  });
+
+  return expressionString;
+}
+
 export function primtiveStringFromStringLiteral(stringLiteral) {
   const string = stringFromStringLiteral(stringLiteral),
         primtiveString = string;  ///
@@ -100,28 +114,6 @@ export function returnBlockStringFromReturnStatementNode(returnStatement) {
         returnBlockString = `{ ... ${returnStatementString} }`;
 
   return returnBlockString;
-}
-
-export function expressionStringFromPrimitiveAndProperties(primitive, properties) {
-  let expressionString;
-
-  if (false) {
-    ///
-  } else if (primitive !== null) {
-    const primitiveString = primitive.getString();
-
-    expressionString = primitiveString; ///
-  } else {
-    properties.forEach((property) => {
-      if (property !== null) {
-        const propertyString = property.getString();
-
-        expressionString = propertyString;  ///
-      }
-    });
-  }
-
-  return expressionString;
 }
 
 export function variableAssignmentStringFromTypeAndVariable(type, variable) {

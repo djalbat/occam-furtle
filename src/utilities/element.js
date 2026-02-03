@@ -7,10 +7,10 @@ import elements from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 import { ternaryStringFromTerm,
          variableStringFromName,
+         expressionStringFromProperties,
          termStringFromPrimitiveAndProperties,
          procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
-         expressionStringFromPrimitiveAndProperties,
          variableAssignmentStringFromTypeAndVariable,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
@@ -215,8 +215,7 @@ export function parametersFromParametersNode(parametersNode, context) {
 
 export function expressionFromExpressionNode(expressionNode, context) {
   const { Expression } = elements,
-        variable = variableFromExpressionNode(expressionNode, context),
-        primitive = primitiveFromExpressionNode(expressionNode, context),
+        term = termFromExpressionNode(expressionNode, context),
         some = someFromExpressionNode(expressionNode, context),
         every = everyFromExpressionNode(expressionNode, context),
         reduce = reduceFromExpressionNode(expressionNode, context),
@@ -226,19 +225,19 @@ export function expressionFromExpressionNode(expressionNode, context) {
         returnBlock = returnBlockFromExpressionNode(expressionNode, context),
         procedureCall = procedureCallFromExpressionNode(expressionNode, context),
         properties = [
+          term,
           some,
           every,
           reduce,
           ternary,
-          variable,
           nodeQuery,
           nodesQuery,
           returnBlock,
           procedureCall
         ],
-        expressionString = expressionStringFromPrimitiveAndProperties(primitive, properties, context),
+        expressionString = expressionStringFromProperties(properties, context),
         string = expressionString,  ///
-        expression = new Expression(string, variable, primitive, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall);
+        expression = new Expression(string, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall);
 
   return expression;
 }
@@ -457,6 +456,18 @@ export function variableFromReduceNode(reduceNode, context) {
   return variable;
 }
 
+export function termFromExpressionNode(expressionNode, context) {
+  let term = null;
+
+  const termNode = expressionNode.getTermNode();
+
+  if (termNode !== null) {
+    term = termFromTermNode(termNode, context);
+  }
+
+  return term;
+}
+
 export function someFromExpressionNode(expressionNode, context) {
   let some = null;
 
@@ -533,9 +544,15 @@ export function typeFromLogicalTermNode(logicalTermNode, context) {
   return type;
 }
 
+export function typeFromNegatedTermNode(logicalTermNode, context) {
+  const type = BOOLEAN_TYPE;
+
+  return type;
+}
+
 export function termFromNegatedTermNode(negatedTermNode, context) {
   const termNode = negatedTermNode.getTermNode(),
-    term = termFromTermNode(termNode, context);
+        term = termFromTermNode(termNode, context);
 
   return term;
 }
@@ -633,18 +650,6 @@ export function variableFromNodesQueryNode(nodesQueryNode, context) {
   return variable;
 }
 
-export function variableFromExpressionNode(expressionNode, context) {
-  let variable = null;
-
-  const variableNode = expressionNode.getVariableNode();
-
-  if (variableNode !== null) {
-    variable = variableFromVariableNode(variableNode, context);
-  }
-
-  return variable;
-}
-
 export function termsFromProcedureCallNode(procedureCallNode, context) {
   const termsNode = procedureCallNode.getTermsNode(),
         terms = termsFromTermsNode(termsNode, context);
@@ -688,18 +693,6 @@ export function ifExpressionFromTernaryNode(ternaryNode, context) {
         ifExpression = expressionFromExpressionNode(ifExpressionNode, context);
 
   return ifExpression;
-}
-
-export function primitiveFromExpressionNode(expressionNode, context) {
-  let primitive = null;
-
-  const primitiveNode = expressionNode.getPrimitiveNode();
-
-  if (primitiveNode !== null) {
-    primitive = primitiveFromPrimitiveNode(primitiveNode, context);
-  }
-
-  return primitive;
 }
 
 export function nodeQueryFromExpressionNode(expressionNode, context) {
