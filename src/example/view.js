@@ -70,8 +70,6 @@ class View extends Element {
   }
 
   childElements() {
-    const { readOnly } = this.constructor;
-
     return (
 
       <ColumnsDiv>
@@ -80,11 +78,11 @@ class View extends Element {
             <SubHeading>
               Lexical entries
             </SubHeading>
-            <LexicalEntriesTextarea onKeyUp={this.keyUpHandler} readOnly={readOnly} />
+            <LexicalEntriesTextarea onKeyUp={this.keyUpHandler} />
             <SubHeading>
               BNF
             </SubHeading>
-            <BNFTextarea onKeyUp={this.keyUpHandler} readOnly={readOnly} />
+            <BNFTextarea onKeyUp={this.keyUpHandler} />
             <SubHeading>
               Rule name
             </SubHeading>
@@ -132,16 +130,9 @@ class View extends Element {
     this.keyUpHandler();
   }
 
-  static initialRuleName = null;
+  static initialRuleName = "variableAssignment";
 
-  static initialContent = `Boolean isVariableFree(Node termNode, Node statementNode) {
-  Boolean variableBound = isVariableBound(termNode, statementNode);
-
-  Boolean variableFree = !variableBound;
-
-  return variableFree;
-}
-`;
+  static initialContent = `Boolean variableBound = isVariableBound(termNode, statementNode);`;
 
   static tagName = "div";
 

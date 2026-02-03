@@ -1,7 +1,7 @@
 "use strict";
 
-import FurtleLexer from "../furtle/Lexer";
-import FurtleParser from "../furtle/Parser";
+import FurtleLexer from "../furtle/lexer";
+import FurtleParser from "../furtle/parser";
 
 import { furtleLexerFromNothing } from "../utilities/lexers";
 import { furtleParserFromNothing } from "../utilities/parsers";
