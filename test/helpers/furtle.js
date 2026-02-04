@@ -1,6 +1,6 @@
 "use strict";
 
-const { File } = require("occam-entities"),
+const { File } = require("occam-model"),
       { fileSystemUtilities } = require("necessary");
 
 const { readFile } = fileSystemUtilities;

@@ -2,7 +2,7 @@
 
 import { arrayUtilities } from "necessary";
 
-import { filePathUtilities } from "occam-entities";
+import { filePathUtilities } from "occam-model";
 import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
 
 // import NominalLexer from "../nominal/lexer";
