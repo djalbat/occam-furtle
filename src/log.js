@@ -23,37 +23,37 @@ export default class Log {
     return this.follow;
   }
 
-  trace(message, filePath = null, lineIndex = null) {
+  trace(message, filePath = null) {
     const level = TRACE_LEVEL;
 
-    this.write(level, message, filePath, lineIndex);
+    this.write(level, message, filePath);
   }
 
-  debug(message, filePath = null, lineIndex = null) {
+  debug(message, filePath = null) {
     const level = DEBUG_LEVEL;
 
-    this.write(level, message, filePath, lineIndex);
+    this.write(level, message, filePath);
   }
 
-  info(message, filePath = null, lineIndex = null) {
+  info(message, filePath = null) {
     const level = INFO_LEVEL;
 
-    this.write(level, message, filePath, lineIndex);
+    this.write(level, message, filePath);
   }
 
-  warning(message, filePath = null, lineIndex = null) {
+  warning(message, filePath = null) {
     const level = WARNING_LEVEL;
 
-    this.write(level, message, filePath, lineIndex);
+    this.write(level, message, filePath);
   }
 
-  error(message, filePath = null, lineIndex = null) {
+  error(message, filePath = null) {
     const level = ERROR_LEVEL;
 
-    this.write(level, message, filePath, lineIndex);
+    this.write(level, message, filePath);
   }
 
-  write(level, message, filePath, lineIndex) {
+  write(level, message, filePath, lineIndex = null) {
     const levelIndex = LEVELS.indexOf(level),
           logLevelIndex = LEVELS.indexOf(this.logLevel);
 

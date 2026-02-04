@@ -1,0 +1,74 @@
+"use strict";
+
+import { LEVELS, DOUBLE_SPACE } from "./constants";
+
+const [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
+
+export default class Context {
+  constructor(context) {
+    this.context = context;
+  }
+
+  getContext() {
+    return this.context;
+  }
+
+  getDepth() {
+    let depth = this.context.getDepth();
+
+    depth++;
+
+    return depth;
+  }
+
+  getReleaseContext() { return this.context.getReleaseContext(); }
+
+  trace(message) {
+    const level = TRACE_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  debug(message) {
+    const level = DEBUG_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  info(message) {
+    const level = INFO_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  warning(message) {
+    const level = WARNING_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  error(message) {
+    const level = ERROR_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  writeToLog(level, message) {
+    const depth = this.getDepth(),
+          indent = DOUBLE_SPACE.repeat(depth);
+
+    message = `${indent}${message}`;  ///
+
+    const releaseContext = this.getReleaseContext();
+
+    releaseContext.writeToLog(level, message);
+  }
+
+  static fromNothing(Class, ...remainingArguments) {
+    let context = remainingArguments.pop();
+
+    context = new Class(context, ...remainingArguments);  ///
+
+    return context;
+  }
+}

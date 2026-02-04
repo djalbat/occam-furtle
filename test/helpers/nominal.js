@@ -1,8 +1,7 @@
 "use strict";
 
+const { NominalFileContext } = require("../../lib/index"); ///
 const { lexersUtilities, parsersUtilities } = require("occam-custom-grammars");
-
-const FileContext = require("../context/file");
 
 const { combinedCustomGrammarFromNothing } = require("../helpers/grammar");
 
@@ -21,7 +20,7 @@ function nominalFileContextFromReleaseContext(releaseContext) {
         node = parser.parse(tokens),
         context = releaseContext, ///
         filePath = "lemmas.nml",
-        fileContext = FileContext.fromNodeTokensAndFilePath(node, tokens, filePath, context),
+        fileContext = NominalFileContext.fromFilePathNodeAndTokens(filePath, tokens, node, context),
         nominalFileContext = fileContext;  ///
 
   return nominalFileContext;

@@ -2,22 +2,20 @@
 
 import { arrayUtilities } from "necessary";
 
+import Context from "../context";
 import Exception from "../exception";
 
 import { chainContext } from "../utilities/context";
 
 const { push } = arrayUtilities;
 
-export default class BlockContext {
+export default class BlockContext extends Context {
   constructor(context, variables) {
-    this.context = context;
+    super(context, variables);
+
     this.variables = variables;
 
     return chainContext(this);
-  }
-
-  getContext() {
-    return this.context;
   }
 
   getVariables(nested = true) {
@@ -32,26 +30,6 @@ export default class BlockContext {
     }
 
     return variables;
-  }
-
-  findVariableByVariableName(variableName, nested = true) {
-    const variables = this.getVariables(nested),
-          variable = variables.find((variable) => {
-            const variableNameMatches = variable.matchVariableName(variableName);
-
-            if (variableNameMatches) {
-              return true;
-            }
-          }) || null;
-
-    return variable;
-  }
-
-  isVariablePresentByVariableName(variableName, nested = true) {
-    const variable = this.findVariableByVariableName(variableName, nested),
-          variablePresent = (variable !== null);
-
-    return variablePresent;
   }
 
   addVariable(variable) {
@@ -74,18 +52,28 @@ export default class BlockContext {
     this.variables.push(variable);
   }
 
-  getFileContext() { return this.context.getFileContext(); }
+  findVariableByVariableName(variableName, nested = true) {
+    const variables = this.getVariables(nested),
+          variable = variables.find((variable) => {
+            const variableNameMatches = variable.matchVariableName(variableName);
 
-  getDepth() {
-    let depth = this.context.getDepth();
+            if (variableNameMatches) {
+              return true;
+            }
+          }) || null;
 
-    depth++;
+    return variable;
+  }
 
-    return depth;
+  isVariablePresentByVariableName(variableName, nested = true) {
+    const variable = this.findVariableByVariableName(variableName, nested),
+          variablePresent = (variable !== null);
+
+    return variablePresent;
   }
 
   static fromVariables(variables, context) {
-    const blockContext = new BlockContext(context, variables);
+    const blockContext = Context.fromNothing(BlockContext, variables, context)
 
     return blockContext;
   }

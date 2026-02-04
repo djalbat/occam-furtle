@@ -1,164 +1,39 @@
 "use strict";
 
-import { arrayUtilities } from "necessary";
+import Context from '../context';
 
-import { LEVELS } from "../constants";
-import { verifyFile } from "../process/verify";
-import { furtleLexer, furtleParser } from "../utilities/furtle";
+import { lineIndexFromNodeAndTokens } from "../utilities/lineIndex";
 import { nodeAsString, nodesAsString } from "../utilities/node";
-import { chainContext, lineIndexFromNodeAndTokens } from "../utilities/context";
 
-const { push } = arrayUtilities,
-      [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
+export default class FileContext extends Context {
+  constructor(context, filePath, tokens, node) {
+    super(context);
 
-export default class FileContext {
-  constructor(context, filePath, lineIndex, node, tokens, procedures) {
-    this.context = context;
     this.filePath = filePath;
-    this.lineIndex = lineIndex;
-    this.node = node;
     this.tokens = tokens;
-    this.procedures = procedures;
-
-    return chainContext(this);
-  }
-
-  getContext() {
-    return this.context;
+    this.node = node;
   }
 
   getFilePath() {
     return this.filePath;
   }
 
-  getLineIndex() {
-    return this.lineIndex;
+  getTokens() {
+    return this.tokens;
   }
 
   getNode() {
     return this.node;
   }
 
-  getTokens() {
-    return this.tokens;
+  break(node) {
+    const lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
+
+    this.context.break(this.filePath, lineIndex);
   }
 
-  getLexer() {
-    const lexer = furtleLexer;  ///
-
-    return lexer;
-  }
-
-  getParser() {
-    const parser = furtleParser;  ///
-
-    return parser;
-  }
-
-  getLabels(includeRelease = true) {
-    const labels = [];
-
-    return labels;
-  }
-
-  getTypes(includeRelease = true) {
-    const types = [];
-
-    return types;
-  }
-
-  getRules(includeRelease = true) {
-    const rules = []
-
-    return rules;
-  }
-
-  getAxioms(includeRelease = true) {
-    const axioms = [];
-
-    return axioms;
-  }
-
-  getLemmas(includeRelease = true) {
-    const lemmas = [];
-
-    return lemmas;
-  }
-
-  getTheorems(includeRelease = true) {
-    const theorems = [];
-
-    return theorems;
-  }
-
-  getProcedures(includeRelease = true) {
-    const procedures = [];
-
-    push(procedures, this.procedures);
-
-    if (includeRelease) {
-      const releaseContextProcedures = this.context.getProcedures();
-
-      push(procedures, releaseContextProcedures);
-    }
-
-    return procedures;
-  }
-
-  getMetaLemmas(includeRelease = true) {
-    const metaLemmas = [];
-
-    return metaLemmas;
-  }
-
-  getConjectures(includeRelease = true) {
-    const conjectures = [];
-
-    return conjectures;
-  }
-
-  getCombinators(includeRelease = true) {
-    const combinators = [];
-
-    return combinators;
-  }
-
-  getTypePrefixes(includeRelease = true) {
-    const typePrefixes = [];
-
-    return typePrefixes;
-  }
-
-  getConstructors(includeRelease = true) {
-    const constructors = [];
-
-    return constructors;
-  }
-
-  getMetatheorems(includeRelease = true) {
-    const metatheorems = [];
-
-    return metatheorems;
-  }
-
-  getMetavariables(includeRelease = true) {
-    const metavariables = [];
-
-    return metavariables;
-  }
-
-  addProcedure(procedure) {
-    const procedureString = procedure.getString();
-
-    this.procedures.push(procedure);
-
-    this.debug(`Added the '${procedureString}' procedure to the context.`);
-  }
-
-  getVariables() {
-    const variables = [];
-
-    return variables;
+  writeToLog(level, message) {
+    this.context.writeToLog(level, message, this.filePath);
   }
 
   nodeAsString(node) {
@@ -173,61 +48,6 @@ export default class FileContext {
     return string;
   }
 
-  trace(message, node = null) {
-    const level = TRACE_LEVEL;
-
-    this.writeToLog(level, message, node);
-  }
-
-  debug(message, node = null) {
-    const level = DEBUG_LEVEL;
-
-    this.writeToLog(level, message, node);
-  }
-
-  info(message, node = null) {
-    const level = INFO_LEVEL;
-
-    this.writeToLog(level, message, node);
-  }
-
-  warning(message, node = null) {
-    const level = WARNING_LEVEL;
-
-    this.writeToLog(level, message, node);
-  }
-
-  error(message, node = null) {
-    const level = ERROR_LEVEL;
-
-    this.writeToLog(level, message, node);
-  }
-
-  writeToLog(level, message, node) {
-    const lineIndex = lineIndexFromNodeAndTokens(node, this.tokens, this.lineIndex),
-          filePath = (lineIndex === null) ?
-                       this.filePath :
-                         null;
-
-    this.context.writeToLog(level, message, filePath, lineIndex);
-
-    this.lineIndex = lineIndex;
-  }
-
-  getFileContext() {
-    const fileContext = this; ///
-
-    return fileContext;
-  }
-
-  getDepth() {
-    let depth = this.context.getDepth();
-
-    depth++;
-
-    return depth;
-  }
-
   verify() {
     let verifies = false;
 
@@ -238,7 +58,8 @@ export default class FileContext {
     } else {
       this.debug(`Verifying the '${this.filePath}' file...`);
 
-      const context = this, ///
+      const { verifyFile } = this.constrcutor,
+            context = this, ///
             fileNode = this.node; ///
 
       verifies = verifyFile(fileNode, context);
@@ -260,9 +81,8 @@ export default class FileContext {
       return;
     }
 
-    const file = this.findFile(this.filePath),
-          lexer = this.getLexer(),
-          parser = this.getParser(),
+    const { lexer, parser } = this.constructor,
+          file = this.findFile(this.filePath),
           content = file.getContent();
 
     this.tokens = lexer.tokenise(content);
@@ -271,13 +91,11 @@ export default class FileContext {
   }
 
   clear() {
-    this.lineIndex = null;
-
     this.procedures = [];
   }
 
   complete() {
-    this.lineIndex = null;
+    ///
   }
 
   initialise(json) {
@@ -306,23 +124,28 @@ export default class FileContext {
     return json;
   }
 
-  static fromFile(file, context) {
+  static fromFile(Class, file, ...remainingArguments) {
     const filePath = file.getPath(),
-          lineIndex = null,
           tokens = null,
           node = null,
-          procedures = [],
-          fileContext = new FileContext(context, filePath, lineIndex, node, tokens, procedures);
+          context = remainingArguments.pop(), ///
+          fileContext = new Class(context, filePath, tokens, node, ...remainingArguments);
 
     return fileContext;
   }
 
-  static fromFilePath(filePath, context) {
-    const lineIndex = null,
-          tokens = null,
+  static fromFilePath(Class, filePath, ...remainingArguments) {
+    const tokens = null,
           node = null,
-          procedures = null,
-          fileContext = new FileContext(context, filePath, lineIndex, node, tokens, procedures);
+          context = remainingArguments.pop(), ///
+          fileContext = new Class(context, filePath, tokens, node, ...remainingArguments);
+
+    return fileContext;
+  }
+
+  static fromFilePathTokensAndNode(Class, filePath, tokens, node, ...remainingArguments) {
+    const context = remainingArguments.pop(), ///
+          fileContext = new Class(context, filePath, tokens, node, ...remainingArguments);
 
     return fileContext;
   }

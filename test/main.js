@@ -1,6 +1,6 @@
 "use strict";
 
-const ReleaseContext = require("./context/release");
+const { ReleaseContext } = require("../lib/index"); ///
 
 const { termsFromFileContext } = require("./helpers/terms"),
       { furtleFileFromNothing } = require("./helpers/furtle"),
