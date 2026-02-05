@@ -3,12 +3,10 @@
 import { arrayUtilities } from "necessary";
 
 import { filePathUtilities } from "occam-model";
+import { FurtleFileContext } from "../../lib/index";  ///
 import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
 
-// import NominalLexer from "../nominal/lexer";
-// import NominalParser from "../nominal/parser";
-import FurtleFileContext from "../context/file/furtle";
-import NominalFileContext from "../context/file/nominal";
+import  from "../context/file/furtle";
 
 import { LEVELS } from "../constants";
 import { getMetaTypes } from "../metaTypes";
@@ -16,7 +14,7 @@ import { customGrammarFromNameAndEntries, combinedCustomGrammarFromReleaseContex
 
 const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
       { nominalParserFromCombinedCustomGrammar } = parsersUtilities,
-      { tail, push, first, clear, filter, resolve, compress } = arrayUtilities,
+      { tail, push, first, clear, resolve } = arrayUtilities,
       { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities,
       [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
 
@@ -548,46 +546,6 @@ export default class ReleaseContext {
   }
 }
 
-function verifyTypePrefixes(typePrefixes, releaseContext) {
-  let typePrefixesVerify = true;
-
-  const typePrefixesLength = typePrefixes.length,
-        compressedTypePrefixes = [  ///
-          ...typePrefixes,
-        ];
-
-  compress(compressedTypePrefixes, (typePrefixA, typePrefixB) => {
-    const typePrefixAName = typePrefixA.getName(),
-          typePrefixBName = typePrefixB.getName();
-
-    if (typePrefixAName !== typePrefixBName) {
-      return true;
-    }
-  });
-
-  const compressTypePrefixesLength = compressedTypePrefixes.length;
-
-  if (typePrefixesLength > compressTypePrefixesLength) {
-    filter(compressedTypePrefixes, (typePrefix) => {
-      const typePrefixesIncludesTypePrefix = typePrefixes.includes(typePrefix);
-
-      if (!typePrefixesIncludesTypePrefix) {
-        return true;
-      }
-    });
-
-    const firstTypePrefix = first(typePrefixes),
-          typePrefix = firstTypePrefix, ///
-          typePrefixString = typePrefix.getString();
-
-    releaseContext.info(`The '${typePrefixString}' type prefix is duplicated at least once, possibly among others.`)
-
-    typePrefixesVerify = false;
-  }
-
-  return typePrefixesVerify;
-}
-
 function verifyFileContexts(fileContexts, verifiedFileContexts) {
   const resolved = resolve(fileContexts, verifiedFileContexts, (fileContext) => {
           const fileContextVerifies = fileContext.verify();
@@ -599,35 +557,6 @@ function verifyFileContexts(fileContexts, verifiedFileContexts) {
         fileContextsVerify = resolved;  ///
 
   return fileContextsVerify;
-}
-
-function fileContextsFromJSON(json,fileContexts, releaseContext) {
-  const fileContextsJSON = json;  ///
-
-  fileContextsJSON.forEach((fileContextJSON) => {
-    const { filePath } = fileContextJSON,
-          json = fileContextJSON, ///
-          filePathFurtleFilePath = isFilePathFurtleFilePath(filePath),
-          filePathNominalFilePath = isFilePathNominalFilePath(filePath);
-
-    if (filePathFurtleFilePath) {
-      const furtleFileContext = FurtleFileContext.fromFilePath(filePath, releaseContext),
-            fileContext = furtleFileContext;  ///
-
-      fileContexts.push(fileContext);
-
-      fileContext.initialise(json);
-    }
-
-    if (filePathNominalFilePath) {
-      const context = releaseContext, ///
-            fileContext = NominalFileContext.fromFilePath(filePath, context);
-
-      fileContexts.push(fileContext);
-
-      fileContext.initialise(json);
-    }
-  });
 }
 
 function fileContextsFromEntries(entries, fileContexts, releaseContext) {
