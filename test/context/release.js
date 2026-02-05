@@ -2,28 +2,34 @@
 
 const { arrayUtilities } = require("necessary"),
       { filePathUtilities } = require("occam-model"),
-      { FurtleFileContext } = require("../../lib/index");  ///
+      { FurtleFileContext } = require("../../lib/index"); ///
 
 const NominalFileContext = require("../context/file/nominal");
 
-const { nominalLexer, nominalParser } = require("../helpers/grammar");
+const { TRACE_LEVEL, BREAK_MESSAGE} = require("../constants"),
+      { nominalLexer, nominalParser } = require("../helpers/grammar");
 
 const { push, resolve } = arrayUtilities,
       { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities;
 
 class ReleaseContext {
-  constructor(log, entries, fileContexts) {
+  constructor(log, entries, callback, fileContexts) {
     this.log = log;
     this.entries = entries;
+    this.callback = callback;
     this.fileContexts = fileContexts;
   }
 
   getLog() {
-    return log;
+    return this.log;
   }
 
   getEntries() {
-    return entries;
+    return this.entries;
+  }
+
+  getCallback() {
+    return this.callback;
   }
 
   getFileContexts() {
@@ -130,9 +136,20 @@ class ReleaseContext {
     return verifies;
   }
 
-  static fromLogAndEntries(log, entries) {
+  async break(filePath, lineIndex) {
+    const level = TRACE_LEVEL,
+          message = BREAK_MESSAGE;
+
+    this.writeToLog(level, message, filePath, lineIndex);
+
+    const context = this; ///
+
+    await this.callback(context, filePath, lineIndex);
+  }
+
+  static fromLogEntriesAndCallback(log, entries, callback) {
     const fileContexts = [],
-          releaseContext = new ReleaseContext(log, entries, fileContexts);
+          releaseContext = new ReleaseContext(log, entries, callback, fileContexts);
 
     return releaseContext;
   }

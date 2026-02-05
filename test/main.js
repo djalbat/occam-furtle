@@ -14,7 +14,9 @@ const log = Log.fromNothing(),
       entries = Entries.fromNothing(),
       furtleFile = furtleFileFromNothing(),
       nominalFile = nominalFileFromNohting(),
-      releaseContext = ReleaseContext.fromLogAndEntries(log, entries);
+      releaseContext = ReleaseContext.fromLogEntriesAndCallback(log, entries, (context, filePath, lineIndex) => {
+        debugger
+      });
 
 entries.addFile(furtleFile);
 

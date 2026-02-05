@@ -2,7 +2,6 @@
 
 import Context from '../context';
 
-import { BREAK_MESSAGE, TRACE_LEVEL } from "../constants";
 import { lineIndexFromNodeAndTokens } from "../utilities/lineIndex";
 import { nodeAsString, nodesAsString } from "../utilities/node";
 
@@ -43,16 +42,6 @@ export default class FileContext extends Context {
     const string = nodesAsString(nodes, this.tokens);
 
     return string;
-  }
-
-  async break(node) {
-    const level = TRACE_LEVEL,
-          message = BREAK_MESSAGE,
-          filePath = this.filePath,
-          lineIndex = lineIndexFromNodeAndTokens(node, this.tokens),
-          releaseContext = this.getReleaseContext();
-
-    releaseContext.writeToLog(level, message, filePath, lineIndex);
   }
 
   verify() {
@@ -126,6 +115,14 @@ export default class FileContext extends Context {
           };
 
     return json;
+  }
+
+  async break(node) {
+    const filePath = this.filePath,
+          lineIndex = lineIndexFromNodeAndTokens(node, this.tokens),
+          releaseContext = this.getReleaseContext();
+
+    await releaseContext.break(filePath, lineIndex);
   }
 
   static fromFile(Class, file, ...remainingArguments) {
