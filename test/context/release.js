@@ -95,12 +95,8 @@ class ReleaseContext {
     return procedurePresent;
   }
 
-  addFileContext(fileContext) {
-    this.fileContexts.push(fileContext);
-  }
-
-  writeToLog(level, message, filePath) {
-    this.log.write(level, message, filePath);
+  writeToLog(level, message, filePath = null, lineIndex = null) {
+    this.log.write(level, message, filePath, lineIndex);
   }
 
   getDepth() {

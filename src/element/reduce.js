@@ -6,6 +6,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE } from "../types";
+import { asyncReduce } from "../utilities/asynchronous";
 import { termFromNode } from "../utilities/term";
 
 export default define(class Reduce extends Element {
@@ -29,8 +30,10 @@ export default define(class Reduce extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
+
+    await this.break;
 
     const reduceString = this.getString();
 
@@ -49,9 +52,9 @@ export default define(class Reduce extends Element {
     }
 
     const nodes = term.getNodes(),
-          initialExpression = this.initialExpression.evaluate(context);
+          initialExpression = await this.initialExpression.evaluate(context);
 
-    term = nodes.reduce((currentExpression, node) => {
+    term = await asyncReduce(nodes, async (currentExpression, node) => {
       let term;
 
       const { Terms } = elements;
@@ -64,7 +67,7 @@ export default define(class Reduce extends Element {
 
       terms.addTerm(term);
 
-      term = this.anonymousProcedure.call(terms, context);
+      term = await this.anonymousProcedure.call(terms, context);
 
       return term;
     }, initialExpression);

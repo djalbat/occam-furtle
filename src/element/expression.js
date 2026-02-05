@@ -83,29 +83,29 @@ export default define(class Expression extends Element {
     return type;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
 
     if (false) {
       ///
     } else if (this.term !== null) {
       term = this.term.evaluate(context);
-    } else if (this.some !== null) {
-      term = this.some.evaluate(context);
-    } else if (this.every !== null) {
-      term = this.every.evaluate(context);
-    } else if (this.reduce !== null) {
-      term = this.reduce.evaluate(context);
-    } else if (this.ternary !== null) {
-      term = this.ternary.evaluate(context);
     } else if (this.nodeQuery !== null) {
       term = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
       term = this.nodesQuery.evaluate(context);
+    } else if (this.some !== null) {
+      term = await this.some.evaluate(context);
+    } else if (this.every !== null) {
+      term = await  this.every.evaluate(context);
+    } else if (this.reduce !== null) {
+      term = await this.reduce.evaluate(context);
+    } else if (this.ternary !== null) {
+      term = await this.ternary.evaluate(context);
     } else if (this.returnBlock !== null) {
-      term = this.returnBlock.evaluate(context);
+      term = await this.returnBlock.evaluate(context);
     } else if (this.procedureCall !== null) {
-      term = this.procedureCall.evaluate(context);
+      term = await this.procedureCall.evaluate(context);
     }
 
     return term;

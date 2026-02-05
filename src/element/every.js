@@ -5,6 +5,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { asyncEvery } from "../utilities/asynchronous";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 import { termFromNode, termFromBoolean } from "../utilities/term";
 
@@ -25,8 +26,10 @@ export default define(class Every extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
+
+    await this.break(context);
 
     const everyString = this.getString();
 
@@ -45,7 +48,7 @@ export default define(class Every extends Element {
     }
 
     const nodes = term.getNodes(),
-          boolean = nodes.every((node) => {
+          boolean = await asyncEvery(nodes, async (node) => {
             let term;
 
             const { Terms } = elements;
@@ -54,7 +57,7 @@ export default define(class Every extends Element {
 
             const terms = Terms.fromTerm(term, context);
 
-            term = this.anonymousProcedure.call(terms, context);
+            term = await this.anonymousProcedure.call(terms, context);
 
             const termType = term.getType();
 

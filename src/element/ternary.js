@@ -27,7 +27,7 @@ export default define(class Ternary extends Element {
     return this.elseExpression;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
 
     const ternaryString = this.getString(); ///
@@ -50,8 +50,8 @@ export default define(class Ternary extends Element {
           boolean = primitiveValue; ///
 
     term = boolean ?
-              this.ifExpression.evaluate(context) :
-                this.elseExpression.evaluate(context);
+              await this.ifExpression.evaluate(context) :
+                await this.elseExpression.evaluate(context);
 
     const termString = term.getString();
 

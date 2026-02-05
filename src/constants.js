@@ -2,7 +2,7 @@
 
 import { levels } from "necessary";
 
-const { TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL } = levels;
+export const { TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL } = levels;
 
 export const LEVELS = [
   TRACE_LEVEL,
@@ -19,7 +19,7 @@ export const EMPTY_STRING = "";
 export const SINGLE_SPACE = " ";
 export const DOUBLE_SPACE = "  ";
 export const NOT_EQUAL_TO = "!=";
+export const BREAK_MESSAGE = ":: BREAK ::";
 export const LEVEL_MAXIMUM_LENGTH = 7;
 export const CONJUNCTION_OPERATOR = "&&";
 export const DISJUNCTION_OPERATOR = "||";
-export const LINE_INDEX_MAXIMUM_LENGTH = 4;

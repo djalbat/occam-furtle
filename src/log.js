@@ -1,6 +1,6 @@
 "use strict";
 
-import { LEVELS, SINGLE_SPACE, EMPTY_STRING, LEVEL_MAXIMUM_LENGTH, LINE_INDEX_MAXIMUM_LENGTH } from "./constants";
+import { LEVELS, SINGLE_SPACE, EMPTY_STRING, LEVEL_MAXIMUM_LENGTH } from "./constants";
 
 const [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
 
@@ -100,9 +100,7 @@ function formatMessage(level, message, filePath, lineIndex) {
   }
 
   if (lineIndex !== null) {
-    const leftPaddedLineIndex = leftPadLineIndex(lineIndex);
-
-    formattedMessage += ` [${leftPaddedLineIndex}]`;
+    formattedMessage += ` [${lineIndex}]`;
   }
 
   if ((filePath !== null) || (lineIndex !== null)) {
@@ -114,15 +112,6 @@ function formatMessage(level, message, filePath, lineIndex) {
   message = formattedMessage; ///
 
   return message;
-}
-
-function leftPadLineIndex(lineIndex) {
-  lineIndex = `${lineIndex}`;
-
-  const maximumLength = LINE_INDEX_MAXIMUM_LENGTH,
-        leftPaddedLineIndex = leftPad(lineIndex, maximumLength);
-
-  return leftPaddedLineIndex;
 }
 
 function leftPadLevel(level) {

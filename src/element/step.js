@@ -25,7 +25,7 @@ export default define(class Step extends Element {
     return this.variablessAssignment;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     if (false) {
       ///
     } else if (this.arrayAssignment !== null) {
@@ -33,7 +33,7 @@ export default define(class Step extends Element {
     } else if (this.objectAssigment !== null) {
       this.objectAssigment.evaluate(context);
     } else if (this.variablessAssignment !== null) {
-      this.variablessAssignment.evaluate(context);
+      await this.variablessAssignment.evaluate(context);
     }
   }
 

@@ -13,12 +13,12 @@ const { furtleFileFromNothing } = require("./helpers/furtle"),
 const log = Log.fromNothing(),
       entries = Entries.fromNothing(),
       furtleFile = furtleFileFromNothing(),
-      nominalFile = nominalFileFromNohting();
+      nominalFile = nominalFileFromNohting(),
+      releaseContext = ReleaseContext.fromLogAndEntries(log, entries);
 
 entries.addFile(furtleFile);
-entries.addFile(nominalFile);
 
-const releaseContext = ReleaseContext.fromLogAndEntries(log, entries);
+entries.addFile(nominalFile);
 
 releaseContext.initialise();
 
@@ -32,9 +32,12 @@ const nominalFilePath = nominalFile.getPath(),
       furtleFilePath = furtleFile.getPath(),
       furtleFileContext = releaseContext.findFileContext(furtleFilePath),
       fileContext = furtleFileContext,  ///
-      context = fileContext,  ///
-      term = procedure.call(terms, context),
-      primitiveValue = term.getPrimitiveValue(),
-      boolean = primitiveValue; ///
+      context = fileContext;  ///
 
-console.log(boolean);
+procedure.call(terms, context)
+  .then((term) => {
+    const primitiveValue = term.getPrimitiveValue(),
+          boolean = primitiveValue; ///
+
+    console.log(boolean);
+  });

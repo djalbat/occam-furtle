@@ -5,6 +5,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { asyncSome } from "../utilities/asynchronous";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 import { termFromNode, termFromBoolean } from "../utilities/term";
 
@@ -24,8 +25,10 @@ export default define(class Some extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
+
+    await this.break(context);
 
     const someString = this.getString();
 
@@ -45,7 +48,7 @@ export default define(class Some extends Element {
 
     const primitiveValue = term.getPrimitiveValue(),
           nodes = primitiveValue, ///
-          boolean = nodes.some((node) => {
+          boolean = await asyncSome(nodes, async (node) => {
             let term;
 
             term = termFromNode(node, context);
@@ -53,7 +56,7 @@ export default define(class Some extends Element {
             const { Terms } = elements,
                   terms = Terms.fromTerm(term, context);
 
-            term = this.anonymousProcedure.call(terms, context);
+            term = await this.anonymousProcedure.call(terms, context);
 
             const termType = term.getType();
 

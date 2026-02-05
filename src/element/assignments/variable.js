@@ -4,6 +4,8 @@ import { define } from "../../elements";
 
 import Element from "../../element";
 
+import { asyncForEach } from "../../utilities/asynchronous";
+
 export default define(class VariableAssignments extends Element {
   constructor(context, string, node, array) {
     super(context, string, node)
@@ -15,13 +17,15 @@ export default define(class VariableAssignments extends Element {
     return this.array;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
+    await this.break(context);
+
     const variableAssignmentsString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 
-    this.array.forEach((variableAssignment) => {
-      variableAssignment.evaluate(context);
+    await asyncForEach(this.array, async (variableAssignment) => {
+      await variableAssignment.evaluate(context);
     });
 
     context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);

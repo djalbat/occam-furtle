@@ -20,14 +20,14 @@ export default define(class VariableAssignment extends Element {
     return this.expression;
   }
 
-  evaluate(context) {
+  async evaluate(context) {
     let term;
 
     const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    term = this.expression.evaluate(context);
+    term = await this.expression.evaluate(context);
 
     this.variable.assign(term, context);
 

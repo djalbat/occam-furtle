@@ -5,6 +5,7 @@ import Exception from "../exception";
 import BlockContext from "../context/block";
 
 import { define } from "../elements";
+import { asyncForEach } from "../utilities/asynchronous";
 
 export default define(class ReturnBlock extends Element {
   constructor(context, string, node, steps, nonsensical, returnStatement) {
@@ -27,7 +28,7 @@ export default define(class ReturnBlock extends Element {
     return this.returnStatement;
   }
 
-  evaluate(variables, context) {
+  async evaluate(variables, context) {
     if (context === undefined) {
       context = variables;  ///
 
@@ -49,8 +50,8 @@ export default define(class ReturnBlock extends Element {
 
     context = blockContext; ///
 
-    this.steps.forEach((step) => {
-      step.evaluate(context);
+    await asyncForEach(this.steps, async (step) => {
+      await step.evaluate(context);
     });
 
     const term = this.returnStatement.evaluate(context),
