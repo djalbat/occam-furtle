@@ -125,6 +125,14 @@ export default class FurtleFileContext extends FileContext {
     this.debug(`Added the '${procedureString}' procedure to the context.`);
   }
 
+  clear() {
+    this.procedures = [];
+  }
+
+  complete() {
+    ///
+  }
+
   static fromFile(file, context) {
     const procedures = [],
           furtleFileContext = FileContext.fromFile(FurtleFileContext, file, procedures, context);

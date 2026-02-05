@@ -26,14 +26,31 @@ export default class FileContext extends Context {
     return this.node;
   }
 
-  break(node) {
-    const lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
+  getLexer() {
+    const context = this.getContext(),
+          lexer = context.getLexer();
 
-    this.context.break(this.filePath, lineIndex);
+    return lexer;
+  }
+
+  getParser() {
+    const context = this.getContext(),
+          parser = context.getParser();
+
+    return parser;
+  }
+
+  break(node) {
+    const context = this.getContext(),
+          lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
+
+    context.break(this.filePath, lineIndex);
   }
 
   writeToLog(level, message) {
-    this.context.writeToLog(level, message, this.filePath);
+    const context = this.getContext();
+
+    context.writeToLog(level, message, this.filePath);
   }
 
   nodeAsString(node) {
@@ -81,21 +98,14 @@ export default class FileContext extends Context {
       return;
     }
 
-    const { lexer, parser } = this.constructor,
-          file = this.findFile(this.filePath),
+    const file = this.findFile(this.filePath),
+          lexer = this.getLexer(),
+          parser = this.getParser(),
           content = file.getContent();
 
     this.tokens = lexer.tokenise(content);
 
     this.node = parser.parse(this.tokens);
-  }
-
-  clear() {
-    this.procedures = [];
-  }
-
-  complete() {
-    ///
   }
 
   initialise(json) {
