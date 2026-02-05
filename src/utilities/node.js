@@ -28,6 +28,11 @@ export function nodesAsString(nodes, tokens) {
   return string;
 }
 
+export default {
+  nodeAsString,
+  nodesAsString,
+};
+
 function trimString(string) {
   string = string.replace(/\s+$/, EMPTY_STRING);  ///
 
