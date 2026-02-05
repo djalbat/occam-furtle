@@ -26,20 +26,6 @@ export default class FileContext extends Context {
     return this.node;
   }
 
-  getLexer() {
-    const context = this.getContext(),
-          lexer = context.getLexer();
-
-    return lexer;
-  }
-
-  getParser() {
-    const context = this.getContext(),
-          parser = context.getParser();
-
-    return parser;
-  }
-
   break(node) {
     const context = this.getContext(),
           lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
