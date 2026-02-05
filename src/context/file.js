@@ -61,15 +61,19 @@ export default class FileContext extends Context {
     } else {
       this.debug(`Verifying the '${this.filePath}' file...`);
 
-      const { verifyFile } = this.constrcutor,
-            context = this, ///
-            fileNode = this.node; ///
+      const fileVerifies = this.verifyFile();
 
-      verifies = verifyFile(fileNode, context);
+      if (fileVerifies) {
+        verifies = true;
+      }
 
       verifies ?
         this.complete() :
           this.clear();
+
+      if (verifies) {
+        this.info(`...verified the '${this.filePath}' file.`);
+      }
 
       if (verifies) {
         this.info(`...verified the '${this.filePath}' file.`);
