@@ -33,6 +33,18 @@ export default class FurtleFileContext extends FileContext {
     return procedures;
   }
 
+  getLexer() {
+    const lexer = furtleLexer;  ///
+
+    return lexer;
+  }
+
+  getParser() {
+    const parser = furtleParser;  ///
+
+    return parser;
+  }
+
   getLabels(includeRelease = true) {
     const labels = [];
 
@@ -123,6 +135,15 @@ export default class FurtleFileContext extends FileContext {
     this.procedures.push(procedure);
 
     this.debug(`Added the '${procedureString}' procedure to the context.`);
+  }
+
+  verifyFile() {
+    const node = this.getNode(),
+          context = this, ///
+          fileNode = node,  ///
+          fileVerifies = verifyFile(fileNode, context);
+
+    return fileVerifies;
   }
 
   clear() {
