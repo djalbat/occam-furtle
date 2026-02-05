@@ -23,37 +23,37 @@ export default class Log {
     return this.follow;
   }
 
-  trace(message, filePath = null) {
+  trace(message) {
     const level = TRACE_LEVEL;
 
-    this.write(level, message, filePath);
+    this.write(level, message);
   }
 
-  debug(message, filePath = null) {
+  debug(message) {
     const level = DEBUG_LEVEL;
 
-    this.write(level, message, filePath);
+    this.write(level, message);
   }
 
-  info(message, filePath = null) {
+  info(message) {
     const level = INFO_LEVEL;
 
-    this.write(level, message, filePath);
+    this.write(level, message);
   }
 
-  warning(message, filePath = null) {
+  warning(message) {
     const level = WARNING_LEVEL;
 
-    this.write(level, message, filePath);
+    this.write(level, message);
   }
 
-  error(message, filePath = null) {
+  error(message) {
     const level = ERROR_LEVEL;
 
-    this.write(level, message, filePath);
+    this.write(level, message);
   }
 
-  write(level, message, filePath, lineIndex = null) {
+  write(level, message, filePath = null, lineIndex = null) {
     const levelIndex = LEVELS.indexOf(level),
           logLevelIndex = LEVELS.indexOf(this.logLevel);
 
@@ -105,7 +105,11 @@ function formatMessage(level, message, filePath, lineIndex) {
     formattedMessage += ` [${leftPaddedLineIndex}]`;
   }
 
-  formattedMessage += ` - ${message}`;
+  if ((filePath !== null) || (lineIndex !== null)) {
+    formattedMessage += ` - `;
+  }
+
+  formattedMessage += message;
 
   message = formattedMessage; ///
 

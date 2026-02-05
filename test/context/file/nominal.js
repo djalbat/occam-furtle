@@ -11,6 +11,12 @@ class NominalFileContext extends FileContext {
     return chainContext(this);
   }
 
+  getProcedures(includeRelease = true) {
+    const procedures = [];
+
+    return procedures;
+  }
+
   verifyFile() {
     const fileVerifies = true;  ///
 

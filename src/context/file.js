@@ -26,17 +26,10 @@ export default class FileContext extends Context {
     return this.node;
   }
 
-  break(node) {
-    const context = this.getContext(),
-          lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
+  matchFilePath(filePath) {
+    const filePathMatches = (this.filePath === filePath);
 
-    context.break(this.filePath, lineIndex);
-  }
-
-  writeToLog(level, message) {
-    const context = this.getContext();
-
-    context.writeToLog(level, message, this.filePath);
+    return filePathMatches;
   }
 
   nodeAsString(node) {
@@ -49,6 +42,13 @@ export default class FileContext extends Context {
     const string = nodesAsString(nodes, this.tokens);
 
     return string;
+  }
+
+  break(node) {
+    const context = this.getContext(),
+          lineIndex = lineIndexFromNodeAndTokens(node, this.tokens);
+
+    context.break(this.filePath, lineIndex);
   }
 
   verify() {

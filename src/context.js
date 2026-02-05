@@ -59,9 +59,10 @@ export default class Context {
 
     message = `${indent}${message}`;  ///
 
-    const releaseContext = this.getReleaseContext();
+    const releaseContext = this.getReleaseContext(),
+          filePath = null;
 
-    releaseContext.writeToLog(level, message);
+    releaseContext.writeToLog(level, message, filePath);
   }
 
   static fromNothing(Class, ...remainingArguments) {

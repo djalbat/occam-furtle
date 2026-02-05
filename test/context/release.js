@@ -8,7 +8,7 @@ const NominalFileContext = require("../context/file/nominal");
 
 const { nominalLexer, nominalParser } = require("../helpers/grammar");
 
-const { resolve } = arrayUtilities,
+const { push, resolve } = arrayUtilities,
       { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities;
 
 class ReleaseContext {
@@ -30,6 +30,12 @@ class ReleaseContext {
     return this.fileContexts;
   }
 
+  getReleaseContext() {
+    const releaseContext = this;  ///
+
+    return releaseContext;
+  }
+
   getLexer() {
     const lexer = nominalLexer; ///
 
@@ -42,18 +48,63 @@ class ReleaseContext {
     return parser;
   }
 
+  getProcedures() {
+    const procedures = [];
+
+    this.fileContexts.forEach((fileContext) => {
+      const includeRelease = false,
+            fileContextProcedures = fileContext.getProcedures(includeRelease);
+
+      push(procedures, fileContextProcedures);
+    });
+
+    return procedures;
+  }
+
   findFile(filePath) { return this.entries.findFile(filePath); }
+
+  findFileContext(filePath) {
+    const fileContext = this.fileContexts.find(((fileContext) => {
+      const filePathMatches = fileContext.matchFilePath(filePath);
+
+      if (filePathMatches) {
+        return true;
+      }
+    })) || null;
+
+    return fileContext;
+  }
+
+  findProcedureByName(name) {
+    const procedures = this.getProcedures(),
+          procedure = procedures.find((procedure) => {
+            const nameMatches = procedure.matchName(name);
+
+            if (nameMatches) {
+              return true;
+            }
+          }) || null;
+
+    return procedure;
+  }
+
+  isProcedurePresentByName(name) {
+    const procedure = this.findProcedureByName(name),
+          procedurePresent = (procedure !== null);
+
+    return procedurePresent;
+  }
 
   addFileContext(fileContext) {
     this.fileContexts.push(fileContext);
   }
 
-  writeToLog(level, message, filePath, lineIndex) {
-    this.log.write(level, message, filePath, lineIndex);
+  writeToLog(level, message, filePath) {
+    this.log.write(level, message, filePath);
   }
 
   getDepth() {
-    const depth = -1;
+    const depth = 0;
 
     return depth;
   }

@@ -10,16 +10,17 @@ const { first } = arrayUtilities,
 const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
       boundTermNodeQuery = Query.fromExpressionString("//term[0]");
 
-function termsFromFileContext(fileContext, free = true) {
-  const context = fileContext,  ///
+function termsFromNominalFileContext(nominalFileContext, free = true) {
+  const fileContext = nominalFileContext,  ///
         nodes = nodesFromFileContext(fileContext, free),
+        context = fileContext,  ///
         terms = termsFromNodes(nodes, context);
 
   return terms;
 }
 
 module.exports = {
-  termsFromFileContext
+  termsFromNominalFileContext
 };
 
 function nodesFromFileContext(fileContext, free) {

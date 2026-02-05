@@ -5,9 +5,9 @@ const { Log } = require("../lib/index"), ///
 
 const ReleaseContext = require("./context/release");
 
-const { termsFromFileContext } = require("./helpers/terms"),
-      { furtleFileFromNothing } = require("./helpers/furtle"),
+const { furtleFileFromNothing } = require("./helpers/furtle"),
       { nominalFileFromNohting } = require("./helpers/nominal"),
+      { termsFromNominalFileContext } = require("./helpers/terms"),
       { procedureFromReleaseContext } = require("./helpers/procedure");
 
 const log = Log.fromNothing(),
@@ -24,19 +24,17 @@ releaseContext.initialise();
 
 releaseContext.verify();
 
-const free = true,
-      terms = termsFromFileContext(fileContext, free),
-      procedure = procedureFromReleaseContext(releaseContext);
-
-// try {
-const context = fileContext,  ///
+const nominalFilePath = nominalFile.getPath(),
+      nominalFileContext = releaseContext.findFileContext(nominalFilePath),
+      free = true,
+      terms = termsFromNominalFileContext(nominalFileContext, free),
+      procedure = procedureFromReleaseContext(releaseContext),
+      furtleFilePath = furtleFile.getPath(),
+      furtleFileContext = releaseContext.findFileContext(furtleFilePath),
+      fileContext = furtleFileContext,  ///
+      context = fileContext,  ///
       term = procedure.call(terms, context),
       primitiveValue = term.getPrimitiveValue(),
       boolean = primitiveValue; ///
 
 console.log(boolean);
-// } catch (exception) {
-//   const message = exception.getMessage();
-//
-//   console.log(message);
-// }
