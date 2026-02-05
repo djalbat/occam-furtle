@@ -1,29 +1,28 @@
 "use strict";
 
-const { ReleaseContext } = require("../lib/index"); ///
+const { Log } = require("../lib/index"), ///
+      { Entries } = require("occam-model");
+
+const ReleaseContext = require("./context/release");
 
 const { termsFromFileContext } = require("./helpers/terms"),
       { furtleFileFromNothing } = require("./helpers/furtle"),
-      { procedureFromReleaseContext } = require("./helpers/procedure"),
-      { nominalFileContextFromReleaseContext } = require("./helpers/nominal");
+      { nominalFileFromNohting } = require("./helpers/nominal"),
+      { procedureFromReleaseContext } = require("./helpers/procedure");
 
-let fileContext,
-    releaseContext;
+const log = Log.fromNothing(),
+      entries = Entries.fromNothing(),
+      furtleFile = furtleFileFromNothing(),
+      nominalFile = nominalFileFromNohting();
 
-releaseContext = ReleaseContext.fromNothing();
+entries.addFile(furtleFile);
+entries.addFile(nominalFile);
 
-const furtleFile = furtleFileFromNothing(),
-      file = furtleFile;  ///
+const releaseContext = ReleaseContext.fromLogAndEntries(log, entries);
 
-releaseContext.addFile(file);
+releaseContext.initialise();
 
 releaseContext.verify();
-
-const nominalFileContext = nominalFileContextFromReleaseContext(releaseContext);
-
-fileContext = nominalFileContext; ///
-
-releaseContext.addFileContext(fileContext);
 
 const free = true,
       terms = termsFromFileContext(fileContext, free),

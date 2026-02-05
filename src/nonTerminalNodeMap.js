@@ -9,6 +9,7 @@ import LabelNode from "./node/label";
 import ErrorNode from "./node/error";
 import ReduceNode from "./node/reduce";
 import TernaryNode from "./node/ternary";
+import DocumentNode from "./node/document";
 import VariableNode from "./node/variable";
 import NonsenseNode from "./node/nonsense";
 import PrimitiveNode from "./node/primitive";
@@ -21,9 +22,9 @@ import NodesQueryNode from "./node/nodesQuery";
 import ReturnBlockNode from "./node/returnBlock";
 import LogicalTermNode from "./node/term/logical";
 import NegatedTermNode from "./node/term/negated";
+import ProcedureCallNode from "./node/procedureCall";
 import BracketedTermNode from "./node/term/bracketed";
 import ComparisonTermNode from "./node/term/comparison";
-import ProcedureCallNode from "./node/procedureCall";
 import NamedParameterNode from "./node/parameter/named";
 import NamedParametersNode from "./node/parameters/named";
 import ReturnStatementNode from "./node/statement/return";
@@ -43,6 +44,7 @@ import { STEP_RULE_NAME,
          ERROR_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
+         DOCUMENT_RULE_NAME,
          VARIABLE_RULE_NAME,
          NONSENSE_RULE_NAME,
          PRIMITIVE_RULE_NAME,
@@ -80,6 +82,7 @@ const NonTerminalNodeMap = {
   [TERNARY_RULE_NAME]: TernaryNode,
   [VARIABLE_RULE_NAME]: VariableNode,
   [NONSENSE_RULE_NAME]: NonsenseNode,
+  [DOCUMENT_RULE_NAME]: DocumentNode,
   [PRIMITIVE_RULE_NAME]: PrimitiveNode,
   [REFERENCE_RULE_NAME]: ReferenceNode,
   [PARAMETER_RULE_NAME]: ParameterNode,

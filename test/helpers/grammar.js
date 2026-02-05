@@ -1,9 +1,21 @@
 "use strict";
 
 const { fileSystemUtilities } = require("necessary"),
-      { CustomGrammar, CombinedCustomGrammar } = require("occam-custom-grammars");
+      { CustomGrammar, CombinedCustomGrammar, lexersUtilities, parsersUtilities} = require("occam-custom-grammars");
 
-const { readFile } = fileSystemUtilities;
+const { readFile } = fileSystemUtilities,
+      { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
+      { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
+
+const combinedCustomGrammar = combinedCustomGrammarFromNothing(),
+      startRuleName = "statement",
+      nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar),
+      nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar);
+
+module.exports = {
+  nominalLexer,
+  nominalParser
+};
 
 function combinedCustomGrammarFromNothing() {
   const filePath = "test/customGrammars.json",
@@ -15,10 +27,6 @@ function combinedCustomGrammarFromNothing() {
 
   return combinedCustomGrammar;
 }
-
-module.exports = {
-  combinedCustomGrammarFromNothing
-};
 
 function customGrammarsFromJSON(json) {
   const customGrammarsJSON = json,  ///
