@@ -15,7 +15,6 @@ export const LEVELS = [
 export const NULL = "null";
 export const TRUE = "true";
 export const FALSE = "false";
-export const FUNCTION = "function";
 export const EMPTY_STRING = "";
 export const SINGLE_SPACE = " ";
 export const DOUBLE_SPACE = "  ";
