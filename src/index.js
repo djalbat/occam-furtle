@@ -17,3 +17,4 @@ export { default as termsUtilities } from "./utilities/terms";
 export { default as lexersUtilities } from "./utilities/lexers";
 export { default as parsersUtilities } from "./utilities/parsers";
 export { default as contextUtilities } from "./utilities/context";
+export { default as asynchronousUtilities } from "./utilities/asynchronous";

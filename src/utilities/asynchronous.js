@@ -59,3 +59,10 @@ export async function asyncForEach(array, callback) {
     await callback(item, index, array);
   }
 }
+
+export default {
+  asyncSome,
+  asyncEvery,
+  asyncReduce,
+  asyncForEach
+};

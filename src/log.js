@@ -93,18 +93,18 @@ function formatMessage(level, message, filePath, lineIndex) {
   const leftPaddedLevel = leftPadLevel(level),
         upperCaseLeftPaddedLevel = leftPaddedLevel.toUpperCase();
 
-  formattedMessage += `${upperCaseLeftPaddedLevel}:`;
+  formattedMessage += `${upperCaseLeftPaddedLevel}: `;
 
   if (filePath !== null) {
-    formattedMessage += ` ${filePath}`;
+    formattedMessage += `${filePath} `;
   }
 
   if (lineIndex !== null) {
-    formattedMessage += ` [${lineIndex}]`;
+    formattedMessage += `[${lineIndex}] `;
   }
 
   if ((filePath !== null) || (lineIndex !== null)) {
-    formattedMessage += ` - `;
+    formattedMessage += `- `;
   }
 
   formattedMessage += message;

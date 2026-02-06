@@ -11,7 +11,7 @@ const { push } = arrayUtilities;
 
 export default class BlockContext extends Context {
   constructor(context, variables) {
-    super(context, variables);
+    super(context);
 
     this.variables = variables;
 
