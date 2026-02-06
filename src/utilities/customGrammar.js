@@ -2,6 +2,14 @@
 
 import { CustomGrammar, CombinedCustomGrammar } from "occam-custom-grammars";
 
+export function combinedCustomGrammarFromJSON(json) {
+  const customGrammars = customGrammarsFromJSON(json),
+        includeDefault = false,
+        combinedCustomGrammar = CombinedCustomGrammar.fromCustomGrammars(customGrammars, includeDefault);
+
+  return combinedCustomGrammar;
+}
+
 export function customGrammarFromNameAndEntries(name, entries) {
   const termBNF = entries.getTermBNF(),
         statementBNF = entries.getStatementBNF(),
@@ -33,8 +41,14 @@ export function combinedCustomGrammarFromReleaseContexts(releaseContexts) {
   return combinedCustomGrammar;
 }
 
-export default {
-  customGrammarFromNameAndEntries,
-  combinedCustomGrammarFromNothing,
-  combinedCustomGrammarFromReleaseContexts
-};
+function customGrammarsFromJSON(json) {
+  const customGrammarsJSON = json,  ///
+        customGrammars = customGrammarsJSON.map((customGrammarsJSON) => {
+          const json = customGrammarsJSON,  ///
+                customGrammar = CustomGrammar.fromJSON(json);
+
+          return customGrammar;
+        });
+
+  return customGrammars;
+}

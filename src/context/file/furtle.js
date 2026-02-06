@@ -137,21 +137,21 @@ export default class FurtleFileContext extends FileContext {
     this.debug(`Added the '${procedureString}' procedure to the context.`);
   }
 
-  verifyFile() {
-    const node = this.getNode(),
-          context = this, ///
-          fileNode = node,  ///
-          fileVerifies = verifyFile(fileNode, context);
-
-    return fileVerifies;
-  }
-
   clear() {
     this.procedures = [];
   }
 
   complete() {
     ///
+  }
+
+  async verifyFile() {
+    const node = this.getNode(),
+          context = this, ///
+          fileNode = node,  ///
+          fileVerifies = verifyFile(fileNode, context);
+
+    return fileVerifies;
   }
 
   static fromFile(file, context) {

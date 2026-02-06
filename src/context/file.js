@@ -44,38 +44,6 @@ export default class FileContext extends Context {
     return string;
   }
 
-  verify() {
-    let verifies = false;
-
-    this.prepare();
-
-    if (this.node === null) {
-      this.warning(`Unable to verify the '${this.filePath}' file because it cannot be parsed.`);
-    } else {
-      this.debug(`Verifying the '${this.filePath}' file...`);
-
-      const fileVerifies = this.verifyFile();
-
-      if (fileVerifies) {
-        verifies = true;
-      }
-
-      verifies ?
-        this.complete() :
-          this.clear();
-
-      if (verifies) {
-        this.info(`...verified the '${this.filePath}' file.`);
-      }
-
-      if (verifies) {
-        this.info(`...verified the '${this.filePath}' file.`);
-      }
-    }
-
-    return verifies;
-  }
-
   prepare() {
     if (this.tokens !== null) {
       return;
@@ -105,24 +73,52 @@ export default class FileContext extends Context {
     this.addProcedures();
   }
 
-  toJSON() {
-    const file = this.findFile(this.filePath),
-          filePath = this.filePath, ///
-          content = file.getContent(),
-          json = {
-            filePath,
-            content
-          };
-
-    return json;
-  }
-
   async break(node) {
     const filePath = this.filePath,
           lineIndex = lineIndexFromNodeAndTokens(node, this.tokens),
           releaseContext = this.getReleaseContext();
 
     await releaseContext.break(filePath, lineIndex);
+  }
+
+  async verify() {
+    let verifies = false;
+
+    this.prepare();
+
+    if (this.node === null) {
+      this.warning(`Unable to verify the '${this.filePath}' file because it cannot be parsed.`);
+    } else {
+      this.debug(`Verifying the '${this.filePath}' file...`);
+
+      const fileVerifies = await this.verifyFile();
+
+      if (fileVerifies) {
+        verifies = true;
+      }
+
+      verifies ?
+        this.complete() :
+          this.clear();
+
+      if (verifies) {
+        this.info(`...verified the '${this.filePath}' file.`);
+      }
+    }
+
+    return verifies;
+  }
+
+  toJSON() {
+    const file = this.findFile(this.filePath),
+      filePath = this.filePath, ///
+      content = file.getContent(),
+      json = {
+        filePath,
+        content
+      };
+
+    return json;
   }
 
   static fromFile(Class, file, ...remainingArguments) {

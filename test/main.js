@@ -1,9 +1,7 @@
 "use strict";
 
-const { Log } = require("../lib/index"), ///
-      { Entries } = require("occam-model");
-
-const ReleaseContext = require("./context/release");
+const { Entries } = require("occam-model"),
+      { Log, ReleaseContext } = require("../lib/index"); ///
 
 const { furtleFileFromNothing } = require("./helpers/furtle"),
       { nominalFileFromNohting } = require("./helpers/nominal"),
