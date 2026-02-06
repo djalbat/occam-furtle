@@ -1,5 +1,9 @@
 "use strict";
 
+import { arrayUtilities } from "necessary";
+
+const { filter } = arrayUtilities;
+
 export async function asyncSome(array, callback) {
   let result = false;
 
@@ -60,9 +64,58 @@ export async function asyncForEach(array, callback) {
   }
 }
 
+export async function asyncResolve(arrayA, arrayB, callback) {
+  let resolved;
+
+  arrayA = [  ///
+    ...arrayA
+  ];
+
+  for (;;) {
+    const arrayALength = arrayA.length;
+
+    if (arrayALength === 0) {
+      break;
+    }
+
+    let resolved = false;
+
+    await asyncForEach(arrayA, async (elementA) => {
+      const passed = await callback(elementA);
+
+      if (passed) {
+        const elementB = elementA;  ///
+
+        arrayB.push(elementB);
+
+        resolved = true;
+      }
+    });
+
+    if (!resolved) {
+      break;
+    }
+
+    filter(arrayA, (elementA) => {
+      const arrayBIncludesElementA = arrayB.includes(elementA);
+
+      if (!arrayBIncludesElementA) {
+        return true;
+      }
+    });
+  }
+
+  const arrayALength = arrayA.length;
+
+  resolved = (arrayALength === 0);
+
+  return resolved;
+}
+
 export default {
   asyncSome,
   asyncEvery,
   asyncReduce,
-  asyncForEach
+  asyncForEach,
+  asyncResolve
 };
