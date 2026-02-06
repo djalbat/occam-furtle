@@ -119,7 +119,7 @@ class ReleaseContext {
     this.initialised = true;
   }
 
-  verify() {
+  async verify() {
     let verifies = false;
 
     const verifiedFileContexts = [],

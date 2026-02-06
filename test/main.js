@@ -24,22 +24,25 @@ entries.addFile(nominalFile);
 
 releaseContext.initialise();
 
-releaseContext.verify();
+releaseContext.verify()
+  .then(callProcedure);
 
-const nominalFilePath = nominalFile.getPath(),
-      nominalFileContext = releaseContext.findFileContext(nominalFilePath),
-      free = true,
-      terms = termsFromNominalFileContext(nominalFileContext, free),
-      procedure = procedureFromReleaseContext(releaseContext),
-      furtleFilePath = furtleFile.getPath(),
-      furtleFileContext = releaseContext.findFileContext(furtleFilePath),
-      fileContext = furtleFileContext,  ///
-      context = fileContext;  ///
+function callProcedure() {
+  const nominalFilePath = nominalFile.getPath(),
+        nominalFileContext = releaseContext.findFileContext(nominalFilePath),
+        free = true,
+        terms = termsFromNominalFileContext(nominalFileContext, free),
+        procedure = procedureFromReleaseContext(releaseContext),
+        furtleFilePath = furtleFile.getPath(),
+        furtleFileContext = releaseContext.findFileContext(furtleFilePath),
+        fileContext = furtleFileContext,  ///
+        context = fileContext;  ///
 
-procedure.call(terms, context)
-  .then((term) => {
-    const primitiveValue = term.getPrimitiveValue(),
-          boolean = primitiveValue; ///
+  procedure.call(terms, context)
+    .then((term) => {
+      const primitiveValue = term.getPrimitiveValue(),
+            boolean = primitiveValue; ///
 
-    console.log(boolean);
-  });
+      console.log(boolean);
+    });
+}
