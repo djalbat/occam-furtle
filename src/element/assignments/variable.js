@@ -18,9 +18,9 @@ export default define(class VariableAssignments extends Element {
   }
 
   async evaluate(context) {
-    await this.break(context);
-
     const variableAssignmentsString = this.getString(); ///
+
+    await this.break(context);
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 

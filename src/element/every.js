@@ -29,9 +29,9 @@ export default define(class Every extends Element {
   async evaluate(context) {
     let term;
 
-    await this.break(context);
-
     const everyString = this.getString();
+
+    await this.break(context);
 
     context.trace(`Evaluating the '${everyString}' every...`);
 

@@ -10,7 +10,7 @@ import { asyncResolve } from "../utilities/asynchronous";
 import { nominalLexer, nominalParser } from "../utilities/nominal";
 import { TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL, BREAK_MESSAGE} from "../constants";
 
-const { push, resolve } = arrayUtilities,
+const { push } = arrayUtilities,
       { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities;
 
 export default class ReleaseContext {
