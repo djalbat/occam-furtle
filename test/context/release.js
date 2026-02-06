@@ -6,11 +6,12 @@ const { arrayUtilities } = require("necessary"),
 
 const NominalFileContext = require("../context/file/nominal");
 
-const { TRACE_LEVEL, BREAK_MESSAGE} = require("../constants"),
+const { LEVELS, BREAK_MESSAGE} = require("../constants"),
       { nominalLexer, nominalParser } = require("../helpers/grammar");
 
 const { push, resolve } = arrayUtilities,
-      { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities;
+      { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities,
+      [ TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL ] = LEVELS;
 
 class ReleaseContext {
   constructor(log, entries, callback, fileContexts) {
@@ -99,6 +100,36 @@ class ReleaseContext {
           procedurePresent = (procedure !== null);
 
     return procedurePresent;
+  }
+
+  trace(message) {
+    const level = TRACE_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  debug(message) {
+    const level = DEBUG_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  info(message) {
+    const level = INFO_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  warning(message) {
+    const level = WARNING_LEVEL;
+
+    this.writeToLog(level, message);
+  }
+
+  error(message) {
+    const level = ERROR_LEVEL;
+
+    this.writeToLog(level, message);
   }
 
   writeToLog(level, message, filePath = null, lineIndex = null) {

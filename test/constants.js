@@ -2,11 +2,18 @@
 
 const { levels } = require("necessary");
 
-const { TRACE_LEVEL } = levels;
+const { TRACE_LEVEL, DEBUG_LEVEL, INFO_LEVEL, WARNING_LEVEL, ERROR_LEVEL } = levels;
 
-const BREAK_MESSAGE = ":: BREAK ::";
+const LEVELS = [
+        TRACE_LEVEL,
+        DEBUG_LEVEL,
+        INFO_LEVEL,
+        WARNING_LEVEL,
+        ERROR_LEVEL
+      ],
+      BREAK_MESSAGE = ":: BREAK ::";
 
 module.exports = {
-  TRACE_LEVEL,
-  BREAK_MESSAGE,
+  LEVELS,
+  BREAK_MESSAGE
 };
