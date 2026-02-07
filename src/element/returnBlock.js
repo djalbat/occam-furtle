@@ -1,12 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, asynchronousUtilities } from "occam-languages";
 
 import Exception from "../exception";
 import BlockContext from "../context/block";
 
 import { define } from "../elements";
-import { asyncForEach } from "../utilities/asynchronous";
+
+const { asyncForEach } = asynchronousUtilities;
 
 export default define(class ReturnBlock extends Element {
   constructor(context, string, node, steps, nonsensical, returnStatement) {

@@ -1,14 +1,15 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, asynchronousUtilities } from "occam-languages";
 
 import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { NODES_TYPE } from "../types";
-import { asyncReduce } from "../utilities/asynchronous";
 import { termFromNode } from "../utilities/term";
+
+const { asyncReduce } = asynchronousUtilities;
 
 export default define(class Reduce extends Element {
   constructor(context, string, node, variable, initialExpression, anonymousProcedure) {

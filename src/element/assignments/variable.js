@@ -1,10 +1,10 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, asynchronousUtilities } from "occam-languages";
 
 import { define } from "../../elements";
 
-import { asyncForEach } from "../../utilities/asynchronous";
+const { asyncForEach } = asynchronousUtilities;
 
 export default define(class VariableAssignments extends Element {
   constructor(context, string, node, array) {

@@ -1,14 +1,15 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, asynchronousUtilities } from "occam-languages";
 
 import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { asyncSome } from "../utilities/asynchronous";
 import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
 import { termFromNode, termFromBoolean } from "../utilities/term";
+
+const { asyncSome } = asynchronousUtilities;
 
 export default define(class Some extends Element {
   constructor(context, string, node, variable, anonymousProcedure) {
