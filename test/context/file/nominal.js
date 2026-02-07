@@ -2,6 +2,8 @@
 
 const { FileContext, contextUtilities } = require("occam-languages");
 
+const { nominalLexer, nominalParser } = require("../../helpers/nominal");
+
 const { chainContext } = contextUtilities;
 
 class NominalFileContext extends FileContext {
@@ -15,6 +17,18 @@ class NominalFileContext extends FileContext {
     const procedures = [];
 
     return procedures;
+  }
+
+  getLexer() {
+    const lexer = nominalLexer; ///
+
+    return lexer;
+  }
+
+  getParser() {
+    const parser = nominalParser;
+
+    return parser;
   }
 
   clear() {
