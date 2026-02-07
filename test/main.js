@@ -1,12 +1,11 @@
 "use strict";
 
 const { Entries } = require("occam-model"),
-      { Log, ReleaseContext } = require("../lib/index"); ///
+      { Log, ReleaseContext } = require("occam-languages");
 
-const { furtleFileFromNothing } = require("./helpers/furtle"),
-      { nominalFileFromNohting } = require("./helpers/nominal"),
-      { termsFromNominalFileContext } = require("./helpers/terms"),
-      { procedureFromReleaseContext } = require("./helpers/procedure");
+const { termsFromNominalFileContext } = require("./helpers/terms"),
+      { procedureFromReleaseContext } = require("./helpers/context"),
+      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
 
 const log = Log.fromNothing(),
       entries = Entries.fromNothing(),

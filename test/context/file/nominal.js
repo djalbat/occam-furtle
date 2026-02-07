@@ -31,11 +31,7 @@ class NominalFileContext extends FileContext {
     return fileVerifies;
   }
 
-  static fromFile(file, context) {
-    const nominalFileContext = FileContext.fromFile(NominalFileContext, file, context);
-
-    return nominalFileContext;
-  }
+  static fromFile(file, context) { return FileContext.fromFile(NominalFileContext, file, context); }
 }
 
 module.exports = NominalFileContext;

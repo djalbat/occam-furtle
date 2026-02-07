@@ -10,6 +10,12 @@ class Nominalile extends File {
 
     return FileContext;
   }
+
+  static fromJSON(json) { return File.fromJSON(Nominalile, json); }
+
+  static fromDocument(document) { return File.fromDocument(Nominalile, document); }
+
+  static fromPathContentAndReleased(path, content, released) { return File.fromPathContentAndReleased(Nominalile, path, content, released); }
 }
 
 module.exports = Nominalile;

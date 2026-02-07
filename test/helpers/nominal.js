@@ -1,49 +1,32 @@
 "use strict";
 
-const { File } = require("occam-model");
+const { lexersUtilities, parsersUtilities, customGrammarUtilities } = require("occam-nominal");
 
-function nominalFileFromNohting() {
-  const path = "./statement.nml",
-        content = `∀n m = m`,
-        released = false,
-        file = File.fromPathContentAndReleased(path, content, released),
-        nominalFile = file; ///
+const { combinedCustomGrammarFromJSON } = customGrammarUtilities,
+      { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
+      { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
 
-  return nominalFile;
-}
-
-"use strict";
-
-import { lexersUtilities, parsersUtilities } from "occam-nominal";
-
-import { STATEMENT_RULE_NAME } from "../constants";
-import { combinedCustomGrammarFromJSON } from "../utilities/customGrammar";
-
-const { nominalLexerFromCombinedCustomGrammar } = lexersUtilities,
-  { nominalParserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
-
-const startRuleName = STATEMENT_RULE_NAME,
-  combinedCustomGrammar = combinedCustomGrammarFromJSON([
-    {
-      "name": "Default",
-      "termBNF": "term                                 ::=  \"(\" argument \")\"\n\n                                       |  variable \n                                       \n                                       ;",
-      "statementBNF": "statement                            ::=  \"(\" metaArgument \")\" \n                                                  \n                                       |  equality\n\n                                       |  judgement\n\n                                       |  typeAssertion \n                                                  \n                                       |  definedAssertion  \n\n                                       |  containedAssertion  \n                                       \n                                       |  satisfiesAssertion\n\n                                       |  subproofAssertion         \n\n                                       |  propertyAssertion  \n\n                                       |  metavariable ( frameSubstitution | termSubstitution )?\n\n                                       ;\n\nequality                             ::=  term \"=\" term ;\n\ntypeAssertion                        ::=  term \":\" type ;\n\ndefinedAssertion                     ::=  ( frame | term ) \"is\" ( \"defined\" | \"undefined\" );\n\ncontainedAssertion                   ::=  ( frame | term ) \"is\" ( \"present\" | \"missing\" ) \"in\" statement ;\n\nsatisfiesAssertion                   ::=  signature \"satisfies\" metavariable ;  \n\nsubproofAssertion                    ::=  \"[\" statement ( \",\" statement )* \"]\" \"...\" statement ;\n\npropertyAssertion                    ::=  term \"is\" ( \"a\" | \"an\" ) propertyRelation ;\n\npropertyRelation                     ::=  property \"of\" term ;\n\njudgement                            ::=  frame \"|\"<NO_WHITESPACE>\"-\" declaration ;\n\nframe                                ::=  \"[\" declaration ( \",\" declaration )* \"]\" ;\n \ndeclaration                          ::=  metavariable ( \"::\" statement )? ;\n\ntermSubstitution                     ::=  \"[\" term \"for\" term \"]\";\n\nframeSubstitution                    ::=  \"[\" frame \"for\" frame \"]\";\n\nstatementSubstitution                ::=  \"[\" statement \"for\" statement \"]\";\n\nreferenceSubstitution                ::=  \"[\" reference \"for\" reference \"]\";",
-      "typeVocabulary": "",
-      "symbolVocabulary": ""
-    },
-    {
-      "name": "first-order-logic",
-      "termBNF": "",
-      "statementBNF": "\n\n                              statement  ::=  ( \"∀\" | \"∃\" ) ( frameArgument | argument ) metaArgument \n\n                                           |  ( frameArgument | argument ) \"is\" ( \"𝘣𝘰𝘶𝘯𝘥\" | \"𝘧𝘳𝘦𝘦\" ) \"in\" metaArgument\n\n                                           ;\n\n",
-      "typeVocabulary": "",
-      "symbolVocabulary": "𝘣𝘰𝘶𝘯𝘥\n𝘧𝘳𝘦𝘦\n∀\n∃\n"
-    }
-  ]);
-
-export const nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar);
-
-export const nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar);
+const startRuleName = "statement",
+      combinedCustomGrammar = combinedCustomGrammarFromJSON([
+        {
+          "name": "Default",
+          "termBNF": "term                                 ::=  \"(\" argument \")\"\n\n                                       |  variable \n                                       \n                                       ;",
+          "statementBNF": "statement                            ::=  \"(\" metaArgument \")\" \n                                                  \n                                       |  equality\n\n                                       |  judgement\n\n                                       |  typeAssertion \n                                                  \n                                       |  definedAssertion  \n\n                                       |  containedAssertion  \n                                       \n                                       |  satisfiesAssertion\n\n                                       |  subproofAssertion         \n\n                                       |  propertyAssertion  \n\n                                       |  metavariable ( frameSubstitution | termSubstitution )?\n\n                                       ;\n\nequality                             ::=  term \"=\" term ;\n\ntypeAssertion                        ::=  term \":\" type ;\n\ndefinedAssertion                     ::=  ( frame | term ) \"is\" ( \"defined\" | \"undefined\" );\n\ncontainedAssertion                   ::=  ( frame | term ) \"is\" ( \"present\" | \"missing\" ) \"in\" statement ;\n\nsatisfiesAssertion                   ::=  signature \"satisfies\" metavariable ;  \n\nsubproofAssertion                    ::=  \"[\" statement ( \",\" statement )* \"]\" \"...\" statement ;\n\npropertyAssertion                    ::=  term \"is\" ( \"a\" | \"an\" ) propertyRelation ;\n\npropertyRelation                     ::=  property \"of\" term ;\n\njudgement                            ::=  frame \"|\"<NO_WHITESPACE>\"-\" declaration ;\n\nframe                                ::=  \"[\" declaration ( \",\" declaration )* \"]\" ;\n \ndeclaration                          ::=  metavariable ( \"::\" statement )? ;\n\ntermSubstitution                     ::=  \"[\" term \"for\" term \"]\";\n\nframeSubstitution                    ::=  \"[\" frame \"for\" frame \"]\";\n\nstatementSubstitution                ::=  \"[\" statement \"for\" statement \"]\";\n\nreferenceSubstitution                ::=  \"[\" reference \"for\" reference \"]\";",
+          "typeVocabulary": "",
+          "symbolVocabulary": ""
+        },
+        {
+          "name": "first-order-logic",
+          "termBNF": "",
+          "statementBNF": "\n\n                              statement  ::=  ( \"∀\" | \"∃\" ) ( frameArgument | argument ) metaArgument \n\n                                           |  ( frameArgument | argument ) \"is\" ( \"𝘣𝘰𝘶𝘯𝘥\" | \"𝘧𝘳𝘦𝘦\" ) \"in\" metaArgument\n\n                                           ;\n\n",
+          "typeVocabulary": "",
+          "symbolVocabulary": "𝘣𝘰𝘶𝘯𝘥\n𝘧𝘳𝘦𝘦\n∀\n∃\n"
+        }
+      ]),
+      nominalLexer = nominalLexerFromCombinedCustomGrammar(combinedCustomGrammar),
+      nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinedCustomGrammar);
 
 module.exports = {
-  nominalFileFromNohting
+  nominalLexer,
+  nominalParser
 };

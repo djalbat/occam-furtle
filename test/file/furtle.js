@@ -9,6 +9,12 @@ class FurtleFile extends File {
 
     return FileContext;
   }
+
+  static fromJSON(json) { return File.fromJSON(FurtleFile, json); }
+
+  static fromDocument(document) { return File.fromDocument(FurtleFile, document); }
+
+  static fromPathContentAndReleased(path, content, released) { return File.fromPathContentAndReleased(FurtleFile, path, content, released); }
 }
 
 module.exports = FurtleFile;
