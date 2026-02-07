@@ -1,6 +1,6 @@
 "use strict";
 
-import Element from "../element";
+import { Element } from "occam-languages";
 
 import { define } from "../elements";
 

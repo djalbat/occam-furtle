@@ -1,8 +1,8 @@
 "use strict";
 
-import { define } from "../../elements";
+import { Element } from "occam-languages";
 
-import Element from "../../element";
+import { define } from "../../elements";
 
 import { asyncForEach } from "../../utilities/asynchronous";
 

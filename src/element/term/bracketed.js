@@ -1,8 +1,8 @@
 "use strict";
 
-import { define } from "../../elements";
+import { Element } from "occam-languages";
 
-import Element from "../../element";
+import { define } from "../../elements";
 
 export default define(class BracketedTerm extends Element {
   constructor(context, string, node, term) {

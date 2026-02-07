@@ -1,8 +1,9 @@
 "use strict";
 
+import { NonTerminalNode } from "occam-languages";
+
 import { FurtleParser as FurtleParserBase } from "occam-grammars";
 
-import NonTerminalNode from "../nonTerminalNode";
 import NonTerminalNodeMap from "../nonTerminalNodeMap";
 
 export default class FurtleParser extends FurtleParserBase {

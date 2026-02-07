@@ -1,6 +1,7 @@
 "use strict";
 
-import Element from "../../element";
+import { Element } from "occam-languages";
+
 import elements from "../../elements";
 import Exception from "../../exception";
 

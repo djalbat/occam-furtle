@@ -1,8 +1,8 @@
 "use strict";
 
+import { Element } from "occam-languages";
 import { arrayUtilities } from "necessary";
 
-import Element from "../element";
 import elements from "../elements";
 import nullNode from "../nullNode";
 

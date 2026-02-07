@@ -3,9 +3,8 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
-import { FurtleLexer,FurtleParser } from "occam-grammars";
-import { lexersUtilities, parsersUtilities } from "../index"; ///
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
+import { FurtleLexer,FurtleParser, lexersUtilities, parsersUtilities } from "../index"; ///
 
 import SubHeading from "./view/subHeading";
 import SizeableDiv from "./view/div/sizeable";

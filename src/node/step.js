@@ -1,6 +1,6 @@
 "use strict";
 
-import NonTerminalNode from "../nonTerminalNode";
+import { NonTerminalNode } from "occam-languages";
 
 import { ARRAY_ASSIGNMENT_RULE_NAME, OBJECT_ASSIGNMENT_RULE_NAME, VARIABLE_ASSIGNMENTS_RULE_NAME } from "../ruleNames"
 

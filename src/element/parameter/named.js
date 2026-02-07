@@ -1,10 +1,10 @@
 "use strict";
 
+import { Element } from "occam-languages";
+
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-
-import Element from "../../element";
 
 export default define(class NamedParameter extends Element {
   constructor(context, string, node, type, name, alias) {

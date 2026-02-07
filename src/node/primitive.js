@@ -1,7 +1,8 @@
 "use strict";
 
+import { NonTerminalNode } from "occam-languages";
+
 import nullNode from "../nullNode";
-import NonTerminalNode from "../nonTerminalNode";
 
 import { NULL, TRUE, FALSE } from "../constants";
 import { NODE_TYPE, STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE } from "../types";

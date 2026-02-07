@@ -1,10 +1,10 @@
 "use strict";
 
-import FileContext from "../../context/file";
+const { FileContext, contextUtilities } = require("occam-languages");
 
-import { chainContext } from "../../utilities/context";
+const { chainContext } = contextUtilities;
 
-export default class NominalFileContext extends FileContext {
+class NominalFileContext extends FileContext {
   constructor(context, filePath, tokens, node) {
     super(context, filePath, tokens, node);
 
@@ -37,3 +37,5 @@ export default class NominalFileContext extends FileContext {
     return nominalFileContext;
   }
 }
+
+module.exports = NominalFileContext;
