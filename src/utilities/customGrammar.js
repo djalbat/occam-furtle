@@ -1,6 +1,6 @@
 "use strict";
 
-import { CustomGrammar, CombinedCustomGrammar } from "occam-custom-grammars";
+import { CustomGrammar, CombinedCustomGrammar } from "occam-nominal";
 
 export function combinedCustomGrammarFromJSON(json) {
   const customGrammars = customGrammarsFromJSON(json),

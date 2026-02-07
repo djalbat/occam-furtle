@@ -1,6 +1,6 @@
 "use strict";
 
-import { lexersUtilities, parsersUtilities } from "occam-custom-grammars";
+import { lexersUtilities, parsersUtilities } from "occam-nominal";
 
 import { STATEMENT_RULE_NAME } from "../constants";
 import { combinedCustomGrammarFromJSON } from "../utilities/customGrammar";
