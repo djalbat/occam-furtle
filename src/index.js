@@ -4,6 +4,7 @@ import "./preamble";
 
 export { default as Terms } from "./element/terms";
 
+export { default as FurtleFile } from "./file/furtle";
 export { default as FurtleLexer } from "./furtle/lexer";
 export { default as FurtleParser } from "./furtle/parser";
 export { default as FurtleFileContext } from "./context/file/furtle";

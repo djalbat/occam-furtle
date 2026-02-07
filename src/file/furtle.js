@@ -1,9 +1,10 @@
 "use strict";
 
-const { File } = require("occam-model"),
-      { FurtleFileContext } = require("../../lib/index"); ///
+import { File } from "occam-model";
 
-class FurtleFile extends File {
+import FurtleFileContext from "../context/file/furtle";
+
+export default class FurtleFile extends File {
   getFileContext() {
     const FileContext = FurtleFileContext;  ///
 
@@ -16,5 +17,3 @@ class FurtleFile extends File {
 
   static fromPathContentAndReleased(path, content, released) { return File.fromPathContentAndReleased(FurtleFile, path, content, released); }
 }
-
-module.exports = FurtleFile;

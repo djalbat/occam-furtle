@@ -1,9 +1,9 @@
 "use strict";
 
-const { fileSystemUtilities } = require("necessary");
+const { FurtleFile } = require("../../lib/index"),
+      { fileSystemUtilities } = require("necessary");
 
-const FurtleFile = require("../file/furtle"),
-      NominalFile = require("../file/nominal");
+const NominalFile = require("../file/nominal");
 
 const { readFile } = fileSystemUtilities;
 
