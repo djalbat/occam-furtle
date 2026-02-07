@@ -1,10 +1,10 @@
 "use strict";
 
-import { Pass, nodeUtilities } from "occam-languages";
+import { Pass, queryUtilities } from "occam-languages";
 
 import { errorFromErrorNode, procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
 
-const { nodeQuery } = nodeUtilities;
+const { nodeQuery } = queryUtilities;
 
 const errorNodeQuery = nodeQuery("/error"),
       procedureDeclarationNodeQuery = nodeQuery("/procedureDeclaration");
