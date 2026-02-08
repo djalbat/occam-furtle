@@ -1,6 +1,6 @@
 "use strict";
 
-import { Pass, queryUtilities } from "occam-languages";
+import { SimplePass, queryUtilities } from "occam-languages";
 
 import { errorFromErrorNode, procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
 
@@ -9,7 +9,7 @@ const { nodeQuery } = queryUtilities;
 const errorNodeQuery = nodeQuery("/error"),
       procedureDeclarationNodeQuery = nodeQuery("/procedureDeclaration");
 
-class TopLevelPass extends Pass {
+class TopLevelPass extends SimplePass {
   static maps = [
     {
       nodeQuery: errorNodeQuery,

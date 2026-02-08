@@ -3,7 +3,7 @@
 const { NominalLexer, NominalParser } = require("occam-grammars"),
       { lexersUtilities, parsersUtilities } = require("occam-custom-grammars");
 
-const { combinedCustomGrammar } = require("../helpers/nominal");
+const { combinedCustomGrammar } = require("../helpers/customGrammar");
 
 const { lexerFromCombinedCustomGrammar } = lexersUtilities,
       { parserFromStartRuleNameAndCombinedCustomGrammar } = parsersUtilities;
