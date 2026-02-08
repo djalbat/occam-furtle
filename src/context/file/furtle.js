@@ -1,13 +1,11 @@
 "use strict";
 
-import { arrayUtilities } from "necessary";
 import { FileContext, contextUtilities } from "occam-languages";
 
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 
-const { push } = arrayUtilities,
-      { chainContext } = contextUtilities;
+const { chainContext } = contextUtilities;
 
 export default class FurtleFileContext extends FileContext {
   constructor(context, filePath, tokens, node, procedures) {
@@ -19,15 +17,9 @@ export default class FurtleFileContext extends FileContext {
   }
 
   getProcedures(includeRelease = true) {
-    const procedures = [];
-
-    push(procedures, this.procedures);
-
-    if (includeRelease) {
-      const releaseContextProcedures = this.context.getProcedures();
-
-      push(procedures, releaseContextProcedures);
-    }
+    const procedures = includeRelease ?
+                         this.context.getProcedures() :
+                           this.procedures;
 
     return procedures;
   }
@@ -80,6 +72,12 @@ export default class FurtleFileContext extends FileContext {
     return theorems;
   }
 
+  getVariables(includeRelease = true) {
+    const variables = [];
+
+    return variables;
+  }
+
   getMetaLemmas(includeRelease = true) {
     const metaLemmas = [];
 
@@ -116,13 +114,7 @@ export default class FurtleFileContext extends FileContext {
     return metatheorems;
   }
 
-  getVariables() {
-    const variables = [];
-
-    return variables;
-  }
-
-  getMetavariables() {
+  getMetavariables(includeRelease = true) {
     const metavariables = [];
 
     return metavariables;
@@ -134,6 +126,26 @@ export default class FurtleFileContext extends FileContext {
     this.procedures.push(procedure);
 
     this.debug(`Added the '${procedureString}' procedure to the context.`);
+  }
+
+  findProcedureByName(name) {
+    const procedures = this.getProcedures(),
+          procedure = procedures.find((procedure) => {
+        const nameMatches = procedure.matchName(name);
+
+        if (nameMatches) {
+          return true;
+        }
+      }) || null;
+
+    return procedure;
+  }
+
+  isProcedurePresentByName(name) {
+    const procedure = this.findProcedureByName(name),
+          procedurePresent = (procedure !== null);
+
+    return procedurePresent;
   }
 
   clear() {
