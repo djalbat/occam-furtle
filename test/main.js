@@ -8,12 +8,15 @@ const { termsFromNominalFileContext } = require("./helpers/terms"),
       { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
 
 const log = Log.fromNothing(),
+      name = null,
+      json = null,
       entries = Entries.fromNothing(),
+      customGrammar = null,
       furtleFile = furtleFileFromNothing(),
       nominalFile = nominalFileFromNohting(),
-      releaseContext = ReleaseContext.fromLogEntriesAndCallback(log, entries, async (context, filePath, lineIndex) => {
+      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, filePath, lineIndex) => {
         debugger
-      });
+      }, customGrammar);
 
 entries.addFile(furtleFile);
 
