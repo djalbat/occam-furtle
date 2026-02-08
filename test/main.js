@@ -7,22 +7,25 @@ const { termsFromNominalFileContext } = require("./helpers/terms"),
       { procedureFromReleaseContext } = require("./helpers/context"),
       { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
 
-const log = Log.fromNothing(),
-      name = null,
-      json = null,
-      entries = Entries.fromNothing(),
-      customGrammar = null,
+const entries = Entries.fromNothing(),
       furtleFile = furtleFileFromNothing(),
-      nominalFile = nominalFileFromNohting(),
-      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, filePath, lineIndex) => {
-        debugger
-      }, customGrammar);
+      nominalFile = nominalFileFromNohting();
 
 entries.addFile(furtleFile);
 
 entries.addFile(nominalFile);
 
-releaseContext.initialise();
+const log = Log.fromNothing(),
+      name = null,
+      json = null,
+      customGrammar = null,
+      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, filePath, lineIndex) => {
+        debugger
+      }, customGrammar),
+      releaseContexts = [],
+      fileContextFromJSON = null;
+
+releaseContext.initialise(releaseContexts, fileContextFromJSON);
 
 releaseContext.verify()
   .then(callProcedure);

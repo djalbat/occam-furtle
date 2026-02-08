@@ -39,6 +39,12 @@ class NominalFileContext extends FileContext {
     ///
   }
 
+  getTypePrefixes(includeRelease = true) {
+    const typePrefixes = [];
+
+    return typePrefixes;
+  }
+
   async verifyFile() {
     const fileVerifies = true;  ///
 
