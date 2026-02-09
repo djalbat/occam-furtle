@@ -28,7 +28,8 @@ const log = Log.fromNothing(),
 releaseContext.initialise(releaseContexts, fileContextFromJSON);
 
 releaseContext.verify()
-  .then(callProcedure);
+  .then(callProcedure)
+  .then(handleProcedure);
 
 function callProcedure() {
   const nominalFilePath = nominalFile.getPath(),
@@ -41,11 +42,12 @@ function callProcedure() {
         fileContext = furtleFileContext,  ///
         context = fileContext;  ///
 
-  procedure.call(terms, context)
-    .then((term) => {
-      const primitiveValue = term.getPrimitiveValue(),
-            boolean = primitiveValue; ///
+  return procedure.call(terms, context);
+}
 
-      console.log(boolean);
-    });
+function handleProcedure(term) {
+  const primitiveValue = term.getPrimitiveValue(),
+        boolean = primitiveValue; ///
+
+  console.log(boolean);
 }
