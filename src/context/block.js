@@ -23,7 +23,8 @@ export default class BlockContext extends Context {
     push(variables, this.variables);
 
     if (nested) {
-      const contextVariables = this.context.getVariables();
+      const context = this.getContext(),
+            contextVariables = context.getVariables();
 
       push(variables, contextVariables);
     }
