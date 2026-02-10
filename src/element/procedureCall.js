@@ -25,9 +25,9 @@ export default define(class ProcedureCall extends Element {
   getName() { return this.reference.getName(); }
 
   async evaluate(context) {
-    const procedureCallString = this.getString();  ///
-
     await this.break(context);
+
+    const procedureCallString = this.getString();  ///
 
     context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
 

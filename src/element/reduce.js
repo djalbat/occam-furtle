@@ -35,7 +35,7 @@ export default define(class Reduce extends Element {
   async evaluate(context) {
     let term;
 
-    await this.break;
+    await this.break(context);
 
     const reduceString = this.getString();
 

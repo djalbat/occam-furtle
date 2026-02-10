@@ -48,9 +48,9 @@ export default define(class Procedure extends Element {
   matchName(name) { return this.label.matchName(name); }
 
   async call(terms, context) {
-    const procedureString = this.getString();  ///
-
     await this.break(context);
+
+    const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 

@@ -30,9 +30,9 @@ export default define(class Some extends Element {
   async evaluate(context) {
     let term;
 
-    const someString = this.getString();
-
     await this.break(context);
+
+    const someString = this.getString();
 
     context.trace(`Evaluating the '${someString}' some...`);
 
