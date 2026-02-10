@@ -4,8 +4,8 @@ const { Entries } = require("occam-model"),
       { Log, ReleaseContext } = require("occam-languages");
 
 const { termsFromNominalFileContext } = require("./helpers/terms"),
-      { procedureFromReleaseContext } = require("./helpers/context"),
-      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
+      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file"),
+      { procedureFromReleaseContext, FileContextFromFilePath } = require("./helpers/context");
 
 const entries = Entries.fromNothing(),
       furtleFile = furtleFileFromNothing(),
@@ -18,14 +18,14 @@ entries.addFile(nominalFile);
 const log = Log.fromNothing(),
       name = null,
       json = null,
-      customGrammar = null,
-      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, filePath, lineIndex) => {
+      callback = async (context, filePath, lineIndex) => {
         debugger
-      }, customGrammar),
-      releaseContexts = [],
-      fileContextFromJSON = null;
+      },
+      customGrammar = null,
+      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar),
+      releaseContexts = [];
 
-releaseContext.initialise(releaseContexts, fileContextFromJSON);
+releaseContext.initialise(releaseContexts, FileContextFromFilePath);
 
 releaseContext.verify()
   .then(callProcedure)
