@@ -10,7 +10,7 @@ const { first } = arrayUtilities,
       { isFilePathFurtleFilePath, isFilePathNominalFilePath } = filePathUtilities;
 
 function FileContextFromFilePath(filePath) {
-  let FileContext;
+  let FileContext = null;
 
   const filePathFurtleFilePath = isFilePathFurtleFilePath(filePath),
         filePathNominalFilePath = isFilePathNominalFilePath(filePath);
