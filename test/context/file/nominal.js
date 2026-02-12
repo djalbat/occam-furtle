@@ -1,16 +1,12 @@
 "use strict";
 
-const { FileContext, contextUtilities } = require("occam-languages");
+const { FileContext } = require("occam-languages");
 
 const { nominalLexer, nominalParser } = require("../../helpers/nominal");
-
-const { chainContext } = contextUtilities;
 
 class NominalFileContext extends FileContext {
   constructor(context, filePath, tokens, node) {
     super(context, filePath, tokens, node);
-
-    return chainContext(this);
   }
 
   getProcedures(includeRelease = true) {

@@ -1,19 +1,15 @@
 "use strict";
 
-import { FileContext, contextUtilities } from "occam-languages";
+import { FileContext } from "occam-languages";
 
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
-
-const { chainContext } = contextUtilities;
 
 export default class FurtleFileContext extends FileContext {
   constructor(context, filePath, tokens, node, procedures) {
     super(context, filePath, tokens, node);
 
     this.procedures = procedures;
-
-    return chainContext(this);
   }
 
   getProcedures(includeRelease = true) {

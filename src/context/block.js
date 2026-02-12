@@ -1,20 +1,17 @@
 "use strict";
 
+import { Context } from "occam-languages";
 import { arrayUtilities } from "necessary";
-import { Context, contextUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
-const { push } = arrayUtilities,
-      { chainContext } = contextUtilities;
+const { push } = arrayUtilities;
 
 export default class BlockContext extends Context {
   constructor(context, variables) {
     super(context);
 
     this.variables = variables;
-
-    return chainContext(this);
   }
 
   getVariables(nested = true) {
