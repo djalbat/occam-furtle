@@ -49,6 +49,20 @@ export default class BlockContext extends Context {
     this.variables.push(variable);
   }
 
+  findProcedureByName(name) {
+    const context = this.getContext(),
+          procedure = context.findProcedureByName(name);
+
+    return procedure;
+  }
+
+  isProcedurePresentByName(name) {
+    const context = this.getContext(),
+          procedurePresent = context.isProcedurePresentByName(name);
+
+    return procedurePresent;
+  }
+
   findVariableByVariableName(variableName, nested = true) {
     const variables = this.getVariables(nested),
           variable = variables.find((variable) => {
