@@ -21,7 +21,7 @@ export default define(class ArrayAssigment extends Element {
     return this.variable;
   }
 
-  getVariables() {
+  getParameters() {
     return this.parameters;
   }
 
