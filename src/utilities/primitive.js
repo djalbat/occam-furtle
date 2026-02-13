@@ -65,3 +65,10 @@ export function primitiveFromStringLiteral(stringLiteral, context) {
 
   return primitive;
 }
+
+export default {
+  primitiveFromNode,
+  primitiveFromNodes,
+  primitiveFromBoolean,
+  primitiveFromStringLiteral
+};

@@ -60,3 +60,22 @@ export function termFromStringLiteral(stringLiteral, context) {
 
   return term;
 }
+
+export function termFromPrimitive(primitive) {
+  const { Term } = elements,
+        context = null,
+        string = primitive.getString(),
+        node = null,
+        variable = null,
+        term = new Term(context, string, node, variable, primitive);
+
+  return term;
+}
+
+export default {
+  termFromNode,
+  termFromNodes,
+  termFromBoolean,
+  termFromStringLiteral,
+  termFromPrimitive
+};
