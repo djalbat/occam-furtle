@@ -3,6 +3,7 @@
 import { Element } from "occam-languages";
 
 import { define } from "../elements";
+import { BOOLEAN_TYPE } from "../types";
 
 export default define(class Term extends Element {
   constructor(context, string, node, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
@@ -66,6 +67,13 @@ export default define(class Term extends Element {
     }
 
     return type;
+  }
+
+  isBoolean() {
+    const type = this.getType(),
+          boolean = (type === BOOLEAN_TYPE);
+
+    return boolean;
   }
 
   evaluate(context) {
