@@ -42,26 +42,26 @@ export default define(class NamedParameter extends Element {
     return aliasedName;
   }
 
-  matchTerm(term, context) {
+  compareTerm(term, context) {
     const termString = term.getString(),
           namedParameterString = this.getString();  ///
 
-    context.trace(`Matching the '${termString}' term against the '${namedParameterString}' named parameter...`);
+    context.trace(`Comparing the '${termString}' term with the '${namedParameterString}' named parameter...`);
 
     const termType = term.getType();
 
     if (this.type !== termType) {
-      const message = `The '${termString}' term's '${termType}' type  and '${namedParameterString}' named parameter's '${this.type}' type do not match.`,
+      const message = `The '${termString}' term's '${termType}' type is not equal to '${namedParameterString}' named parameter's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the '${termString}' term against the '${namedParameterString}' named parameter.`);
+    context.debug(`...compared the '${termString}' term with the '${namedParameterString}' named parameter.`);
   }
 
-  matchNamedParameter(namedParameter, context) {
-    let namedParameterMatches;
+  compareNamedParameter(namedParameter, context) {
+    let namedParameterCompares;
 
     const namedParameterA = this,  ///
           namedParameterB = namedParameter; ///
@@ -69,18 +69,18 @@ export default define(class NamedParameter extends Element {
     const namedParameterAString = namedParameterA.getString(),
           namedParameterBString = namedParameterB.getString();
 
-    context.trace(`Matching the '${namedParameterAString}' named parameter against the '${namedParameterBString}' named parameter...`);
+    context.trace(`Comparing the '${namedParameterAString}' named parameter with the '${namedParameterBString}' named parameter...`);
 
     const name = namedParameter.getName(),
           type = namedParameter.getType();
 
-    namedParameterMatches = ((this.name === name) && (this.type === type));
+    namedParameterCompares = ((this.name === name) && (this.type === type));
 
-    if (namedParameterMatches) {
-      context.debug(`...matched the '${namedParameterAString}' named parameter against the '${namedParameterBString}' named parameter.`);
+    if (namedParameterCompares) {
+      context.debug(`...compared the '${namedParameterAString}' named parameter with the '${namedParameterBString}' named parameter.`);
     }
 
-    return namedParameterMatches;
+    return namedParameterCompares;
   }
 
   static name = "NamedParameter";

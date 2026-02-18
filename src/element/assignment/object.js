@@ -44,7 +44,7 @@ export default define(class ObjectAssigment extends Element {
       throw exception;
     }
 
-    nodeProperties.matchNamedParameters(this.namedParameters, context);
+    nodeProperties.compareNamedParameters(this.namedParameters, context);
 
     this.namedParameters.forEachNamedParameter((namedParameter) => {
       this.evaluateNamedParameter(namedParameter, term, context);

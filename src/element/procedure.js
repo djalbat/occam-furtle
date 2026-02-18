@@ -45,7 +45,7 @@ export default define(class Procedure extends Element {
 
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 
-  matchName(name) { return this.label.matchName(name); }
+  compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
 
   async call(terms, context) {
     await this.break(context);
@@ -54,7 +54,7 @@ export default define(class Procedure extends Element {
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    this.parameters.matchTerms(terms, context);
+    this.parameters.compareTerms(terms, context);
 
     const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
           term = await this.returnBlock.evaluate(variables, context),
@@ -62,7 +62,7 @@ export default define(class Procedure extends Element {
 
     if (this.type !== termType) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type and the '${procedureString}' procedure's '${this.type}' type  do not match.`,
+            message = `The '${termString}' term's '${termType}' type is not equal to the '${procedureString}' procedure's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

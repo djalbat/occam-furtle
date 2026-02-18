@@ -19,7 +19,7 @@ const log = Log.fromNothing(),
       name = null,
       json = null,
       callback = async (context, filePath, lineIndex) => {
-        debugger
+        ///
       },
       customGrammar = null,
       releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar),

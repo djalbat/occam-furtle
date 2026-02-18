@@ -28,10 +28,10 @@ export default define(class Variable extends Element {
     return this.term;
   }
 
-  matchVariableName(variableName) {
-    const nameMatches = (this.name === variableName);
+  compareVariableName(variableName) {
+    const comparesToVariableName = (this.name === variableName);
 
-    return nameMatches;
+    return comparesToVariableName;
   }
 
   evaluate(context) {
@@ -79,7 +79,7 @@ export default define(class Variable extends Element {
           variableType = this.type;
 
     if (termType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not match the term's '${termType}' type.'`,
+      const message = `The '${variableString} variable's '${variableType}' type does not compare to the term's '${termType}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;

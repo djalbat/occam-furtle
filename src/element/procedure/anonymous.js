@@ -33,7 +33,7 @@ export default define(class AnonymousProcedure extends Element {
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
 
-    this.parameters.matchTerms(terms, context);
+    this.parameters.compareTerms(terms, context);
 
     const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
           term = await this.returnBlock.evaluate(variables, context),
@@ -41,7 +41,7 @@ export default define(class AnonymousProcedure extends Element {
 
     if (this.type !== termType) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type and the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type  do not match.`,
+            message = `The '${termString}' term's '${termType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

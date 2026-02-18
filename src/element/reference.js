@@ -15,5 +15,11 @@ export default define(class Reference extends Element {
     return this.name;
   }
 
+  getProcedureName() {
+    const procedureName = this.name;  ///
+
+    return procedureName;
+  }
+
   static name = "Reference";
 });

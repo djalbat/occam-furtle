@@ -33,11 +33,11 @@ export default define(class NamedParameters extends Element {
 
   forEachNamedParameter(callback) { this.array.forEach(callback); }
 
-  matchTerms(terms, context) {
+  compareTerms(terms, context) {
     const termsString = terms.getString(),
           namedParametersString = this.getString(); ///
 
-    context.trace(`Matching the '${termsString}' terms against the '${namedParametersString}' named parameters...`);
+    context.trace(`Comparing the '${termsString}' terms with the '${namedParametersString}' named parameters...`);
 
     const termsLength = terms.getLength(),
           namedParametersLength = this.getLength();
@@ -53,45 +53,45 @@ export default define(class NamedParameters extends Element {
       if (namedParameter !== null) {
         const term = terms.getTerm(index);
 
-        namedParameter.matchTerm(term, context);
+        namedParameter.compareTerm(term, context);
       }
     });
 
-    context.debug(`...matched the '${termsString}' terms against the '${namedParametersString}' named parameters.`);
+    context.debug(`...compared the '${termsString}' terms with the '${namedParametersString}' named parameters.`);
   }
 
-  matchNamedParameter(namedParameter, context) {
+  compareNamedParameter(namedParameter, context) {
     const namedParameterString = namedParameter.getString(),
           namedParametersString = this.getString(); ///
 
-    context.trace(`Matching the '${namedParameterString}' namedParameter against the '${namedParametersString}' named parameters...`);
+    context.trace(`Comparing the '${namedParameterString}' namedParameter with the '${namedParametersString}' named parameters...`);
 
     const namedParameterA = namedParameter, ///
-          namedParameterMatches = this.someNamedParameter((namedParameter) => {
+          namedParameterCompares = this.someNamedParameter((namedParameter) => {
             if (namedParameter !== null) {
               const namedParameterB = namedParameter, ///
-                    namedParameterBMatchesNamedParameterA = namedParameterA.matchNamedParameter(namedParameterB, context);
+                    namedParameterBComparesToNamedParameterA = namedParameterA.compareNamedParameter(namedParameterB, context);
 
-              if (namedParameterBMatchesNamedParameterA) {
+              if (namedParameterBComparesToNamedParameterA) {
                 return true;
               }
             }
           });
 
-    if (!namedParameterMatches) {
-      const message = `The '${namedParameterString}' namedParameter does not match any of the '${namedParametersString}' named parameters.`,
+    if (!namedParameterCompares) {
+      const message = `The '${namedParameterString}' namedParameter does not compare to any of the '${namedParametersString}' named parameters.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the '${namedParameterString}' namedParameter against the '${namedParametersString}' named parameters.`);
+    context.debug(`...compared the '${namedParameterString}' namedParameter with the '${namedParametersString}' named parameters.`);
   }
 
-  matchNamedParameters(namedParameters, context) {
+  compareNamedParameters(namedParameters, context) {
     namedParameters.forEachNamedParameter((namedParameter) => {
       if (namedParameter !== null) {
-        this.matchNamedParameter(namedParameter, context);
+        this.compareNamedParameter(namedParameter, context);
       }
     });
   }

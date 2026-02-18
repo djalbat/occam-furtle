@@ -15,10 +15,10 @@ export default define(class Label extends Element {
     return this.name;
   }
 
-  matchName(name) {
-    const nameMatches = (name === this.name);
+  compareProcedureName(procedureName) {
+    const procedureNameCompares = (this.name === procedureName);
 
-    return nameMatches;
+    return procedureNameCompares;
   }
 
   static name = "Label";

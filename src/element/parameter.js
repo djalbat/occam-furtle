@@ -22,22 +22,22 @@ export default define(class Parameter extends Element {
     return this.name;
   }
 
-  matchTerm(term, context) {
+  compareTerm(term, context) {
     const termString = term.getString(),
           parameterString = this.getString();  ///
 
-    context.trace(`Matching the '${termString}' term against the '${parameterString}' parameter...`);
+    context.trace(`Comparing the '${termString}' term against the '${parameterString}' parameter...`);
 
     const termType = term.getType();
 
     if (this.type !== termType) {
-      const message = `The '${termString}' term's '${termType}' type  and '${parameterString}' parameter's '${this.type}' type do not match.`,
+      const message = `The '${termString}' term's '${termType}' type is not equal to the '${parameterString}' parameter's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the '${termString}' term against the '${parameterString}' parameter.`);
+    context.debug(`...comparing the '${termString}' term against the '${parameterString}' parameter.`);
   }
 
   static name = "Parameter";

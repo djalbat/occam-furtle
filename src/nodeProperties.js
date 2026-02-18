@@ -23,33 +23,33 @@ class NodeProperties {
 
   someNodeProperty(callback) { return this.array.some(callback); }
 
-  matchNamedParameter(namedParameter, context) {
+  compareNamedParameter(namedParameter, context) {
     const nodePropertiesString = this.string, ///
           namedParameterString = namedParameter.getString();
 
-    context.trace(`Matching the '${namedParameterString}' named parameter against the '${nodePropertiesString}' node properties...`);
+    context.trace(`Comparing the '${namedParameterString}' named parameter with the '${nodePropertiesString}' node properties...`);
 
-    const namedParameterMatches = this.someNodeProperty((nodeProperty) => {
-      const namedParameterMatchesNodeProperty = nodeProperty.matchNamedParameter(namedParameter, context);
+    const namedParametersCompare = this.someNodeProperty((nodeProperty) => {
+      const namedParameterComparesToNodeProperty = nodeProperty.compareNamedParameter(namedParameter, context);
 
-      if (namedParameterMatchesNodeProperty) {
+      if (namedParameterComparesToNodeProperty) {
         return true;
       }
     });
 
-    if (!namedParameterMatches) {
-      const message = `The '${namedParameterString}' named parameter does not match any of the '${nodePropertiesString}' node properties.`,
+    if (!namedParametersCompare) {
+      const message = `The '${namedParameterString}' named parameter does not compmare to any of the '${nodePropertiesString}' node properties.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...matched the '${namedParameterString}' named parameter against the '${nodePropertiesString}' node properties.`);
+    context.debug(`...compared the '${namedParameterString}' named parameter with the '${nodePropertiesString}' node properties.`);
   }
 
-  matchNamedParameters(namedParameters, context) {
+  compareNamedParameters(namedParameters, context) {
     namedParameters.forEachNamedParameter((namedParameter) => {
-      this.matchNamedParameter(namedParameter, context);
+      this.compareNamedParameter(namedParameter, context);
     });
   }
 

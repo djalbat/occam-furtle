@@ -22,7 +22,7 @@ export default define(class ProcedureCall extends Element {
     return this.terms;
   }
 
-  getName() { return this.reference.getName(); }
+  getProcedureName() { return this.reference.getProcedureName(); }
 
   async evaluate(context) {
     await this.break(context);
@@ -31,8 +31,8 @@ export default define(class ProcedureCall extends Element {
 
     context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
 
-    const name = this.getName(),
-          procedurePresent = context.isProcedurePresentByName(name);
+    const procedureName = this.getProcedureName(),
+          procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
 
     if (!procedurePresent) {
       const message = `The '${procedureCallString} procedure is not present.'`,
@@ -41,7 +41,7 @@ export default define(class ProcedureCall extends Element {
       throw exception;
     }
 
-    const procedure = context.findProcedureByName(name),
+    const procedure = context.findProcedureByProcedureName(procedureName),
           terms = this.terms.evaluate(context),
           term = await procedure.call(terms, context);
 

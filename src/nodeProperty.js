@@ -21,24 +21,24 @@ export default class NodeProperty {
     return this.name;
   }
 
-  matchNamedParameter(namedParameter, context) {
-    let namedParameterMatches;
+  compareNamedParameter(namedParameter, context) {
+    let namedParameterCompares;
 
     const nodePropertyString = this.string, ///
           namedParameterString = namedParameter.getString();
 
-    context.trace(`Matching the '${nodePropertyString}' node property against the '${namedParameterString}' named parameter...`);
+    context.trace(`Comparing the '${nodePropertyString}' node property with the '${namedParameterString}' named parameter...`);
 
     const name = namedParameter.getName(),
           type = namedParameter.getType();
 
-    namedParameterMatches = ((this.name === name) && (this.type === type));
+    namedParameterCompares = ((this.name === name) && (this.type === type));
 
-    if (namedParameterMatches) {
-      context.debug(`...matched the '${nodePropertyString}' node property against the '${namedParameterString}' named parameter.`);
+    if (namedParameterCompares) {
+      context.debug(`...compared the '${nodePropertyString}' node property with the '${namedParameterString}' named parameter.`);
     }
 
-    return namedParameterMatches;
+    return namedParameterCompares;
   }
 
   static name = "Parameter";
