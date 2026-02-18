@@ -11,6 +11,18 @@ class NominalFileContext extends FileContext {
     return procedures;
   }
 
+  getLexer() {
+    const lexer = nominalLexer; ///
+
+    return lexer;
+  }
+
+  getParser() {
+    const parser = nominalParser; ///
+
+    return parser;
+  }
+
   clear() {
     ///
   }
@@ -32,9 +44,7 @@ class NominalFileContext extends FileContext {
   }
 
   static fromFile(file, context) {
-    const lexer = nominalLexer, ///
-          parser = nominalParser,
-          nominalFileContext = FileContext.fromFileLexerAndParser(NominalFileContext, file, lexer, parser, context);
+    const nominalFileContext = FileContext.fromFile(NominalFileContext, file, context);
 
     return nominalFileContext;
   }
