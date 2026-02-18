@@ -121,7 +121,9 @@ export default class FurtleFileContext extends FileContext {
 
     this.procedures.push(procedure);
 
-    this.debug(`Added the '${procedureString}' procedure to the context.`);
+    const filePath = this.getFilePath();
+
+    this.debug(`Added the '${procedureString}' procedure to the '${filePath}' file context.`);
   }
 
   findProcedureByName(name) {
