@@ -3,7 +3,8 @@
         "parser": {
             "syntax": "ecmascript",
             "jsx": true
-        }
+        },
+        "target": "es2022"
     },
     "module": {
         "type": "commonjs"
