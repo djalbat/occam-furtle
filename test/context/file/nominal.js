@@ -5,22 +5,29 @@ const { FileContext } = require("occam-languages");
 const { nominalLexer, nominalParser } = require("../../helpers/nominal");
 
 class NominalFileContext extends FileContext {
-  getProcedures(includeRelease = true) {
-    const procedures = [];
+  constructor(context, fileContent, filePath, tokens, node, lexer, parser, procedures, typePrefixes) {
+    super(context, fileContent, filePath, tokens, node);
 
-    return procedures;
+    this.lexer = lexer;
+    this.parser = parser;
+    this.procedures = procedures;
+    this.typePrefixes = typePrefixes;
   }
 
   getLexer() {
-    const lexer = nominalLexer; ///
-
-    return lexer;
+    return this.lexer;
   }
 
   getParser() {
-    const parser = nominalParser; ///
+    return this.parser;
+  }
 
-    return parser;
+  getProcedures(includeRelease = true) {
+    return this.procedures;
+  }
+
+  getTypePrefixes(includeRelease = true) {
+    return this.typePrefixes;
   }
 
   clear() {
@@ -31,12 +38,6 @@ class NominalFileContext extends FileContext {
     ///
   }
 
-  getTypePrefixes(includeRelease = true) {
-    const typePrefixes = [];
-
-    return typePrefixes;
-  }
-
   async verifyFile() {
     const fileVerifies = true;  ///
 
@@ -44,7 +45,11 @@ class NominalFileContext extends FileContext {
   }
 
   static fromFile(file, context) {
-    const nominalFileContext = FileContext.fromFile(NominalFileContext, file, context);
+    const lexer = nominalLexer, ///
+          parser = nominalParser, ///
+          procedures = [],
+          typePrefixes = [],
+          nominalFileContext = FileContext.fromFile(NominalFileContext, file, lexer, parser,procedures, typePrefixes, context);
 
     return nominalFileContext;
   }

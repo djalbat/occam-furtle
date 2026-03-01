@@ -6,9 +6,11 @@ import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 
 export default class FurtleFileContext extends FileContext {
-  constructor(context, filePath, tokens, node, lexer, parser, procedures) {
-    super(context, filePath, tokens, node);
+  constructor(context, fileContent, filePath, tokens, node, lexer, parser, procedures) {
+    super(context, fileContent, filePath, tokens, node);
 
+    this.lexer = lexer;
+    this.parser = parser;
     this.procedures = procedures;
   }
 
@@ -172,7 +174,7 @@ export default class FurtleFileContext extends FileContext {
     const lexer = furtleLexer,  ///
           parser = furtleParser,  ///
           procedures = null,
-          furtleFileContext = ileContext.fromFilePath(FurtleFileContext, json, lexer, parser, procedures, context);
+          furtleFileContext = FileContext.fromJSON(FurtleFileContext, json, lexer, parser, procedures, context);
 
     return furtleFileContext;
   }
