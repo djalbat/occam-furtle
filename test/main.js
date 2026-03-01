@@ -1,7 +1,9 @@
 "use strict";
 
-const { Entries } = require("occam-model"),
-      { Log, ReleaseContext } = require("occam-languages");
+const { Log } = require("occam-languages"),
+      { Entries } = require("occam-model");
+
+const ReleaseContext = require("./context/release");
 
 const { FileContextFromFilePath } = require("./helpers/context"),
       { termsFromNominalFileContext } = require("./helpers/terms"),

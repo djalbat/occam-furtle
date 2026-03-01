@@ -152,6 +152,16 @@ export default class FurtleFileContext extends FileContext {
     ///
   }
 
+  initialise(json) {
+    this.prepare();
+
+    const node = this.getNode(),
+          context = this, ///
+          fileNode = node;  ///
+
+    verifyFile(fileNode, context);
+  }
+
   async verifyFile() {
     const node = this.getNode(),
           context = this, ///
@@ -159,6 +169,17 @@ export default class FurtleFileContext extends FileContext {
           fileVerifies = verifyFile(fileNode, context);
 
     return fileVerifies;
+  }
+
+  toJSON() {
+    const filePath = this.getFilePath(),
+          fileContent = this.getFileContent(),
+          json = {
+            filePath,
+            fileContent,
+          };
+
+    return json;
   }
 
   static fromFile(file, context) {
@@ -175,6 +196,8 @@ export default class FurtleFileContext extends FileContext {
           parser = furtleParser,  ///
           procedures = null,
           furtleFileContext = FileContext.fromJSON(FurtleFileContext, json, lexer, parser, procedures, context);
+
+    furtleFileContext.initialise(json);
 
     return furtleFileContext;
   }
