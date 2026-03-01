@@ -6,10 +6,18 @@ import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 
 export default class FurtleFileContext extends FileContext {
-  constructor(context, filePath, tokens, node, procedures) {
+  constructor(context, filePath, tokens, node, lexer, parser, procedures) {
     super(context, filePath, tokens, node);
 
     this.procedures = procedures;
+  }
+
+  getLexer() {
+    return this.lexer;
+  }
+
+  getParser() {
+    return this.parser;
   }
 
   getProcedures(includeRelease = true) {
@@ -18,18 +26,6 @@ export default class FurtleFileContext extends FileContext {
                            this.procedures;
 
     return procedures;
-  }
-
-  getLexer() {
-    const lexer = furtleLexer;  ///
-
-    return lexer;
-  }
-
-  getParser() {
-    const parser = furtleParser;  ///
-
-    return parser;
   }
 
   getLabels(includeRelease = true) {
@@ -164,15 +160,19 @@ export default class FurtleFileContext extends FileContext {
   }
 
   static fromFile(file, context) {
-    const procedures = [],
-          furtleFileContext = FileContext.fromFile(FurtleFileContext, file, procedures, context);
+    const lexer = furtleLexer,  ///
+          parser = furtleParser,  ///
+          procedures = [],
+          furtleFileContext = FileContext.fromFile(FurtleFileContext, file, lexer, parser, procedures, context);
 
     return furtleFileContext;
   }
 
-  static fromFilePath(filePath, context) {
-    const procedures = null,
-          furtleFileContext = ileContext.fromFilePath(FurtleFileContext, filePath, procedures, context);
+  static fromJSON(json, context) {
+    const lexer = furtleLexer,  ///
+          parser = furtleParser,  ///
+          procedures = null,
+          furtleFileContext = ileContext.fromFilePath(FurtleFileContext, json, lexer, parser, procedures, context);
 
     return furtleFileContext;
   }

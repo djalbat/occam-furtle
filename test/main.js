@@ -3,9 +3,9 @@
 const { Entries } = require("occam-model"),
       { Log, ReleaseContext } = require("occam-languages");
 
-const { termsFromNominalFileContext } = require("./helpers/terms"),
-      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file"),
-      { procedureFromReleaseContext, FileContextFromFilePath } = require("./helpers/context");
+const { FileContextFromFilePath } = require("./helpers/context"),
+      { termsFromNominalFileContext } = require("./helpers/terms"),
+      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
 
 const entries = Entries.fromNothing(),
       furtleFile = furtleFileFromNothing(),
@@ -36,9 +36,10 @@ function callProcedure() {
         nominalFileContext = releaseContext.findFileContext(nominalFilePath),
         free = true,
         terms = termsFromNominalFileContext(nominalFileContext, free),
-        procedure = procedureFromReleaseContext(releaseContext),
         furtleFilePath = furtleFile.getPath(),
         furtleFileContext = releaseContext.findFileContext(furtleFilePath),
+        procedureName = "isVariableFree",
+        procedure = furtleFileContext.findProcedureByProcedureName(procedureName),
         fileContext = furtleFileContext,  ///
         context = fileContext;  ///
 
