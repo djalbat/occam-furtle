@@ -155,6 +155,8 @@ export default class FurtleFileContext extends FileContext {
   initialise(json) {
     this.prepare();
 
+    this.procedures = [];
+
     const node = this.getNode(),
           context = this, ///
           fileNode = node;  ///
