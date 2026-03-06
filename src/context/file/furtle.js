@@ -152,7 +152,7 @@ export default class FurtleFileContext extends FileContext {
     ///
   }
 
-  initialise(json) {
+  initialise() {
     this.prepare();
 
     this.procedures = [];
@@ -198,8 +198,6 @@ export default class FurtleFileContext extends FileContext {
           parser = furtleParser,  ///
           procedures = null,
           furtleFileContext = FileContext.fromJSON(FurtleFileContext, json, lexer, parser, procedures, context);
-
-    furtleFileContext.initialise(json);
 
     return furtleFileContext;
   }
