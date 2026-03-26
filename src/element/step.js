@@ -5,12 +5,12 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Step extends Element {
-  constructor(context, string, node, arrayAssignment, objectAssigment, variablessAssignment) {
+  constructor(context, string, node, arrayAssignment, objectAssigment, variableAssignments) {
     super(context, string, node)
 
     this.arrayAssignment = arrayAssignment;
     this.objectAssigment = objectAssigment;
-    this.variablessAssignment = variablessAssignment;
+    this.variableAssignments = variableAssignments;
   }
 
   getArrayAssignment() {
@@ -21,8 +21,8 @@ export default define(class Step extends Element {
     return this.objectAssigment;
   }
 
-  getVariablessAssignment() {
-    return this.variablessAssignment;
+  getVariableAssignments() {
+    return this.variableAssignments;
   }
 
   async evaluate(context) {
@@ -32,8 +32,8 @@ export default define(class Step extends Element {
       this.arrayAssignment.evaluate(context);
     } else if (this.objectAssigment !== null) {
       this.objectAssigment.evaluate(context);
-    } else if (this.variablessAssignment !== null) {
-      await this.variablessAssignment.evaluate(context);
+    } else if (this.variableAssignments !== null) {
+      await this.variableAssignments.evaluate(context);
     }
   }
 

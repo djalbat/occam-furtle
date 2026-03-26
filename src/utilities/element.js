@@ -25,11 +25,11 @@ export function stepFromStepNode(stepNode, context) {
         string = context.nodeAsString(node),
         arrayAssignment = arrayAssignmentFromStepNode(stepNode, context),
         objectAssigment = objectAssignmentFromStepNode(stepNode, context),
-        variablesDeclaration = variableAssignmentsFromStepNode(stepNode, context);
+        variableAssigments = variableAssignmentsFromStepNode(stepNode, context);
 
   context = null;
 
-  const step = new Step(context, string, node, arrayAssignment, objectAssigment, variablesDeclaration);
+  const step = new Step(context, string, node, arrayAssignment, objectAssigment, variableAssigments);
 
   return step;
 }
