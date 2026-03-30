@@ -333,6 +333,44 @@ export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
   return returnBlock;
 }
 
+export function negatedTermFromNegatedTermNode(negatedTermNode, context) {
+  const { NegatedTerm } = elements,
+        node = negatedTermNode, ///
+        string = context.nodeAsString(node),
+        lineIndex = null,
+        termNode = negatedTermNode.getTermNode(),
+        type = typeFromNegatedTermNode(termNode, context),
+        term = termFromNegatedTermNode(negatedTermNode, context),
+        negatedTerm = new NegatedTerm(context, string, node, lineIndex, type, term);
+
+  return negatedTerm;
+}
+
+export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
+  const { LogicalTerm } = elements,
+        node = logicalTermNode, ///
+        string = context.nodeAsString(node),
+        lineIndex = null,
+        type = typeFromLogicalTermNode(logicalTermNode, context),
+        disjunction = disjunctionFromLogicalTermNode(logicalTermNode, context),
+        leftTerm = leftTermFromLogicalTermNode(logicalTermNode, context),
+        rightTerm = rightTermFromLogicalTermNode(logicalTermNode, context),
+        logicalTerm = new LogicalTerm(context, string, node, lineIndex, type, disjunction, leftTerm, rightTerm);
+
+  return logicalTerm;
+}
+
+export function bracketedTermFromBracketedTermNode(bracketedTermNode, context) {
+  const { BracketedTerm } = elements,
+        node = bracketedTermNode, ///
+        string = context.nodeAsString(node),  ///
+        lineIndex = null,
+        term = termFromBracketedTermNode(bracketedTermNode, context),
+        bracketedTerm = new BracketedTerm(context, string, node, lineIndex, term);
+
+  return bracketedTerm;
+}
+
 export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
   const { ProcedureCall } = elements,
         node = procedureCallNode, ///
@@ -362,6 +400,34 @@ export function namedParameterFromNamedParameterNode(namedParameterNode, context
   const namedParameter = new NamedParameter(context, string, node, lineIndex, type, name, alias);
 
   return namedParameter;
+}
+
+export function comparisonTermFromComparisonTermNode(comparisonTermNode, context) {
+  const { ComparisonTerm } = elements,
+        node = comparisonTermNode,  ///
+        string = context.nodeAsString(node),
+        lineIndex = null,
+        negated = negatedFromComparisonTermNode(comparisonTermNode, context),
+        leftTerm = leftTermFromCompzrisonTermNode(comparisonTermNode, context),
+        rightTerm = rightTermFromCompzrisonTermNode(comparisonTermNode, context),
+        comparisonTerm = new ComparisonTerm(context, string, node, lineIndex, negated, leftTerm, rightTerm);
+
+  return comparisonTerm;
+}
+
+export function procedureFromProcedureDeclarationNode(procedureDeclarationNode, context) {
+  const { Procedure } = elements,
+        node = procedureDeclarationNode,  ///
+        type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        label = labelFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        returnBlock = returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context),
+        procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
+        string = procedureString, ///
+        lineIndex = null,
+        procedure = new Procedure(context, string, node, lineIndex, type, label, parameters, returnBlock);
+
+  return procedure;
 }
 
 export function namedParametersFromNamedParametersNode(namedParametersNode, context) {
@@ -478,6 +544,32 @@ export function procedureDeclarationFromProcedureDeclarationNode(procedureDeclar
   const procedureDeclaration = new ProcedureDeclaration(context, string, node, lineIndex, procedure);
 
   return procedureDeclaration;
+}
+
+export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
+  const { VariableAssignment } = elements,
+        node = variableAssignmentNode,  ///
+        variable = variableFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
+        expression = expressionFromVariableAssignmentNode(variableAssignmentNode, context),
+        variableAssignmentString = variableAssignmentStringFromTypeAndVariable(type, variable, context),
+        string = variableAssignmentString,  ///
+        lineIndex = null,
+        assignment = new VariableAssignment(context, string, node, lineIndex, variable, expression);
+
+  return assignment;
+}
+
+export function variableFromTypeAndVariableNode(type, variableNode, context) {
+  const { Variable } = elements,
+        node = variableNode,  ///
+        name = nameFromVariableNode(variableNode),
+        expression = expressionFromTypeAndVariableNode(type, variableNode, context),
+        variableString = variableStringFromName(name),
+        string = variableString,  ///
+        lineIndex = null,
+        variable = new Variable(context, string, node, lineIndex, type, name, expression);
+
+  return variable;
 }
 
 export function nameFromLabelNode(labelNode, context) {
@@ -927,43 +1019,6 @@ export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
   return disjunction;
 }
 
-export function negatedTermFromNegatedTermNode(negatedTermNode, context) {
-  const { NegatedTerm } = elements,
-        node = negatedTermNode, ///
-        string = context.nodeAsString(node),
-        termNode = negatedTermNode.getTermNode(),
-        type = typeFromNegatedTermNode(termNode, context),
-        term = termFromNegatedTermNode(negatedTermNode, context),
-        negatedTerm = new NegatedTerm(context, string, node, lineIndex, type, term);
-
-  return negatedTerm;
-}
-
-export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
-  const { LogicalTerm } = elements,
-        node = logicalTermNode, ///
-        string = context.nodeAsString(node),
-        type = typeFromLogicalTermNode(logicalTermNode, context),
-        disjunction = disjunctionFromLogicalTermNode(logicalTermNode, context),
-        leftTerm = leftTermFromLogicalTermNode(logicalTermNode, context),
-        rightTerm = rightTermFromLogicalTermNode(logicalTermNode, context),
-        logicalTerm = new LogicalTerm(context, string, node, lineIndex, type, disjunction, leftTerm, rightTerm);
-
-  return logicalTerm;
-}
-
-export function variableFromTypeAndVariableNode(type, variableNode, context) {
-  const { Variable } = elements,
-        node = variableNode,  ///
-        name = nameFromVariableNode(variableNode),
-        expression = expressionFromTypeAndVariableNode(type, variableNode, context),
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        variable = new Variable(context, string, node, lineIndex, type, name, expression);
-
-  return variable;
-}
-
 export function variableAssignmentsFromStepNode(stepNode, context) {
   let variableAssignments = null;
 
@@ -1069,16 +1124,6 @@ export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
   return returnStatement;
 }
 
-export function bracketedTermFromBracketedTermNode(bracketedTermNode, context) {
-  const { BracketedTerm } = elements,
-        node = bracketedTermNode, ///
-        string = context.nodeAsString(node),  ///
-        term = termFromBracketedTermNode(bracketedTermNode, context),
-        bracketedTerm = new BracketedTerm(context, string, node, lineIndex, term);
-
-  return bracketedTerm;
-}
-
 export function expressionFromVariableAssignmentNode(variableAssigmentNode, context) {
   const expressionNode = variableAssigmentNode.getExpressionNode(),
         expression = expressionFromExpressionNode(expressionNode, context);
@@ -1093,37 +1138,11 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
   return parameters;
 }
 
-export function comparisonTermFromComparisonTermNode(comparisonTermNode, context) {
-  const { ComparisonTerm } = elements,
-        node = comparisonTermNode,  ///
-        string = context.nodeAsString(node),
-        negated = negatedFromComparisonTermNode(comparisonTermNode, context),
-        leftTerm = leftTermFromCompzrisonTermNode(comparisonTermNode, context),
-        rightTerm = rightTermFromCompzrisonTermNode(comparisonTermNode, context),
-        comparisonTerm = new ComparisonTerm(context, string, node, lineIndex, negated, leftTerm, rightTerm);
-
-  return comparisonTerm;
-}
-
 export function returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const returnBlockNode = anonymousProcedureNode.getReturnBlockNode(),
         returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
 
   return returnBlock;
-}
-
-export function procedureFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Procedure } = elements,
-        node = procedureDeclarationNode,  ///
-        type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        label = labelFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        returnBlock = returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
-        string = procedureString, ///
-        procedure = new Procedure(context, string, node, lineIndex, type, label, parameters, returnBlock);
-
-  return procedure;
 }
 
 export function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
@@ -1151,18 +1170,6 @@ export function variableFromTypeAndVariableAssignmentNode(type, variableAssignme
         variable = variableFromTypeAndVariableNode(type, variableNode, context);
 
   return variable;
-}
-
-export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
-  const { VariableAssignment } = elements,
-        node = variableAssignmentNode,  ///
-        variable = variableFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context),
-        expression = expressionFromVariableAssignmentNode(variableAssignmentNode, context),
-        variableAssignmentString = variableAssignmentStringFromTypeAndVariable(type, variable, context),
-        string = variableAssignmentString,  ///
-        assignment = new VariableAssignment(context, string, node, lineIndex, variable, expression);
-
-  return assignment;
 }
 
 export function termsArrayFromTermNodes(termNodes, context) {

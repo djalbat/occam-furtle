@@ -5,8 +5,8 @@ const { FileContext } = require("occam-languages");
 const { nominalLexer, nominalParser } = require("../../helpers/nominal");
 
 class NominalFileContext extends FileContext {
-  constructor(context, fileContent, filePath, tokens, node, lexer, parser, procedures, typePrefixes) {
-    super(context, fileContent, filePath, tokens, node);
+  constructor(context, fileContent, filePath, tokens, node, json, lexer, parser, procedures, typePrefixes) {
+    super(context, fileContent, filePath, tokens, node, json);
 
     this.lexer = lexer;
     this.parser = parser;
