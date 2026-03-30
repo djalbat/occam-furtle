@@ -10,8 +10,8 @@ import { termFromNode } from "../../utilities/term";
 import { NODE_TYPE, NODES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment extends Element {
-  constructor(context, string, node, variable, parameters) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, parameters) {
+    super(context, string, node, lineIndex)
 
     this.variable = variable;
     this.parameters = parameters;

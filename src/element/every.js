@@ -12,8 +12,8 @@ import { termFromNode, termFromBoolean } from "../utilities/term";
 const { asyncEvery } = asynchronousUtilities;
 
 export default define(class Every extends Element {
-  constructor(context, string, node, variable, anonymousProcedure) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, anonymousProcedure) {
+    super(context, string, node, lineIndex)
 
     this.string = string;
     this.variable = variable;

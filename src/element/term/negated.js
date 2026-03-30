@@ -9,8 +9,8 @@ import { BOOLEAN_TYPE } from "../../types";
 import { termFromBoolean } from "../../utilities/term";
 
 export default define(class NegatedTerm extends Element {
-  constructor(context, string, node, type, term) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, type, term) {
+    super(context, string, node, lineIndex)
 
     this.type = type;
     this.term = term;

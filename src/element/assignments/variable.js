@@ -7,8 +7,8 @@ import { define } from "../../elements";
 const { asyncForEach } = asynchronousUtilities;
 
 export default define(class VariableAssignments extends Element {
-  constructor(context, string, node, array) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, array) {
+    super(context, string, node, lineIndex)
 
     this.array = array;
   }

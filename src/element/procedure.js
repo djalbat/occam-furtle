@@ -9,8 +9,8 @@ import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
 export default define(class Procedure extends Element {
-  constructor(context, string, node, type, label, parameters, returnBlock) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, type, label, parameters, returnBlock) {
+    super(context, string, node, lineIndex)
 
     this.type = type;
     this.label = label;

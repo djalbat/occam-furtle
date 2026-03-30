@@ -6,8 +6,8 @@ import { define } from "../elements";
 import { termsStringFromTermsArray } from "../utilities/string";
 
 export default define(class Terms extends Element {
-  constructor(context, string, node, array) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, array) {
+    super(context, string, node, lineIndex)
 
     this.array = array;
   }
@@ -45,11 +45,12 @@ export default define(class Terms extends Element {
           termsString = termsStringFromTermsArray(termsArray, context),
           string = termsString, ///
           array = termsArray, ///
-          node = null;
+          node = null,
+          lineIndex = null;
 
     context = null;
 
-    const terms = new Terms(context, string, node, array);
+    const terms = new Terms(context, string, node, lineIndex, array);
 
     return terms;
   }
@@ -63,11 +64,12 @@ export default define(class Terms extends Element {
           termsString = termsStringFromTermsArray(termsArray, context),
           string = termsString, ///
           array = termsArray, ///
-          node = null;
+          node = null,
+          lineIndex = null;
 
     context = null;
 
-    const terms = new Terms(context, string, node, array);
+    const terms = new Terms(context, string, node, lineIndex, array);
 
     return terms;
   }

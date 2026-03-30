@@ -13,8 +13,8 @@ import { termFromNodes, termFromBoolean, termFromStringLiteral } from "../../uti
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
 export default define(class ObjectAssigment extends Element {
-  constructor(context, string, node, variable, namedParameters) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, namedParameters) {
+    super(context, string, node, lineIndex)
 
     this.variable = variable;
     this.namedParameters = namedParameters;

@@ -12,8 +12,8 @@ import { termFromNode, termFromBoolean } from "../utilities/term";
 const { asyncSome } = asynchronousUtilities;
 
 export default define(class Some extends Element {
-  constructor(context, string, node, variable, anonymousProcedure) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, anonymousProcedure) {
+    super(context, string, node, lineIndex)
 
     this.variable = variable;
     this.anonymousProcedure = anonymousProcedure;

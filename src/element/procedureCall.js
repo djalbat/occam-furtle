@@ -7,8 +7,8 @@ import Exception from "../exception";
 import { define } from "../elements";
 
 export default define(class ProcedureCall extends Element {
-  constructor(context, string, node, reference, terms) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, reference, terms) {
+    super(context, string, node, lineIndex)
 
     this.reference = reference;
     this.terms = terms;

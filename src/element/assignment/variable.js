@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../../elements";
 
 export default define(class VariableAssignment extends Element {
-  constructor(context, string, node, variable, expression) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, expression) {
+    super(context, string, node, lineIndex)
 
     this.variable = variable;
     this.expression = expression;

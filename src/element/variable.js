@@ -8,8 +8,8 @@ import { define } from "../elements";
 import { variableStringFromName } from "../utilities/string";
 
 export default define(class Variable extends Element {
-  constructor(context, string, node, type, name, term) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, type, name, term) {
+    super(context, string, node, lineIndex)
 
     this.type = type;
     this.name = name;
@@ -102,11 +102,12 @@ export default define(class Variable extends Element {
           term = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          node = null;
+          node = null,
+          lineIndex = null
 
     context = null;
 
-    const variable = new Variable(context, string, node, type, name, term);
+    const variable = new Variable(context, string, node, lineIndex, type, name, term);
 
     return variable;
   }
@@ -118,11 +119,12 @@ export default define(class Variable extends Element {
           term = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          node = null;
+          node = null,
+          lineIndex = null;
 
     context = null;
 
-    const variable = new Variable(context, string, node, type, name, term);
+    const variable = new Variable(context, string, node, lineIndex, type, name, term);
 
     return variable;
   }
@@ -132,11 +134,12 @@ export default define(class Variable extends Element {
           name = parameter.getName(),
           variableString = variableStringFromName(name),
           string = variableString,  ///
-          node = null;
+          node = null,
+          lineIndex = null;
 
     context = null;
 
-    const variable = new Variable(context, string, node, type, name, term);
+    const variable = new Variable(context, string, node, lineIndex, type, name, term);
 
     return variable;
   }

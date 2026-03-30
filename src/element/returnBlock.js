@@ -10,8 +10,8 @@ import { define } from "../elements";
 const { asyncForEach } = asynchronousUtilities;
 
 export default define(class ReturnBlock extends Element {
-  constructor(context, string, node, steps, nonsensical, returnStatement) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, steps, nonsensical, returnStatement) {
+    super(context, string, node, lineIndex)
 
     this.steps = steps;
     this.nonsensical = nonsensical;

@@ -7,8 +7,8 @@ import Exception from "../exception";
 import { define } from "../elements";
 
 export default define(class Parameters extends Element {
-  constructor(context, string, node, array) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, array) {
+    super(context, string, node, lineIndex)
 
     this.array = array;
   }

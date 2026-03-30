@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Error extends Element {
-  constructor(conterxt, string, node) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex) {
+    super(context, string, node, lineIndex)
   }
 
   verify(context) {

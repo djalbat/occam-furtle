@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Step extends Element {
-  constructor(context, string, node, arrayAssignment, objectAssigment, variableAssignments) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, arrayAssignment, objectAssigment, variableAssignments) {
+    super(context, string, node, lineIndex)
 
     this.arrayAssignment = arrayAssignment;
     this.objectAssigment = objectAssigment;

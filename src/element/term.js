@@ -6,8 +6,8 @@ import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
 export default define(class Term extends Element {
-  constructor(context, string, node, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm) {
+    super(context, string, node, lineIndex)
 
     this.variable = variable;
     this.primitive = primitive;
@@ -126,6 +126,7 @@ export default define(class Term extends Element {
     const primitiveString = primitive.getString(),
           string = primitiveString, ///
           node = null,
+          lineIndex = null,
           variable = null,
           negatedTerm = null,
           logicalTerm = null,
@@ -134,7 +135,7 @@ export default define(class Term extends Element {
 
     context = null;
 
-    const term = new Term(context, string, node, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
+    const term = new Term(context, string, node, lineIndex, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
 
     return term;
   }

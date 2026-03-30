@@ -8,13 +8,14 @@ export function termFromNode(node, context) {
   const { Term } = elements,
         variable = null,
         primitive = primitiveFromNode(node, context),
-        string = primitive.getString();
+        string = primitive.getString(),
+        lineIndex = null;
 
   node = null;
 
   context = null;
 
-  const term = new Term(context, string, node, variable, primitive);
+  const term = new Term(context, string, node, lineIndex, variable, primitive);
 
   return term;
 }
@@ -24,11 +25,12 @@ export function termFromNodes(nodes, context) {
         variable = null,
         primitive = primitiveFromNodes(nodes, context),
         string = primitive.getString(),
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const term = new Term(context, string, node, variable, primitive);
+  const term = new Term(context, string, node, lineIndex, variable, primitive);
 
   return term;
 }
@@ -38,11 +40,12 @@ export function termFromBoolean(boolean, context) {
         variable = null,
         primitive = primitiveFromBoolean(boolean, context),
         string = primitive.getString(),
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const term = new Term(context, string, node, variable, primitive);
+  const term = new Term(context, string, node, lineIndex, variable, primitive);
 
   return term;
 }
@@ -52,11 +55,12 @@ export function termFromStringLiteral(stringLiteral, context) {
         variable = null,
         primitive = primitiveFromStringLiteral(stringLiteral, context),
         string = primitive.getString(),
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const term = new Term(context, string, node, variable, primitive);
+  const term = new Term(context, string, node, lineIndex, variable, primitive);
 
   return term;
 }
@@ -66,8 +70,9 @@ export function termFromPrimitive(primitive) {
         context = null,
         string = primitive.getString(),
         node = null,
+        lineIndex = null,
         variable = null,
-        term = new Term(context, string, node, variable, primitive);
+        term = new Term(context, string, node, lineIndex, variable, primitive);
 
   return term;
 }

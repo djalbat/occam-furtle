@@ -8,8 +8,8 @@ import { define } from "../../elements";
 import { variablesFromTermsAndParameters } from "../procedure";
 
 export default define(class AnonymousProcedure extends Element {
-  constructor(context, string, node, type, parameters, returnBlock) {
-    super(context, string, node)
+  constructor(context, string, node, lineIndex, type, parameters, returnBlock) {
+    super(context, string, node, lineIndex)
 
     this.type = type;
     this.parameters = parameters;

@@ -10,13 +10,14 @@ export function primitiveFromNode(node, context) {
         primitiveString = primtiveStringFromNode(node, context),
         string = primitiveString,  ///
         type = NODE_TYPE,
-        value = node; ///
+        value = node, ///
+        lineIndex = null;
 
   node = null;
 
   context = null;
 
-  const primitive = new Primitive(context, string, node, type, value);
+  const primitive = new Primitive(context, string, node, lineIndex, type, value);
 
   return primitive;
 }
@@ -27,11 +28,12 @@ export function primitiveFromNodes(nodes, context) {
         string = primitiveString,  ///
         type = NODES_TYPE,
         value = nodes,  ///
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const primitive = new Primitive(context, string, node, type, value);
+  const primitive = new Primitive(context, string, node, lineIndex, type, value);
 
   return primitive;
 }
@@ -42,11 +44,12 @@ export function primitiveFromBoolean(boolean, context) {
         string = primitiveString,  ///
         type = BOOLEAN_TYPE,
         value = boolean,  ///
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const primitive = new Primitive(context, string, node, type, value);
+  const primitive = new Primitive(context, string, node, lineIndex, type, value);
 
   return primitive;
 }
@@ -57,11 +60,12 @@ export function primitiveFromStringLiteral(stringLiteral, context) {
         string = primitiveString,  ///
         type = STRING_TYPE,
         value = stringLiteral,  ///
-        node = null;
+        node = null,
+        lineIndex = null;
 
   context = null;
 
-  const primitive = new Primitive(context, string, node, type, value);
+  const primitive = new Primitive(context, string, node, lineIndex, type, value);
 
   return primitive;
 }
