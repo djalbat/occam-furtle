@@ -178,7 +178,7 @@ export default class FurtleFileContext extends FileContext {
           fileContent = this.getFileContent(),
           json = {
             filePath,
-            fileContent,
+            fileContent
           };
 
     return json;
