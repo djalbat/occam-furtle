@@ -9,13 +9,13 @@ export function termFromNode(node, context) {
         variable = null,
         primitive = primitiveFromNode(node, context),
         string = primitive.getString(),
-        lineIndex = null;
+        breakPoint = null;
 
   node = null;
 
   context = null;
 
-  const term = new Term(context, string, node, lineIndex, variable, primitive);
+  const term = new Term(context, string, node, breakPoint, variable, primitive);
 
   return term;
 }
@@ -26,11 +26,11 @@ export function termFromNodes(nodes, context) {
         primitive = primitiveFromNodes(nodes, context),
         string = primitive.getString(),
         node = null,
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const term = new Term(context, string, node, lineIndex, variable, primitive);
+  const term = new Term(context, string, node, breakPoint, variable, primitive);
 
   return term;
 }
@@ -41,11 +41,11 @@ export function termFromBoolean(boolean, context) {
         primitive = primitiveFromBoolean(boolean, context),
         string = primitive.getString(),
         node = null,
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const term = new Term(context, string, node, lineIndex, variable, primitive);
+  const term = new Term(context, string, node, breakPoint, variable, primitive);
 
   return term;
 }
@@ -56,11 +56,11 @@ export function termFromStringLiteral(stringLiteral, context) {
         primitive = primitiveFromStringLiteral(stringLiteral, context),
         string = primitive.getString(),
         node = null,
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const term = new Term(context, string, node, lineIndex, variable, primitive);
+  const term = new Term(context, string, node, breakPoint, variable, primitive);
 
   return term;
 }
@@ -70,9 +70,9 @@ export function termFromPrimitive(primitive) {
         context = null,
         string = primitive.getString(),
         node = null,
-        lineIndex = null,
+        breakPoint = null,
         variable = null,
-        term = new Term(context, string, node, lineIndex, variable, primitive);
+        term = new Term(context, string, node, breakPoint, variable, primitive);
 
   return term;
 }

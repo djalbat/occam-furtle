@@ -12,8 +12,8 @@ import { termFromNode } from "../utilities/term";
 const { first } = arrayUtilities;
 
 export default define(class NodeQuery extends Element {
-  constructor(context, string, node, lineIndex, variable, query) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, variable, query) {
+    super(context, string, node, breakPoint);
 
     this.variable = variable;
     this.query = query;

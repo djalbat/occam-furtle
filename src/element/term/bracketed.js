@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../../elements";
 
 export default define(class BracketedTerm extends Element {
-  constructor(context, string, node, lineIndex, term) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, term) {
+    super(context, string, node, breakPoint);
 
     this.term = term;
   }

@@ -12,8 +12,8 @@ import { NODE_TYPE, NODES_TYPE, STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE  } from "
 const { match } = arrayUtilities;
 
 export default define(class Primitive extends Element {
-  constructor(context, string, node, lineIndex, type, value) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, type, value) {
+    super(context, string, node, breakPoint);
 
     this.type = type;
     this.value = value;

@@ -8,8 +8,8 @@ import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 
 export default define(class Ternary extends Element {
-  constructor(context, string, node, lineIndex, term, ifExpression, elseExpression) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, term, ifExpression, elseExpression) {
+    super(context, string, node, breakPoint);
 
     this.term = term;
     this.ifExpression = ifExpression;

@@ -20,7 +20,7 @@ entries.addFile(nominalFile);
 const log = Log.fromNothing(),
       name = null,
       json = null,
-      callback = async (context, filePath, lineIndex) => {
+      callback = async (context, breakPoint) => {
         ///
       },
       customGrammar = null,

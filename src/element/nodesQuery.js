@@ -9,8 +9,8 @@ import { NODE_TYPE } from "../types";
 import { termFromNodes } from "../utilities/term";
 
 export default define(class NodesQuery extends Element {
-  constructor(context, string, node, lineIndex, variable, query) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, variable, query) {
+    super(context, string, node, breakPoint);
 
     this.variable = variable;
     this.query = query;

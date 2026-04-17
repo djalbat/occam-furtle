@@ -12,8 +12,8 @@ import { termFromNode } from "../utilities/term";
 const { asyncReduce } = asynchronousUtilities;
 
 export default define(class Reduce extends Element {
-  constructor(context, string, node, lineIndex, variable, initialExpression, anonymousProcedure) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, variable, initialExpression, anonymousProcedure) {
+    super(context, string, node, breakPoint);
 
     this.variable = variable;
     this.initialExpression = initialExpression;

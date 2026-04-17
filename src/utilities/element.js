@@ -23,14 +23,14 @@ export function stepFromStepNode(stepNode, context) {
   const { Step } = elements,
         node = stepNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         arrayAssignment = arrayAssignmentFromStepNode(stepNode, context),
         objectAssigment = objectAssignmentFromStepNode(stepNode, context),
         variableAssigments = variableAssignmentsFromStepNode(stepNode, context);
 
   context = null;
 
-  const step = new Step(context, string, node, lineIndex, arrayAssignment, objectAssigment, variableAssigments);
+  const step = new Step(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssigments);
 
   return step;
 }
@@ -42,11 +42,11 @@ export function someFromSomeNode(someNode, context) {
         anonymousProcedure = anonymousProcedureFromSomeNode(someNode, context),
         someString = someStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure),
         string = someString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const some = new Some(context, string, node, lineIndex, variable, anonymousProcedure);
+  const some = new Some(context, string, node, breakPoint, variable, anonymousProcedure);
 
   return some;
 }
@@ -70,11 +70,11 @@ export function termFromTermNode(termNode, context) {
         ],
         termString = termStringFromProperties(properties, context),
         string = termString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const term = new Term(context, string, node, lineIndex, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
+  const term = new Term(context, string, node, breakPoint, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
 
   return term;
 }
@@ -86,11 +86,11 @@ export function termsFromTermsNode(termsNode, context) {
         termNodes = termsNode.getTermNodes(),
         termsArray = termsArrayFromTermNodes(termNodes, context),
         array = termsArray, ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const terms = new Terms(context, string, node, lineIndex, array);
+  const terms = new Terms(context, string, node, breakPoint, array);
 
   return terms;
 }
@@ -99,11 +99,11 @@ export function errorFromErrorNode(errorNode, context) {
   const { Error } = elements,
         node = errorNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const error = new Error(context, string, node, lineIndex);
+  const error = new Error(context, string, node, breakPoint);
 
   return error;
 }
@@ -115,11 +115,11 @@ export function everyFromEveryNode(everyNode, context) {
         anonymousProcedure = anonymousProcedureFromEveryNode(everyNode, context),
         everyString = everyStringFromVariableAndAnonymousProcedure(variable, anonymousProcedure),
         string = everyString, ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const every = new Every(context, string, node, lineIndex, variable, anonymousProcedure);
+  const every = new Every(context, string, node, breakPoint, variable, anonymousProcedure);
 
   return every;
 }
@@ -128,12 +128,12 @@ export function labelFromLabelNode(labelNode, context) {
   const { Label } = elements,
         node = labelNode,
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         name = nameFromLabelNode(labelNode, context);
 
   context = null;
 
-  const label = new Label(context, string, node, lineIndex, name);
+  const label = new Label(context, string, node, breakPoint, name);
 
   return label;
 }
@@ -146,11 +146,11 @@ export function reduceFromReduceNode(reduceNode, context) {
         anonymousProcedure = anonymousProcedureFromReduceNode(reduceNode, context),
         reduceString = reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure),
         string = reduceString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const reduce = new Reduce(context, string, node, lineIndex, variable, initialExpression, anonymousProcedure);
+  const reduce = new Reduce(context, string, node, breakPoint, variable, initialExpression, anonymousProcedure);
 
   return reduce;
 }
@@ -163,11 +163,11 @@ export function ternaryFromTernaryNode(ternaryNode, context) {
         elseExpression = elseExpressionFromTernaryNode(ternaryNode, context),
         ternaryString = ternaryStringFromTerm(term),
         string = ternaryString, ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const ternary = new Ternary(context, string, node, lineIndex, term, ifExpression, elseExpression);
+  const ternary = new Ternary(context, string, node, breakPoint, term, ifExpression, elseExpression);
 
   return ternary;
 }
@@ -176,14 +176,14 @@ export function variableFromVariableNode(variableNode, context) {
   const { Variable } = elements,
         node = variableNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         type = typeFromVariableNode(variableNode, context),
         name = nameFromVariableNode(variableNode, context),
         expression = expressionFromVariableNode(variableNode, context);
 
   context = null;
 
-  const variable = new Variable(context, string, node, lineIndex, type, name, expression);
+  const variable = new Variable(context, string, node, breakPoint, type, name, expression);
 
   return variable;
 }
@@ -192,12 +192,12 @@ export function referenceFromReferenceNode(referenceNode, context) {
   const { Reference } = elements,
         node = referenceNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         name = nameFromReferenceNode(referenceNode, context);
 
   context = null;
 
-  const reference = new Reference(context, string, node, lineIndex, name);
+  const reference = new Reference(context, string, node, breakPoint, name);
 
   return reference;
 }
@@ -211,12 +211,12 @@ export function parameterFromParameterNode(parameterNode, context) {
     const { Parameter } = elements,
           node = parameterNode, ///
           string = context.nodeAsString(node),
-          lineIndex = null,
+          breakPoint = null,
           name = nameFromParaneterNode(parameterNode, context);
 
     context = null;
 
-    parameter = new Parameter(context, string, node, lineIndex, type, name);
+    parameter = new Parameter(context, string, node, breakPoint, type, name);
   }
 
   return parameter;
@@ -226,13 +226,13 @@ export function nodeQueryFromNodeQueryNode(nodeQueryNode, context) {
   const { NodeQuery } = elements,
         node = nodeQueryNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         variable = variableFromNodeQueryNode(nodeQueryNode, context),
         query = queryFromNodeQueryNode(nodeQueryNode, context);
 
   context = null;
 
-  const nodeQuery = new NodeQuery(context, string, node, lineIndex, variable, query);
+  const nodeQuery = new NodeQuery(context, string, node, breakPoint, variable, query);
 
   return nodeQuery;
 }
@@ -241,13 +241,13 @@ export function primitiveFromPrimitiveNode(primitiveNode, context) {
   const { Primitive } = elements,
         node = primitiveNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         type = typeFromPrimitiveNode(primitiveNode, context),
         value = valueFromPrimitiveNode(primitiveNode, context);
 
   context = null;
 
-  const primitive = new Primitive(context, string, node, lineIndex, type, value);
+  const primitive = new Primitive(context, string, node, breakPoint, type, value);
 
   return primitive;
 }
@@ -256,13 +256,13 @@ export function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   const { NodesQuery } = elements,
         node = nodesQueryNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         variable = variableFromNodesQueryNode(nodesQueryNode, context),
         query = queryFromNodesQueryNode(nodesQueryNode, context);
 
   context = null;
 
-  const nodesQuery = new NodesQuery(context, string, node, lineIndex, variable, query);
+  const nodesQuery = new NodesQuery(context, string, node, breakPoint, variable, query);
 
   return nodesQuery;
 }
@@ -271,13 +271,13 @@ export function parametersFromParametersNode(parametersNode, context) {
   const { Parameters } = elements,
         node = parametersNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         paramtersArray = paramtersArrayFromParametersNode(parametersNode, context),
         array = paramtersArray; ///
 
   context = null;
 
-  const parameters = new Parameters(context, string, node, lineIndex, array);
+  const parameters = new Parameters(context, string, node, breakPoint, array);
 
   return parameters;
 }
@@ -307,11 +307,11 @@ export function expressionFromExpressionNode(expressionNode, context) {
         ],
         expressionString = expressionStringFromProperties(properties, context),
         string = expressionString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const expression = new Expression(context, string, node, lineIndex, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall);
+  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall);
 
   return expression;
 }
@@ -324,11 +324,11 @@ export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
         returnStatement = returnStatementFromReturnBlockNode(returnBlockNode, context),
         returnBlockString = returnBlockStringFromReturnStatementNode(returnStatement),
         string = returnBlockString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const returnBlock = new ReturnBlock(context, string, node, lineIndex, steps, nonsensical, returnStatement);
+  const returnBlock = new ReturnBlock(context, string, node, breakPoint, steps, nonsensical, returnStatement);
 
   return returnBlock;
 }
@@ -337,11 +337,11 @@ export function negatedTermFromNegatedTermNode(negatedTermNode, context) {
   const { NegatedTerm } = elements,
         node = negatedTermNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         termNode = negatedTermNode.getTermNode(),
         type = typeFromNegatedTermNode(termNode, context),
         term = termFromNegatedTermNode(negatedTermNode, context),
-        negatedTerm = new NegatedTerm(context, string, node, lineIndex, type, term);
+        negatedTerm = new NegatedTerm(context, string, node, breakPoint, type, term);
 
   return negatedTerm;
 }
@@ -350,12 +350,12 @@ export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
   const { LogicalTerm } = elements,
         node = logicalTermNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         type = typeFromLogicalTermNode(logicalTermNode, context),
         disjunction = disjunctionFromLogicalTermNode(logicalTermNode, context),
         leftTerm = leftTermFromLogicalTermNode(logicalTermNode, context),
         rightTerm = rightTermFromLogicalTermNode(logicalTermNode, context),
-        logicalTerm = new LogicalTerm(context, string, node, lineIndex, type, disjunction, leftTerm, rightTerm);
+        logicalTerm = new LogicalTerm(context, string, node, breakPoint, type, disjunction, leftTerm, rightTerm);
 
   return logicalTerm;
 }
@@ -364,9 +364,9 @@ export function bracketedTermFromBracketedTermNode(bracketedTermNode, context) {
   const { BracketedTerm } = elements,
         node = bracketedTermNode, ///
         string = context.nodeAsString(node),  ///
-        lineIndex = null,
+        breakPoint = null,
         term = termFromBracketedTermNode(bracketedTermNode, context),
-        bracketedTerm = new BracketedTerm(context, string, node, lineIndex, term);
+        bracketedTerm = new BracketedTerm(context, string, node, breakPoint, term);
 
   return bracketedTerm;
 }
@@ -375,13 +375,13 @@ export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
   const { ProcedureCall } = elements,
         node = procedureCallNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         reference = referenceFromProcedureCallNode(procedureCallNode, context),
         terms = termsFromProcedureCallNode(procedureCallNode, context);
 
   context = null;
 
-  const procedureCall = new ProcedureCall(context, string, node, lineIndex, reference, terms);
+  const procedureCall = new ProcedureCall(context, string, node, breakPoint, reference, terms);
 
   return procedureCall;
 }
@@ -390,14 +390,14 @@ export function namedParameterFromNamedParameterNode(namedParameterNode, context
   const { NamedParameter } = elements,
         node = namedParameterNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         type = typeFromNamedParameterNode(namedParameterNode, context),
         name = nameFromNamedParameterNode(namedParameterNode, context),
         alias = aliasFromNamedParameterNode(namedParameterNode, context);
 
   context = null;
 
-  const namedParameter = new NamedParameter(context, string, node, lineIndex, type, name, alias);
+  const namedParameter = new NamedParameter(context, string, node, breakPoint, type, name, alias);
 
   return namedParameter;
 }
@@ -406,11 +406,11 @@ export function comparisonTermFromComparisonTermNode(comparisonTermNode, context
   const { ComparisonTerm } = elements,
         node = comparisonTermNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         negated = negatedFromComparisonTermNode(comparisonTermNode, context),
         leftTerm = leftTermFromCompzrisonTermNode(comparisonTermNode, context),
         rightTerm = rightTermFromCompzrisonTermNode(comparisonTermNode, context),
-        comparisonTerm = new ComparisonTerm(context, string, node, lineIndex, negated, leftTerm, rightTerm);
+        comparisonTerm = new ComparisonTerm(context, string, node, breakPoint, negated, leftTerm, rightTerm);
 
   return comparisonTerm;
 }
@@ -424,8 +424,8 @@ export function procedureFromProcedureDeclarationNode(procedureDeclarationNode, 
         returnBlock = returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context),
         procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
         string = procedureString, ///
-        lineIndex = null,
-        procedure = new Procedure(context, string, node, lineIndex, type, label, parameters, returnBlock);
+        breakPoint = null,
+        procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
 
   return procedure;
 }
@@ -434,14 +434,14 @@ export function namedParametersFromNamedParametersNode(namedParametersNode, cont
   const { NamedParameters } = elements,
         node = namedParametersNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         namedParameterNodes = namedParametersNode.getNamedParameterNodes(),
         namedParametersArray = namedParamtersArrayFromNamedParameterNodes(namedParameterNodes, context),
         array = namedParametersArray; ///
 
   context = null;
 
-  const namedParameters = new NamedParameters(context, string, node, lineIndex, array);
+  const namedParameters = new NamedParameters(context, string, node, breakPoint, array);
 
   return namedParameters;
 }
@@ -450,13 +450,13 @@ export function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, cont
   const { ArrayAssignment } = elements,
         node = arrayAssignmentNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         variable = variableFromArrayAssignmentNode(arrayAssignmentNode, context),
         parameters = parametersFromArrayAssignmentNode(arrayAssignmentNode, context);
 
   context = null;
 
-  const arrayAssignment = new ArrayAssignment(context, string, node, lineIndex, variable, parameters);
+  const arrayAssignment = new ArrayAssignment(context, string, node, breakPoint, variable, parameters);
 
   return arrayAssignment;
 }
@@ -465,12 +465,12 @@ export function returnStatementFromReturnStatementNode(returnStatementNode, cont
   const { ReturnStatement } = elements,
         node = returnStatementNode, ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         term = termFromReturnStatementNode(returnStatementNode, context);
 
   context = null;
 
-  const returnStatement = new ReturnStatement(context, string, node, lineIndex, term);
+  const returnStatement = new ReturnStatement(context, string, node, breakPoint, term);
 
   return returnStatement;
 }
@@ -486,13 +486,13 @@ export function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, c
   const { ObjectAssigment } = elements,
         node = objectAssignmentNode,  ///
         string = context.nodeAsString(node),
-        lineIndex = null,
+        breakPoint = null,
         variable = variableFromObjectAssignmentNode(objectAssignmentNode, context),
         namedParameters = namedParametersFromObjectAssignmentNode(objectAssignmentNode, context);
 
   context = null;
 
-  const objectAssignment = new ObjectAssigment(context, string, node, lineIndex, variable, namedParameters);
+  const objectAssignment = new ObjectAssigment(context, string, node, breakPoint, variable, namedParameters);
 
   return objectAssignment;
 }
@@ -505,11 +505,11 @@ export function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureN
         returnBlock = returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context),
         nonymousProcedureString = anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock),
         string = nonymousProcedureString, ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const anonymousProcedure = new AnonymousProcedure(context, string, node, lineIndex, type, parameters, returnBlock);
+  const anonymousProcedure = new AnonymousProcedure(context, string, node, breakPoint, type, parameters, returnBlock);
 
   return anonymousProcedure;
 }
@@ -522,11 +522,11 @@ export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmen
         variableAssignmentString = variableAssignmentStringFromTypeAndVariableAssignmentsArray(type, variableAssignmentsArray),
         array = variableAssignmentsArray, ///
         string = variableAssignmentString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const variableAssignments = new VariableAssignments(context, string, node, lineIndex, array);
+  const variableAssignments = new VariableAssignments(context, string, node, breakPoint, array);
 
   return variableAssignments;
 }
@@ -537,11 +537,11 @@ export function procedureDeclarationFromProcedureDeclarationNode(procedureDeclar
         procedure = procedureFromProcedureDeclarationNode(procedureDeclarationNode, context),
         procedureDeclarationString = procedureDeclarationStringFromProcedure(procedure),
         string = procedureDeclarationString,  ///
-        lineIndex = null;
+        breakPoint = null;
 
   context = null;
 
-  const procedureDeclaration = new ProcedureDeclaration(context, string, node, lineIndex, procedure);
+  const procedureDeclaration = new ProcedureDeclaration(context, string, node, breakPoint, procedure);
 
   return procedureDeclaration;
 }
@@ -553,8 +553,8 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
         expression = expressionFromVariableAssignmentNode(variableAssignmentNode, context),
         variableAssignmentString = variableAssignmentStringFromTypeAndVariable(type, variable, context),
         string = variableAssignmentString,  ///
-        lineIndex = null,
-        assignment = new VariableAssignment(context, string, node, lineIndex, variable, expression);
+        breakPoint = null,
+        assignment = new VariableAssignment(context, string, node, breakPoint, variable, expression);
 
   return assignment;
 }
@@ -566,8 +566,8 @@ export function variableFromTypeAndVariableNode(type, variableNode, context) {
         expression = expressionFromTypeAndVariableNode(type, variableNode, context),
         variableString = variableStringFromName(name),
         string = variableString,  ///
-        lineIndex = null,
-        variable = new Variable(context, string, node, lineIndex, type, name, expression);
+        breakPoint = null,
+        variable = new Variable(context, string, node, breakPoint, type, name, expression);
 
   return variable;
 }

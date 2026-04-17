@@ -8,8 +8,8 @@ import { define } from "../../elements";
 import { termFromBoolean } from "../../utilities/term";
 
 export default define(class ComparisonTerm extends Element {
-  constructor(context, string, node, lineIndex, negated, leftTerm, rightTerm) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, negated, leftTerm, rightTerm) {
+    super(context, string, node, breakPoint);
 
     this.negated = negated;
     this.leftTerm = leftTerm;

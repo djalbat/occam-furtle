@@ -7,8 +7,8 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 
 export default define(class NamedParameter extends Element {
-  constructor(context, string, node, lineIndex, type, name, alias) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, type, name, alias) {
+    super(context, string, node, breakPoint);
 
     this.type = type;
     this.name = name;

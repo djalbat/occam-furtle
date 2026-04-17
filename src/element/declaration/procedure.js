@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../../elements";
 
 export default define(class ProcedureDeclaration extends Element {
-  constructor(context, string, node, lineIndex, procedure) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, procedure) {
+    super(context, string, node, breakPoint);
 
     this.string = string;
     this.procedure = procedure;

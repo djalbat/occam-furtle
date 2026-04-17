@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Expression extends Element {
-  constructor(context, string, node, lineIndex, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
-    super(context, string, node, lineIndex)
+  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
+    super(context, string, node, breakPoint);
 
     this.term = term;
     this.some = some;
