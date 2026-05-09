@@ -9,48 +9,72 @@ const { FileContextFromFilePath } = require("./helpers/context"),
       { termsFromNominalFileContext } = require("./helpers/terms"),
       { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
 
-const entries = Entries.fromNothing(),
-      furtleFile = furtleFileFromNothing(),
-      nominalFile = nominalFileFromNohting();
+describe("isVariableFree", () => {
+  let entries,
+      furtleFile,
+      nominalFile;
 
-entries.addFile(furtleFile);
+  before(() => {
+    entries = Entries.fromNothing();
 
-entries.addFile(nominalFile);
+    furtleFile = furtleFileFromNothing();
 
-const log = Log.fromNothing(),
-      name = null,
-      json = null,
-      callback = async (context, breakPoint) => {
-        ///
-      },
-      customGrammar = null,
-      releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar),
-      releaseContexts = [];
+    nominalFile = nominalFileFromNohting();
 
-releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+    entries.addFile(furtleFile);
 
-releaseContext.verify()
-  .then(callProcedure)
-  .then(handleProcedure);
+    entries.addFile(nominalFile);
+  });
 
-function callProcedure() {
-  const nominalFilePath = nominalFile.getPath(),
-        nominalFileContext = releaseContext.findFileContext(nominalFilePath),
-        free = true,
-        terms = termsFromNominalFileContext(nominalFileContext, free),
-        furtleFilePath = furtleFile.getPath(),
-        furtleFileContext = releaseContext.findFileContext(furtleFilePath),
-        procedureName = "isVariableFree",
-        procedure = furtleFileContext.findProcedureByProcedureName(procedureName),
-        fileContext = furtleFileContext,  ///
-        context = fileContext;  ///
+  let releaseContext;
 
-  return procedure.call(terms, context);
-}
+  before(() => {
+    const log = Log.fromNothing(),
+          name = null,
+          json = null,
+          customGrammar = null;
 
-function handleProcedure(term) {
-  const primitiveValue = term.getPrimitiveValue(),
-        boolean = primitiveValue; ///
+    releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, breakPoint) => {
+      ///
+    }, customGrammar);
 
-  console.log(boolean);
-}
+    const releaseContexts = [];
+
+    releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+  });
+
+  let terms,
+      context,
+      procedure;
+
+  before(async () => {
+    await releaseContext.verify();
+
+    const nominalFilePath = nominalFile.getPath(),
+          nominalFileContext = releaseContext.findFileContext(nominalFilePath),
+          free = true;
+
+    terms = termsFromNominalFileContext(nominalFileContext, free);
+
+    const furtleFilePath = furtleFile.getPath(),
+          furtleFileContext = releaseContext.findFileContext(furtleFilePath),
+          fileContext = furtleFileContext;  ///
+
+    context = fileContext;  ///
+
+    const procedureName = "isVariableFree";
+
+    procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
+
+    debugger
+
+  });
+
+  it("returns true", async () => {
+    const term = await procedure.call(terms, context),
+          primitiveValue = term.getPrimitiveValue(),
+          boolean = primitiveValue; ///
+
+    assert.isTrue(boolean);
+  });
+});
