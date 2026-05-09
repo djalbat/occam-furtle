@@ -65,9 +65,6 @@ describe("isVariableFree", () => {
     const procedureName = "isVariableFree";
 
     procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
-
-    debugger
-
   });
 
   it("returns true", async () => {
