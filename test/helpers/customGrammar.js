@@ -22,5 +22,5 @@ const combinedCustomGrammar = combinedCustomGrammarFromJSON([
       ]);
 
 module.exports = {
-  combinedCustomGrammar,
+  combinedCustomGrammar
 };

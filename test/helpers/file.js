@@ -6,7 +6,7 @@ const { File } = require("occam-model"),
 const { readFile } = fileSystemUtilities;
 
 function furtleFileFromNothing() {
-  const filePath = "test/Free and bound variables.ftl",
+  const filePath = "../../Logic/first-order-logic/Functions/Free and bound variables.ftl",
         fileContent = readFile(filePath),
         path = filePath,  ///
         content = fileContent,  ///
@@ -18,8 +18,10 @@ function furtleFileFromNothing() {
 }
 
 function nominalFileFromNohting() {
-  const path = "./statement.nml",
-        content = `∀n m = m`,
+  const filePath = "../../Logic/first-order-logic/lemmas.nml",
+        fileContent = readFile(filePath),
+        path = filePath,  ///
+        content = fileContent,  ///
         released = false,
         file = File.fromPathContentAndReleased(path, content, released),
         nominalFile = file; ///

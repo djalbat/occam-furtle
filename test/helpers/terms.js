@@ -8,15 +8,14 @@ const { first } = arrayUtilities,
       { primitiveFromNode } = primitiveUtilities,
       { termsFromPrimitives } = termsUtilities;
 
-const freeTermNodeQuery = Query.fromExpressionString("//term[1]"),
-      boundTermNodeQuery = Query.fromExpressionString("//term[0]");
+const termNodeQuery = Query.fromExpressionString("//lemma[3]//supposition[0]//term[0]");
 
-function termsFromNominalFileContext(nominalFileContext, free = true) {
+function termsFromNominalFileContext(nominalFileContext) {
   const fileContext = nominalFileContext,  ///
-        nodes = nodesFromFileContext(fileContext, free),
+        nodes = nodesFromFileContext(fileContext),
         context = fileContext,  ///
         primitives = primitivesFromNodes(nodes, context),
-        terms = termsFromPrimitives(primitives, free);
+        terms = termsFromPrimitives(primitives);
 
   return terms;
 }
@@ -35,11 +34,8 @@ function primitivesFromNodes(nodes, context) {
   return primitives;
 }
 
-function nodesFromFileContext(fileContext, free) {
-  const termNodeQuery = free ?
-                          freeTermNodeQuery :
-                            boundTermNodeQuery,
-        node = fileContext.getNode(),
+function nodesFromFileContext(fileContext) {
+  const node = fileContext.getNode(),
         termNodes = termNodeQuery.execute(node),
         firstTermNode = first(termNodes),
         termNode = firstTermNode, ///

@@ -51,10 +51,9 @@ describe("isVariableFree", () => {
     await releaseContext.verify();
 
     const nominalFilePath = nominalFile.getPath(),
-          nominalFileContext = releaseContext.findFileContext(nominalFilePath),
-          free = true;
+          nominalFileContext = releaseContext.findFileContext(nominalFilePath);
 
-    terms = termsFromNominalFileContext(nominalFileContext, free);
+    terms = termsFromNominalFileContext(nominalFileContext);
 
     const furtleFilePath = furtleFile.getPath(),
           furtleFileContext = releaseContext.findFileContext(furtleFilePath),
