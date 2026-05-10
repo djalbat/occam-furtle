@@ -6,7 +6,7 @@ const { Dependency } =require("occam-model"),
       { Log, verificationUtilities } =require("occam-languages");
 
 const { FileContextFromFilePath } = require("./utilities/fileContext"),
-      { termsFromNominalFileContext } = require("./utilities/terms"),
+      { nodesFromNominalFileContext } = require("./utilities/nodes"),
       { releaseContextFromDependency } = require("./utilities/releaseContext");
 
 const { first } = arrayUtilities,
@@ -67,13 +67,13 @@ describe("isVariableFree", () => {
     nominalFileContext = findFileContext(nominalFilePath, releaseContext);
   });
 
-  let terms,
+  let nodes,
       procedure;
 
   before(() => {
     const procedureName = "isVariableFree";
 
-    terms = termsFromNominalFileContext(nominalFileContext);
+    nodes = nodesFromNominalFileContext(nominalFileContext);
 
     procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
   });
@@ -81,7 +81,7 @@ describe("isVariableFree", () => {
   it("returns false", async () => {
     const fileContext = nominalFileContext,  ///
           context = fileContext,  ///
-          term = await evaluate(procedure, terms, context),
+          term = await evaluate(procedure, nodes, context),
           primitiveValue = term.getPrimitiveValue(),
           boolean = primitiveValue; ///
 

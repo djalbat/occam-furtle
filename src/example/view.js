@@ -129,9 +129,10 @@ class View extends Element {
     this.keyUpHandler();
   }
 
-  static initialRuleName = "variableAssignment";
+  static initialRuleName = "variableAssignments";
 
-  static initialContent = `Boolean variableBound = isVariableBound(termNode, statementNode);`;
+  static initialContent = `Boolean metavariableBound = isMetavariableBound(frameNode, statementNode);
+`;
 
   static tagName = "div";
 

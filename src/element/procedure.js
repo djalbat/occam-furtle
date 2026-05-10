@@ -7,6 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
+import { termsFromNodes } from "../utilities/terms";
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -69,6 +70,21 @@ export default define(class Procedure extends Element {
     }
 
     context.debug(`...called the '${procedureString}' procedure.`);
+
+    return term;
+  }
+
+  async callNominally(nodes, context) {
+    await this.break(context);
+
+    const procedureString = this.getString();  ///
+
+    context.trace(`Calling the '${procedureString}' procedure nominally...`);
+
+    const terms = termsFromNodes(nodes, context),
+          term = await this.call(terms, context);
+
+    context.debug(`...called the '${procedureString}' procedure nominally.`);
 
     return term;
   }

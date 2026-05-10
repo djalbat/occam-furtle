@@ -2,8 +2,8 @@
 
 import elements from "../elements";
 
+import { termFromNode } from "../utilities/term";
 import { termsStringFromTermsArray } from "../utilities/string";
-import { termFromNode, termFromPrimitive } from "../utilities/term";
 
 export function termsFromNodes(nodes, context) {
   const { Terms } = elements,
@@ -21,25 +21,6 @@ export function termsFromNodes(nodes, context) {
   return terms;
 }
 
-export function termsFromPrimitives(primitives) {
-  const { Terms } = elements,
-        termsArray = termsArrayFromPrimitives(primitives),
-        termsString = termsStringFromTermsArray(termsArray),
-        context = null,
-        string = termsString, ///
-        array = termsArray,  ///
-        node = null,
-        breakPoint = null,
-        terms = new Terms(context, string, node, breakPoint, array);
-
-  return terms;
-}
-
-export default {
-  termsFromNodes,
-  termsFromPrimitives
-};
-
 function termsArrayFromNodes(nodes, context) {
   const termsArray = nodes.map((node) => {
     const term = termFromNode(node, context);
@@ -49,14 +30,3 @@ function termsArrayFromNodes(nodes, context) {
 
   return termsArray;
 }
-
-function termsArrayFromPrimitives(primitives) {
-  const termsArray = primitives.map((primitive) => {
-    const term = termFromPrimitive(primitive);
-
-    return term;
-  });
-
-  return termsArray;
-}
-
