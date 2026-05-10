@@ -43,9 +43,8 @@ export default define(class ProcedureCall extends Element {
 
     const procedure = context.findProcedureByProcedureName(procedureName),
           terms = this.terms.evaluate(context),
-          term = await procedure.call(terms, context);
-
-    const termString = term.getString();
+          term = await procedure.call(terms, context),
+          termString = term.getString();
 
     context.debug(`...evaluated the '${procedureCallString}' procedure call as '${termString}'.`);
 

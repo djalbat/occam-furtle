@@ -1,14 +1,14 @@
 "use strict";
 
-const { Query } = require("occam-query"),
-      { arrayUtilities } = require("necessary"),
+const { queryUtilities } = require("occam-languages"),
       { primitiveUtilities, termsUtilities } = require("../../lib/index");  ///
 
-const { first } = arrayUtilities,
+const { nodeQuery } = queryUtilities,
       { primitiveFromNode } = primitiveUtilities,
       { termsFromPrimitives } = termsUtilities;
 
-const termNodeQuery = Query.fromExpressionString("//lemma[3]//supposition[0]//term[0]");
+const termNodeQuery = nodeQuery("/statement/argument!/term!"),
+      statementNodeQuery = nodeQuery("//lemma[3]//supposition[0]/statement!");
 
 function termsFromNominalFileContext(nominalFileContext) {
   const fileContext = nominalFileContext,  ///
@@ -36,10 +36,8 @@ function primitivesFromNodes(nodes, context) {
 
 function nodesFromFileContext(fileContext) {
   const node = fileContext.getNode(),
-        termNodes = termNodeQuery.execute(node),
-        firstTermNode = first(termNodes),
-        termNode = firstTermNode, ///
-        statementNode = node, ///
+        statementNode = statementNodeQuery(node),
+        termNode = termNodeQuery(statementNode),
         nodes = [
           termNode,
           statementNode

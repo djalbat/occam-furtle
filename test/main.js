@@ -1,76 +1,103 @@
 "use strict";
 
-const { Log } = require("occam-languages"),
-      { Entries } = require("occam-model");
+const { Dependency } =require("occam-model"),
+      { arrayUtilities } = require("necessary"),
+      { contextUtilities } = require("occam-nominal"),
+      { Log, verificationUtilities } =require("occam-languages");
 
-const ReleaseContext = require("./context/release");
+const { FileContextFromFilePath } = require("./utilities/fileContext"),
+      { termsFromNominalFileContext } = require("./utilities/terms"),
+      { releaseContextFromDependency } = require("./utilities/releaseContext");
 
-const { FileContextFromFilePath } = require("./helpers/context"),
-      { termsFromNominalFileContext } = require("./helpers/terms"),
-      { furtleFileFromNothing, nominalFileFromNohting } = require("./helpers/file");
+const { first } = arrayUtilities,
+      { evaluate } = contextUtilities,
+      { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
 describe("isVariableFree", () => {
-  let entries,
-      furtleFile,
-      nominalFile;
+  const log = Log.fromNothing(),
+        name = "first-order-logic",
+        callback = async (context, breakPoint) => {
+          ///
+        },
+        releaseContexts = [];
+
+  let context,
+      dependency;
 
   before(() => {
-    entries = Entries.fromNothing();
+    const projectsDirectoryPath = "/Users/djalbat/logic";
 
-    furtleFile = furtleFileFromNothing();
+    context = {
+      log,
+      callback,
+      releaseContexts,
+      projectsDirectoryPath,
+      FileContextFromFilePath,
+      releaseContextFromDependency
+    }
 
-    nominalFile = nominalFileFromNohting();
-
-    entries.addFile(furtleFile);
-
-    entries.addFile(nominalFile);
+    dependency = Dependency.fromName(name);
   });
 
   let releaseContext;
 
+  before(async () => {
+    const dependencyName = name;  ///
+
+    await createReleaseContexts(dependencyName, context);
+
+    initialiseReleaseContexts(context);
+
+    await verifyReleaseContexts(context);
+
+    const firstReleaseContext = first(releaseContexts);
+
+    releaseContext = firstReleaseContext; ///
+  });
+
+  let furtleFileContext,
+      nominalFileContext;
+
   before(() => {
-    const log = Log.fromNothing(),
-          name = null,
-          json = null,
-          customGrammar = null;
+    const furtleFilePath = `first-order-logic/Functions/Free and bound variables.ftl`,
+          nominalFilePath = `first-order-logic/lemmas.nml`;
 
-    releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, async (context, breakPoint) => {
-      ///
-    }, customGrammar);
+    furtleFileContext = findFileContext(furtleFilePath, releaseContext);
 
-    const releaseContexts = [];
-
-    releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+    nominalFileContext = findFileContext(nominalFilePath, releaseContext);
   });
 
   let terms,
-      context,
       procedure;
 
-  before(async () => {
-    await releaseContext.verify();
-
-    const nominalFilePath = nominalFile.getPath(),
-          nominalFileContext = releaseContext.findFileContext(nominalFilePath);
+  before(() => {
+    const procedureName = "isVariableFree";
 
     terms = termsFromNominalFileContext(nominalFileContext);
-
-    const furtleFilePath = furtleFile.getPath(),
-          furtleFileContext = releaseContext.findFileContext(furtleFilePath),
-          fileContext = furtleFileContext;  ///
-
-    context = fileContext;  ///
-
-    const procedureName = "isVariableFree";
 
     procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
   });
 
   it("returns true", async () => {
-    const term = await procedure.call(terms, context),
+    const fileContext = nominalFileContext,  ///
+          context = fileContext,  ///
+          term = await evaluate(procedure, terms, context),
           primitiveValue = term.getPrimitiveValue(),
           boolean = primitiveValue; ///
 
     assert.isTrue(boolean);
   });
 });
+
+function findFileContext(filePath, releaseContext) {
+  const fileContexts = releaseContext.getFileContexts(),
+        fileContext = fileContexts.find((fileContext) => {
+          const filePathMatches = fileContext.matchFilePath(filePath);
+
+          if (filePathMatches) {
+            return true;
+          }
+        }) || null;
+
+  return fileContext;
+}

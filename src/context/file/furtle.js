@@ -22,14 +22,6 @@ export default class FurtleFileContext extends FileContext {
     return this.parser;
   }
 
-  getProcedures(includeRelease = true) {
-    const procedures = includeRelease ?
-                         this.context.getProcedures() :
-                           this.procedures;
-
-    return procedures;
-  }
-
   getLabels(includeRelease = true) {
     const labels = [];
 
@@ -64,12 +56,6 @@ export default class FurtleFileContext extends FileContext {
     const theorems = [];
 
     return theorems;
-  }
-
-  getVariables(includeRelease = true) {
-    const variables = [];
-
-    return variables;
   }
 
   getMetaLemmas(includeRelease = true) {
@@ -112,6 +98,20 @@ export default class FurtleFileContext extends FileContext {
     const metavariables = [];
 
     return metavariables;
+  }
+
+  getProcedures(includeRelease = true) {
+    const procedures = includeRelease ?
+                         this.context.getProcedures() :
+                           this.procedures;
+
+    return procedures;
+  }
+
+  getVariables(nested = true) {
+    const variables = [];
+
+    return variables;
   }
 
   addProcedure(procedure) {
