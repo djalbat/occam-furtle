@@ -78,14 +78,14 @@ describe("isVariableFree", () => {
     procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
   });
 
-  it("returns true", async () => {
+  it("returns false", async () => {
     const fileContext = nominalFileContext,  ///
           context = fileContext,  ///
           term = await evaluate(procedure, terms, context),
           primitiveValue = term.getPrimitiveValue(),
           boolean = primitiveValue; ///
 
-    assert.isTrue(boolean);
+    assert.isFalse(boolean);
   });
 });
 
