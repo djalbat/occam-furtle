@@ -56,7 +56,7 @@ export default define(class Some extends Element {
             value = valueFromNominalValue(nominalValue);
 
             const { Values } = elements,
-                  values = Values.fromTerm(value, context);
+                  values = Values.fromValue(value, context);
 
             value = await this.anonymousProcedure.call(values, context);
 

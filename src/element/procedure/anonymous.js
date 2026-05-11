@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { variablesFromTermsAndParameters } from "../procedure";
+import { variablesFromValuesAndParameters } from "../../utilities/parameters";
 
 export default define(class AnonymousProcedure extends Element {
   constructor(context, string, node, breakPoint, type, parameters, returnBlock) {
@@ -28,20 +28,20 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  async call(terms, context) {
+  async call(values, context) {
     const anonymousProcedureString = this.getString(); ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
 
-    this.parameters.compareTerms(terms, context);
+    this.parameters.compareValues(values, context);
 
-    const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
-          term = await this.returnBlock.evaluate(variables, context),
-          termType = term.getType();
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
+          value = await this.returnBlock.evaluate(variables, context),
+          valueType = value.getType();
 
-    if (this.type !== termType) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type.`,
+    if (this.type !== valueType) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -49,7 +49,7 @@ export default define(class AnonymousProcedure extends Element {
 
     context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
 
-    return term;
+    return value;
   }
 
   static name = "AnonymousProcedure";

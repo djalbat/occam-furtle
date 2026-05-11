@@ -59,14 +59,14 @@ export default define(class Variable extends Element {
     return value;
   }
 
-  assign(term, context) {
+  assign(value, context) {
     const nested = false,
-          termString = term.getString(),
+          valueString = value.getString(),
           variableName = this.name, ///
           variableString = this.getString(), ///
           variablePresent = context.isVariablePresentByVariableName(variableName, nested);
 
-    context.trace(`Assigning the '${termString}' term to the '${variableString}' variable...`);
+    context.trace(`Assigning the '${valueString}' value to the '${variableString}' variable...`);
 
     if (variablePresent) {
       const message = `The '${variableString}' variable is already present.`,
@@ -75,23 +75,23 @@ export default define(class Variable extends Element {
       throw exception;
     }
 
-    const termType = term.getType(),
+    const valueType = value.getType(),
           variableType = this.type;
 
-    if (termType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not compare to the term's '${termType}' type.'`,
+    if (valueType !== variableType) {
+      const message = `The '${variableString} variable's '${variableType}' type does not compare to the value's '${valueType}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.term = term;
+    this.value = value;
 
     const variable = this;  ///
 
     context.addVariable(variable);
 
-    context.debug(`...assigned the '${termString}' term to the '${variableString}' variable.`);
+    context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
   }
 
   static name = "Variable";
@@ -99,7 +99,7 @@ export default define(class Variable extends Element {
   static fromBinding(binding, context) {
     const type = binding.getType(),
           name = binding.getName(),
-          term = null,
+          value = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
           node = null,
@@ -107,7 +107,7 @@ export default define(class Variable extends Element {
 
     context = null;
 
-    const variable = new Variable(context, string, node, breakPoint, type, name, term);
+    const variable = new Variable(context, string, node, breakPoint, type, name, value);
 
     return variable;
   }

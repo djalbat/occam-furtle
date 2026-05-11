@@ -2,12 +2,12 @@
 
 import { Element } from "occam-languages";
 
-import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
 import { valuesFromNominalValues } from "../utilities/values";
+import { variablesFromValuesAndParameters } from "../utilities/parameters";
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -58,12 +58,12 @@ export default define(class Procedure extends Element {
     this.parameters.compareValues(values, context);
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          term = await this.returnBlock.evaluate(variables, context),
-          termType = term.getType();
+          value = await this.returnBlock.evaluate(variables, context),
+          valueType = value.getType();
 
-    if (this.type !== termType) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type is not equal to the '${procedureString}' procedure's '${this.type}' type.`,
+    if (this.type !== valueType) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${procedureString}' procedure's '${this.type}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -71,7 +71,7 @@ export default define(class Procedure extends Element {
 
     context.debug(`...called the '${procedureString}' procedure.`);
 
-    return term;
+    return value;
   }
 
   async callNominally(nominalValues) {
@@ -93,20 +93,3 @@ export default define(class Procedure extends Element {
 
   static name = "Procedure";
 });
-
-export function variablesFromValuesAndParameters(values, parameters, context) {
-  const variables = [];
-
-  values.forEachValue((value, index) => {
-    const parameter = parameters.getParameter(index);
-
-    if (parameter !== null) {
-      const { Variable } = elements,
-            variable = Variable.fromValueAndParameter(value, parameter, context);
-
-      variables.push(variable);
-    }
-  });
-
-  return variables;
-}
