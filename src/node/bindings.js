@@ -2,11 +2,11 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { BINDINGS_RULE_NAME } from "../ruleNames";
+import { BINDING_RULE_NAME } from "../ruleNames";
 
 export default class BindingsNode extends NonTerminalNode {
   getBindingNodes() {
-    const ruleName = BINDINGS_RULE_NAME,
+    const ruleName = BINDING_RULE_NAME,
           bindingNodes = this.getNodesByRuleName(ruleName);
 
     return bindingNodes;

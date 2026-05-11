@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NOMINAL_VALUES_TYPE } from "../types";
-import { valueFromNominalValue } from "../utilities/nominal";
+import { valueFromNominalValue } from "../utilities/value";
 
 const { asyncReduce } = asynchronousUtilities;
 

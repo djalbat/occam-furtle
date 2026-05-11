@@ -1,20 +1,10 @@
 "use strict";
 
+import { NominalValue } from "occam-nominal";
+
 import elements from "../elements";
 
 import { primitiveFromBoolean, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
-
-export function valueFromPrimitive(primitive) {
-  const { Value } = elements,
-        context = null,
-        string = primitive.getString(),
-        node = null,
-        breakPoint = null,
-        variable = null,
-        value = new Value(context, string, node, breakPoint, variable, primitive);
-
-  return value;
-}
 
 export function valueFromBoolean(boolean, context) {
   const { Value } = elements,
@@ -27,6 +17,18 @@ export function valueFromBoolean(boolean, context) {
   context = null;
 
   const value = new Value(context, string, node, breakPoint, variable, primitive);
+
+  return value;
+}
+
+export function valueFromPrimitive(primitive) {
+  const { Value } = elements,
+        context = null,
+        string = primitive.getString(),
+        node = null,
+        breakPoint = null,
+        variable = null,
+        value = new Value(context, string, node, breakPoint, variable, primitive);
 
   return value;
 }
@@ -68,6 +70,28 @@ export function valueFromStringLiteral(stringLiteral, context) {
   context = null;
 
   const value = new Value(context, string, node, breakPoint, variable, primitive);
+
+  return value;
+}
+
+export function valueFromNodeAndNominalValue(node, nominalValue) {
+  const context = nominalValue.getContext();
+
+  nominalValue = NominalValue.fromNode(node, context);
+
+  const value = valueFromNominalValue(nominalValue);
+
+  return value;
+}
+
+export function valueFromNodesAndNominalValue(nodes, nominalValue) {
+  const context = nominalValue.getContext(),
+        nominalValues = nodes.map((node) => {
+          const nominalValue = NominalValue.fromNode(node, context);
+
+          return nominalValue;
+        }),
+        value = valueFromNominalValues(nominalValues);
 
   return value;
 }

@@ -6,7 +6,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NOMINAL_VALUE_TYPE } from "../types";
-import { valueFromNodesAndNominalValue } from "../utilities/nominal";
+import { valueFromNodesAndNominalValue } from "../utilities/value";
 
 export default define(class NodesQuery extends Element {
   constructor(context, string, node, breakPoint, variable, query) {

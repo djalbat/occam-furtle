@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NOMINAL_VALUE_TYPE } from "../types";
-import { valueFromNodeAndNominalValue } from "../utilities/nominal";
+import { valueFromNodeAndNominalValue } from "../utilities/value";
 
 const { first } = arrayUtilities;
 

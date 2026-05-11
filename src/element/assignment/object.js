@@ -8,7 +8,7 @@ import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
-import { termFromNodesAndNominalValue } from "../../utilities/nominal";
+import { valueFromNodesAndNominalValue } from "../../utilities/value";
 import { termFromBoolean, termFromStringLiteral } from "../../utilities/term";
 import { STRING_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
@@ -191,15 +191,13 @@ export default define(class ObjectAssigment extends Element {
 
     const nonTerminalNode = node,  ///
           childNodes = nonTerminalNode.getChildNodes(),
-          nodes = childNodes;  ///
+          nodes = childNodes, ///
+          value = valueFromNodesAndNominalValue(nodes, nominalValue),
+          valueSttring = value.getString();
 
-    term = termFromNodesAndNominalValue(nodes, nominalValue);
+    context.debug(`...evaluated the childNodes '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    const termSttring = term.getString();
-
-    context.debug(`...evaluated the childNodes '${namedBindingString}' named binding as '${termSttring}'.`);
-
-    return term;
+    return value;
   }
 
   static name = "ObjectAssigment";

@@ -198,11 +198,12 @@ export function bindingFromBindingNode(bindingNode, context) {
         string = context.nodeAsString(node),
         breakPoint = null,
         type = typeFromBindingNode(bindingNode, context),
-        name = nameFromBindingNode(bindingNode, context);
+        name = nameFromBindingNode(bindingNode, context),
+        elided = elidedFromBindingNode(bindingNode, context);
 
   context = null;
 
-  const binding = new Binding(context, string, node, breakPoint, type, name);
+  const binding = new Binding(context, string, node, breakPoint, type, name, elided);
 
   return binding;
 }
@@ -714,6 +715,12 @@ export function variableFromEveryNode(everyNode, context) {
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
+}
+
+export function elidedFromBindingNode(bindingNode, context) {
+  const elided = bindingNode.isElided();
+
+  return elided;
 }
 
 export function typeFromParaneterNode(parameterNode, context) {

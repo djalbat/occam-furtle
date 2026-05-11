@@ -6,7 +6,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { valueFromNominalValue } from "../../utilities/nominal";
+import { valueFromNominalValue } from "../../utilities/value";
 import { primtiveStringFromNominalValues } from "../../utilities/string";
 import { NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 
@@ -57,7 +57,9 @@ export default define(class ArrayAssigment extends Element {
     }
 
     this.bindings.forEachBinding((binding, index) => {
-      if (binding !== null) {
+      const elidated = binding.isElided();
+
+      if (!elidated) {
         const nominalValue = nominalValues[index],
               value = valueFromNominalValue(nominalValue);
 

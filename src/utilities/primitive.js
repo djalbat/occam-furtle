@@ -64,10 +64,3 @@ export function primitiveFromStringLiteral(stringLiteral, context) {
 
   return primitive;
 }
-
-export default {
-  primitiveFromBoolean,
-  primitiveFromNominalValue,
-  primitiveFromNominalValues,
-  primitiveFromStringLiteral
-};

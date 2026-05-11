@@ -1,8 +1,11 @@
 "use strict";
 
+import { types } from "occam-lexers";
 import { NonTerminalNode } from "occam-languages";
 
 import { TYPE_TOKEN_TYPE, NAME_TOKEN_TYPE } from "../tokenTypes";
+
+const { epsilon } = types;
 
 export default class BindingNode extends NonTerminalNode {
   getName() {
@@ -37,6 +40,23 @@ export default class BindingNode extends NonTerminalNode {
     return type;
   }
 
+  isElided() {
+    let elided = false;
+
+    const tokenType = null
+
+    this.someTerminalNode((terminalNode) => {
+      const terminalNodeEpsilonNode = terminalNode.isEpsilonNode();
+
+      if (terminalNodeEpsilonNode) {
+        elided = true;
+      }
+
+      return true;
+    }, tokenType);
+
+    return elided;
+  }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
     if (precedence === undefined) {

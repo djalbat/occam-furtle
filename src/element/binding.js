@@ -7,11 +7,12 @@ import Exception from "../exception";
 import { define } from "../elements";
 
 export default define(class Binding extends Element {
-  constructor(context, string, node, breakPoint, type, name) {
+  constructor(context, string, node, breakPoint, type, name, elided) {
     super(context, string, node, breakPoint);
 
     this.type = type;
     this.name = name;
+    this.elided = elided;
   }
 
   getType() {
@@ -22,7 +23,15 @@ export default define(class Binding extends Element {
     return this.name;
   }
 
+  isElided() {
+    return this.elided;
+  }
+
   compareTerm(term, context) {
+    if (this.elided) {
+      return;
+    }
+
     const termString = term.getString(),
           bindingString = this.getString();  ///
 
