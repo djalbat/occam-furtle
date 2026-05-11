@@ -2,28 +2,26 @@
 
 import elements from "../elements";
 
-import { termFromNode } from "../utilities/term";
+import { termFromNominalValue } from "../utilities/term";
 import { termsStringFromTermsArray } from "../utilities/string";
 
-export function termsFromNodes(nodes, context) {
+export function termsFromNominalValues(nominalValues) {
   const { Terms } = elements,
-        termsArray = termsArrayFromNodes(nodes, context),
+        termsArray = termsArrayFromNominalValues(nominalValues),
         termsString = termsStringFromTermsArray(termsArray),
         string = termsString, ///
         array = termsArray,  ///
         node = null,
-        breakPoint = null;
-
-  context = null;
-
-  const terms = new Terms(context, string, node, breakPoint, array);
+        breakPoint = null,
+        context = null,
+        terms = new Terms(context, string, node, breakPoint, array);
 
   return terms;
 }
 
-function termsArrayFromNodes(nodes, context) {
-  const termsArray = nodes.map((node) => {
-    const term = termFromNode(node, context);
+function termsArrayFromNominalValues(nominalValues) {
+  const termsArray = nominalValues.map((nominalValue) => {
+    const term = termFromNominalValue(nominalValue);
 
     return term;
   });

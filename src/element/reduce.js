@@ -6,8 +6,8 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NODES_TYPE } from "../types";
 import { termFromNode } from "../utilities/term";
+import { NOMINAL_VALUES_TYPE } from "../types";
 
 const { asyncReduce } = asynchronousUtilities;
 
@@ -45,9 +45,9 @@ export default define(class Reduce extends Element {
 
     const termType = term.getType();
 
-    if (termType !== NODES_TYPE) {
+    if (termType !== NOMINAL_VALUES_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

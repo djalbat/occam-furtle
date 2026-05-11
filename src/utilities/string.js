@@ -1,8 +1,5 @@
 "use strict";
 
-import nullNode from "../nullNode";
-
-import { NULL } from "../constants";
 import { stringFromStringLiteral } from "./stringLiteral";
 
 export function ternaryStringFromTerm(term) {
@@ -16,21 +13,6 @@ export function variableStringFromName(name) {
   const variableString = name;  ///
 
   return variableString;
-}
-
-export function primtiveStringFromNode(node, context) {
-  const primtiveString = (node === nullNode) ?
-                             NULL :
-                               context.nodeAsString(node);
-
-  return primtiveString;
-}
-
-export function primtiveStringFromNodes(nodes, context) {
-  const string = context.nodesAsString(nodes),
-        primtiveString = string;  ///
-
-  return primtiveString;
 }
 
 export function termStringFromProperties(properties) {
@@ -67,6 +49,13 @@ export function termsStringFromTermsArray(termsArray) {
   return termsString;
 }
 
+export function primtiveStringFromNominalValue(nominalValue) {
+  const string = nominalValue.getString(),
+        primtiveString = string;  ///
+
+  return primtiveString;
+}
+
 export function expressionStringFromProperties(properties) {
   let expressionString;
 
@@ -84,6 +73,20 @@ export function expressionStringFromProperties(properties) {
 export function primtiveStringFromStringLiteral(stringLiteral) {
   const string = stringFromStringLiteral(stringLiteral),
         primtiveString = string;  ///
+
+  return primtiveString;
+}
+
+export function primtiveStringFromNominalValues(nominalValues) {
+  const primtiveString = nominalValues.reduce((primitiveString, nominalValue) => {
+    const nominalValueString = nominalValue.getString();
+
+    primitiveString = (primitiveString !== null) ?
+                       `${primitiveString}, ${nominalValueString}` :
+                          nominalValueString; ///
+
+    return primitiveString;
+  }, null);
 
   return primtiveString;
 }

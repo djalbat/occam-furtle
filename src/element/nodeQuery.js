@@ -6,8 +6,8 @@ import { arrayUtilities } from "necessary";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NODE_TYPE } from "../types";
-import { termFromNode } from "../utilities/term";
+import { NOMINAL_VALUE_TYPE } from "../types";
+import { termFromNodeAndNominalValue } from "../utilities/nominal";
 
 const { first } = arrayUtilities;
 
@@ -45,9 +45,9 @@ export default define(class NodeQuery extends Element {
 
     const termType = term.getType();
 
-    if (termType !== NODE_TYPE) {
+    if (termType !== NOMINAL_VALUE_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODE_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -55,9 +55,10 @@ export default define(class NodeQuery extends Element {
 
     let node;
 
-    const primitiveValue = term.getPrimitiveValue();
+    const primitiveValue = term.getPrimitiveValue(),
+          nominalValue = primitiveValue;  ///
 
-    node = primitiveValue;  ///
+    node = nominalValue.getNode();
 
     if (node === null) {
       const termString = term.getString(),
@@ -77,11 +78,12 @@ export default define(class NodeQuery extends Element {
       throw exception;
     }
 
+
     const firstNode = first(nodes);
 
-    node = firstNode; ///
+    node = firstNode ///
 
-    term = termFromNode(node, context);
+    term = termFromNodeAndNominalValue(node, nominalValue);
 
     const termString = term.getString();
 

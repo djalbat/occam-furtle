@@ -2,41 +2,8 @@
 
 import elements from "../elements";
 
-import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../types";
-import { primtiveStringFromNode, primtiveStringFromNodes, primtiveStringFromBoolean, primtiveStringFromStringLiteral } from "../utilities/string";
-
-export function primitiveFromNode(node, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromNode(node, context),
-        string = primitiveString,  ///
-        type = NODE_TYPE,
-        value = node, ///
-        breakPoint = null;
-
-  node = null;
-
-  context = null;
-
-  const primitive = new Primitive(context, string, node, breakPoint, type, value);
-
-  return primitive;
-}
-
-export function primitiveFromNodes(nodes, context) {
-  const { Primitive } = elements,
-        primitiveString = primtiveStringFromNodes(nodes, context),
-        string = primitiveString,  ///
-        type = NODES_TYPE,
-        value = nodes,  ///
-        node = null,
-        breakPoint = null;
-
-  context = null;
-
-  const primitive = new Primitive(context, string, node, breakPoint, type, value);
-
-  return primitive;
-}
+import { STRING_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../types";
+import { primtiveStringFromBoolean, primtiveStringFromNominalValue, primtiveStringFromNominalValues, primtiveStringFromStringLiteral } from "../utilities/string";
 
 export function primitiveFromBoolean(boolean, context) {
   const { Primitive } = elements,
@@ -50,6 +17,34 @@ export function primitiveFromBoolean(boolean, context) {
   context = null;
 
   const primitive = new Primitive(context, string, node, breakPoint, type, value);
+
+  return primitive;
+}
+
+export function primitiveFromNominalValue(nominalValue) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromNominalValue(nominalValue),
+        string = primitiveString,  ///
+        type = NOMINAL_VALUE_TYPE,
+        value = nominalValue, ///
+        breakPoint = null,
+        node = null,
+        context = null,
+        primitive = new Primitive(context, string, node, breakPoint, type, value);
+
+  return primitive;
+}
+
+export function primitiveFromNominalValues(nominalValues) {
+  const { Primitive } = elements,
+        primitiveString = primtiveStringFromNominalValues(nominalValues),
+        string = primitiveString,  ///
+        type = NOMINAL_VALUES_TYPE,
+        value = nominalValues,  ///
+        node = null,
+        breakPoint = null,
+        context = null,
+        primitive = new Primitive(context, string, node, breakPoint, type, value);
 
   return primitive;
 }
@@ -71,8 +66,8 @@ export function primitiveFromStringLiteral(stringLiteral, context) {
 }
 
 export default {
-  primitiveFromNode,
-  primitiveFromNodes,
   primitiveFromBoolean,
+  primitiveFromNominalValue,
+  primitiveFromNominalValues,
   primitiveFromStringLiteral
 };

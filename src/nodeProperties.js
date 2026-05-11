@@ -3,8 +3,8 @@
 import Exception from "./exception";
 import NodeProperty from "./nodeProperty";
 
-import { NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "./types";
 import { nodePropertiesStringFromNodePropertiesArray } from "./utilities/string";
+import { STRING_TYPE, BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "./types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "./parameterNames";
 
 class NodeProperties {
@@ -71,7 +71,7 @@ function nodePropertiesArrayFromNothing() {
   const types = [
           STRING_TYPE,
           BOOLEAN_TYPE,
-          NODES_TYPE,
+          NOMINAL_VALUES_TYPE
         ],
         names = [
           CONTENT_PARAMETER_NAME,

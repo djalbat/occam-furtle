@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NODE_TYPE } from "../types";
-import { termFromNodes } from "../utilities/term";
+import { NOMINAL_VALUE_TYPE } from "../types";
+import { termFromNodesAndNominalValue } from "../utilities/nominal";
 
 export default define(class NodesQuery extends Element {
   constructor(context, string, node, breakPoint, variable, query) {
@@ -42,9 +42,9 @@ export default define(class NodesQuery extends Element {
 
     const termType = term.getType();
 
-    if (termType !== NODE_TYPE) {
+    if (termType !== NOMINAL_VALUE_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODE_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -52,9 +52,10 @@ export default define(class NodesQuery extends Element {
 
     let node;
 
-    const primitiveValue = term.getPrimitiveValue();
+    const primitiveValue = term.getPrimitiveValue(),
+          nominalValue = primitiveValue;  ///
 
-    node = primitiveValue;  ///
+    node = nominalValue.getNode();
 
     if (node === null) {
       const termString = term.getString(),
@@ -66,7 +67,7 @@ export default define(class NodesQuery extends Element {
 
     const nodes = this.query.execute(node);
 
-    term = termFromNodes(nodes, context);
+    term = termFromNodesAndNominalValue(nodes, nominalValue);
 
     const termString = term.getString();
 

@@ -6,8 +6,8 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NODES_TYPE, BOOLEAN_TYPE } from "../types";
-import { termFromNode, termFromBoolean } from "../utilities/term";
+import { BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "../types";
+import { termFromBoolean, termFromNominalValue } from "../utilities/term";
 
 const { asyncSome } = asynchronousUtilities;
 
@@ -40,20 +40,20 @@ export default define(class Some extends Element {
 
     const termType = term.getType();
 
-    if (termType !== NODES_TYPE) {
+    if (termType !== NOMINAL_VALUES_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
     const primitiveValue = term.getPrimitiveValue(),
-          nodes = primitiveValue, ///
-          boolean = await asyncSome(nodes, async (node) => {
+          nominalValues = primitiveValue, ///
+          boolean = await asyncSome(nominalValues, async (nominalValue) => {
             let term;
 
-            term = termFromNode(node, context);
+            term = termFromNominalValue(nominalValue);
 
             const { Terms } = elements,
                   terms = Terms.fromTerm(term, context);

@@ -2,15 +2,13 @@
 
 const { Dependency } =require("occam-model"),
       { arrayUtilities } = require("necessary"),
-      { contextUtilities } = require("occam-nominal"),
       { Log, verificationUtilities } =require("occam-languages");
 
 const { FileContextFromFilePath } = require("./utilities/fileContext"),
-      { nodesFromNominalFileContext } = require("./utilities/nodes"),
-      { releaseContextFromDependency } = require("./utilities/releaseContext");
+      { releaseContextFromDependency } = require("./utilities/releaseContext"),
+      { nominalValuesFromNominalFileContext } = require("./utilities/nominal");
 
 const { first } = arrayUtilities,
-      { evaluate } = contextUtilities,
       { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
 describe("isVariableFree", () => {
@@ -67,21 +65,19 @@ describe("isVariableFree", () => {
     nominalFileContext = findFileContext(nominalFilePath, releaseContext);
   });
 
-  let nodes,
-      procedure;
+  let procedure,
+      nominalValues;
 
   before(() => {
     const procedureName = "isVariableFree";
 
-    nodes = nodesFromNominalFileContext(nominalFileContext);
+    nominalValues = nominalValuesFromNominalFileContext(nominalFileContext);
 
     procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
   });
 
   it("returns false", async () => {
-    const fileContext = nominalFileContext,  ///
-          context = fileContext,  ///
-          term = await evaluate(procedure, nodes, context),
+    const term = await procedure.callNominally(nominalValues),
           primitiveValue = term.getPrimitiveValue(),
           boolean = primitiveValue; ///
 

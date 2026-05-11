@@ -4,10 +4,9 @@ import { Element } from "occam-languages";
 import { arrayUtilities } from "necessary";
 
 import elements from "../elements";
-import nullNode from "../nullNode";
 
 import { define } from "../elements";
-import { NODE_TYPE, NODES_TYPE, STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE  } from "../types";
+import { STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../types";
 
 const { match } = arrayUtilities;
 
@@ -44,30 +43,6 @@ export default define(class Primitive extends Element {
       const value = primitive.getValue();
 
       switch (type) {
-        case NODE_TYPE: {
-          const nodeA = this.value, ///
-                nodeB = value,  ///
-                nodeMatches = matchNode(nodeA, nodeB);
-
-          if (nodeMatches) {
-            equalTo = true;
-          }
-
-          break;
-        }
-
-        case NODES_TYPE: {
-          const nodesA = this.value, ///
-                nodesB = value,  ///
-                nodesMatch = matchNodes(nodesA, nodesB);
-
-          if (nodesMatch) {
-            equalTo = true;
-          }
-
-          break;
-        }
-
         case STRING_TYPE: {
           const stringLiteralA = this.value, ///
                 stringLiteralB = value;  ///
@@ -100,6 +75,37 @@ export default define(class Primitive extends Element {
 
           break;
         }
+
+        case NOMINAL_VALUE_TYPE: {
+          const nominalValueA = this.value, ///
+                nomimalValueB = value,  ///
+                matches = nominalValueA.match(nomimalValueB);
+
+          if (matches) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
+        case NOMINAL_VALUES_TYPE: {
+          const nominalValuesA = this.value, ///
+                nominalValuesB = value,  ///
+                matches = match(nominalValuesA, nominalValuesB, (nominalValueA, nomimalValueB) => {
+                  const matches = nominalValueA.match(nomimalValueB);
+
+                  if (matches) {
+                    return true;
+                  }
+                });
+
+          if (matches) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
       }
     }
 
@@ -108,33 +114,3 @@ export default define(class Primitive extends Element {
 
   static name = "Primitive";
 });
-
-function matchNode(nodeA, nodeB) {
-  let nodeMatches;
-
-  if ((nodeA === nullNode) || (nodeB === nullNode)) {
-    nodeMatches = (nodeA === nodeB);
-  } else if (nodeA === nullNode) {
-    nodeMatches = false;
-  } else if (nodeB === nullNode) {
-    nodeMatches = false;
-  } else {
-    const nodeAMatchesNodeB = nodeA.match(nodeB);
-
-    nodeMatches = nodeAMatchesNodeB;  ///
-  }
-
-  return nodeMatches;
-}
-
-function matchNodes(nodesA, nodesB) {
-  const nodesMatch = match(nodesA, nodesB, (nodeA, nodeB) => {
-    const nodeMatches = matchNode(nodeA, nodeB);
-
-    if (nodeMatches) {
-      return true;
-    }
-  });
-
-  return nodesMatch;
-}

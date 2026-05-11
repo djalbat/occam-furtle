@@ -8,8 +8,9 @@ import nodeProperties from "../../nodeProperties";
 
 import { define } from "../../elements";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
-import { NODE_TYPE, NODES_TYPE, STRING_TYPE, BOOLEAN_TYPE } from "../../types";
-import { termFromNodes, termFromBoolean, termFromStringLiteral } from "../../utilities/term";
+import { termFromNodesAndNominalValue } from "../../utilities/nominal";
+import { termFromBoolean, termFromStringLiteral } from "../../utilities/term";
+import { STRING_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
 export default define(class ObjectAssigment extends Element {
@@ -36,9 +37,9 @@ export default define(class ObjectAssigment extends Element {
     const term = this.variable.evaluate(context),
           termType = term.getType();
 
-    if (termType !== NODE_TYPE) {
+    if (termType !== NOMINAL_VALUE_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODE_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -104,7 +105,8 @@ export default define(class ObjectAssigment extends Element {
     }
 
     const primitiveValue = term.getPrimitiveValue(),
-          node = primitiveValue,  ///
+          nominalValue = primitiveValue,  ///
+          node = nominalValue.getNode(),
           nodeTerminalNode = node.isTerminalNode();
 
     if (!nodeTerminalNode) {
@@ -144,7 +146,8 @@ export default define(class ObjectAssigment extends Element {
     }
 
     const primitiveValue = term.getPrimitiveValue(),
-          node = primitiveValue,  ///
+          nominalValue = primitiveValue,  ///
+          node = nominalValue.getNode(),
           nodeTerminalNode = node.isTerminalNode(),
           terminal = nodeTerminalNode;  ///
 
@@ -165,16 +168,17 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the child nodes '${namedParameterString}' named parameter...`);
 
-    if (type !== NODES_TYPE) {
+    if (type !== NOMINAL_VALUES_TYPE) {
       const namedParameterString = namedParameter.getString(),
-            message = `The '${namedParameterString}' named parameter's type should be '${NODES_TYPE}'.`,
+            message = `The '${namedParameterString}' named parameter's type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
     const primitiveValue = term.getPrimitiveValue(),
-          node = primitiveValue,  ///
+          nominalValue = primitiveValue,  ///
+          node = nominalValue.getNode(),
           nodeNonTerminalNode = node.isNonTerminalNode();
 
     if (!nodeNonTerminalNode) {
@@ -189,7 +193,7 @@ export default define(class ObjectAssigment extends Element {
           childNodes = nonTerminalNode.getChildNodes(),
           nodes = childNodes;  ///
 
-    term = termFromNodes(nodes, context);
+    term = termFromNodesAndNominalValue(nodes, nominalValue);
 
     const termSttring = term.getString();
 

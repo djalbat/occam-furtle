@@ -6,8 +6,9 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { termFromNode } from "../../utilities/term";
-import { NODE_TYPE, NODES_TYPE } from "../../types";
+import { termFromNominalValue } from "../../utilities/term";
+import { primtiveStringFromNominalValues } from "../../utilities/string";
+import { NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, parameters) {
@@ -33,23 +34,23 @@ export default define(class ArrayAssigment extends Element {
     const term = this.variable.evaluate(context),
           termType = term.getType();
 
-    if (termType !== NODES_TYPE) {
+    if (termType !== NOMINAL_VALUES_TYPE) {
       const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NODES_TYPE}'.`,
+            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
     const primitiveValue = term.getPrimitiveValue(),
-          nodes = primitiveValue, ///
-          nodesLength = nodes.length,
-          parametersLength = this.parameters.getLength();
+          nominalValues = primitiveValue, ///
+          parametersLength = this.parameters.getLength(),
+          nominalValuesLength = nominalValues.length;
 
-    if (parametersLength > nodesLength) {
+    if (parametersLength > nominalValuesLength) {
       const parametersString = this.parameters.getString(),
-            nodesString = context.nodesAsString(nodex),
-            message = `The length of the '${parametersString}' parameters is greater than the length of the '${nodesString}' nodes.`,
+            primitiveString = primtiveStringFromNominalValues(nominalValues),
+            message = `The length of the '${parametersString}' parameters is greater than the length of the '${primitiveString}' nodes.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -57,8 +58,8 @@ export default define(class ArrayAssigment extends Element {
 
     this.parameters.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const node = nodes[index],
-              term = termFromNode(node, context);
+        const nominalValue = nominalValues[index],
+              term = termFromNominalValue(nominalValue);
 
         this.evaluateParameter(parameter, term, context);
       }
@@ -75,8 +76,8 @@ export default define(class ArrayAssigment extends Element {
 
     const parameterType = parameter.getType();
 
-    if (parameterType !== NODE_TYPE) {
-      const message = `The type of the '${parameterString}' parameter should be '${NODE_TYPE}'.`,
+    if (parameterType !== NOMINAL_VALUE_TYPE) {
+      const message = `The type of the '${parameterString}' parameter should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
