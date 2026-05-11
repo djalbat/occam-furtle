@@ -2,7 +2,7 @@
 
 import AssignmentrNode from "../../node/assignment";
 
-import { VARIABLE_RULE_NAME, NAMED_PARAMETERS_RULE_NAME } from "../../ruleNames";
+import { VARIABLE_RULE_NAME, NAMED_BINDINGS_RULE_NAME } from "../../ruleNames";
 
 export default class ObjectAssignmentNode extends AssignmentrNode {
   getVariableNode() {
@@ -12,11 +12,11 @@ export default class ObjectAssignmentNode extends AssignmentrNode {
     return variableNode;
   }
 
-  getNamedParametersNode() {
-    const ruleName = NAMED_PARAMETERS_RULE_NAME,
-          namedParametersNode = this.getNodeByRuleName(ruleName);
+  getNamedBindingsNode() {
+    const ruleName = NAMED_BINDINGS_RULE_NAME,
+          namedBindingsNode = this.getNodeByRuleName(ruleName);
 
-    return namedParametersNode;
+    return namedBindingsNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentrNode.fromRuleNameChildNodesOpacityAndPrecedence(ObjectAssignmentNode, ruleName, childNodes, opacity, precedence); }

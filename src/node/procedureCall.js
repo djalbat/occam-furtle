@@ -2,14 +2,14 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { TERMS_RULE_NAME, REFERENCE_RULE_NAME } from "../ruleNames";
+import { VALUES_RULE_NAME, REFERENCE_RULE_NAME } from "../ruleNames";
 
 export default class ProcedureCallNode extends NonTerminalNode {
-  getTermsNode() {
-    const ruleName = TERMS_RULE_NAME,
-          termsNode = this.getNodeByRuleName(ruleName);
+  getValuesNode() {
+    const ruleName = VALUES_RULE_NAME,
+          valuesNode = this.getNodeByRuleName(ruleName);
 
-    return termsNode;
+    return valuesNode;
   }
 
   getReferenceNode() {

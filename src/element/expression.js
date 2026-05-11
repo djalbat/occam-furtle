@@ -84,31 +84,31 @@ export default define(class Expression extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     if (false) {
       ///
-    } else if (this.term !== null) {
-      term = this.term.evaluate(context);
+    } else if (this.value !== null) {
+      value = this.value.evaluate(context);
     } else if (this.nodeQuery !== null) {
-      term = this.nodeQuery.evaluate(context);
+      value = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
-      term = this.nodesQuery.evaluate(context);
+      value = this.nodesQuery.evaluate(context);
     } else if (this.some !== null) {
-      term = await this.some.evaluate(context);
+      value = await this.some.evaluate(context);
     } else if (this.every !== null) {
-      term = await  this.every.evaluate(context);
+      value = await  this.every.evaluate(context);
     } else if (this.reduce !== null) {
-      term = await this.reduce.evaluate(context);
+      value = await this.reduce.evaluate(context);
     } else if (this.ternary !== null) {
-      term = await this.ternary.evaluate(context);
+      value = await this.ternary.evaluate(context);
     } else if (this.returnBlock !== null) {
-      term = await this.returnBlock.evaluate(context);
+      value = await this.returnBlock.evaluate(context);
     } else if (this.procedureCall !== null) {
-      term = await this.procedureCall.evaluate(context);
+      value = await this.procedureCall.evaluate(context);
     }
 
-    return term;
+    return value;
   }
 
   static name = "Expression";

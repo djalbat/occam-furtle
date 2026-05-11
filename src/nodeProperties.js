@@ -23,33 +23,33 @@ class NodeProperties {
 
   someNodeProperty(callback) { return this.array.some(callback); }
 
-  compareNamedParameter(namedParameter, context) {
-    const nodePropertiesString = this.string, ///
-          namedParameterString = namedParameter.getString();
+  compareNamedBinding(namedBinding, context) {
+    const namedBindingString = namedBinding.getString(),
+          nodePropertiesString = this.string; ///
 
-    context.trace(`Comparing the '${namedParameterString}' named parameter with the '${nodePropertiesString}' node properties...`);
+    context.trace(`Comparing the '${namedBindingString}' named binding with the '${nodePropertiesString}' node properties...`);
 
-    const namedParametersCompare = this.someNodeProperty((nodeProperty) => {
-      const namedParameterComparesToNodeProperty = nodeProperty.compareNamedParameter(namedParameter, context);
+    const namedBindingsCompare = this.someNodeProperty((nodeProperty) => {
+      const namedBindingComparesToNodeProperty = nodeProperty.compareNamedBinding(namedBinding, context);
 
-      if (namedParameterComparesToNodeProperty) {
+      if (namedBindingComparesToNodeProperty) {
         return true;
       }
     });
 
-    if (!namedParametersCompare) {
-      const message = `The '${namedParameterString}' named parameter does not compmare to any of the '${nodePropertiesString}' node properties.`,
+    if (!namedBindingsCompare) {
+      const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nodePropertiesString}' node properties.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    context.debug(`...compared the '${namedParameterString}' named parameter with the '${nodePropertiesString}' node properties.`);
+    context.debug(`...compared the '${namedBindingString}' named binding with the '${nodePropertiesString}' node properties.`);
   }
 
-  compareNamedParameters(namedParameters, context) {
-    namedParameters.forEachNamedParameter((namedParameter) => {
-      this.compareNamedParameter(namedParameter, context);
+  compareNamedBindings(namedBindings, context) {
+    namedBindings.forEachNamedBinding((namedBinding) => {
+      this.compareNamedBinding(namedBinding, context);
     });
   }
 

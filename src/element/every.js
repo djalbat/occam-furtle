@@ -6,7 +6,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { termFromNode, termFromBoolean } from "../utilities/term";
+import { valueFromNode, valueFromBoolean } from "../utilities/value";
 import { BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "../types";
 
 const { asyncEvery } = asynchronousUtilities;
@@ -29,7 +29,7 @@ export default define(class Every extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     await this.break(context);
 
@@ -37,33 +37,33 @@ export default define(class Every extends Element {
 
     context.trace(`Evaluating the '${everyString}' every...`);
 
-    term = this.variable.evaluate(context);
+    value = this.variable.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== NOMINAL_VALUES_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+    if (valueType !== NOMINAL_VALUES_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = term.getNodes(),
+    const nodes = value.getNodes(),
           boolean = await asyncEvery(nodes, async (node) => {
-            let term;
+            let value;
 
-            const { Terms } = elements;
+            const { Values } = elements;
 
-            term = termFromNode(node, context);
+            value = valueFromNode(node, context);
 
-            const terms = Terms.fromTerm(term, context);
+            const values = Values.fromValue(value, context);
 
-            term = await this.anonymousProcedure.call(terms, context);
+            value = await this.anonymousProcedure.call(values, context);
 
-            const termType = term.getType();
+            const valueType = value.getType();
 
-            if (termType !== BOOLEAN_TYPE) {
+            if (valueType !== BOOLEAN_TYPE) {
               const termString = term.getString(),
                     message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
@@ -71,18 +71,18 @@ export default define(class Every extends Element {
               throw exception;
             }
 
-            const boolean = term.getBoolean();
+            const boolean = value.getBoolean();
 
             return boolean;
           });
 
-    term = termFromBoolean(boolean, context);
+    value = valueFromBoolean(boolean, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.trace(`...evaluated the '${everyString}' every as '${termString}'.`);
+    context.trace(`...evaluated the '${everyString}' every as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "Every";

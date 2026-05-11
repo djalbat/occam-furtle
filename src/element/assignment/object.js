@@ -14,19 +14,19 @@ import { STRING_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } fr
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 
 export default define(class ObjectAssigment extends Element {
-  constructor(context, string, node, breakPoint, variable, namedParameters) {
+  constructor(context, string, node, breakPoint, variable, nameBindings) {
     super(context, string, node, breakPoint);
 
     this.variable = variable;
-    this.namedParameters = namedParameters;
+    this.nameBindings = nameBindings;
   }
 
   getVariable() {
     return this.variable;
   }
 
-  getNamedParameters() {
-    return this.namedParameters;
+  getNameBindings() {
+    return this.nameBindings;
   }
 
   evaluate(context) {
@@ -45,60 +45,60 @@ export default define(class ObjectAssigment extends Element {
       throw exception;
     }
 
-    nodeProperties.compareNamedParameters(this.namedParameters, context);
+    nodeProperties.compareNameBindings(this.nameBindings, context);
 
-    this.namedParameters.forEachNamedParameter((namedParameter) => {
-      this.evaluateNamedParameter(namedParameter, term, context);
+    this.nameBindings.forEachNameBinding((nameBinding) => {
+      this.evaluateNameBinding(nameBinding, term, context);
     });
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
   }
 
-  evaluateNamedParameter(namedParameter, term, context) {
+  evaluateNameBinding(nameBinding, term, context) {
     const termString = term.getString(),
-          namedParameterString = namedParameter.getString();
+          nameBindingString = nameBinding.getString();
 
-    context.trace(`Evaluating the '${namedParameterString}' named parameter against the '${termString}' term...`);
+    context.trace(`Evaluating the '${nameBindingString}' named binding against the '${termString}' term...`);
 
-    const name = namedParameter.getName();
+    const name = nameBinding.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        term = this.evaluateContentNamedParameter(namedParameter, term, context);
+        term = this.evaluateContentNameBinding(nameBinding, term, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        term = this.evaluateTerminalNamedParameter(namedParameter, term, context);
+        term = this.evaluateTerminalNameBinding(nameBinding, term, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        term = this.evaluateChildNodesNamedParameter(namedParameter, term, context);
+        term = this.evaluateChildNodesNameBinding(nameBinding, term, context);
 
         break;
       }
     }
 
     const { Variable } = elements,
-          variable = Variable.fromNamedParameter(namedParameter, context);
+          variable = Variable.fromNameBinding(nameBinding, context);
 
     variable.assign(term, context);
 
-    context.debug(`...evaluated the '${namedParameterString}' parameter named against the '${termString}' term.`);
+    context.debug(`...evaluated the '${nameBindingString}' parameter named against the '${termString}' term.`);
   }
 
-  evaluateContentNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType(),
-          namedParameterString = namedParameter.getString();
+  evaluateContentNameBinding(nameBinding, term, context) {
+    const type = nameBinding.getType(),
+          nameBindingString = nameBinding.getString();
 
-    context.trace(`Evaluating the content '${namedParameterString}' named parameter...`);
+    context.trace(`Evaluating the content '${nameBindingString}' named binding...`);
 
     if (type !== STRING_TYPE) {
-      const namedParameterString = namedParameter.getString(),
-            message = `The '${namedParameterString}' named parameter's type should be '${STRING_TYPE}'.`,
+      const nameBindingString = nameBinding.getString(),
+            message = `The '${nameBindingString}' named binding's type should be '${STRING_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -126,20 +126,20 @@ export default define(class ObjectAssigment extends Element {
 
     const termSttring = term.getString();
 
-    context.debug(`...evaluated the content '${namedParameterString}' named parameter as '${termSttring}'.`);
+    context.debug(`...evaluated the content '${nameBindingString}' named binding as '${termSttring}'.`);
 
     return term;
   }
 
-  evaluateTerminalNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType(),
-          namedParameterString = namedParameter.getString();
+  evaluateTerminalNameBinding(nameBinding, term, context) {
+    const type = nameBinding.getType(),
+          nameBindingString = nameBinding.getString();
 
-    context.trace(`Evaluating the terminal '${namedParameterString}' named parameter...`);
+    context.trace(`Evaluating the terminal '${nameBindingString}' named binding...`);
 
     if (type !== BOOLEAN_TYPE) {
-      const namedParameterString = namedParameter.getString(),
-            message = `The '${namedParameterString}' named parameter's type should be '${BOOLEAN_TYPE}'.`,
+      const nameBindingString = nameBinding.getString(),
+            message = `The '${nameBindingString}' named binding's type should be '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -157,20 +157,20 @@ export default define(class ObjectAssigment extends Element {
 
     const termSttring = term.getString();
 
-    context.debug(`...evaluated the terminal '${namedParameterString}' named parameter as '${termSttring}'.`);
+    context.debug(`...evaluated the terminal '${nameBindingString}' named binding as '${termSttring}'.`);
 
     return term;
   }
 
-  evaluateChildNodesNamedParameter(namedParameter, term, context) {
-    const type = namedParameter.getType(),
-          namedParameterString = namedParameter.getString();
+  evaluateChildNodesNameBinding(nameBinding, term, context) {
+    const type = nameBinding.getType(),
+          nameBindingString = nameBinding.getString();
 
-    context.trace(`Evaluating the child nodes '${namedParameterString}' named parameter...`);
+    context.trace(`Evaluating the child nodes '${nameBindingString}' named binding...`);
 
     if (type !== NOMINAL_VALUES_TYPE) {
-      const namedParameterString = namedParameter.getString(),
-            message = `The '${namedParameterString}' named parameter's type should be '${NOMINAL_VALUES_TYPE}'.`,
+      const nameBindingString = nameBinding.getString(),
+            message = `The '${nameBindingString}' named binding's type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -197,7 +197,7 @@ export default define(class ObjectAssigment extends Element {
 
     const termSttring = term.getString();
 
-    context.debug(`...evaluated the childNodes '${namedParameterString}' named parameter as '${termSttring}'.`);
+    context.debug(`...evaluated the childNodes '${nameBindingString}' named binding as '${termSttring}'.`);
 
     return term;
   }

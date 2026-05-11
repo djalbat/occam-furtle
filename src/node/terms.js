@@ -4,7 +4,7 @@ import { NonTerminalNode } from "occam-languages";
 
 import { TERM_RULE_NAME } from "../ruleNames";
 
-export default class TermNode extends NonTerminalNode {
+export default class TermsNode extends NonTerminalNode {
   getTermNodes() {
     const ruleName = TERM_RULE_NAME,
           termNodes = this.getNodesByRuleName(ruleName);
@@ -12,5 +12,5 @@ export default class TermNode extends NonTerminalNode {
     return termNodes;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(TermNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(TermsNode, ruleName, childNodes, opacity, precedence); }
 }

@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
-import { termsFromNominalValues } from "../utilities/terms";
+import { valuesFromNominalValues } from "../utilities/values";
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -48,16 +48,16 @@ export default define(class Procedure extends Element {
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
 
-  async call(terms, context) {
+  async call(values, context) {
     await this.break(context);
 
     const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' procedure...`);
 
-    this.parameters.compareTerms(terms, context);
+    this.parameters.compareValues(values, context);
 
-    const variables = variablesFromTermsAndParameters(terms, this.parameters, context),
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
           term = await this.returnBlock.evaluate(variables, context),
           termType = term.getType();
 
@@ -83,8 +83,8 @@ export default define(class Procedure extends Element {
 
     context.trace(`Calling the '${procedureString}' procedure nominally...`);
 
-    const terms = termsFromNominalValues(nominalValues),
-          term = await this.call(terms, context);
+    const values = valuesFromNominalValues(nominalValues),
+          term = await this.call(values, context);
 
     context.debug(`...called the '${procedureString}' procedure nominally.`);
 
@@ -94,15 +94,15 @@ export default define(class Procedure extends Element {
   static name = "Procedure";
 });
 
-export function variablesFromTermsAndParameters(terms, parameters, context) {
+export function variablesFromValuesAndParameters(values, parameters, context) {
   const variables = [];
 
-  terms.forEachTerm((term, index) => {
+  values.forEachValue((value, index) => {
     const parameter = parameters.getParameter(index);
 
     if (parameter !== null) {
       const { Variable } = elements,
-            variable = Variable.fromTermAndParameter(term, parameter, context);
+            variable = Variable.fromValueAndParameter(value, parameter, context);
 
       variables.push(variable);
     }

@@ -1,10 +1,10 @@
 "use strict";
 
-import ParamterNode from "../../node/parameter";
+import BindingNode from "../../node/binding";
 
 import { NAME_TOKEN_TYPE } from "../../tokenTypes";
 
-export default class NamedParamterNode extends ParamterNode {
+export default class NamedBindingNode extends BindingNode {
   getAlias() {
     let alias = null;
 
@@ -23,5 +23,5 @@ export default class NamedParamterNode extends ParamterNode {
     return alias;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return ParamterNode.fromRuleNameChildNodesOpacityAndPrecedence(NamedParamterNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return BindingNode.fromRuleNameChildNodesOpacityAndPrecedence(NamedBindingNode, ruleName, childNodes, opacity, precedence); }
 }

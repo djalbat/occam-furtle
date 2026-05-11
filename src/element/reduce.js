@@ -33,7 +33,7 @@ export default define(class Reduce extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     await this.break(context);
 
@@ -41,44 +41,44 @@ export default define(class Reduce extends Element {
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    term = this.variable.evaluate(context);
+    value = this.variable.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== NOMINAL_VALUES_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+    if (valueType !== NOMINAL_VALUES_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const nodes = term.getNodes(),
+    const nodes = value.getNodes(),
           initialExpression = await this.initialExpression.evaluate(context);
 
-    term = await asyncReduce(nodes, async (currentExpression, node) => {
-      let term;
+    value = await asyncReduce(nodes, async (currentExpression, node) => {
+      let value;
 
       const { Terms } = elements;
 
-      term = currentTerm; ///
+      value = currentTerm; ///
 
-      const terms = Terms.fromTerm(term, context);
+      const values = Terms.fromTerm(value, context);
 
-      term = termFromNode(node, context);
+      value = valueFromNode(node, context);
 
-      terms.addTerm(term);
+      values.addTerm(value);
 
-      term = await this.anonymousProcedure.call(terms, context);
+      value = await this.anonymousProcedure.call(values, context);
 
-      return term;
+      return value;
     }, initialExpression);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.trace(`...evaluated the '${reduceString}' reduce as '${termString}'.`);
+    context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "Reduce";

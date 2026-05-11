@@ -31,17 +31,17 @@ export default define(class Parameters extends Element {
 
   forEachParameter(callback) { this.array.forEach(callback); }
 
-  compareTerms(terms, context) {
-    const termsString = terms.getString(),
+  compareValues(values, context) {
+    const valuesString = values.getString(),
           parametersString = this.getString(); ///
 
-    context.trace(`Comparing the '${termsString}' terms against the '${parametersString}' parameters...`);
+    context.trace(`Comparing the '${valuesString}' values against the '${parametersString}' parameters...`);
 
-    const termsLength = terms.getLength(),
+    const valuesLength = values.getLength(),
           parametersLength = this.getLength();
 
-    if (termsLength !== parametersLength) {
-      const message = `The '${termsString}' expressions and '${parametersString}' parameters are not of the same length.`,
+    if (valuesLength !== parametersLength) {
+      const message = `The '${valuesString}' expressions and '${parametersString}' parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -49,13 +49,13 @@ export default define(class Parameters extends Element {
 
     this.forEachParameter((parameter, index) => {
       if (parameter !== null) {
-        const term = terms.getTerm(index);
+        const value = values.getValue(index);
 
-        parameter.compareTerm(term, context);
+        parameter.compareValue(value, context);
       }
     });
 
-    context.debug(`...compared the '${termsString}' terms against the '${parametersString}' parameters.`);
+    context.debug(`...compared the '${valuesString}' values against the '${parametersString}' parameters.`);
   }
 
   static name = "Parameters";

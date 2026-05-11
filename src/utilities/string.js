@@ -29,6 +29,20 @@ export function termStringFromProperties(properties) {
   return termString;
 }
 
+export function valueStringFromProperties(properties) {
+  let valueString;
+
+  properties.forEach((property) => {
+    if (property !== null) {
+      const propertyString = property.getString();
+
+      valueString = propertyString;  ///
+    }
+  });
+
+  return valueString;
+}
+
 export function primtiveStringFromBoolean(boolean) {
   const expresssionString = `${boolean}`;
 
@@ -40,13 +54,27 @@ export function termsStringFromTermsArray(termsArray) {
     const termString = term.getString();
 
     termsString = (termsString === null) ?
-                    termString :
-                     `${termsString}, ${termString}`;
+      termString :
+      `${termsString}, ${termString}`;
 
     return termsString;
   }, null); ///
 
   return termsString;
+}
+
+export function valuesStringFromValuesArray(valuesArray) {
+  const valuesString = valuesArray.reduce((valuesString, value) => {
+    const valueString = value.getString();
+
+    valuesString = (valuesString === null) ?
+                     valueString :
+                       `${valuesString}, ${valueString}`;
+
+    return valuesString;
+  }, null); ///
+
+  return valuesString;
 }
 
 export function primtiveStringFromNominalValue(nominalValue) {

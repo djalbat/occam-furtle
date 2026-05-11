@@ -7,19 +7,19 @@ import Exception from "../exception";
 import { define } from "../elements";
 
 export default define(class ProcedureCall extends Element {
-  constructor(context, string, node, breakPoint, reference, terms) {
+  constructor(context, string, node, breakPoint, reference, values) {
     super(context, string, node, breakPoint);
 
     this.reference = reference;
-    this.terms = terms;
+    this.values = values;
   }
 
   getReference() {
     return this.reference;
   }
 
-  getTerms() {
-    return this.terms;
+  getValues() {
+    return this.values;
   }
 
   getProcedureName() { return this.reference.getProcedureName(); }
@@ -42,13 +42,13 @@ export default define(class ProcedureCall extends Element {
     }
 
     const procedure = context.findProcedureByProcedureName(procedureName),
-          terms = this.terms.evaluate(context),
-          term = await procedure.call(terms, context),
-          termString = term.getString();
+          values = this.values.evaluate(context),
+          value = await procedure.call(values, context),
+          valueString = value.getString();
 
-    context.debug(`...evaluated the '${procedureCallString}' procedure call as '${termString}'.`);
+    context.debug(`...evaluated the '${procedureCallString}' procedure call as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "ProcedureCall";

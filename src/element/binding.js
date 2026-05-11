@@ -1,0 +1,44 @@
+"use strict";
+
+import { Element } from "occam-languages";
+
+import Exception from "../exception";
+
+import { define } from "../elements";
+
+export default define(class Binding extends Element {
+  constructor(context, string, node, breakPoint, type, name) {
+    super(context, string, node, breakPoint);
+
+    this.type = type;
+    this.name = name;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  compareTerm(term, context) {
+    const termString = term.getString(),
+          bindingString = this.getString();  ///
+
+    context.trace(`Comparing the '${termString}' term against the '${bindingString}' binding...`);
+
+    const termType = term.getType();
+
+    if (this.type !== termType) {
+      const message = `The '${termString}' term's '${termType}' type is not equal to the '${bindingString}' binding's '${this.type}' type.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    context.debug(`...comparing the '${termString}' term against the '${bindingString}' binding.`);
+  }
+
+  static name = "Binding";
+});

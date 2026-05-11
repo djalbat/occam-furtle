@@ -11,19 +11,19 @@ import { primtiveStringFromNominalValues } from "../../utilities/string";
 import { NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 
 export default define(class ArrayAssigment extends Element {
-  constructor(context, string, node, breakPoint, variable, parameters) {
+  constructor(context, string, node, breakPoint, variable, bindings) {
     super(context, string, node, breakPoint);
 
     this.variable = variable;
-    this.parameters = parameters;
+    this.bindings = bindings;
   }
 
   getVariable() {
     return this.variable;
   }
 
-  getParameters() {
-    return this.parameters;
+  getBindings() {
+    return this.bindings;
   }
 
   evaluate(context) {
@@ -44,51 +44,51 @@ export default define(class ArrayAssigment extends Element {
 
     const primitiveValue = term.getPrimitiveValue(),
           nominalValues = primitiveValue, ///
-          parametersLength = this.parameters.getLength(),
+          bindingsLength = this.bindings.getLength(),
           nominalValuesLength = nominalValues.length;
 
-    if (parametersLength > nominalValuesLength) {
-      const parametersString = this.parameters.getString(),
+    if (bindingsLength > nominalValuesLength) {
+      const bindingsString = this.bindings.getString(),
             primitiveString = primtiveStringFromNominalValues(nominalValues),
-            message = `The length of the '${parametersString}' parameters is greater than the length of the '${primitiveString}' nodes.`,
+            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${primitiveString}' nodes.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    this.parameters.forEachParameter((parameter, index) => {
-      if (parameter !== null) {
+    this.bindings.forEachBinding((binding, index) => {
+      if (binding !== null) {
         const nominalValue = nominalValues[index],
               term = termFromNominalValue(nominalValue);
 
-        this.evaluateParameter(parameter, term, context);
+        this.evaluateBinding(binding, term, context);
       }
     });
 
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
   }
 
-  evaluateParameter(parameter, expression, context) {
-    const expressionString = expression.getString(),
-          parameterString = parameter.getString();
+  evaluateBinding(binding, expression, context) {
+    const bindingString = binding.getString(),
+          expressionString = expression.getString();
 
-    context.trace(`Evaluating the '${parameterString}' parameter against the '${expressionString}' expression...`);
+    context.trace(`Evaluating the '${bindingString}' binding against the '${expressionString}' expression...`);
 
-    const parameterType = parameter.getType();
+    const bindingType = binding.getType();
 
-    if (parameterType !== NOMINAL_VALUE_TYPE) {
-      const message = `The type of the '${parameterString}' parameter should be '${NOMINAL_VALUE_TYPE}'.`,
+    if (bindingType !== NOMINAL_VALUE_TYPE) {
+      const message = `The type of the '${bindingString}' binding should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
     const { Variable } = elements,
-          variable = Variable.fromParameter(parameter, context);
+          variable = Variable.fromBinding(binding, context);
 
     variable.assign(expression, context);
 
-    context.debug(`...evaluated the '${parameterString}' parameter against the '${expressionString}' expression.`);
+    context.debug(`...evaluated the '${bindingString}' binding against the '${expressionString}' expression.`);
   }
 
   static name = "ArrayAssignment";

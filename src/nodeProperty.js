@@ -21,24 +21,24 @@ export default class NodeProperty {
     return this.name;
   }
 
-  compareNamedParameter(namedParameter, context) {
-    let namedParameterCompares;
+  compareNamedBinding(namedBinding, context) {
+    let namedBindingCompares;
 
     const nodePropertyString = this.string, ///
-          namedParameterString = namedParameter.getString();
+          namedBindingString = namedBinding.getString();
 
-    context.trace(`Comparing the '${nodePropertyString}' node property with the '${namedParameterString}' named parameter...`);
+    context.trace(`Comparing the '${nodePropertyString}' node property with the '${namedBindingString}' named binding...`);
 
-    const name = namedParameter.getName(),
-          type = namedParameter.getType();
+    const name = namedBinding.getName(),
+          type = namedBinding.getType();
 
-    namedParameterCompares = ((this.name === name) && (this.type === type));
+    namedBindingCompares = ((this.name === name) && (this.type === type));
 
-    if (namedParameterCompares) {
-      context.debug(`...compared the '${nodePropertyString}' node property with the '${namedParameterString}' named parameter.`);
+    if (namedBindingCompares) {
+      context.debug(`...compared the '${nodePropertyString}' node property with the '${namedBindingString}' named binding.`);
     }
 
-    return namedParameterCompares;
+    return namedBindingCompares;
   }
 
   static name = "Parameter";

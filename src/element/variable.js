@@ -8,12 +8,12 @@ import { define } from "../elements";
 import { variableStringFromName } from "../utilities/string";
 
 export default define(class Variable extends Element {
-  constructor(context, string, node, breakPoint, type, name, term) {
+  constructor(context, string, node, breakPoint, type, name, value) {
     super(context, string, node, breakPoint);
 
     this.type = type;
     this.name = name;
-    this.term = term;
+    this.value = value;
   }
 
   getType() {
@@ -24,8 +24,8 @@ export default define(class Variable extends Element {
     return this.name;
   }
 
-  getTerm() {
-    return this.term;
+  getValue() {
+    return this.value;
   }
 
   compareVariableName(variableName) {
@@ -51,12 +51,12 @@ export default define(class Variable extends Element {
     }
 
     const variable = context.findVariableByVariableName(variableName),
-          term = variable.getTerm(),
-          termString = term.getString();
+          value = variable.getValue(),
+          valueString = value.getString();
 
-    context.debug(`...evaluated the '${variableString}' variable as the '${termString}' term.`);
+    context.debug(`...evaluated the '${variableString}' variable as the '${valueString}' value.`);
 
-    return term;
+    return value;
   }
 
   assign(term, context) {
@@ -96,9 +96,9 @@ export default define(class Variable extends Element {
 
   static name = "Variable";
 
-  static fromParameter(parameter, context) {
-    const type = parameter.getType(),
-          name = parameter.getName(),
+  static fromBinding(binding, context) {
+    const type = binding.getType(),
+          name = binding.getName(),
           term = null,
           variableString = variableStringFromName(name),
           string = variableString,  ///
@@ -112,9 +112,9 @@ export default define(class Variable extends Element {
     return variable;
   }
 
-  static fromNamedParameter(namedParameter, context) {
-    const aliasedName = namedParameter.getAliasedName(),
-          type = namedParameter.getType(),
+  static fromNamedBinding(namedBinding, context) {
+    const aliasedName = namedBinding.getAliasedName(),
+          type = namedBinding.getType(),
           name = aliasedName, ///
           term = null,
           variableString = variableStringFromName(name),
@@ -129,7 +129,7 @@ export default define(class Variable extends Element {
     return variable;
   }
 
-  static fromTermAndParameter(term, parameter, context) {
+  static fromValueAndParameter(value, parameter, context) {
     const type = parameter.getType(),
           name = parameter.getName(),
           variableString = variableStringFromName(name),
@@ -139,7 +139,7 @@ export default define(class Variable extends Element {
 
     context = null;
 
-    const variable = new Variable(context, string, node, breakPoint, type, name, term);
+    const variable = new Variable(context, string, node, breakPoint, type, name, value);
 
     return variable;
   }

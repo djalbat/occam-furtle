@@ -56,12 +56,12 @@ export default define(class ReturnBlock extends Element {
       await step.evaluate(context);
     });
 
-    const term = this.returnStatement.evaluate(context),
-          termString = term.getString();
+    const value = this.returnStatement.evaluate(context),
+          valueString = value.getString();
 
-    context.debug(`Evaluated... the '${returnBlockString}' return block as '${termString}'.`);
+    context.debug(`Evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "ReturnBlock";

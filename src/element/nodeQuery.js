@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { NOMINAL_VALUE_TYPE } from "../types";
-import { termFromNodeAndNominalValue } from "../utilities/nominal";
+import { valueFromNodeAndNominalValue } from "../utilities/nominal";
 
 const { first } = arrayUtilities;
 
@@ -28,7 +28,7 @@ export default define(class NodeQuery extends Element {
   }
 
   evaluate(context) {
-    let term;
+    let value;
 
     const nodeQueryString = this.getString();  ///
 
@@ -41,13 +41,13 @@ export default define(class NodeQuery extends Element {
       throw exception;
     }
 
-    term = this.variable.evaluate(context);
+    value = this.variable.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== NOMINAL_VALUE_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
+    if (valueType !== NOMINAL_VALUE_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -55,14 +55,14 @@ export default define(class NodeQuery extends Element {
 
     let node;
 
-    const primitiveValue = term.getPrimitiveValue(),
+    const primitiveValue = value.getPrimitiveValue(),
           nominalValue = primitiveValue;  ///
 
     node = nominalValue.getNode();
 
     if (node === null) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's node is null.`,
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's node is null.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -83,13 +83,13 @@ export default define(class NodeQuery extends Element {
 
     node = firstNode ///
 
-    term = termFromNodeAndNominalValue(node, nominalValue);
+    value = valueFromNodeAndNominalValue(node, nominalValue);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${nodeQueryString}' node query as '${termString}'.`);
+    context.debug(`...evaluated the '${nodeQueryString}' node query as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "NodeQuery";

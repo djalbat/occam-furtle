@@ -4,7 +4,7 @@ import { NonTerminalNode } from "occam-languages";
 
 import { TYPE_TOKEN_TYPE, NAME_TOKEN_TYPE } from "../tokenTypes";
 
-export default class ParamterNode extends NonTerminalNode {
+export default class ParameterNode extends NonTerminalNode {
   getName() {
     let name = null;
 
@@ -37,21 +37,5 @@ export default class ParamterNode extends NonTerminalNode {
     return type;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
-    if (precedence === undefined) {
-      precedence = opacity; ///
-
-      opacity = childNodes; ///
-
-      childNodes = ruleName;  ///
-
-      ruleName = Class; ///
-
-      Class = ParamterNode;
-    }
-
-    const parameterNode = NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence);
-
-    return parameterNode;
-  }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ParameterNode, ruleName, childNodes, opacity, precedence); }
 }
