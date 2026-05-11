@@ -6,7 +6,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { termFromBoolean } from "../../utilities/term";
+import { valueFromBoolean } from "../../utilities/value";
 
 export default define(class NegatedTerm extends Element {
   constructor(context, string, node, breakPoint, type, term) {
@@ -25,19 +25,19 @@ export default define(class NegatedTerm extends Element {
   }
 
   evaluate(context) {
-    let term;
+    let value;
 
     const negatedTermString = this.getString(); ///
 
-    context.trace(`Evaluating the '${negatedTermString}' negated term...`);
+    context.trace(`Evaluating the '${negatedTermString}' negated value...`);
 
-    term = this.term.evaluate(context);
+    value = this.term.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== BOOLEAN_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' left term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (valueType !== BOOLEAN_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' left value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -45,19 +45,19 @@ export default define(class NegatedTerm extends Element {
 
     let boolean;
 
-    const primitiveValue = term.getPrimitiveValue();
+    const primitiveValue = value.getPrimitiveValue();
 
     boolean = primitiveValue; ///
 
     boolean = !boolean;
 
-    term = termFromBoolean(boolean, context);
+    value = valueFromBoolean(boolean, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${negatedTermString}' negated term as '${termString}'.`);
+    context.debug(`...evaluated the '${negatedTermString}' negated value as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "NegatedTerm";

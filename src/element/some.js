@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "../types";
-import { termFromBoolean, termFromNominalValue } from "../utilities/term";
+import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
 const { asyncSome } = asynchronousUtilities;
 
@@ -28,7 +28,7 @@ export default define(class Some extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     await this.break(context);
 
@@ -36,53 +36,53 @@ export default define(class Some extends Element {
 
     context.trace(`Evaluating the '${someString}' some...`);
 
-    term = this.variable.evaluate(context);
+    value = this.variable.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== NOMINAL_VALUES_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+    if (valueType !== NOMINAL_VALUES_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const primitiveValue = term.getPrimitiveValue(),
+    const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue, ///
           boolean = await asyncSome(nominalValues, async (nominalValue) => {
-            let term;
+            let value;
 
-            term = termFromNominalValue(nominalValue);
+            value = valueFromNominalValue(nominalValue);
 
-            const { Terms } = elements,
-                  terms = Terms.fromTerm(term, context);
+            const { Values } = elements,
+                  values = Values.fromTerm(value, context);
 
-            term = await this.anonymousProcedure.call(terms, context);
+            value = await this.anonymousProcedure.call(values, context);
 
-            const termType = term.getType();
+            const valueType = value.getType();
 
-            if (termType !== BOOLEAN_TYPE) {
-              const termString = term.getString(),
-                    message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            if (valueType !== BOOLEAN_TYPE) {
+              const valueString = value.getString(),
+                    message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;
             }
 
-            const primitiveValue = term.getPrimitiveValue(),
+            const primitiveValue = value.getPrimitiveValue(),
                   boolean = primitiveValue; ///
 
             return boolean;
           });
 
-    term = termFromBoolean(boolean, context);
+    value = valueFromBoolean(boolean, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.trace(`...evaluated the '${someString}' some as '${termString}'.`);
+    context.trace(`...evaluated the '${someString}' some as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "Some";

@@ -6,17 +6,17 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { termFromNode } from "../utilities/term";
 import { NOMINAL_VALUES_TYPE } from "../types";
+import { valueFromNominalValue } from "../utilities/nominal";
 
 const { asyncReduce } = asynchronousUtilities;
 
 export default define(class Reduce extends Element {
-  constructor(context, string, node, breakPoint, variable, initialExpression, anonymousProcedure) {
+  constructor(context, string, node, breakPoint, variable, inivialValue, anonymousProcedure) {
     super(context, string, node, breakPoint);
 
     this.variable = variable;
-    this.initialExpression = initialExpression;
+    this.inivialValue = inivialValue;
     this.anonymousProcedure = anonymousProcedure;
   }
 
@@ -24,8 +24,8 @@ export default define(class Reduce extends Element {
     return this.variable;
   }
 
-  getInitialExpression() {
-    return this.initialExpression;
+  getInitialValue() {
+    return this.inivialValue;
   }
 
   getAnonymousProcedure() {
@@ -53,26 +53,27 @@ export default define(class Reduce extends Element {
       throw exception;
     }
 
-    const nodes = value.getNodes(),
-          initialExpression = await this.initialExpression.evaluate(context);
+    const primitiveValue = value.getPrimitiveValue(),
+          nominalValues = primitiveValue, ///
+          inivialValue = await this.inivialValue.evaluate(context);
 
-    value = await asyncReduce(nodes, async (currentExpression, node) => {
+    value = await asyncReduce(nominalValues, async (currentValue, nominalValue) => {
       let value;
 
-      const { Terms } = elements;
+      const { Values } = elements;
 
-      value = currentTerm; ///
+      value = currentValue; ///
 
-      const values = Terms.fromTerm(value, context);
+      const values = Values.fromValue(value, context);
 
-      value = valueFromNode(node, context);
+      value = valueFromNominalValue(nominalValue, context);
 
-      values.addTerm(value);
+      values.addValue(value);
 
       value = await this.anonymousProcedure.call(values, context);
 
       return value;
-    }, initialExpression);
+    }, inivialValue);
 
     const valueString = value.getString();
 

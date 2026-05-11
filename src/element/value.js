@@ -4,6 +4,7 @@ import { Element } from "occam-languages";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE } from "../types";
+import { valueFromBoolean } from "../utilities/value";
 
 export default define(class Value extends Element {
   constructor(context, string, node, breakPoint, variable, primitive) {

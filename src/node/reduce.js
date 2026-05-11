@@ -2,21 +2,21 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { VARIABLE_RULE_NAME, EXPRESSION_RULE_NAME, ANONYMOUS_PROCEDURE_RULE_NAME } from "../ruleNames";
+import { VALUE_RULE_NAME, VARIABLE_RULE_NAME, ANONYMOUS_PROCEDURE_RULE_NAME } from "../ruleNames";
 
 export default class ReduceNode extends NonTerminalNode {
+  getValueNode() {
+    const ruleName = VALUE_RULE_NAME,
+          valueNode = this.getNodeByRuleName(ruleName);
+
+    return valueNode;
+  }
+
   getVariableNode() {
     const ruleName = VARIABLE_RULE_NAME,
           variableNode = this.getNodeByRuleName(ruleName);
 
     return variableNode;
-  }
-
-  getExpressionNode() {
-    const ruleName = EXPRESSION_RULE_NAME,
-          expressionNode = this.getNodeByRuleName(ruleName);
-
-    return expressionNode;
   }
 
   getAnonymousProcedureNode() {

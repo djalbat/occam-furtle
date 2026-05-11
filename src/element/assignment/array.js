@@ -6,7 +6,7 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { termFromNominalValue } from "../../utilities/term";
+import { valueFromNominalValue } from "../../utilities/nominal";
 import { primtiveStringFromNominalValues } from "../../utilities/string";
 import { NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
 
@@ -31,18 +31,18 @@ export default define(class ArrayAssigment extends Element {
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
 
-    const term = this.variable.evaluate(context),
-          termType = term.getType();
+    const value = this.variable.evaluate(context),
+          valueType = value.getType();
 
-    if (termType !== NOMINAL_VALUES_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's '${termType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+    if (valueType !== NOMINAL_VALUES_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const primitiveValue = term.getPrimitiveValue(),
+    const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue, ///
           bindingsLength = this.bindings.getLength(),
           nominalValuesLength = nominalValues.length;
@@ -59,9 +59,9 @@ export default define(class ArrayAssigment extends Element {
     this.bindings.forEachBinding((binding, index) => {
       if (binding !== null) {
         const nominalValue = nominalValues[index],
-              term = termFromNominalValue(nominalValue);
+              value = valueFromNominalValue(nominalValue);
 
-        this.evaluateBinding(binding, term, context);
+        this.evaluateBinding(binding, value, context);
       }
     });
 

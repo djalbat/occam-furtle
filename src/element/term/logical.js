@@ -6,7 +6,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { BOOLEAN_TYPE } from "../../types";
-import { termFromBoolean } from "../../utilities/term";
+import { valueFromBoolean } from "../../utilities/value";
 
 export default define(class LogicalTerm extends Element {
   constructor(context, string, node, breakPoint, type, disjunction, leftTerm, rightTerm) {
@@ -35,48 +35,48 @@ export default define(class LogicalTerm extends Element {
   }
 
   evaluate(context) {
-    let term;
+    let value;
 
     const logicalTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${logicalTermString}' logical term...`);
 
-    const leftTerm = this.leftTerm.evaluate(context),
-          rightTerm = this.rightTerm.evaluate(context),
-          leftTermType = leftTerm.getType(),
-          rightTermType = rightTerm.getType();
+    const leftValue = this.leftTerm.evaluate(context),
+          rightValue = this.rightTerm.evaluate(context),
+          leftValueType = leftValue.getType(),
+          rightValueType = rightValue.getType();
 
-    if (leftTermType !== BOOLEAN_TYPE) {
-      const leftTermString = leftTerm.getString(),
-            message = `The '${leftTermString}' left term's type is '${leftTermType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (leftValueType !== BOOLEAN_TYPE) {
+      const leftValueString = leftValue.getString(),
+            message = `The '${leftValueString}' left term's type is '${leftValueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    if (rightTermType !== BOOLEAN_TYPE) {
-      const rightTermString = rightTerm.getString(),
-            message = `The '${rightTermString}' right term's type is '${rightTermType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (rightValueType !== BOOLEAN_TYPE) {
+      const rightValueString = rightValue.getString(),
+            message = `The '${rightValueString}' right term's type is '${rightValueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const leftTermPrimitiveValue = leftTerm.getPrimitiveValue(),
-          rightTermPrimitiveValue = rightTerm.getPrimitiveValue(),
-          leftBoolean =leftTermPrimitiveValue, ///
-          rightBoolean = rightTermPrimitiveValue, ///
+    const leftValuePrimitiveValue = leftValue.getPrimitiveValue(),
+          rightValuePrimitiveValue = rightValue.getPrimitiveValue(),
+          leftBoolean =leftValuePrimitiveValue, ///
+          rightBoolean = rightValuePrimitiveValue, ///
           boolean = this.disjunction ?
                       (leftBoolean || rightBoolean) :
                         (leftBoolean && rightBoolean);
 
-    term = termFromBoolean(boolean, context);
+    value = valueFromBoolean(boolean, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${logicalTermString}' logical term as '${termString}'.`);
+    context.debug(`...evaluated the '${logicalTermString}' logical value as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "LogicalTerm";

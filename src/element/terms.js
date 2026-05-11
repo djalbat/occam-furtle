@@ -2,8 +2,10 @@
 
 import { Element } from "occam-languages";
 
+import elements from "../elements";
+
 import { define } from "../elements";
-import { termsStringFromTermsArray } from "../utilities/string";
+import { termsStringFromTermsArray, valuesStringFromValuesArray } from "../utilities/string";
 
 export default define(class Terms extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -37,22 +39,23 @@ export default define(class Terms extends Element {
   forEachTerm(callback) { this.array.forEach(callback); }
 
   evaluate(context) {
-    const termsArray = this.mapTerm((term) => {
-            term = term.evaluate(context);
+    const valuesArray = this.mapTerm((term) => {
+            const value = term.evaluate(context);
 
-            return term;
+            return value;
           }),
-          termsString = termsStringFromTermsArray(termsArray, context),
-          string = termsString, ///
-          array = termsArray, ///
+          valuesString = valuesStringFromValuesArray(valuesArray, context),
+          string = valuesString, ///
+          array = valuesArray, ///
           node = null,
           breakPoint = null;
 
     context = null;
 
-    const terms = new Terms(context, string, node, breakPoint, array);
+    const { Values } = elements,
+          values = new Values(context, string, node, breakPoint, array);
 
-    return terms;
+    return values;
   }
 
   static name = "Terms";

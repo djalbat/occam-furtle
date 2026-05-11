@@ -88,8 +88,8 @@ export default define(class Expression extends Element {
 
     if (false) {
       ///
-    } else if (this.value !== null) {
-      value = this.value.evaluate(context);
+    } else if (this.term !== null) {
+      value = this.term.evaluate(context);
     } else if (this.nodeQuery !== null) {
       value = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {

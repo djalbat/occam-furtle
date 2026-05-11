@@ -179,15 +179,15 @@ export function reduceFromReduceNode(reduceNode, context) {
   const { Reduce } = elements,
         node = reduceNode,  ///
         variable = variableFromReduceNode(reduceNode, context),
-        initialExpression = initialExpressionFromReduceNode(reduceNode, context),
+        initialValue = initialValueFromReduceNode(reduceNode, context),
         anonymousProcedure = anonymousProcedureFromReduceNode(reduceNode, context),
-        reduceString = reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure),
+        reduceString = reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialValue, anonymousProcedure),
         string = reduceString,  ///
         breakPoint = null;
 
   context = null;
 
-  const reduce = new Reduce(context, string, node, breakPoint, variable, initialExpression, anonymousProcedure);
+  const reduce = new Reduce(context, string, node, breakPoint, variable, initialValue, anonymousProcedure);
 
   return reduce;
 }
@@ -625,11 +625,11 @@ export function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = elements,
         node = variableNode,  ///
         name = nameFromVariableNode(variableNode),
-        expression = expressionFromTypeAndVariableNode(type, variableNode, context),
+        value = valueFromTypeAndVariableNode(type, variableNode, context),
         variableString = variableStringFromName(name),
         string = variableString,  ///
         breakPoint = null,
-        variable = new Variable(context, string, node, breakPoint, type, name, expression);
+        variable = new Variable(context, string, node, breakPoint, type, name, value);
 
   return variable;
 }
@@ -638,6 +638,13 @@ export function nameFromLabelNode(labelNode, context) {
   const name = labelNode.getName();
 
   return name;
+}
+
+export function valueFromReduceNode(reduceNode, context) {
+  const valueNode = reduceNode.getValueNode(),
+        value = valueFromValueNode(valueNode, context);
+
+  return value;
 }
 
 export function termFromTernaryNode(ternaryNode, context) {
@@ -865,13 +872,6 @@ export function termFromNegatedTermNode(negatedTermNode, context) {
   return term;
 }
 
-export function expressionFromReduceNode(reduceNode, context) {
-  const expressionNode = reduceNode.getExpressionNode(),
-        expression = expressionFromExpressionNode(expressionNode, context);
-
-  return expression;
-}
-
 export function reduceFromExpressionNode(expressionNode, context) {
   let reduce = null;
 
@@ -963,6 +963,13 @@ export function comparisonTermFromTermNode(termNOde, context) {
   return comparisonTerm;
 }
 
+export function initialValueFromReduceNode(reduceNode, context) {
+  const value = valueFromReduceNode(reduceNode, context),
+        initialValue = value; ///
+
+  return initialValue;
+}
+
 export function expressionFromVariableNode(variableNode, context) {
   const expression = null;
 
@@ -974,20 +981,6 @@ export function variableFromNodesQueryNode(nodesQueryNode, context) {
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
-}
-
-export function valuesFromProcedureCallNode(procedureCallNode, context) {
-  const valuesNode = procedureCallNode.getValuesNode(),
-        values = valuesFromValuesNode(valuesNode, context);
-
-  return values;
-}
-
-export function leftTermFromLogicalTermNode(logicalTermNode, context) {
-  const leftTermNode = logicalTermNode.getLeftTermNode(),
-    leftTerm = termFromTermNode(leftTermNode, context);
-
-  return leftTerm;
 }
 
 export function arrayAssignmentFromStepNode(stepNode, context) {
@@ -1019,6 +1012,26 @@ export function nodeQueryFromExpressionNode(expressionNode, context) {
   }
 
   return nodeQuery;
+}
+
+export function leftTermFromLogicalTermNode(logicalTermNode, context) {
+  const leftTermNode = logicalTermNode.getLeftTermNode(),
+        leftTerm = termFromTermNode(leftTermNode, context);
+
+  return leftTerm;
+}
+
+export function valuesFromProcedureCallNode(procedureCallNode, context) {
+  const valuesNode = procedureCallNode.getValuesNode(),
+        values = valuesFromValuesNode(valuesNode, context);
+
+  return values;
+}
+
+export function valueFromTypeAndVariableNode(type, variableNode, context) {
+  const value = null;
+
+  return value;
 }
 
 export function valueFromReturnStatementNode(returnStatementNode, context) {
@@ -1136,13 +1149,6 @@ export function anonymousProcedureFromEveryNode(everyNode, context) {
   return anonymousProcedure;
 }
 
-export function initialExpressionFromReduceNode(reduceNode, context) {
-  const expression = expressionFromReduceNode(reduceNode, context),
-        initialExpression = expression; ///
-
-  return initialExpression;
-}
-
 export function procedureCallFromExpressionNode(expressionNode, context) {
   let procedureCall = null;
 
@@ -1200,12 +1206,6 @@ export function typeFromProcedureDeclarationNode(procedureDeclarationNode, conte
   const type = procedureDeclarationNode.getType();
 
   return type;
-}
-
-export function expressionFromTypeAndVariableNode(type, variableNode, context) {
-  const expression = null;
-
-  return expression;
 }
 
 export function labelFromProcedureDeclarationNode(procedureDeclarationNode, context) {

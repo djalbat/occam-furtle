@@ -29,36 +29,36 @@ export default define(class Ternary extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    term = this.term.evaluate(context);
+    value = this.term.evaluate(context);
 
-    const termType = term.getType();
+    const valueType = value.getType();
 
-    if (termType !== BOOLEAN_TYPE) {
-      const termString = term.getString(),
-            message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+    if (valueType !== BOOLEAN_TYPE) {
+      const valueString = value.getString(),
+            message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const primitiveValue = term.getPrimitiveValue(),
+    const primitiveValue = value.getPrimitiveValue(),
           boolean = primitiveValue; ///
 
-    term = boolean ?
+    value = boolean ?
               await this.ifExpression.evaluate(context) :
                 await this.elseExpression.evaluate(context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${ternaryString}' ternary as '${termString}'.`);
+    context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "Ternary";

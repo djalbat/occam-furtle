@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { termFromBoolean } from "../../utilities/term";
+import { valueFromBoolean } from "../../utilities/value";
 
 export default define(class ComparisonTerm extends Element {
   constructor(context, string, node, breakPoint, negated, leftTerm, rightTerm) {
@@ -29,41 +29,41 @@ export default define(class ComparisonTerm extends Element {
   }
 
   evaluate(context) {
-    let term;
+    let value;
 
     const comparisonTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${comparisonTermString}' comparison term...`);
 
-    const leftTerm = this.leftTerm.evaluate(context),
-          rightTerm = this.rightTerm.evaluate(context),
-          leftTermType = leftTerm.getType(),
-          rightTermType = rightTerm.getType();
+    const leftValue = this.leftTerm.evaluate(context),
+          rightValue = this.rightTerm.evaluate(context),
+          leftValueType = leftValue.getType(),
+          rightValueType = rightValue.getType();
 
-    if (leftTermType !== rightTermType) {
-      const leftTermString = leftTerm.getString(),
-            rightTermString = rightTerm.getString(),
-            message = `The '${leftTermString}' left term's type is '${leftTermType}' whereas the '${rightTermString}' right term's type is '${rightTermType}'.`,
+    if (leftValueType !== rightValueType) {
+      const leftValueString = leftValue.getString(),
+            rightValueString = rightValue.getString(),
+            message = `The '${leftValueString}' left term's type is '${leftValueType}' whereas the '${rightValueString}' right term's type is '${rightTermType}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    const leftTermEqualToRightTerm = leftTerm.isEqualTo(rightTerm);
+    const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
 
-    let boolean = leftTermEqualToRightTerm; ///
+    let boolean = leftValueEqualToRightValue; ///
 
     if (this.negated) {
       boolean = !boolean; ///
     }
 
-    term = termFromBoolean(boolean, context);
+    value = valueFromBoolean(boolean, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${comparisonTermString}' comparison term as '${termString}'.`);
+    context.debug(`...evaluated the '${comparisonTermString}' comparison value as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "ComparisonTerm";

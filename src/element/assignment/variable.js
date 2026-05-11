@@ -21,21 +21,21 @@ export default define(class VariableAssignment extends Element {
   }
 
   async evaluate(context) {
-    let term;
+    let value;
 
     const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    term = await this.expression.evaluate(context);
+    value = await this.expression.evaluate(context);
 
-    this.variable.assign(term, context);
+    this.variable.assign(value, context);
 
-    const termString = term.getString();
+    const valueString = value.getString();
 
-    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${termString}'.`);
+    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-    return term;
+    return value;
   }
 
   static name = "VariableAssignment";
