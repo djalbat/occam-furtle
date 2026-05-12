@@ -1,6 +1,7 @@
 "use strict";
 
-const { Dependency } =require("occam-model"),
+const { levels } = require("necessary"),
+      { Dependency } =require("occam-model"),
       { arrayUtilities } = require("necessary"),
       { Log, verificationUtilities } =require("occam-languages");
 
@@ -9,10 +10,12 @@ const { FileContextFromFilePath } = require("./utilities/fileContext"),
       { nominalValuesFromNominalFileContext } = require("./utilities/nominal");
 
 const { first } = arrayUtilities,
+      { ERROR_LEVEL } = levels,
       { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
-describe("isVariableFree", () => {
-  const log = Log.fromNothing(),
+describe("first-order-logic", () => {
+  const logLevel = ERROR_LEVEL,
+        log = Log.fromLogLevel(logLevel),
         name = "first-order-logic",
         callback = async (context, breakPoint) => {
           ///
@@ -65,23 +68,25 @@ describe("isVariableFree", () => {
     nominalFileContext = findFileContext(nominalFilePath, releaseContext);
   });
 
-  let procedure,
-      nominalValues;
+  describe("isVariableFree", () => {
+    let procedure,
+        nominalValues;
 
-  before(() => {
-    const procedureName = "isVariableFree";
+    before(() => {
+      const procedureName = "isVariableFree";
 
-    nominalValues = nominalValuesFromNominalFileContext(nominalFileContext);
+      nominalValues = nominalValuesFromNominalFileContext(nominalFileContext);
 
-    procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
-  });
+      procedure = furtleFileContext.findProcedureByProcedureName(procedureName);
+    });
 
-  it("returns false", async () => {
-    const term = await procedure.callNominally(nominalValues),
-          primitiveValue = term.getPrimitiveValue(),
-          boolean = primitiveValue; ///
+    it("returns false", async () => {
+      const term = await procedure.callNominally(nominalValues),
+            primitiveValue = term.getPrimitiveValue(),
+            boolean = primitiveValue; ///
 
-    assert.isFalse(boolean);
+      assert.isFalse(boolean);
+    });
   });
 });
 
