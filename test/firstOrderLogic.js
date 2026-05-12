@@ -26,7 +26,7 @@ describe("first-order-logic", () => {
       dependency;
 
   before(() => {
-    const projectsDirectoryPath = "/Users/djalbat/logic";
+    const projectsDirectoryPath = "../../logic";
 
     context = {
       log,
