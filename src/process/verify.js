@@ -1,7 +1,7 @@
 "use strict";
 
 import { SimplePass } from "occam-languages";
-import { queryUtilities } from "occam-dom";
+import { queryUtilities } from "occam-query";
 
 import { errorFromErrorNode, procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
 
