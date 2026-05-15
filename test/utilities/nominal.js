@@ -1,7 +1,7 @@
 "use strict";
 
 const { NominalValue } = require("occam-nominal"),
-      { queryUtilities } = require("occam-languages");
+      { queryUtilities } = require("occam-query");
 
 const { nodeQuery } = queryUtilities;
 
