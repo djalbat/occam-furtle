@@ -1,9 +1,16 @@
 "use strict";
 
-import { FileContext } from "occam-languages";
+import { FileContext, furtleUtilities } from "occam-languages";
+
+import FurtleLexer from "../furtle/lexer";
+import FurtleParser from "../furtle/parser";
 
 import { verifyFile } from "../../process/verify";
-import { furtleLexer, furtleParser } from "../../utilities/furtle";
+
+const { furtleLexerFromNothing, furtleParserFromNothing } = furtleUtilities;
+
+const furtleLexer = furtleLexerFromNothing(FurtleLexer),
+      furtleParser = furtleParserFromNothing(FurtleParser);
 
 export default class FurtleFileContext extends FileContext {
   constructor(context, fileContent, filePath, tokens, node, json, lexer, parser, procedures) {
