@@ -1,10 +1,11 @@
 "use strict";
 
+import { furtleUtilities } from "occam-languages";
+
 import FurtleLexer from "../furtle/lexer";
 import FurtleParser from "../furtle/parser";
 
-import { furtleLexerFromNothing } from "../utilities/lexers";
-import { furtleParserFromNothing } from "../utilities/parsers";
+const { furtleLexerFromNothing, furtleParserFromNothing } = furtleUtilities;
 
 export const furtleLexer = furtleLexerFromNothing(FurtleLexer);
 
