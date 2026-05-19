@@ -51,9 +51,9 @@ export function verifyFile(fileNode, context) {
   let fileVerifies = false;
 
   const node = fileNode, ///
-        sucess = topLevelPass.run(node, context);
+        success = topLevelPass.run(node, context);
 
-  if (sucess) {
+  if (success) {
     fileVerifies = true;
   }
 

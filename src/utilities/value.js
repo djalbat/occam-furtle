@@ -1,8 +1,7 @@
 "use strict";
 
-import { NominalValue } from "occam-nominal";
-
 import elements from "../elements";
+import NominalValue from "../nominalValue";
 
 import { primitiveFromBoolean, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
 

@@ -2,8 +2,8 @@
 
 import { FileContext, furtleUtilities } from "occam-languages";
 
-import FurtleLexer from "../furtle/lexer";
-import FurtleParser from "../furtle/parser";
+import FurtleLexer from "../../furtle/lexer";
+import FurtleParser from "../../furtle/parser";
 
 import { verifyFile } from "../../process/verify";
 

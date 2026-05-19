@@ -1,7 +1,8 @@
 "use strict";
 
-import { NominalValue } from "occam-nominal";
 import { NonTerminalNode } from "occam-languages";
+
+import NominalValue from "../nominalValue";
 
 import { NULL, TRUE, FALSE } from "../constants";
 import { STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE } from "../types";

@@ -1,32 +1,49 @@
 "use strict";
 
-const { NominalValue } = require("occam-nominal"),
-      { queryUtilities } = require("occam-query");
+const { NominalValue } = require("../../lib/index"),  ///
+      { queryUtilities } = require("occam-query"),  ///
+      { nominalUtilities } = require("occam-languages");
 
-const { nodeQuery } = queryUtilities;
+const NominalFileContext = require("../context/file/nominal");
 
-const termNodeQuery = nodeQuery("/statement/argument!/term!"),
-      statementNodeQuery = nodeQuery("//lemma[3]//supposition[0]/statement!");
+const { nodeQuery } = queryUtilities,
+      { nominalLexerFromCombinedCustomGrammar, nominalParserFromStartRuleNameAndCombinedCustomGrammar } = nominalUtilities;
 
-function nominalValuesFromNominalFileContext(nominalFileContext) {
-  const fileContext = nominalFileContext,  ///
-        node = fileContext.getNode(),
-        statementNode = statementNodeQuery(node),
+const content = "∀n n = n",
+      startRuleName = "statement",
+      termNodeQuery = nodeQuery("/statement/argument!/term!");
+
+function nominalValuesFromNothing(context) {
+  const combinaedCustomGrammar = context.getCombinedCustomGrammar(),
+        nominalLexer = nominalLexerFromCombinedCustomGrammar(combinaedCustomGrammar),
+        nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinaedCustomGrammar),
+        tokens = nominalLexer.tokenise(content),
+        node = nominalParser.parse(tokens),
+        statementNode = node, ///
         termNode = termNodeQuery(statementNode),
-        nodes = [
+        nodes = [ ///
           termNode,
           statementNode
         ],
-        context = nominalFileContext, ///
-        nominalValues = nodes.map((node) => {
-          const nominalValue = NominalValue.fromNode(node, context);
+        nominalFileContext = NominalFileContext.fromNodeAndTokens(node, tokens, context);
 
-          return nominalValue;
-        });
+  context = nominalFileContext; ///
+
+  const nominalValues = nomainlValuesFromNodes(nodes, context);
 
   return nominalValues;
 }
 
 module.exports = {
-  nominalValuesFromNominalFileContext
+  nominalValuesFromNothing
 };
+
+function nomainlValuesFromNodes(nodes, context) {
+  const nominalValues = nodes.map((node) => {
+    const nominalValue = NominalValue.fromNode(node, context);
+
+    return nominalValue;
+  });
+
+  return nominalValues;
+}
