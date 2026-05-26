@@ -71,6 +71,12 @@ export default class FurtleFileContext extends FileContext {
     return metaLemmas;
   }
 
+  getGenerators(includeRelease = true) {
+    const generators = [];
+
+    return generators;
+  }
+
   getConjectures(includeRelease = true) {
     const conjectures = [];
 
