@@ -4,8 +4,9 @@ import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
-import { FurtleLexer,FurtleParser, lexersUtilities, parsersUtilities } from "../index"; ///
 
+import bnf from "./furtle/bnf";
+import entries from "./furtle/entries";
 import SubHeading from "./view/subHeading";
 import SizeableDiv from "./view/div/sizeable";
 import BNFTextarea from "./view/textarea/bnf";
@@ -15,11 +16,7 @@ import ContentTextarea from "./view/textarea/content";
 import ParseTreeTextarea from "./view/textarea/parseTree";
 import LexicalEntriesTextarea from "./view/textarea/lexicalEntries";
 
-const { furtleParserFromBNF } = parsersUtilities,
-      { furtleLexerFromEntries } = lexersUtilities;
-
-const { bnf } = FurtleParser,
-      { entries } = FurtleLexer;
+import { furtleParserFromBNF, furtleLexerFromEntries } from "./utilities/furtle"
 
 class View extends Element {
   keyUpHandler = (event, element) => {

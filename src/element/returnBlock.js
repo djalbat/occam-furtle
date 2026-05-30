@@ -3,9 +3,9 @@
 import { Element, asynchronousUtilities } from "occam-languages";
 
 import Exception from "../exception";
-import BlockContext from "../context/block";
 
 import { define } from "../elements";
+import { confine } from "../utilities/context";
 
 const { asyncForEach } = asynchronousUtilities;
 
@@ -48,16 +48,17 @@ export default define(class ReturnBlock extends Element {
       throw exception;
     }
 
-    const blockContext = BlockContext.fromVariables(variables, context);
+    let value;
 
-    context = blockContext; ///
+    await confine(async (context) => {
+      await asyncForEach(this.steps, async (step) => {
+        await step.evaluate(context);
+      });
 
-    await asyncForEach(this.steps, async (step) => {
-      await step.evaluate(context);
-    });
+      value = this.returnStatement.evaluate(context);
+    }, variables, context);
 
-    const value = this.returnStatement.evaluate(context),
-          valueString = value.getString();
+    const valueString = value.getString();
 
     context.debug(`Evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
