@@ -6,9 +6,9 @@ const bnf = `
     
     
     
-    procedureDeclaration    ::=  [type] label<NO_WHITESPACE>"(" parameters? ")" returnBlock ;
+    procedureDeclaration    ::=  type label<NO_WHITESPACE>"(" parameters? ")" returnBlock ;
     
-    anonymousProcedure      ::=  [type] "(" parameters? ")" returnBlock ;
+    anonymousProcedure      ::=  type "(" parameters? ")" returnBlock ;
     
     step                    ::=  variableAssignments
                               
@@ -20,7 +20,7 @@ const bnf = `
       
       
     
-    variableAssignments     ::=  [type] variableAssignment ( "," variableAssignment )* ";" ;
+    variableAssignments     ::=  type variableAssignment ( "," variableAssignment )* ";" ;
     
     variableAssignment      ::=  variable "=" expression ;
     
@@ -42,15 +42,15 @@ const bnf = `
     
 
 
-    namedBinding          ::=  [type] [name] ( "as" [name] )? ;   
+    namedBinding            ::=  type [name] ( "as" [name] )? ;   
     
-    parameter             ::=  [type] [name] ;
+    parameter               ::=  type [name] ;
 
-    binding               ::=  [type] [name]
+    binding                 ::=  type [name]
     
-                            |  ε 
+                              |  ε 
                                   
-                            ;
+                              ;
 
 
     
@@ -120,6 +120,20 @@ const bnf = `
     
                               |  variable 
                               
+                              ;
+
+
+    
+     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Number" | "Boolean" ) ">"
+     
+                              |  "Node"  
+     
+                              |  "String" 
+     
+                              |  "Number" 
+     
+                              |  "Boolean"   
+
                               ;
 
 
