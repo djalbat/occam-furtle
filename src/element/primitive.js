@@ -49,7 +49,7 @@ export default define(class Primitive extends Element {
           const listA = this.value, ///
                 listB = value,  ///
                 matches = match(listA, listB, (valueA, valueB) => {
-                  const matches = valueA.match(valueB);
+                  const matches = valueA.isEqualTo(valueB);
 
                   if (matches) {
                     return true;

@@ -3,6 +3,7 @@
 import Exception from "./exception";
 import NodeProperty from "./nodeProperty";
 
+import { typeFromTypeName } from "./utilities/element";
 import { nodePropertiesStringFromNodePropertiesArray } from "./utilities/string";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME } from "./typeNames";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "./parameterNames";
@@ -68,16 +69,22 @@ const nodeProperties = NodeProperties.fromNothing();
 export default nodeProperties;
 
 function nodePropertiesArrayFromNothing() {
-  const types = [
-          LIST_TYPE_NAME,
+  const typeNames = [
           STRING_TYPE_NAME,
-          BOOLEAN_TYPE_NAME
+          BOOLEAN_TYPE_NAME,
+          LIST_TYPE_NAME
         ],
         names = [
           CONTENT_PARAMETER_NAME,
           TERMINAL_PARAMETER_NAME,
           CHILD_NODES_PARAMETER_NAME
         ],
+        types = typeNames.map((typeName) => {
+          const context = null,
+                type = typeFromTypeName(typeName, context);
+
+          return type;
+        }),
         nodePropertiesArray = names.map((name, index) => {
           const type = types[index],
                 nodeProperty = NodeProperty.fromNameAndType(name, type);

@@ -580,7 +580,7 @@ export function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, c
 export function anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const { AnonymousProcedure } = elements,
         node = anonymousProcedureNode,  ///
-        type = typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context),
+        type = typeFromAnonymousProcedureNode(anonymousProcedureNode, context),
         parameters = parametersFromAnonymousProcedureNode(anonymousProcedureNode, context),
         returnBlock = returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context),
         nonymousProcedureString = anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock),
@@ -1197,6 +1197,13 @@ export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
   return disjunction;
 }
 
+export function typeFromAnonymousProcedureNode(anonymousProcedureNode, context) {
+  const typeNode = anonymousProcedureNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
+
+  return type;
+}
+
 export function variableAssignmentsFromStepNode(stepNode, context) {
   let variableAssignments = null;
 
@@ -1317,12 +1324,6 @@ export function parametersFromProcedureDeclarationNode(procedureDeclarationNode,
         parameters = parametersFromParametersNode(parametersNode, context);
 
   return parameters;
-}
-
-export function typeFromProcedureAnonymousProcedureNode(anonymousProcedureNode, context) {
-  const type = anonymousProcedureNode.getType();
-
-  return type;
 }
 
 export function returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context) {

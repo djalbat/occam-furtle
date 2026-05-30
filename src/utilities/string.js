@@ -120,8 +120,8 @@ export function primtiveStringFromNominalValues(nominalValues) {
 }
 
 export function nodePropertyStringFromNameAndType(name, type) {
-  const typeString = type,  ///
-        nameString = name,  ///
+  const nameString = name,  ///
+        typeString = type.getString(),
         nodePropertyString = `${typeString} ${nameString}`;
 
   return nodePropertyString;
@@ -219,7 +219,7 @@ export function procedureStringFromTypeLabelParametersAndReturnBlock(type, label
 }
 
 export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock) {
-  const typeString = type,  ///
+  const typeString = type.getString(),
         parametersString = parameters.getString(),
         returnBlockString = returnBlock.getString(),
         anonymousProcedureString = `${typeString} (${parametersString}) ${returnBlockString}`;

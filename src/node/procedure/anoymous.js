@@ -2,22 +2,14 @@
 
 import ProcedureNode from "../../node/procedure";
 
-import { TYPE_TOKEN_TYPE } from "../../tokenTypes";
-import { PARAMETERS_RULE_NAME, RETURN_BLOCK_RULE_NAME } from "../../ruleNames";
+import { TYPE_RULE_NAME, PARAMETERS_RULE_NAME, RETURN_BLOCK_RULE_NAME } from "../../ruleNames";
 
 export default class AnonymousProcedureNode extends ProcedureNode {
-  getType() {
-    let type;
+  getTypeNode() {
+    const ruleName = TYPE_RULE_NAME,
+          typeNode = this.getNodeByRuleName(ruleName);
 
-    const tokenType = TYPE_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      type = content;  ///
-    }, tokenType);
-
-    return type;
+    return typeNode;
   }
 
   getParametersNode() {

@@ -27,7 +27,8 @@ export function primitiveFromBoolean(boolean, context) {
   const { Primitive } = elements,
         primitiveString = primtiveStringFromBoolean(boolean),
         string = primitiveString,  ///
-        type = BOOLEAN_TYPE_NAME,
+        typeName = BOOLEAN_TYPE_NAME,
+        type = typeFromTypeName(typeName, context),
         value = boolean,  ///
         node = null,
         breakPoint = null;

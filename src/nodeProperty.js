@@ -1,7 +1,6 @@
 "use strict";
 
 import { nodePropertyStringFromNameAndType } from "./utilities/string";
-import {STRING_TYPE_NAME} from "./typeNames";
 
 export default class NodeProperty {
   constructor(string, type, name) {

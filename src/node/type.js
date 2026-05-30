@@ -5,13 +5,6 @@ import { NonTerminalNode } from "occam-languages";
 import { TYPE_TOKEN_TYPE } from "../tokenTypes";
 
 export default class TypeNode extends NonTerminalNode {
-  isParameterised() {
-    const argumentTypeName = this.getArgumentTypeName(),
-          parameterised = (argumentTypeName !== null);
-
-    return parameterised;
-  }
-
   getName() {
     let name = null;
 

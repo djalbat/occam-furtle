@@ -56,10 +56,10 @@ export default define(class Procedure extends Element {
           valueType = value.getType(),
           typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    if (typeEqualToValueType) {
+    if (!typeEqualToValueType) {
       const valueString = value.getString(),
             typeString = this.type.getString(),
-            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
+            message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
