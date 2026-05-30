@@ -3,6 +3,7 @@
 import StepNode from "./node/step";
 import SomeNode from "./node/some";
 import TermNode from "./node/term";
+import TypeNode from "./node/type";
 import TermsNode from "./node/terms";
 import EveryNode from "./node/every";
 import LabelNode from "./node/label";
@@ -42,6 +43,7 @@ import ProcedureDeclarationNode from "./node/declaration/procedure";
 import { STEP_RULE_NAME,
          SOME_RULE_NAME,
          TERM_RULE_NAME,
+         TYPE_RULE_NAME,
          TERMS_RULE_NAME,
          EVERY_RULE_NAME,
          LABEL_RULE_NAME,
@@ -82,6 +84,7 @@ const NonTerminalNodeMap = {
   [STEP_RULE_NAME]: StepNode,
   [SOME_RULE_NAME]: SomeNode,
   [TERM_RULE_NAME]: TermNode,
+  [TYPE_RULE_NAME]: TypeNode,
   [TERMS_RULE_NAME]: TermsNode,
   [EVERY_RULE_NAME]: EveryNode,
   [LABEL_RULE_NAME]: LabelNode,

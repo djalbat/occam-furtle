@@ -71,10 +71,12 @@ export default define(class NamedBinding extends Element {
 
     context.trace(`Comparing the '${namedBindingAString}' named binding with the '${namedBindingBString}' named binding...`);
 
-    const name = namedBinding.getName(),
-          type = namedBinding.getType();
+    const nameBindingName = namedBinding.getName(),
+          nameBindingType = namedBinding.getType(),
+          nameEqualToNameBindingName = (this.name === nameBindingName),
+          typeEqualToNameBindingType = this.type.isEqualTo(nameBindingType);
 
-    namedBindingCompares = ((this.name === name) && (this.type === type));
+    namedBindingCompares = (nameEqualToNameBindingName && typeEqualToNameBindingType);
 
     if (namedBindingCompares) {
       context.debug(`...compared the '${namedBindingAString}' named binding with the '${namedBindingBString}' named binding.`);

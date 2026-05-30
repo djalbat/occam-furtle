@@ -4,12 +4,13 @@ import { Query } from "occam-query";
 
 import elements from "../elements";
 
-import { BOOLEAN_TYPE } from "../types";
+import { BOOLEAN_TYPE_NAME } from "../typeNames";
 import { ternaryStringFromTerm,
          variableStringFromName,
          termStringFromProperties,
          valueStringFromProperties,
          expressionStringFromProperties,
+         typeStringFromNameAndArgumentType,
          procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
          variableAssignmentStringFromTypeAndVariable,
@@ -78,6 +79,22 @@ export function termFromTermNode(termNode, context) {
   const term = new Term(context, string, node, breakPoint, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
 
   return term;
+}
+
+export function typeFromTypeNode(typeNode, context) {
+  const { Type } = elements,
+        node = typeNode,  ///
+        name = nameFromTypeNode(typeNode, context),
+        argumentType = argumentTypeFromTypeNode(typeNode, context),
+        typeString = typeStringFromNameAndArgumentType(name, argumentType),
+        string = typeString,  ///
+        breakPoint = null;
+
+  context = null;
+
+  const type = new Type(context, string, node, breakPoint, name, argumentType);
+
+  return type;
 }
 
 export function valueFromValueNode(valueNode, context) {
@@ -635,6 +652,28 @@ export function variableFromTypeAndVariableNode(type, variableNode, context) {
   return variable;
 }
 
+export function typeFromTypeName(typeName, context) {
+  const { Type } = elements,
+        node = null,  ///
+        name = typeName,  ///
+        argumentType = null,
+        typeString = typeName,  ///
+        string = typeString,  ///
+        breakPoint = null;
+
+  context = null;
+
+  const type = new Type(context, string, node, breakPoint, name, argumentType);
+
+  return type;
+}
+
+export function nameFromTypeNode(typeNode, context) {
+  const name = typeNode.getName();
+
+  return name;
+}
+
 export function nameFromLabelNode(labelNode, context) {
   const name = labelNode.getName();
 
@@ -662,7 +701,13 @@ export function nameFromBindingNode(bindingNode, context) {
 }
 
 export function typeFromBindingNode(bindingNode, context) {
-  const type = bindingNode.getType();
+  let type = null;
+
+  const typeNode = bindingNode.getTypeNode();
+
+  if (typeNode != null) {
+    type = typeFromTypeNode(typeNode, context);
+  }
 
   return type;
 }
@@ -724,7 +769,8 @@ export function elidedFromBindingNode(bindingNode, context) {
 }
 
 export function typeFromParaneterNode(parameterNode, context) {
-  const type = parameterNode.getType();
+  const typeNode = parameterNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
 
   return type;
 }
@@ -742,7 +788,8 @@ export function nameFromReferenceNode(referenceNode, context) {
 }
 
 export function typeFromPrimitiveNode(primitiveNode, context) {
-  const type = primitiveNode.getType();
+  const typeName = primitiveNode.getTypeName(),
+        type = typeFromTypeName(typeName, context);
 
   return type;
 }
@@ -861,13 +908,13 @@ export function logicalTermFromTermNode(termNode, context) {
 }
 
 export function typeFromLogicalTermNode(logicalTermNode, context) {
-  const type = BOOLEAN_TYPE;
+  const type = BOOLEAN_TYPE_NAME;
 
   return type;
 }
 
 export function typeFromNegatedTermNode(logicalTermNode, context) {
-  const type = BOOLEAN_TYPE;
+  const type = BOOLEAN_TYPE_NAME;
 
   return type;
 }
@@ -877,6 +924,18 @@ export function termFromNegatedTermNode(negatedTermNode, context) {
         term = termFromTermNode(termNode, context);
 
   return term;
+}
+
+export function argumentTypeFromTypeNode(typeNode, context) {
+  let argumentType = null;
+
+  const argumentTypeName = typeNode.getArgumentTypeName();
+
+  if (argumentTypeName !== null) {
+    debugger
+  }
+
+  return argumentType;
 }
 
 export function reduceFromExpressionNode(expressionNode, context) {
@@ -903,7 +962,8 @@ export function stepsFromReturnBlockNode(returnBlockNode, context) {
 }
 
 export function typeFromNamedBindingNode(namedBindingNode, context) {
-  const type = namedBindingNode.getType();
+  const typeNode = namedBindingNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
 
   return type;
 }
@@ -1190,7 +1250,8 @@ export function bindingsFromArrayAssignmentNode(arrayAssignmentNode, context) {
 }
 
 export function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
-  const type = variableAssignmentsNode.getType();
+  const typeNode = variableAssignmentsNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
 
   return type;
 }
@@ -1210,7 +1271,8 @@ export function variableFromObjectAssignmentNode(objectAssignmentNode, context) 
 }
 
 export function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const type = procedureDeclarationNode.getType();
+  const typeNode = procedureDeclarationNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
 
   return type;
 }
@@ -1311,10 +1373,10 @@ export function bindingsArrayFromBindingsNode(bindingsNode, context) {
 export function parametersArrayFromParametersNode(parametersNode, context) {
   const parameterNodes = parametersNode.getParameterNodes(),
         parametersArray = parameterNodes.map((parameterNode) => { ///
-      const parameter = parameterFromParameterNode(parameterNode, context);
+          const parameter = parameterFromParameterNode(parameterNode, context);
 
-      return parameter;
-    });
+          return parameter;
+        });
 
   return parametersArray;
 }

@@ -2,7 +2,8 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { TYPE_TOKEN_TYPE, NAME_TOKEN_TYPE } from "../tokenTypes";
+import { TYPE_RULE_NAME } from "../ruleNames";
+import { NAME_TOKEN_TYPE } from "../tokenTypes";
 
 export default class ParameterNode extends NonTerminalNode {
   getName() {
@@ -21,20 +22,11 @@ export default class ParameterNode extends NonTerminalNode {
     return name;
   }
 
-  getType() {
-    let type = null;
+  getTypeNode() {
+    const ruleName = TYPE_RULE_NAME,
+          typeNode = this.getNodeByRuleName(ruleName);
 
-    const tokenType = TYPE_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      type = content; //
-
-      return true;
-    }, tokenType);
-
-    return type;
+    return typeNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ParameterNode, ruleName, childNodes, opacity, precedence); }

@@ -3,6 +3,7 @@
 export const STEP_RULE_NAME = "step";
 export const SOME_RULE_NAME = "some";
 export const TERM_RULE_NAME = "term";
+export const TYPE_RULE_NAME = "type";
 export const TERMS_RULE_NAME = "terms";
 export const EVERY_RULE_NAME = "every";
 export const LABEL_RULE_NAME = "label";

@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { valueFromNode, valueFromBoolean } from "../utilities/value";
-import { BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "../types";
+import {BOOLEAN_TYPE_NAME, LIST_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME} from "../typeNames";
 
 const { asyncEvery } = asynchronousUtilities;
 
@@ -39,11 +39,12 @@ export default define(class Every extends Element {
 
     value = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          valueTypeListType = valueType.isListType();
 
-    if (valueType !== NOMINAL_VALUES_TYPE) {
+    if (valueTypeListType) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -63,9 +64,9 @@ export default define(class Every extends Element {
 
             const valueType = value.getType();
 
-            if (valueType !== BOOLEAN_TYPE) {
+            if (valueType !== BOOLEAN_TYPE_NAME) {
               const termString = term.getString(),
-                    message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+                    message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;

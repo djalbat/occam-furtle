@@ -8,7 +8,7 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 import { valueFromNominalValue } from "../../utilities/value";
 import { primtiveStringFromNominalValues } from "../../utilities/string";
-import { NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../../types";
+import { NOMINAL_VALUE_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME } from "../../typeNames";
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -34,9 +34,9 @@ export default define(class ArrayAssigment extends Element {
     const value = this.variable.evaluate(context),
           valueType = value.getType();
 
-    if (valueType !== NOMINAL_VALUES_TYPE) {
+    if (valueType !== NOMINAL_VALUES_TYPE_NAME) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -78,8 +78,8 @@ export default define(class ArrayAssigment extends Element {
 
     const bindingType = binding.getType();
 
-    if (bindingType !== NOMINAL_VALUE_TYPE) {
-      const message = `The type of the '${bindingString}' binding should be '${NOMINAL_VALUE_TYPE}'.`,
+    if (bindingType !== NOMINAL_VALUE_TYPE_NAME) {
+      const message = `The type of the '${bindingString}' binding should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

@@ -2,22 +2,14 @@
 
 import AssignmentsNode from "../../node/assignment";
 
-import { TYPE_TOKEN_TYPE } from "../../tokenTypes";
-import { VARIABLE_ASSIGNMENT_RULE_NAME } from "../../ruleNames";
+import { TYPE_RULE_NAME, VARIABLE_ASSIGNMENT_RULE_NAME } from "../../ruleNames";
 
 export default class VariableAssignmentsNode extends AssignmentsNode {
-  getType() {
-    let type;
+  getTypeNode() {
+    const ruleName = TYPE_RULE_NAME,
+          typeNode = this.getNodeByRuleName(ruleName);
 
-    const tokenType = TYPE_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      type = content;  ///
-    }, tokenType);
-
-    return type;
+    return typeNode;
   }
 
   getVariableAssignmentNodes() {

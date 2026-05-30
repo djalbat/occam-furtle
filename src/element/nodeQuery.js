@@ -6,7 +6,7 @@ import { arrayUtilities } from "necessary";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NOMINAL_VALUE_TYPE } from "../types";
+import { NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 import { valueFromNodeAndNominalValue } from "../utilities/value";
 
 const { first } = arrayUtilities;
@@ -45,9 +45,9 @@ export default define(class NodeQuery extends Element {
 
     const valueType = value.getType();
 
-    if (valueType !== NOMINAL_VALUE_TYPE) {
+    if (valueType !== NOMINAL_VALUE_TYPE_NAME) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

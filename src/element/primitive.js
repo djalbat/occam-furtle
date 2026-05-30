@@ -6,7 +6,7 @@ import { arrayUtilities } from "necessary";
 import elements from "../elements";
 
 import { define } from "../elements";
-import { STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE, NOMINAL_VALUES_TYPE } from "../types";
+import { STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME } from "../typeNames";
 
 const { match } = arrayUtilities;
 
@@ -37,13 +37,15 @@ export default define(class Primitive extends Element {
   isEqualTo(primitive) {
     let equalTo = false;
 
-    const type = primitive.getType();
+    const primitiveType = primitive.getType(),
+          typeEqualToPrimitiveType = this.type.isEqualTo(primitiveType);
 
-    if (this.type === type) {
-      const value = primitive.getValue();
+    if (typeEqualToPrimitiveType) {
+      const value = primitive.getValue(),
+            typeName = this.type.getName();
 
-      switch (type) {
-        case STRING_TYPE: {
+      switch (typeName) {
+        case STRING_TYPE_NAME: {
           const stringLiteralA = this.value, ///
                 stringLiteralB = value;  ///
 
@@ -54,7 +56,7 @@ export default define(class Primitive extends Element {
           break;
         }
 
-        case NUMBER_TYPE: {
+        case NUMBER_TYPE_NAME: {
           const numberA = this.value, ///
                 numberB = value;  ///
 
@@ -65,7 +67,7 @@ export default define(class Primitive extends Element {
           break;
         }
 
-        case BOOLEAN_TYPE: {
+        case BOOLEAN_TYPE_NAME: {
           const booleanA = this.value, ///
                 booleanB = value;  ///
 
@@ -76,7 +78,7 @@ export default define(class Primitive extends Element {
           break;
         }
 
-        case NOMINAL_VALUE_TYPE: {
+        case NOMINAL_VALUE_TYPE_NAME: {
           const nominalValueA = this.value, ///
                 nomimalValueB = value,  ///
                 matches = nominalValueA.match(nomimalValueB);
@@ -88,7 +90,7 @@ export default define(class Primitive extends Element {
           break;
         }
 
-        case NOMINAL_VALUES_TYPE: {
+        case NOMINAL_VALUES_TYPE_NAME: {
           const nominalValuesA = this.value, ///
                 nominalValuesB = value,  ///
                 matches = match(nominalValuesA, nominalValuesB, (nominalValueA, nomimalValueB) => {

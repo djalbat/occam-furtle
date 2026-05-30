@@ -3,8 +3,7 @@
 import { Element } from "occam-languages";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE } from "../types";
-import { valueFromBoolean } from "../utilities/value";
+import { BOOLEAN_TYPE_NAME } from "../typeNames";
 
 export default define(class Value extends Element {
   constructor(context, string, node, breakPoint, variable, primitive) {
@@ -44,7 +43,8 @@ export default define(class Value extends Element {
 
   isBoolean() {
     const type = this.getType(),
-          boolean = (type === BOOLEAN_TYPE);
+          booleanType = type.isBooleanType(),
+          boolean = booleanType; ///
 
     return boolean;
   }

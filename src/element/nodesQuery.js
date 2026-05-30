@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { NOMINAL_VALUE_TYPE } from "../types";
+import { NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 import { valueFromNodesAndNominalValue } from "../utilities/value";
 
 export default define(class NodesQuery extends Element {
@@ -42,9 +42,9 @@ export default define(class NodesQuery extends Element {
 
     const valueType = value.getType();
 
-    if (valueType !== NOMINAL_VALUE_TYPE) {
+    if (valueType !== NOMINAL_VALUE_TYPE_NAME) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

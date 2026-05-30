@@ -37,10 +37,12 @@ export default define(class Binding extends Element {
 
     context.trace(`Comparing the '${termString}' term against the '${bindingString}' binding...`);
 
-    const termType = term.getType();
+    const termType = term.getType(),
+          typeEqualToTermType = this.type.isEqualTo(termType);
 
-    if (this.type !== termType) {
-      const message = `The '${termString}' term's '${termType}' type is not equal to the '${bindingString}' binding's '${this.type}' type.`,
+    if (!typeEqualToTermType) {
+      const typeString = this.type.getString(),
+            message = `The '${termString}' term's '${termType}' type is not equal to the '${bindingString}' binding's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

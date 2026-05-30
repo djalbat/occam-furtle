@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE } from "../types";
+import { BOOLEAN_TYPE_NAME } from "../typeNames";
 
 export default define(class Ternary extends Element {
   constructor(context, string, node, breakPoint, term, ifExpression, elseExpression) {
@@ -39,9 +39,9 @@ export default define(class Ternary extends Element {
 
     const valueType = value.getType();
 
-    if (valueType !== BOOLEAN_TYPE) {
+    if (valueType !== BOOLEAN_TYPE_NAME) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

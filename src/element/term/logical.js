@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { BOOLEAN_TYPE } from "../../types";
+import { BOOLEAN_TYPE_NAME } from "../../typeNames";
 import { valueFromBoolean } from "../../utilities/value";
 
 export default define(class LogicalTerm extends Element {
@@ -46,17 +46,17 @@ export default define(class LogicalTerm extends Element {
           leftValueType = leftValue.getType(),
           rightValueType = rightValue.getType();
 
-    if (leftValueType !== BOOLEAN_TYPE) {
+    if (leftValueType !== BOOLEAN_TYPE_NAME) {
       const leftValueString = leftValue.getString(),
-            message = `The '${leftValueString}' left term's type is '${leftValueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${leftValueString}' left term's type is '${leftValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
-    if (rightValueType !== BOOLEAN_TYPE) {
+    if (rightValueType !== BOOLEAN_TYPE_NAME) {
       const rightValueString = rightValue.getString(),
-            message = `The '${rightValueString}' right term's type is '${rightValueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+            message = `The '${rightValueString}' right term's type is '${rightValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

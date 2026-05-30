@@ -1,6 +1,7 @@
 "use strict";
 
 import { nodePropertyStringFromNameAndType } from "./utilities/string";
+import {STRING_TYPE_NAME} from "./typeNames";
 
 export default class NodeProperty {
   constructor(string, type, name) {
@@ -29,10 +30,12 @@ export default class NodeProperty {
 
     context.trace(`Comparing the '${nodePropertyString}' node property with the '${namedBindingString}' named binding...`);
 
-    const name = namedBinding.getName(),
-          type = namedBinding.getType();
+    const nameBindingName = namedBinding.getName(),
+          nameBindingType = namedBinding.getType(),
+          nameEqualToNameBindingName = (this.name === nameBindingName),
+          typeEqualToNameBindingType = this.type.isEqualTo(nameBindingType);
 
-    namedBindingCompares = ((this.name === name) && (this.type === type));
+    namedBindingCompares = (nameEqualToNameBindingName && typeEqualToNameBindingType);
 
     if (namedBindingCompares) {
       context.debug(`...compared the '${nodePropertyString}' node property with the '${namedBindingString}' named binding.`);

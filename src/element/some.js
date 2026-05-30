@@ -6,7 +6,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE, NOMINAL_VALUES_TYPE } from "../types";
+import { BOOLEAN_TYPE_NAME, NOMINAL_VALUES_TYPE } from "../typeNames";
 import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
 const { asyncSome } = asynchronousUtilities;
@@ -62,9 +62,9 @@ export default define(class Some extends Element {
 
             const valueType = value.getType();
 
-            if (valueType !== BOOLEAN_TYPE) {
+            if (valueType !== BOOLEAN_TYPE_NAME) {
               const valueString = value.getString(),
-                    message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE}'.`,
+                    message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                     exception = Exception.fromMessage(message);
 
               throw exception;

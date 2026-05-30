@@ -5,7 +5,6 @@ import { Element } from "occam-languages";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE } from "../types";
 import { valuesFromNominalValues } from "../utilities/values";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 
@@ -35,14 +34,9 @@ export default define(class Procedure extends Element {
     return this.returnBlock;
   }
 
-  isBoolean() {
-    const typeBooleanType = (this.type === BOOLEAN_TYPE),
-          boolean = typeBooleanType;  ///
-
-    return boolean;
-  }
-
   getName() { return this.label.getName(); }
+
+  isBooleanType() { return this.type.isBooleanType(); }
 
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 

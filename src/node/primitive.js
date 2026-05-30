@@ -5,12 +5,12 @@ import { NonTerminalNode } from "occam-languages";
 import NominalValue from "../nominalValue";
 
 import { NULL, TRUE, FALSE } from "../constants";
-import { STRING_TYPE, NUMBER_TYPE, BOOLEAN_TYPE, NOMINAL_VALUE_TYPE } from "../types";
+import { STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 import { NULL_TOKEN_TYPE, NUMBER_TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
 
 export default class PrimitiveNode extends NonTerminalNode {
-  getType() {
-    let type;
+  getTypeName() {
+    let typeName;
 
     const number = this.getNumber(),
           boolean = this.getBoolean(),
@@ -20,16 +20,16 @@ export default class PrimitiveNode extends NonTerminalNode {
     if (false) {
       ///
     } else if (number !== null) {
-      type = NUMBER_TYPE;
+      typeName = NUMBER_TYPE_NAME;
     } else if (boolean !== null) {
-      type = BOOLEAN_TYPE;
+      typeName = BOOLEAN_TYPE_NAME;
     } else if (nominalvalue !== null) {
-      type = NOMINAL_VALUE_TYPE;
+      typeName = NOMINAL_VALUE_TYPE_NAME;
     } else if (stringLiteral !== null) {
-      type = STRING_TYPE;
+      typeName = STRING_TYPE_NAME;
     }
 
-    return type;
+    return typeName;
   }
 
   getValue() {

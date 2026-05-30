@@ -1,45 +1,11 @@
 "use strict";
 
-import { types } from "occam-lexers";
 import { NonTerminalNode } from "occam-languages";
 
-import { TYPE_TOKEN_TYPE, NAME_TOKEN_TYPE } from "../tokenTypes";
-
-const { epsilon } = types;
+import { TYPE_RULE_NAME } from "../ruleNames";
+import { NAME_TOKEN_TYPE } from "../tokenTypes";
 
 export default class BindingNode extends NonTerminalNode {
-  getName() {
-    let name = null;
-
-    const tokenType = NAME_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      name = content; //
-
-      return true;
-    }, tokenType);
-
-    return name;
-  }
-
-  getType() {
-    let type = null;
-
-    const tokenType = TYPE_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      type = content; //
-
-      return true;
-    }, tokenType);
-
-    return type;
-  }
-
   isElided() {
     let elided = false;
 
@@ -56,6 +22,29 @@ export default class BindingNode extends NonTerminalNode {
     }, tokenType);
 
     return elided;
+  }
+
+  getName() {
+    let name = null;
+
+    const tokenType = NAME_TOKEN_TYPE;
+
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
+
+      name = content; //
+
+      return true;
+    }, tokenType);
+
+    return name;
+  }
+
+  getTypeNode() {
+    const ruleName = TYPE_RULE_NAME,
+          typeNode = this.getNodeByRuleName(ruleName);
+
+    return typeNode;
   }
 
   static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {

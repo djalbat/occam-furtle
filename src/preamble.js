@@ -3,6 +3,7 @@
 import Step from "./element/step";
 import Some from "./element/some";
 import Term from "./element/term";
+import Type from "./element/type";
 import Terms from "./element/terms";
 import Label from "./element/label";
 import Error from "./element/error";

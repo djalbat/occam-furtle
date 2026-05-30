@@ -2,22 +2,14 @@
 
 import DeclarationNode from "../../node/declaration";
 
-import { TYPE_TOKEN_TYPE } from "../../tokenTypes";
-import { LABEL_RULE_NAME, PARAMETERS_RULE_NAME, RETURN_BLOCK_RULE_NAME } from "../../ruleNames";
+import { TYPE_RULE_NAME, LABEL_RULE_NAME, PARAMETERS_RULE_NAME, RETURN_BLOCK_RULE_NAME } from "../../ruleNames";
 
 export default class ProcedureDeclarationNode extends DeclarationNode {
-  getType() {
-    let type;
+  getTypeNode() {
+    const ruleName = TYPE_RULE_NAME,
+          labelNode = this.getNodeByRuleName(ruleName);
 
-    const tokenType = TYPE_TOKEN_TYPE;
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      type = content;  ///
-    }, tokenType);
-
-    return type;
+    return labelNode;
   }
 
   getLabelNode() {
