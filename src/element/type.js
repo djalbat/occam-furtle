@@ -51,5 +51,41 @@ export default define(class Type extends Element {
     return listType;
   }
 
+  isEqualTo(type) {
+    let equalTo = false;
+
+    const typeName = type.getName();
+
+    if (this.name === typeName) {
+      switch (this.name) {
+        case LIST_TYPE_NAME: {
+          const typeArgumentType = type.getArgumentType();
+
+          if ((this.argumentType === null) || (typeArgumentType === null)) {
+            if (this.argumentType === typeArgumentType) {
+              equalTo = true;
+            }
+          } else {
+            const arguemntTypeEqualToTypeArgumentType = this.argumentType.isEqualTo(typeArgumentType);
+
+            if (arguemntTypeEqualToTypeArgumentType) {
+              equalTo = true;
+            }
+          }
+
+          break;
+        }
+
+        default: {
+          equalTo = true;
+
+          break;
+        }
+      }
+    }
+
+    return equalTo;
+  }
+
   static name = "Type";
 });

@@ -44,9 +44,11 @@ export default define(class LogicalTerm extends Element {
     const leftValue = this.leftTerm.evaluate(context),
           rightValue = this.rightTerm.evaluate(context),
           leftValueType = leftValue.getType(),
-          rightValueType = rightValue.getType();
+          rightValueType = rightValue.getType(),
+          leftValueTypeBooleanType = leftValueType.isBooleanType(),
+          rightValueTypeBooleanType = rightValueType.isBooleanType();
 
-    if (leftValueType !== BOOLEAN_TYPE_NAME) {
+    if (!leftValueTypeBooleanType) {
       const leftValueString = leftValue.getString(),
             message = `The '${leftValueString}' left term's type is '${leftValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
@@ -54,7 +56,7 @@ export default define(class LogicalTerm extends Element {
       throw exception;
     }
 
-    if (rightValueType !== BOOLEAN_TYPE_NAME) {
+    if (!rightValueTypeBooleanType) {
       const rightValueString = rightValue.getString(),
             message = `The '${rightValueString}' right term's type is '${rightValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);

@@ -6,7 +6,7 @@ import { arrayUtilities } from "necessary";
 import elements from "../elements";
 
 import { define } from "../elements";
-import { STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME } from "../typeNames";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 const { match } = arrayUtilities;
 
@@ -45,6 +45,24 @@ export default define(class Primitive extends Element {
             typeName = this.type.getName();
 
       switch (typeName) {
+        case LIST_TYPE_NAME: {
+          const listA = this.value, ///
+                listB = value,  ///
+                matches = match(listA, listB, (valueA, valueB) => {
+                  const matches = valueA.match(valueB);
+
+                  if (matches) {
+                    return true;
+                  }
+                });
+
+          if (matches) {
+            equalTo = true;
+          }
+
+          break;
+        }
+
         case STRING_TYPE_NAME: {
           const stringLiteralA = this.value, ///
                 stringLiteralB = value;  ///
@@ -89,25 +107,6 @@ export default define(class Primitive extends Element {
 
           break;
         }
-
-        case NOMINAL_VALUES_TYPE_NAME: {
-          const nominalValuesA = this.value, ///
-                nominalValuesB = value,  ///
-                matches = match(nominalValuesA, nominalValuesB, (nominalValueA, nomimalValueB) => {
-                  const matches = nominalValueA.match(nomimalValueB);
-
-                  if (matches) {
-                    return true;
-                  }
-                });
-
-          if (matches) {
-            equalTo = true;
-          }
-
-          break;
-        }
-
       }
     }
 

@@ -5,23 +5,22 @@ import elements from "../elements";
 import { valueFromNominalValue } from "../utilities/value";
 import { valuesStringFromValuesArray } from "../utilities/string";
 
-export function valuesFromNominalValues(nominalValues) {
+export function valuesFromNominalValues(nominalValues, context) {
   const { Values } = elements,
-        valuesArray = valuesArrayFromNominalValues(nominalValues),
+        valuesArray = valuesArrayFromNominalValues(nominalValues, context),
         valuesString = valuesStringFromValuesArray(valuesArray),
         string = valuesString, ///
         array = valuesArray,  ///
         node = null,
         breakPoint = null,
-        context = null,
         values = new Values(context, string, node, breakPoint, array);
 
   return values;
 }
 
-function valuesArrayFromNominalValues(nominalValues) {
+function valuesArrayFromNominalValues(nominalValues, context) {
   const valuesArray = nominalValues.map((nominalValue) => {
-    const value = valueFromNominalValue(nominalValue);
+    const value = valueFromNominalValue(nominalValue, context);
 
     return value;
   });

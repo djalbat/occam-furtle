@@ -76,10 +76,12 @@ export default define(class Variable extends Element {
     }
 
     const valueType = value.getType(),
-          variableType = this.type;
+          typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    if (valueType !== variableType) {
-      const message = `The '${variableString} variable's '${variableType}' type does not compare to the value's '${valueType}' type.'`,
+    if (typeEqualToValueType) {
+      const typeString = this.type.getString(),
+            valueTypeString = valueType.getString(),
+            message = `The '${variableString} variable's '${typeString}' type does not compare to the value's '${valueTypeString}' type.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;

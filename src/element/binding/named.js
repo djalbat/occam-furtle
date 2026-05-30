@@ -48,10 +48,12 @@ export default define(class NamedBinding extends Element {
 
     context.trace(`Comparing the '${termString}' term with the '${namedBindingString}' named binding...`);
 
-    const termType = term.getType();
+    const termType = term.getType(),
+          typeEqualToTermType = this.type.isEqualTo(termType);
 
-    if (this.type !== termType) {
-      const message = `The '${termString}' term's '${termType}' type is not equal to '${namedBindingString}' named binding's '${this.type}' type.`,
+    if (!typeEqualToTermType) {
+      const typeString = this.type.getString(),
+            message = `The '${termString}' term's '${termType}' type is not equal to '${namedBindingString}' named binding's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

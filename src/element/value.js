@@ -3,7 +3,6 @@
 import { Element } from "occam-languages";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE_NAME } from "../typeNames";
 
 export default define(class Value extends Element {
   constructor(context, string, node, breakPoint, variable, primitive) {

@@ -53,11 +53,13 @@ export default define(class Procedure extends Element {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
           value = await this.returnBlock.evaluate(variables, context),
-          valueType = value.getType();
+          valueType = value.getType(),
+          typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    if (this.type !== valueType) {
+    if (typeEqualToValueType) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${procedureString}' procedure's '${this.type}' type.`,
+            typeString = this.type.getString(),
+            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -77,7 +79,7 @@ export default define(class Procedure extends Element {
 
     context.trace(`Calling the '${procedureString}' procedure nominally...`);
 
-    const values = valuesFromNominalValues(nominalValues),
+    const values = valuesFromNominalValues(nominalValues, context),
           term = await this.call(values, context);
 
     context.debug(`...called the '${procedureString}' procedure nominally.`);

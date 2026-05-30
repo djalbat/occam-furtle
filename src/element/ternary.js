@@ -37,9 +37,10 @@ export default define(class Ternary extends Element {
 
     value = this.term.evaluate(context);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          valueTypeBooleanType = valueType.isBooleanType();
 
-    if (valueType !== BOOLEAN_TYPE_NAME) {
+    if (!valueTypeBooleanType) {
       const valueString = value.getString(),
             message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);

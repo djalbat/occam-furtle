@@ -6,7 +6,7 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { BOOLEAN_TYPE_NAME, NOMINAL_VALUES_TYPE } from "../typeNames";
+import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
 const { asyncSome } = asynchronousUtilities;
@@ -38,11 +38,12 @@ export default define(class Some extends Element {
 
     value = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          valueTypeListType = valueType.isListType();
 
-    if (valueType !== NOMINAL_VALUES_TYPE) {
+    if (!valueTypeListType) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -60,9 +61,10 @@ export default define(class Some extends Element {
 
             value = await this.anonymousProcedure.call(values, context);
 
-            const valueType = value.getType();
+            const valueType = value.getType(),
+                  valueTypeBooleanType = valueType.isBooleanType();
 
-            if (valueType !== BOOLEAN_TYPE_NAME) {
+            if (!valueTypeBooleanType) {
               const valueString = value.getString(),
                     message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                     exception = Exception.fromMessage(message);

@@ -11,7 +11,7 @@ import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { valueFromNodesAndNominalValue } from "../../utilities/value";
 import { termFromBoolean, termFromStringLiteral } from "../../utilities/term";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
-import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME } from "../../typeNames";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
 
 export default define(class ObjectAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, namedBindings) {
@@ -35,9 +35,10 @@ export default define(class ObjectAssigment extends Element {
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 
     const value = this.variable.evaluate(context),
-          valueType = value.getType();
+          valueType = value.getType(),
+          valueTypeNominalValueType = valueType.isNominalValueType();
 
-    if (valueType !== NOMINAL_VALUE_TYPE_NAME) {
+    if (!valueTypeNominalValueType) {
       const valueString = value.getString(),
             message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
@@ -96,7 +97,9 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the content '${namedBindingString}' named binding...`);
 
-    if (type !== STRING_TYPE_NAME) {
+    const typeStringType = type.isStringType();
+
+    if (!typeStringType) {
       const namedBindingString = namedBinding.getString(),
             message = `The '${namedBindingString}' named binding's type should be '${STRING_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
@@ -137,7 +140,9 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the terminal '${namedBindingString}' named binding...`);
 
-    if (type !== BOOLEAN_TYPE_NAME) {
+    const typeBooleanType = type.isBooleanType();
+
+    if (!typeBooleanType) {
       const namedBindingString = namedBinding.getString(),
             message = `The '${namedBindingString}' named binding's type should be '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
@@ -168,9 +173,11 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the child nodes '${namedBindingString}' named binding...`);
 
-    if (type !== NOMINAL_VALUES_TYPE_NAME) {
+    const typeListType = type.isTypeListType();
+
+    if (!typeListType) {
       const namedBindingString = namedBinding.getString(),
-            message = `The '${namedBindingString}' named binding's type should be '${NOMINAL_VALUES_TYPE_NAME}'.`,
+            message = `The '${namedBindingString}' named binding's type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

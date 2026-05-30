@@ -3,7 +3,22 @@
 import elements from "../elements";
 import NominalValue from "../nominalValue";
 
-import { primitiveFromBoolean, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
+import { primitiveFromList, primitiveFromBoolean, primitiveFromNominalValue, primitiveFromStringLiteral } from "../utilities/primitive";
+
+export function valueFromList(list, context) {
+  const { Value } = elements,
+    variable = null,
+    primitive = primitiveFromList(list, context),
+    string = primitive.getString(),
+    node = null,
+    breakPoint = null;
+
+  context = null;
+
+  const value = new Value(context, string, node, breakPoint, variable, primitive);
+
+  return value;
+}
 
 export function valueFromBoolean(boolean, context) {
   const { Value } = elements,
@@ -32,27 +47,13 @@ export function valueFromPrimitive(primitive) {
   return value;
 }
 
-export function valueFromNominalValue(nominalValue) {
+export function valueFromNominalValue(nominalValue, context) {
   const { Value } = elements,
         variable = null,
-        primitive = primitiveFromNominalValue(nominalValue),
+        primitive = primitiveFromNominalValue(nominalValue, context),
         string = primitive.getString(),
         breakPoint = null,
         node = null,
-        context = null,
-        value = new Value(context, string, node, breakPoint, variable, primitive);
-
-  return value;
-}
-
-export function valueFromNominalValues(nominalValues) {
-  const { Value } = elements,
-        variable = null,
-        primitive = primitiveFromNominalValues(nominalValues),
-        string = primitive.getString(),
-        node = null,
-        breakPoint = null,
-        context = null,
         value = new Value(context, string, node, breakPoint, variable, primitive);
 
   return value;
@@ -85,20 +86,20 @@ export function valueFromNodeAndNominalValue(node, nominalValue) {
 
 export function valueFromNodesAndNominalValue(nodes, nominalValue) {
   const context = nominalValue.getContext(),
-        nominalValues = nodes.map((node) => {
+        list = nodes.map((node) => {
           const nominalValue = NominalValue.fromNode(node, context);
 
           return nominalValue;
         }),
-        value = valueFromNominalValues(nominalValues);
+        value = valueFromList(list, context);
 
   return value;
 }
 
 export default {
+  valueFromList,
   valueFromBoolean,
   valueFromNominalValue,
-  valueFromNominalValues,
   valueFromStringLiteral,
   valueFromPrimitive
 };

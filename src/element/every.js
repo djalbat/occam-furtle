@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { valueFromNode, valueFromBoolean } from "../utilities/value";
-import {BOOLEAN_TYPE_NAME, LIST_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME} from "../typeNames";
+import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 
 const { asyncEvery } = asynchronousUtilities;
 
@@ -62,9 +62,10 @@ export default define(class Every extends Element {
 
             value = await this.anonymousProcedure.call(values, context);
 
-            const valueType = value.getType();
+            const valueType = value.getType(),
+                  valueTypeBooleanType = valueType.isBooleanType();
 
-            if (valueType !== BOOLEAN_TYPE_NAME) {
+            if (!valueTypeBooleanType) {
               const termString = term.getString(),
                     message = `The '${termString}' term's type is '${termType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                     exception = Exception.fromMessage(message);

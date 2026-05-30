@@ -40,9 +40,10 @@ export default define(class NodesQuery extends Element {
 
     value = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          valueTypeNominalValueType = valueType.isNominalValueType();
 
-    if (valueType !== NOMINAL_VALUE_TYPE_NAME) {
+    if (!valueTypeNominalValueType) {
       const valueString = value.getString(),
             message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);

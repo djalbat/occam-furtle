@@ -38,12 +38,15 @@ export default define(class ComparisonTerm extends Element {
     const leftValue = this.leftTerm.evaluate(context),
           rightValue = this.rightTerm.evaluate(context),
           leftValueType = leftValue.getType(),
-          rightValueType = rightValue.getType();
+          rightValueType = rightValue.getType(),
+          leftValueTypeEqualToRightValueType = leftValueType.isEqualTo(rightValueType);
 
-    if (leftValueType !== rightValueType) {
+    if (!leftValueTypeEqualToRightValueType) {
       const leftValueString = leftValue.getString(),
             rightValueString = rightValue.getString(),
-            message = `The '${leftValueString}' left term's type is '${leftValueType}' whereas the '${rightValueString}' right term's type is '${rightTermType}'.`,
+            leftValueTypeString = leftValueType.getString(),
+            rightValueTypeString = rightValueType.getString(),
+            message = `The '${leftValueString}' left term's type is '${leftValueTypeString}' whereas the '${rightValueString}' right term's type is '${rightValueTypeString}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

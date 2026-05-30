@@ -37,11 +37,13 @@ export default define(class AnonymousProcedure extends Element {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
           value = await this.returnBlock.evaluate(variables, context),
-          valueType = value.getType();
+          valueType = value.getType(),
+          typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    if (this.type !== valueType) {
+    if (!typeEqualToValueType) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${this.type}' type.`,
+            typeString = this.type.getString(),
+            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

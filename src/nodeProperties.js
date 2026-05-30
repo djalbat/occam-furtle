@@ -4,7 +4,7 @@ import Exception from "./exception";
 import NodeProperty from "./nodeProperty";
 
 import { nodePropertiesStringFromNodePropertiesArray } from "./utilities/string";
-import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUES_TYPE_NAME } from "./typeNames";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME } from "./typeNames";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "./parameterNames";
 
 class NodeProperties {
@@ -69,9 +69,9 @@ export default nodeProperties;
 
 function nodePropertiesArrayFromNothing() {
   const types = [
+          LIST_TYPE_NAME,
           STRING_TYPE_NAME,
-          BOOLEAN_TYPE_NAME,
-          NOMINAL_VALUES_TYPE_NAME
+          BOOLEAN_TYPE_NAME
         ],
         names = [
           CONTENT_PARAMETER_NAME,

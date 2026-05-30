@@ -7,7 +7,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { valueFromNominalValue } from "../utilities/value";
-import { NOMINAL_VALUES_TYPE_NAME } from "../typeNames";
+import { LIST_TYPE_NAME } from "../typeNames";
 
 const { asyncReduce } = asynchronousUtilities;
 
@@ -43,11 +43,12 @@ export default define(class Reduce extends Element {
 
     value = this.variable.evaluate(context);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          valueTypeListType = valueType.isListType();
 
-    if (valueType !== NOMINAL_VALUES_TYPE_NAME) {
+    if (!valueTypeListType) {
       const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUES_TYPE_NAME}'.`,
+            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
       throw exception;

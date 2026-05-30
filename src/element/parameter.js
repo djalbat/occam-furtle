@@ -28,10 +28,12 @@ export default define(class Parameter extends Element {
 
     context.trace(`Comparing the '${valueString}' value against the '${parameterString}' parameter...`);
 
-    const valueType = value.getType();
+    const valueType = value.getType(),
+          typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    if (this.type !== valueType) {
-      const message = `The '${valueString}' value's '${valueType}' type is not equal to the '${parameterString}' parameter's '${this.type}' type.`,
+    if (!typeEqualToValueType) {
+      const typeString = ths.type.getString(),
+            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${parameterString}' parameter's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
