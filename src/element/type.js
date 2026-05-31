@@ -3,6 +3,8 @@
 import { Element } from "occam-languages";
 
 import { define } from "../elements";
+
+import { typeStringFromTypeNameAndArgumentTypeName } from "../utilities/string";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 export default define(class Type extends Element {
@@ -88,4 +90,39 @@ export default define(class Type extends Element {
   }
 
   static name = "Type";
+
+  static fromTypeName(typeName, context) {
+    let type = null;
+
+    if (typeName !== null) {
+      const node = null,  ///
+            name = typeName,  ///
+            argumentType = null,
+            typeString = typeName,  ///
+            string = typeString,  ///
+            breakPoint = null;
+
+      context = null;
+
+      type = new Type(context, string, node, breakPoint, name, argumentType);
+    }
+
+    return type;
+  }
+
+  static fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context) {
+    const node = null,  ///
+          name = typeName,  ///
+          argumentType = Type.fromTypeName(argumentTypeName, context),
+          typeString = typeStringFromTypeNameAndArgumentTypeName(typeName, argumentTypeName),
+          string = typeString,  ///
+          breakPoint = null;
+
+    context = null;
+
+    const type = new Type(context, string, node, breakPoint, name, argumentType);
+
+    return type;
+  }
+
 });

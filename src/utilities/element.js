@@ -652,22 +652,6 @@ export function variableFromTypeAndVariableNode(type, variableNode, context) {
   return variable;
 }
 
-export function typeFromTypeName(typeName, context) {
-  const { Type } = elements,
-        node = null,  ///
-        name = typeName,  ///
-        argumentType = null,
-        typeString = typeName,  ///
-        string = typeString,  ///
-        breakPoint = null;
-
-  context = null;
-
-  const type = new Type(context, string, node, breakPoint, name, argumentType);
-
-  return type;
-}
-
 export function nameFromTypeNode(typeNode, context) {
   const name = typeNode.getName();
 
@@ -788,8 +772,9 @@ export function nameFromReferenceNode(referenceNode, context) {
 }
 
 export function typeFromPrimitiveNode(primitiveNode, context) {
-  const typeName = primitiveNode.getTypeName(),
-        type = typeFromTypeName(typeName, context);
+  const { Type } = elements,
+        typeName = primitiveNode.getTypeName(),
+        type = Type.fromTypeName(typeName, context);
 
   return type;
 }

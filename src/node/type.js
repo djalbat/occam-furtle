@@ -10,7 +10,7 @@ export default class TypeNode extends NonTerminalNode {
 
     const tokenType = TYPE_TOKEN_TYPE;
 
-    this.someTerminalNode((terminalNode, index) => {
+    this.someTerminalNode((terminalNode) => {
       const content = terminalNode.getContent();
 
       name = content; //

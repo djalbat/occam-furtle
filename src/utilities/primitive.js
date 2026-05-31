@@ -7,11 +7,11 @@ import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, LIST_TYPE
 import { primtiveStringFromBoolean, primtiveStringFromNominalValue, primtiveStringFromNominalValues, primtiveStringFromStringLiteral } from "../utilities/string";
 
 export function primitiveFromList(list, context) {
-  const { Primitive } = elements,
+  const { Type, Primitive } = elements,
         primitiveString = primtiveStringFromNominalValues(list),
         string = primitiveString,  ///
         typeName = LIST_TYPE_NAME,
-        type = typeFromTypeName(typeName, context),
+        type = Type.fromTypeName(typeName, context),
         value = list,  ///
         node = null,
         breakPoint = null;
@@ -24,11 +24,11 @@ export function primitiveFromList(list, context) {
 }
 
 export function primitiveFromBoolean(boolean, context) {
-  const { Primitive } = elements,
+  const { Type, Primitive } = elements,
         primitiveString = primtiveStringFromBoolean(boolean),
         string = primitiveString,  ///
         typeName = BOOLEAN_TYPE_NAME,
-        type = typeFromTypeName(typeName, context),
+        type = Type.fromTypeName(typeName, context),
         value = boolean,  ///
         node = null,
         breakPoint = null;
@@ -41,11 +41,11 @@ export function primitiveFromBoolean(boolean, context) {
 }
 
 export function primitiveFromNominalValue(nominalValue, context) {
-  const { Primitive } = elements,
+  const { Type, Primitive } = elements,
         primitiveString = primtiveStringFromNominalValue(nominalValue),
         string = primitiveString,  ///
         typeName = NOMINAL_VALUE_TYPE_NAME,
-        type = typeFromTypeName(typeName, context),
+        type = Type.fromTypeName(typeName, context),
         value = nominalValue, ///
         breakPoint = null,
         node = null;
@@ -58,11 +58,11 @@ export function primitiveFromNominalValue(nominalValue, context) {
 }
 
 export function primitiveFromStringLiteral(stringLiteral, context) {
-  const { Primitive } = elements,
+  const { Type, Primitive } = elements,
         primitiveString = primtiveStringFromStringLiteral(stringLiteral),
         string = primitiveString,  ///
         typeName = STRING_TYPE_NAME,
-        type = typeFromTypeName(typeName, context),
+        type = Type.fromTypeName(typeName, context),
         value = stringLiteral,  ///
         node = null,
         breakPoint = null;

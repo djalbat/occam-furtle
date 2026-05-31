@@ -4,7 +4,7 @@ import { Element } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
-import nodeProperties from "../../nodeProperties";
+import nominalValueProperties from "../../nominalValueProperties";
 
 import { define } from "../../elements";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
@@ -46,7 +46,7 @@ export default define(class ObjectAssigment extends Element {
       throw exception;
     }
 
-    nodeProperties.compareNamedBindings(this.namedBindings, context);
+    nominalValueProperties.compareNamedBindings(this.namedBindings, context);
 
     this.namedBindings.forEachNamedBinding((namedBinding) => {
       this.evaluateNamedBinding(namedBinding, value, context);
@@ -173,7 +173,7 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the child nodes '${namedBindingString}' named binding...`);
 
-    const typeListType = type.isTypeListType();
+    const typeListType = type.isListType();
 
     if (!typeListType) {
       const namedBindingString = namedBinding.getString(),

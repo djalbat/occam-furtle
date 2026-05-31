@@ -119,14 +119,6 @@ export function primtiveStringFromNominalValues(nominalValues) {
   return primtiveString;
 }
 
-export function nodePropertyStringFromNameAndType(name, type) {
-  const nameString = name,  ///
-        typeString = type.getString(),
-        nodePropertyString = `${typeString} ${nameString}`;
-
-  return nodePropertyString;
-}
-
 export function typeStringFromNameAndArgumentType(name, argumentType) {
   let typeString;
 
@@ -162,18 +154,24 @@ export function returnBlockStringFromReturnStatementNode(returnStatement) {
   return returnBlockString;
 }
 
-export function nodePropertiesStringFromNodePropertiesArray(nodePropertiesArray) {
-  const nodePropertiesString = nodePropertiesArray.reduce((nodePropertiesString, nodeProperty) => {
-      const nodePropertyString = nodeProperty.getString();
+export function nominalValuePropertyStringFromNameAndType(name, type) {
+  const nameString = name,  ///
+        typeString = type.getString(),
+        nominalValuePropertyString = `${typeString} ${nameString}`;
 
-      nodePropertiesString = (nodePropertiesString === null) ?
-                               nodePropertyString :
-                                `${nodePropertiesString}, ${nodePropertyString}`;
+  return nominalValuePropertyString;
+}
 
-      return nodePropertiesString;
-    }, null);
+export function typeStringFromTypeNameAndArgumentTypeName(typeName, argumentTypeName) {
+  let typeString;
 
-  return nodePropertiesString;
+  typeString = `${typeName}`;
+
+  if (argumentTypeName !== null) {
+    typeString = `${typeString}<${argumentTypeName}>`;
+  }
+
+  return typeString;
 }
 
 export function variableAssignmentStringFromTypeAndVariable(type, variable) {
@@ -225,6 +223,20 @@ export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, p
         anonymousProcedureString = `${typeString} (${parametersString}) ${returnBlockString}`;
 
   return anonymousProcedureString;
+}
+
+export function nominalValuePropertiesStringFromNominalValuePropertiesArray(nominalValuePropertiesArray) {
+  const nominalValuePropertiesString = nominalValuePropertiesArray.reduce((nominalValuePropertiesString, nominalValueProperty) => {
+    const nominalValuePropertyString = nominalValueProperty.getString();
+
+    nominalValuePropertiesString = (nominalValuePropertiesString === null) ?
+                                     nominalValuePropertyString :
+                                      `${nominalValuePropertiesString}, ${nominalValuePropertyString}`;
+
+    return nominalValuePropertiesString;
+  }, null);
+
+  return nominalValuePropertiesString;
 }
 
 export function variableAssignmentStringFromTypeAndVariableAssignmentsArray(type, variableAssignmentsArray) {

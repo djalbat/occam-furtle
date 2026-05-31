@@ -44,25 +44,25 @@ export default define(class ArrayAssigment extends Element {
     }
 
     const primitiveValue = value.getPrimitiveValue(),
-          nominalValues = primitiveValue, ///
+          listValues = primitiveValue, ///
           bindingsLength = this.bindings.getLength(),
-          nominalValuesLength = nominalValues.length;
+          listValuesLength = listValues.length;
 
-    if (bindingsLength > nominalValuesLength) {
+    if (bindingsLength > listValuesLength) {
       const bindingsString = this.bindings.getString(),
-            primitiveString = primtiveStringFromNominalValues(nominalValues),
-            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${primitiveString}' nodes.`,
+            primitiveString = primtiveStringFromNominalValues(listValues),
+            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${primitiveString}' list.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
     this.bindings.forEachBinding((binding, index) => {
-      const elidated = binding.isElided();
+      const elided = binding.isElided();
 
-      if (!elidated) {
-        const nominalValue = nominalValues[index],
-              value = valueFromNominalValue(nominalValue);
+      if (!elided) {
+        const listValue = listValues[index],
+              value = listValue;  ///
 
         this.evaluateBinding(binding, value, context);
       }
@@ -71,17 +71,21 @@ export default define(class ArrayAssigment extends Element {
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
   }
 
-  evaluateBinding(binding, expression, context) {
-    const bindingString = binding.getString(),
-          expressionString = expression.getString();
+  evaluateBinding(binding, value, context) {
+    const valueString = value.getString(),
+          bindingString = binding.getString();
 
-    context.trace(`Evaluating the '${bindingString}' binding against the '${expressionString}' expression...`);
+    context.trace(`Evaluating the '${bindingString}' binding against the '${valueString}' value...`);
 
-    const bindingType = binding.getType(),
-          bindingTypeNominalValueType = bindingType.isNominalValueType();
+    const valueType = value.getType(),
+          bindingType = binding.getType(),
+          bindingTypeEqualToValueType = bindingType.isEqualTo(valueType);
 
-    if (!bindingTypeNominalValueType) {
-      const message = `The type of the '${bindingString}' binding should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
+    if (!bindingTypeEqualToValueType) {
+      const bindingTypeString = bindingType.getString(),
+            valueTypeString = valueType.getString(),
+            valueString = value.getString(),
+            message = `The '${bindingString}' binding's '${bindingTypeString}' type is not equal to the '${valueString}' value's '${valueTypeString}' type.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -90,9 +94,9 @@ export default define(class ArrayAssigment extends Element {
     const { Variable } = elements,
           variable = Variable.fromBinding(binding, context);
 
-    variable.assign(expression, context);
+    variable.assign(value, context);
 
-    context.debug(`...evaluated the '${bindingString}' binding against the '${expressionString}' expression.`);
+    context.debug(`...evaluated the '${bindingString}' binding against the '${valueString}' value.`);
   }
 
   static name = "ArrayAssignment";
