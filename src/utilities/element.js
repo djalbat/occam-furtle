@@ -10,7 +10,6 @@ import { ternaryStringFromTerm,
          termStringFromProperties,
          valueStringFromProperties,
          expressionStringFromProperties,
-         typeStringFromNameAndArgumentType,
          procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
          variableAssignmentStringFromTypeAndVariable,
@@ -84,10 +83,9 @@ export function termFromTermNode(termNode, context) {
 export function typeFromTypeNode(typeNode, context) {
   const { Type } = elements,
         node = typeNode,  ///
+        string = context.nodeAsString(node),
         name = nameFromTypeNode(typeNode, context),
         argumentType = argumentTypeFromTypeNode(typeNode, context),
-        typeString = typeStringFromNameAndArgumentType(name, argumentType),
-        string = typeString,  ///
         breakPoint = null;
 
   context = null;
@@ -917,7 +915,9 @@ export function argumentTypeFromTypeNode(typeNode, context) {
   const argumentTypeName = typeNode.getArgumentTypeName();
 
   if (argumentTypeName !== null) {
-    debugger
+    const { Type } = elements;
+
+    argumentType = Type.fromTypeName(argumentTypeName, context);
   }
 
   return argumentType;

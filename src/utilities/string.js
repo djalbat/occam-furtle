@@ -119,20 +119,6 @@ export function primtiveStringFromNominalValues(nominalValues) {
   return primtiveString;
 }
 
-export function typeStringFromNameAndArgumentType(name, argumentType) {
-  let typeString;
-
-  typeString = `${name}`;
-
-  if (argumentType !== null) {
-    const argumentTypeString = argumentType.getString();
-
-    typeString = `${typeString}${argumentTypeString}`;
-  }
-
-  return typeString;
-}
-
 export function procedureDeclarationStringFromProcedure(procedure) {
   const type = procedure.getType(),
         label = procedure.getLabel(),
