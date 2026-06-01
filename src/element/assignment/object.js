@@ -7,8 +7,8 @@ import Exception from "../../exception";
 import nominalValueProperties from "../../nominalValueProperties";
 
 import { define } from "../../elements";
-import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { valueFromNodesAndNominalValue } from "../../utilities/value";
+import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { termFromBoolean, termFromStringLiteral } from "../../utilities/term";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";

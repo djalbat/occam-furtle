@@ -6,9 +6,8 @@ import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { valueFromNominalValue } from "../../utilities/value";
+import { LIST_TYPE_NAME } from "../../typeNames";
 import { primtiveStringFromNominalValues } from "../../utilities/string";
-import { LIST_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -43,26 +42,26 @@ export default define(class ArrayAssigment extends Element {
       throw exception;
     }
 
-    const primitiveValue = value.getPrimitiveValue(),
-          listValues = primitiveValue, ///
-          bindingsLength = this.bindings.getLength(),
-          listValuesLength = listValues.length;
+    const bindingsLength = this.bindings.getLength(),
+          primitiveValue = value.getPrimitiveValue(),
+          primitiveValueLength = primitiveValue.length;
 
-    if (bindingsLength > listValuesLength) {
-      const bindingsString = this.bindings.getString(),
-            primitiveString = primtiveStringFromNominalValues(listValues),
-            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${primitiveString}' list.`,
+    if (bindingsLength > primitiveValueLength) {
+      const valueString = value.getString(),
+            bindingsString = this.bindings.getString(),
+            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${valueString}' list.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
 
+    const values = value.lift(context);
+
     this.bindings.forEachBinding((binding, index) => {
       const elided = binding.isElided();
 
       if (!elided) {
-        const listValue = listValues[index],
-              value = listValue;  ///
+        const value = values[index];
 
         this.evaluateBinding(binding, value, context);
       }

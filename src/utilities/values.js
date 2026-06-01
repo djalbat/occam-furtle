@@ -7,7 +7,7 @@ import { valuesStringFromValuesArray } from "../utilities/string";
 
 export function valuesFromNominalValues(nominalValues, context) {
   const { Values } = elements,
-        valuesArray = valuesArrayFromNominalValues(nominalValues, context),
+        valuesArray = valuesArrayFromNominalValues(nominalValues),
         valuesString = valuesStringFromValuesArray(valuesArray),
         string = valuesString, ///
         array = valuesArray,  ///
@@ -18,9 +18,9 @@ export function valuesFromNominalValues(nominalValues, context) {
   return values;
 }
 
-function valuesArrayFromNominalValues(nominalValues, context) {
+function valuesArrayFromNominalValues(nominalValues) {
   const valuesArray = nominalValues.map((nominalValue) => {
-    const value = valueFromNominalValue(nominalValue, context);
+    const value = valueFromNominalValue(nominalValue);
 
     return value;
   });

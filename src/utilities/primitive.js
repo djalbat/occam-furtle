@@ -2,26 +2,8 @@
 
 import elements from "../elements";
 
-import { typeFromTypeName } from "../utilities/element";
 import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, LIST_TYPE_NAME } from "../typeNames";
 import { primtiveStringFromBoolean, primtiveStringFromNominalValue, primtiveStringFromNominalValues, primtiveStringFromStringLiteral } from "../utilities/string";
-
-export function primitiveFromList(list, context) {
-  const { Type, Primitive } = elements,
-        primitiveString = primtiveStringFromNominalValues(list),
-        string = primitiveString,  ///
-        typeName = LIST_TYPE_NAME,
-        type = Type.fromTypeName(typeName, context),
-        value = list,  ///
-        node = null,
-        breakPoint = null;
-
-  context = null;
-
-  const primitive = new Primitive(context, string, node, breakPoint, type, value);
-
-  return primitive;
-}
 
 export function primitiveFromBoolean(boolean, context) {
   const { Type, Primitive } = elements,
@@ -64,6 +46,24 @@ export function primitiveFromStringLiteral(stringLiteral, context) {
         typeName = STRING_TYPE_NAME,
         type = Type.fromTypeName(typeName, context),
         value = stringLiteral,  ///
+        node = null,
+        breakPoint = null;
+
+  context = null;
+
+  const primitive = new Primitive(context, string, node, breakPoint, type, value);
+
+  return primitive;
+}
+
+export function primitiveFromNominalValues(nominalValues, context) {
+  const { Type, Primitive } = elements,
+        primitiveString = primtiveStringFromNominalValues(nominalValues),
+        string = primitiveString,  ///
+        argumentTypeName = NOMINAL_VALUE_TYPE_NAME,
+        typeName = LIST_TYPE_NAME,
+        type = Type.fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context),
+        value = nominalValues,  ///
         node = null,
         breakPoint = null;
 

@@ -2,6 +2,8 @@
 
 import { Element } from "occam-languages";
 
+import elements from "../elements";
+
 import { define } from "../elements";
 
 export default define(class Value extends Element {
@@ -82,6 +84,29 @@ export default define(class Value extends Element {
     }
 
     return equalTo;
+  }
+
+  lift(context) {
+    const { Primitive } = elements,
+          primitiveValue = this.getPrimitiveValue(),
+          primitiveValues = primitiveValue; ///
+
+    let type;
+
+    type = this.getType();
+
+    const argumentType = type.getArgumentType();
+
+    type = argumentType;  ///
+
+    const values = primitiveValues.map((primitiveValue)=> {
+            const primitive = Primitive.fromPrimitiveValueAndType(primitiveValue, type, context),
+                  value = Value.fromPrimitive(primitive, context);
+
+            return value;
+          });
+
+    return values;
   }
 
   static name = "Value";

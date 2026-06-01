@@ -3,22 +3,7 @@
 import elements from "../elements";
 import NominalValue from "../nominalValue";
 
-import { primitiveFromList, primitiveFromBoolean, primitiveFromNominalValue, primitiveFromStringLiteral } from "../utilities/primitive";
-
-export function valueFromList(list, context) {
-  const { Value } = elements,
-    variable = null,
-    primitive = primitiveFromList(list, context),
-    string = primitive.getString(),
-    node = null,
-    breakPoint = null;
-
-  context = null;
-
-  const value = new Value(context, string, node, breakPoint, variable, primitive);
-
-  return value;
-}
+import { primitiveFromBoolean, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
 
 export function valueFromBoolean(boolean, context) {
   const { Value } = elements,
@@ -35,25 +20,14 @@ export function valueFromBoolean(boolean, context) {
   return value;
 }
 
-export function valueFromPrimitive(primitive) {
-  const { Value } = elements,
-        context = null,
-        string = primitive.getString(),
-        node = null,
-        breakPoint = null,
-        variable = null,
-        value = new Value(context, string, node, breakPoint, variable, primitive);
-
-  return value;
-}
-
-export function valueFromNominalValue(nominalValue, context) {
+export function valueFromNominalValue(nominalValue) {
   const { Value } = elements,
         variable = null,
-        primitive = primitiveFromNominalValue(nominalValue, context),
+        primitive = primitiveFromNominalValue(nominalValue),
         string = primitive.getString(),
         breakPoint = null,
         node = null,
+        context = null,  ///
         value = new Value(context, string, node, breakPoint, variable, primitive);
 
   return value;
@@ -86,20 +60,32 @@ export function valueFromNodeAndNominalValue(node, nominalValue) {
 
 export function valueFromNodesAndNominalValue(nodes, nominalValue) {
   const context = nominalValue.getContext(),
-        list = nodes.map((node) => {
+        nominalVvalues = nodes.map((node) => {
           const nominalValue = NominalValue.fromNode(node, context);
 
           return nominalValue;
         }),
-        value = valueFromList(list, context);
+        value = valueFromNominalValues(nominalVvalues);
 
   return value;
 }
 
 export default {
-  valueFromList,
   valueFromBoolean,
-  valueFromNominalValue,
   valueFromStringLiteral,
-  valueFromPrimitive
+  valueFromNodeAndNominalValue,
+  valueFromNodesAndNominalValue
 };
+
+function valueFromNominalValues(nominalValues) {
+  const { Value } = elements,
+        variable = null,
+        context = null,
+        primitive = primitiveFromNominalValues(nominalValues, context),
+        string = primitive.getString(),
+        node = null,
+        breakPoint = null,
+        value = new Value(context, string, node, breakPoint, variable, primitive);
+
+  return value;
+}

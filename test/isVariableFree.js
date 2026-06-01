@@ -9,10 +9,10 @@ const { FileContextFromFilePath } = require("./utilities/fileContext"),
       { procedureFromFilePathProcedureName } = require("./utilities/furtle");
 
 const { first } = arrayUtilities,
-      { TRACE_LEVEL } = levels,
+      { ERROR_LEVEL } = levels,
       { createReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
-const logLevel = TRACE_LEVEL,
+const logLevel = ERROR_LEVEL,
       filePath = "first-order-logic/Functions/Free and bound variables.ftl",
       projectName = "first-order-logic",
       procedureName = "isVariableFree",

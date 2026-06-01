@@ -67,7 +67,7 @@ export default define(class Reduce extends Element {
 
       const values = Values.fromValue(value, context);
 
-      value = valueFromNominalValue(nominalValue, context);
+      value = valueFromNominalValue(nominalValue);
 
       values.addValue(value);
 

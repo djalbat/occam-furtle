@@ -114,4 +114,33 @@ export default define(class Primitive extends Element {
   }
 
   static name = "Primitive";
+
+  static fromPrimitiveValueAndType(primitiveValue, type, context) {
+    const value = primitiveValue, ///
+          typeName = type.getName();
+
+    let string;
+
+    switch (typeName) {
+      case NOMINAL_VALUE_TYPE_NAME: {
+        const nominalValue = value;  ///
+
+        string = nominalValue.getString();
+
+        break;
+      }
+
+      default: {
+        string = `${value}`;
+
+        break;
+      }
+    }
+
+    const node = null,
+          breakPoint = null,
+          primitive = new Primitive(context, string, node, breakPoint, type, value);
+
+    return primitive;
+  }
 });
