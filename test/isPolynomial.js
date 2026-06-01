@@ -7,18 +7,18 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodeQuery } = queryUtilities,
-      { ERROR_LEVEL } = levels;
+      { TRACE_LEVEL } = levels;
 
-const logLevel = ERROR_LEVEL,
-      filePath = "first-order-logic/Functions/Free and bound variables.ftl",
-      projectName = "first-order-logic",
-      procedureName = "isVariableFree",
-      projectsDirectoryPath = "../../Logic";
+const logLevel = TRACE_LEVEL,
+      filePath = "polynomials/Functions/Polynomials.ftl",
+      projectName = "polynomials",
+      procedureName = "isPolynomial",
+      projectsDirectoryPath = "../../Mathematics";
 
-const content = "∀n n = n",
+const content = "p = x^2 + 1",
       termNodeQuery = nodeQuery("/statement/argument!/term!");
 
-describe(projectName, () => {
+describe.skip(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

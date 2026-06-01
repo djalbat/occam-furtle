@@ -1,30 +1,21 @@
 "use strict";
 
 const { NominalValue } = require("../../lib/index"),  ///
-      { queryUtilities } = require("occam-query"),  ///
       { nominalUtilities } = require("occam-languages");
 
 const NominalFileContext = require("../context/file/nominal");
 
-const { nodeQuery } = queryUtilities,
-      { nominalLexerFromCombinedCustomGrammar, nominalParserFromStartRuleNameAndCombinedCustomGrammar } = nominalUtilities;
+const { nominalLexerFromCombinedCustomGrammar, nominalParserFromStartRuleNameAndCombinedCustomGrammar } = nominalUtilities;
 
-const content = "∀n n = n",
-      startRuleName = "statement",
-      termNodeQuery = nodeQuery("/statement/argument!/term!");
+const startRuleName = "statement";
 
-function nominalValuesFromNothing(context) {
+function nominalValuesFromContent(content, callback, context) {
   const combinaedCustomGrammar = context.getCombinedCustomGrammar(),
         nominalLexer = nominalLexerFromCombinedCustomGrammar(combinaedCustomGrammar),
         nominalParser = nominalParserFromStartRuleNameAndCombinedCustomGrammar(startRuleName, combinaedCustomGrammar),
         tokens = nominalLexer.tokenise(content),
         node = nominalParser.parse(tokens),
-        statementNode = node, ///
-        termNode = termNodeQuery(statementNode),
-        nodes = [ ///
-          termNode,
-          statementNode
-        ],
+        nodes = callback(node),
         nominalFileContext = NominalFileContext.fromNodeAndTokens(node, tokens, context);
 
   context = nominalFileContext; ///
@@ -35,7 +26,7 @@ function nominalValuesFromNothing(context) {
 }
 
 module.exports = {
-  nominalValuesFromNothing
+  nominalValuesFromContent
 };
 
 function nomainlValuesFromNodes(nodes, context) {
