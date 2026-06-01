@@ -36,8 +36,13 @@ export default define(class Procedure extends Element {
 
   getName() { return this.label.getName(); }
 
-  isBooleanType() { return this.type.isBooleanType(); }
+  isBoolean() {
+    const type = this.getType(),
+          booleanType = type.isBooleanType(),
+          boolean = booleanType;  ///
 
+    return boolean;
+  }
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
