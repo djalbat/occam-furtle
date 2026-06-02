@@ -12,11 +12,12 @@ const { nodeQuery } = queryUtilities,
 const logLevel = ERROR_LEVEL,
       filePath = "first-order-logic/Functions/Free and bound variables.ftl",
       projectName = "first-order-logic",
-      procedureName = "isVariableFree",
+      procedureName = "isVariableBound",
       projectsDirectoryPath = "../../Logic";
 
-const content = "∀n n = n",
-      termNodeQuery = nodeQuery("/statement/argument!/term!");
+const content = `∀n n = n
+`,
+      termNodeQuery = nodeQuery("/step/statement/argument!/term!");
 
 describe(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {

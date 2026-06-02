@@ -6,27 +6,25 @@ const { levels } =require("necessary"),
 const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
-const { nodeQuery } = queryUtilities,
+const { nodesQuery } = queryUtilities,
       { TRACE_LEVEL } = levels;
 
 const logLevel = TRACE_LEVEL,
-      filePath = "polynomials/Functions/Polynomials.ftl",
+      filePath = "polynomials/Funcions/Polynomials.ftl",
       projectName = "polynomials",
-      procedureName = "isPolynomial",
+      procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";
 
-const content = "p = x^2 + 1",
-      termNodeQuery = nodeQuery("/statement/argument!/term!");
+const content = `1 = x
+`,
+      termNodesQuery = nodesQuery("/step/statement/equality!/term");
 
-describe.skip(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///
-            termNode = termNodeQuery(statementNode),
-              nodes = [ ///
-              termNode,
-              statementNode
-            ];
+            termNodes = termNodesQuery(statementNode),
+            nodes = termNodes;  ///
 
       return nodes;
     }, context);

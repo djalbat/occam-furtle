@@ -6,6 +6,7 @@ const { arrayUtilities } =require("necessary"),
 const { FileContextFromFilePath } = require("../utilities/fileContext"),
       { releaseContextFromDependency } = require("../utilities/releaseContext"),
       { procedureFromFilePathProcedureName } = require("../utilities/furtle");
+const {log} = require("necessary/lib/utilities/logging");
 
 const { first } = arrayUtilities,
       { createReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
@@ -43,9 +44,15 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   it("initialises", async () => {
     initialiseReleaseContexts(context);
 
-    const firstReleaseContext = first(releaseContexts);
+    releaseContext = releaseContexts.find((releaseContext) => {
+      const name = releaseContext.getName();
 
-    releaseContext = firstReleaseContext;  ///
+      if (name === projectName) {
+        return true;
+      }
+    }) || null;
+
+    assert.isNotNull(releaseContext);
   });
 
   it(procedureName, async () => {
@@ -57,7 +64,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
           primitiveValue = term.getPrimitiveValue(),
           boolean = primitiveValue; ///
 
-    assert.isFalse(boolean);
+    assert.isTrue(boolean);
   });
 }
 

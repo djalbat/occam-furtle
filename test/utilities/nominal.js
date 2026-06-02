@@ -7,7 +7,7 @@ const NominalFileContext = require("../context/file/nominal");
 
 const { nominalLexerFromCombinedCustomGrammar, nominalParserFromStartRuleNameAndCombinedCustomGrammar } = nominalUtilities;
 
-const startRuleName = "statement";
+const startRuleName = "step";
 
 function nominalValuesFromContent(content, callback, context) {
   const combinaedCustomGrammar = context.getCombinedCustomGrammar(),

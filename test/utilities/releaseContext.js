@@ -1,17 +1,35 @@
 "use strict";
 
 const { releaseContextUtilities } = require("occam-languages"),
-      { fileSystemUtilities: occamFileSystemUtilities } = require("occam-server");
+      { fileSystemUtilities: occamFileSystemUtilities } = require("occam-server"),
+      { pathUtilities, fileSystemUtilities: necessaryFileSystemUtilities } = require("necessary");
 
 const { loadProject } = occamFileSystemUtilities,
-      { releaseContextFromProject } = releaseContextUtilities;
+      { concatenatePaths } = pathUtilities,
+      { readFile, isEntryFile } = necessaryFileSystemUtilities,
+      { releaseContextFromJSON, releaseContextFromProject } = releaseContextUtilities;
 
 async function releaseContextFromDependency(dependency, context) {
+  let releaseContext;
+
   const { projectsDirectoryPath } = context,
         dependencyName = dependency.getName(),
-        projectName = dependencyName, ///
-        project = loadProject(projectName, projectsDirectoryPath),
-        releaseContext = releaseContextFromProject(project, context);
+        entryPath = concatenatePaths(projectsDirectoryPath, dependencyName),
+        entryFile = isEntryFile(entryPath);
+
+  if (entryFile) {
+    const filePath = entryPath, ///
+          content = readFile(filePath),
+          jsonString = content, ///
+          json = JSON.parse(jsonString);
+
+    releaseContext = releaseContextFromJSON(json, context);
+  } else {
+    const projectName = dependencyName, ///
+          project = loadProject(projectName, projectsDirectoryPath);
+
+    releaseContext = releaseContextFromProject(project, context);
+  }
 
   return releaseContext;
 }
