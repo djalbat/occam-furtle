@@ -14,7 +14,7 @@ const entries = [
     "secondary-keyword": "^(?:as|if|else)"
   },
   {
-    "function-name": "^(?:nodeQuery|nodesQuery|reduce|every|some|toString|tryString|toInteger|tryInteger)"
+    "function-name": "^(?:nodeQuery|nodesQuery|reduce|every|some|toInteger|tryInteger)"
   },
   {
     "type": "^(?:List|Node|String|Boolean|Integer)"

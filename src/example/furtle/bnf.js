@@ -72,11 +72,7 @@ const bnf = `
     
     
     
-    toString                ::=  "toString"<NO_WHITESPACE>"(" variable ")" ;
-    
     toInteger               ::=  "toInteger"<NO_WHITESPACE>"(" variable ")" ;
-    
-    tryString               ::=  "tryString"<NO_WHITESPACE>"(" variable ")" ;
     
     tryInteger              ::=  "tryInteger"<NO_WHITESPACE>"(" variable ")" ;
     
@@ -112,11 +108,7 @@ const bnf = `
     
                               |  some
                              
-                              |  toString
-                             
                               |  toInteger
-                             
-                              |  tryString
                              
                               |  tryInteger
                              
