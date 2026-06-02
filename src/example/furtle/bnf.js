@@ -72,7 +72,11 @@ const bnf = `
     
     
     
+    toString                ::=  "toString"<NO_WHITESPACE>"(" variable ")" ;
+    
     toInteger               ::=  "toInteger"<NO_WHITESPACE>"(" variable ")" ;
+    
+    tryString               ::=  "tryString"<NO_WHITESPACE>"(" variable ")" ;
     
     tryInteger              ::=  "tryInteger"<NO_WHITESPACE>"(" variable ")" ;
     
@@ -108,6 +112,14 @@ const bnf = `
     
                               |  some
                              
+                              |  toString
+                             
+                              |  toInteger
+                             
+                              |  tryString
+                             
+                              |  tryInteger
+                             
                               |  term
                               
                               ;
@@ -130,13 +142,11 @@ const bnf = `
 
 
     
-     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Number" | "Boolean" | "Integer" ) ">"
+     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Boolean" | "Integer" ) ">"
      
                               |  "Node"  
      
                               |  "String" 
-     
-                              |  "Number" 
      
                               |  "Boolean"   
 
@@ -160,8 +170,6 @@ const bnf = `
                               
                               |  [integer]
                               
-                              |  [number] 
-                              
                               |  [null]
                              
                               ;
@@ -176,7 +184,7 @@ const bnf = `
     
     
     
-    nonsense.               ::=  [secondary-keyword] | [type] | [null] | [boolean] | [integer] | [string-literal] | [query] | [special] | [name] | [number] | [unassigned] ;
+    nonsense.               ::=  [string-literal] | [secondary-keyword] | [function-name] | [type] | [boolean] | [integer] | [null] | [name] | [special] | [unassigned] ;
 
 
     

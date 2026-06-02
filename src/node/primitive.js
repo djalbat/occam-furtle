@@ -4,25 +4,25 @@ import { NonTerminalNode } from "occam-languages";
 
 import NominalValue from "../nominalValue";
 
-import { NULL, TRUE, FALSE } from "../constants";
-import { STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
-import { NULL_TOKEN_TYPE, NUMBER_TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
+import { TEN, NULL, TRUE, FALSE } from "../constants";
+import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+import { NULL_TOKEN_TYPE, INTEGER_TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, STRING_LITERAL_TOKEN_TYPE } from "../tokenTypes";
 
 export default class PrimitiveNode extends NonTerminalNode {
   getTypeName() {
     let typeName;
 
-    const number = this.getNumber(),
-          boolean = this.getBoolean(),
+    const boolean = this.getBoolean(),
+          integer = this.getInteger(),
           nominalvalue = this.getNominaValue(),
           stringLiteral = this.getStringLiteral();
 
     if (false) {
       ///
-    } else if (number !== null) {
-      typeName = NUMBER_TYPE_NAME;
     } else if (boolean !== null) {
       typeName = BOOLEAN_TYPE_NAME;
+    } else if (integer !== null) {
+      typeName = INTEGER_TYPE_NAME;
     } else if (nominalvalue !== null) {
       typeName = NOMINAL_VALUE_TYPE_NAME;
     } else if (stringLiteral !== null) {
@@ -35,15 +35,15 @@ export default class PrimitiveNode extends NonTerminalNode {
   getValue() {
     let value;
 
-    const number = this.getNumber(),
-          boolean = this.getBoolean(),
+    const boolean = this.getBoolean(),
+          integer = this.getInteger(),
           nominalValue = this.getNominaValue(),
           stringLiteral = this.getStringLiteral();
 
     if (false) {
       ///
-    } else if (number !== null) {
-      value = number; ///
+    } else if (integer !== null) {
+      value = integer; ///
     } else if (boolean !== null) {
       value = boolean;  ///
     } else if (nominalValue !== null) {
@@ -53,24 +53,6 @@ export default class PrimitiveNode extends NonTerminalNode {
     }
 
     return value;
-  }
-
-  getNumber() {
-    let number = null;
-
-    const tokenType = NUMBER_TOKEN_TYPE; ///
-
-    this.someTerminalNode((terminalNode) => {
-      const content = terminalNode.getContent();
-
-      if (content === TRUE) {
-        number = Number(content);
-
-        return true;
-      }
-    }, tokenType);
-
-    return number;
   }
 
   getBoolean() {
@@ -95,6 +77,23 @@ export default class PrimitiveNode extends NonTerminalNode {
     }, tokenType);
 
     return boolean;
+  }
+
+  getInteger() {
+    let integer = null;
+
+    const tokenType = INTEGER_TOKEN_TYPE; ///
+
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent(),
+            radix = TEN;
+
+      integer = parseInt(content, radix)
+
+      return true;
+    }, tokenType);
+
+    return integer;
   }
 
   getNominaValue() {

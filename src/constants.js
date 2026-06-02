@@ -1,5 +1,6 @@
 "use strict";
 
+export const TEN = 10;
 export const NULL = "null";
 export const TRUE = "true";
 export const FALSE = "false";

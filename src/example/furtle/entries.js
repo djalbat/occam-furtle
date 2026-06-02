@@ -1,23 +1,23 @@
 "use strict";
 
 const LATIN = "[\\p{Script=Latin}]",
-  DECIMAL = "[0-9]";
+      DECIMAL = "[0-9]";
 
 const entries = [
   {
-    "type": "^(?:List|Node|String|Number|Boolean|Integer)"
-  },
-  {
-    "query": "^(?:nodeQuery|nodesQuery)"
+    "bracket": "^(?:\\{|\\})"
   },
   {
     "primary-keyword": "^return"
   },
   {
-    "secondary-keyword": "^(?:as|if|else|reduce|every|some|toInteger|tryInteger)"
+    "secondary-keyword": "^(?:as|if|else)"
   },
   {
-    "null": "^null"
+    "function-name": "^(?:nodeQuery|nodesQuery|reduce|every|some|toString|tryString|toInteger|tryInteger)"
+  },
+  {
+    "type": "^(?:List|Node|String|Boolean|Integer)"
   },
   {
     "boolean": "^(?:true|false)"
@@ -26,16 +26,13 @@ const entries = [
     "integer": "^[+\\-]?\\d+"
   },
   {
-    "bracket": "^(?:\\{|\\})"
-  },
-  {
-    "special": "^(?:<|>|!=|==|!|=|,|;|&&|\\|\\||\\(|\\)|\\[|\\])"
+    "null": "^null"
   },
   {
     "name": `^${LATIN}+${DECIMAL}*`,
   },
   {
-    "number": `^${DECIMAL}+`
+    "special": "^(?:<|>|!=|==|!|=|,|;|&&|\\|\\||\\(|\\)|\\[|\\])"
   },
   {
     "unassigned": "^[^\\s]+"

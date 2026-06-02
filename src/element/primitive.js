@@ -6,7 +6,7 @@ import { arrayUtilities } from "necessary";
 import elements from "../elements";
 
 import { define } from "../elements";
-import { LIST_TYPE_NAME, STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 const { match } = arrayUtilities;
 
@@ -74,22 +74,22 @@ export default define(class Primitive extends Element {
           break;
         }
 
-        case NUMBER_TYPE_NAME: {
-          const numberA = this.value, ///
-                numberB = value;  ///
+        case BOOLEAN_TYPE_NAME: {
+          const booleanA = this.value, ///
+                booleanB = value;  ///
 
-          if (numberA === numberB) {
+          if (booleanA === booleanB) {
             equalTo = true;
           }
 
           break;
         }
 
-        case BOOLEAN_TYPE_NAME: {
-          const booleanA = this.value, ///
-                booleanB = value;  ///
+        case INTEGER_TYPE_NAME: {
+          const integerA = this.value, ///
+                integerB = value;  ///
 
-          if (booleanA === booleanB) {
+          if (integerA === integerB) {
             equalTo = true;
           }
 

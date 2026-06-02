@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 import { typeStringFromTypeNameAndArgumentTypeName } from "../utilities/string";
-import { LIST_TYPE_NAME, STRING_TYPE_NAME, NUMBER_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 export default define(class Type extends Element {
   constructor(context, string, node, breakPoint, name, argumentType) {
@@ -35,16 +35,16 @@ export default define(class Type extends Element {
     return booleanType;
   }
 
-  isNumberType() {
-    const numberType = (this.name === NUMBER_TYPE_NAME);
-
-    return numberType;
-  }
-
   isBooleanType() {
     const booleanType = (this.name === BOOLEAN_TYPE_NAME);
 
     return booleanType;
+  }
+
+  isIntegerType() {
+    const integerType = (this.name === INTEGER_TYPE_NAME);
+
+    return integerType;
   }
 
   isNominalValueType() {
