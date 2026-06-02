@@ -72,6 +72,12 @@ const bnf = `
     
     
     
+    toInteger               ::=  "toInteger"<NO_WHITESPACE>"(" variable ")" ;
+    
+    tryInteger              ::=  "tryInteger"<NO_WHITESPACE>"(" variable ")" ;
+    
+    
+    
     returnStatement         ::=  "return" value ";" ; 
     
     
@@ -124,7 +130,7 @@ const bnf = `
 
 
     
-     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Number" | "Boolean" ) ">"
+     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Number" | "Boolean" | "Integer" ) ">"
      
                               |  "Node"  
      
@@ -133,6 +139,8 @@ const bnf = `
                               |  "Number" 
      
                               |  "Boolean"   
+
+                              |  "Integer"   
 
                               ;
 
@@ -150,6 +158,8 @@ const bnf = `
                               
                               |  [boolean]
                               
+                              |  [integer]
+                              
                               |  [number] 
                               
                               |  [null]
@@ -166,7 +176,7 @@ const bnf = `
     
     
     
-    nonsense.               ::=  [secondary-keyword] | [type] | [null] | [boolean] | [string-literal] | [query] | [special] | [name] | [number] | [unassigned] ;
+    nonsense.               ::=  [secondary-keyword] | [type] | [null] | [boolean] | [integer] | [string-literal] | [query] | [special] | [name] | [number] | [unassigned] ;
 
 
     
