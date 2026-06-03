@@ -7,9 +7,9 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodesQuery } = queryUtilities,
-      { TRACE_LEVEL } = levels;
+      { ERROR_LEVEL } = levels;
 
-const logLevel = TRACE_LEVEL,
+const logLevel = ERROR_LEVEL,
       filePath = "polynomials/Funcions/Polynomials.ftl",
       projectName = "polynomials",
       procedureName = "isTermIntegerPolynomial",
