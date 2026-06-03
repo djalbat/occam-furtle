@@ -49,6 +49,12 @@ export function primtiveStringFromBoolean(boolean) {
   return expresssionString;
 }
 
+export function primtiveStringFromInteger(integer) {
+  const expresssionString = `${integer}`;
+
+  return expresssionString;
+}
+
 export function termsStringFromTermsArray(termsArray) {
   const termsString = termsArray.reduce((termsString, term) => {
     const termString = term.getString();

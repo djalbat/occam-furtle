@@ -2,8 +2,8 @@
 
 import elements from "../elements";
 
-import { STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME, LIST_TYPE_NAME } from "../typeNames";
-import { primtiveStringFromBoolean, primtiveStringFromNominalValue, primtiveStringFromNominalValues, primtiveStringFromStringLiteral } from "../utilities/string";
+import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+import { primtiveStringFromBoolean, primtiveStringFromInteger, primtiveStringFromNominalValue, primtiveStringFromNominalValues, primtiveStringFromStringLiteral } from "../utilities/string";
 
 export function primitiveFromBoolean(boolean, context) {
   const { Type, Primitive } = elements,
@@ -12,6 +12,23 @@ export function primitiveFromBoolean(boolean, context) {
         typeName = BOOLEAN_TYPE_NAME,
         type = Type.fromTypeName(typeName, context),
         value = boolean,  ///
+        node = null,
+        breakPoint = null;
+
+  context = null;
+
+  const primitive = new Primitive(context, string, node, breakPoint, type, value);
+
+  return primitive;
+}
+
+export function primitiveFromInteger(integer, context) {
+  const { Type, Primitive } = elements,
+        primitiveString = primtiveStringFromInteger(integer),
+        string = primitiveString,  ///
+        typeName = INTEGER_TYPE_NAME,
+        type = Type.fromTypeName(typeName, context),
+        value = integer,  ///
         node = null,
         breakPoint = null;
 

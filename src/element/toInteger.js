@@ -6,7 +6,7 @@ import Exception from "../exception";
 
 import { TEN } from "../constants";
 import { define } from "../elements";
-import { valueFromBoolean } from "../utilities/value";
+import { valueFromInteger } from "../utilities/value";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 export default define(class ToInteger extends Element {
@@ -64,7 +64,7 @@ export default define(class ToInteger extends Element {
       }
     }
 
-    value = valueFromBoolean(boolean);
+    value = valueFromInteger(integer);
 
     const valueString = value.getString();
 

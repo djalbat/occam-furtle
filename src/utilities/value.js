@@ -3,12 +3,27 @@
 import elements from "../elements";
 import NominalValue from "../nominalValue";
 
-import { primitiveFromBoolean, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
+import { primitiveFromBoolean, primitiveFromInteger, primitiveFromNominalValue, primitiveFromNominalValues, primitiveFromStringLiteral } from "../utilities/primitive";
 
 export function valueFromBoolean(boolean, context) {
   const { Value } = elements,
+    variable = null,
+    primitive = primitiveFromBoolean(boolean, context),
+    string = primitive.getString(),
+    node = null,
+    breakPoint = null;
+
+  context = null;
+
+  const value = new Value(context, string, node, breakPoint, variable, primitive);
+
+  return value;
+}
+
+export function valueFromInteger(integer, context) {
+  const { Value } = elements,
         variable = null,
-        primitive = primitiveFromBoolean(boolean, context),
+        primitive = primitiveFromInteger(integer, context),
         string = primitive.getString(),
         node = null,
         breakPoint = null;
