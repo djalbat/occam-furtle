@@ -7,15 +7,15 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodesQuery } = queryUtilities,
-      { ERROR_LEVEL } = levels;
+      { TRACE_LEVEL } = levels;
 
-const logLevel = ERROR_LEVEL,
+const logLevel = TRACE_LEVEL,
       filePath = "polynomials/Funcions/Polynomials.ftl",
       projectName = "polynomials",
       procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";
 
-const content = `1 = x
+const content = `12x = x
 `,
       termNodesQuery = nodesQuery("/step/statement/equality!/term");
 

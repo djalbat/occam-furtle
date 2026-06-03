@@ -7,11 +7,11 @@ import { primitiveFromBoolean, primitiveFromInteger, primitiveFromNominalValue, 
 
 export function valueFromBoolean(boolean, context) {
   const { Value } = elements,
-    variable = null,
-    primitive = primitiveFromBoolean(boolean, context),
-    string = primitive.getString(),
-    node = null,
-    breakPoint = null;
+        variable = null,
+        primitive = primitiveFromBoolean(boolean, context),
+        string = primitive.getString(),
+        node = null,
+        breakPoint = null;
 
   context = null;
 

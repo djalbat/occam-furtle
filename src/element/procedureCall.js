@@ -4,6 +4,7 @@ import { Element } from "occam-languages";
 
 import Exception from "../exception";
 
+import { free } from "../utilities/context";
 import { define } from "../elements";
 
 export default define(class ProcedureCall extends Element {
@@ -41,10 +42,16 @@ export default define(class ProcedureCall extends Element {
       throw exception;
     }
 
+    let value;
+
     const procedure = context.findProcedureByProcedureName(procedureName),
-          values = this.values.evaluate(context),
-          value = await procedure.call(values, context),
-          valueString = value.getString();
+          values = this.values.evaluate(context);
+
+    await free(async (context) => {
+      value = await procedure.call(values, context);
+    }, context);
+
+    const valueString = value.getString();
 
     context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
 

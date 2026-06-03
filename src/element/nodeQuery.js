@@ -4,10 +4,11 @@ import { Element } from "occam-languages";
 import { arrayUtilities } from "necessary";
 
 import Exception from "../exception";
+import NominalValue from "../nominalValue";
 
 import { define } from "../elements";
 import { NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
-import { valueFromNodeAndNominalValue } from "../utilities/value";
+import { valueFromNominalValue, valueFromNodeAndNominalValue } from "../utilities/value";
 
 const { first } = arrayUtilities;
 
@@ -72,18 +73,24 @@ export default define(class NodeQuery extends Element {
     const nodes = this.query.execute(node),
           nodesLength = nodes.length;
 
-    if (nodesLength !== 1) {
-      const message = `The length of the returned nodes is ${nodesLength} when it should be 1.`,
+    if (false) {
+      ///
+    } else if (nodesLength === 0) {
+      const nominalValue = NominalValue.fromNothing();
+
+      value = valueFromNominalValue(nominalValue);
+    } else if (nodesLength === 1) {
+      const firstNode = first(nodes);
+
+      node = firstNode ///
+
+      value = valueFromNodeAndNominalValue(node, nominalValue);
+    } else {
+      const message = `The length of the returned nodes is ${nodesLength} when it should be 0 or 1.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
     }
-
-    const firstNode = first(nodes);
-
-    node = firstNode ///
-
-    value = valueFromNodeAndNominalValue(node, nominalValue);
 
     const valueString = value.getString();
 
