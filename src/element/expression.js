@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Expression extends Element {
-  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall) {
+  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, toInteger, tryInteger, returnBlock, procedureCall) {
     super(context, string, node, breakPoint);
 
     this.term = term;
@@ -15,6 +15,8 @@ export default define(class Expression extends Element {
     this.ternary = ternary;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
+    this.toInteger = toInteger;
+    this.tryInteger = tryInteger;
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
   }
@@ -47,6 +49,14 @@ export default define(class Expression extends Element {
     return this.nodesQuery;
   }
 
+  getToInteger() {
+    return this.toInteger;
+  }
+
+  getTryInteger() {
+    return this.tryInteger;
+  }
+
   getReturnBlock() {
     return this.returnBlock;
   }
@@ -74,6 +84,10 @@ export default define(class Expression extends Element {
       type = this.nodeQuery.getType();
     } else if (this.nodesQuery !== null) {
       type = this.nodesQuery.getType();
+    } else if (this.toInteger !== null) {
+      type = this.toInteger.getType();
+    } else if (this.tryInteger !== null) {
+      type = this.tryInteger.getType();
     } else if (this.returnBlock !== null) {
       type = this.returnBlock.getType();
     } else if (this.procedureCall !== null) {
@@ -94,6 +108,10 @@ export default define(class Expression extends Element {
       value = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
       value = this.nodesQuery.evaluate(context);
+    } else if (this.toInteger !== null) {
+      value = this.toInteger.evaluate(context);
+    } else if (this.tryInteger !== null) {
+      value = this.tryInteger.evaluate(context);
     } else if (this.some !== null) {
       value = await this.some.evaluate(context);
     } else if (this.every !== null) {

@@ -43,6 +43,7 @@ export default define(class Procedure extends Element {
 
     return boolean;
   }
+
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
@@ -82,12 +83,12 @@ export default define(class Procedure extends Element {
 
     const procedureString = this.getString();  ///
 
-    context.trace(`Calling the '${procedureString}' procedure nominally...`);
+    context.trace(`Calling the '${procedureString}' function nominally...`);
 
     const values = valuesFromNominalValues(nominalValues, context),
           term = await this.call(values, context);
 
-    context.debug(`...called the '${procedureString}' procedure nominally.`);
+    context.debug(`...called the '${procedureString}' function nominally.`);
 
     return term;
   }

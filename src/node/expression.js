@@ -7,7 +7,9 @@ import { TERM_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
+         TO_INTEGER_RULE_NAME,
          NODE_QUERY_RULE_NAME,
+         TRY_INTEGER_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME } from "../ruleNames";
@@ -50,9 +52,16 @@ export default class ExpressionNode extends NonTerminalNode {
 
   getNodeQueryNode() {
     const ruleName = NODE_QUERY_RULE_NAME,
-          nodeQueryNode = this.getNodeByRuleName(ruleName);
+      nodeQueryNode = this.getNodeByRuleName(ruleName);
 
     return nodeQueryNode;
+  }
+
+  getToIntegerNode() {
+    const ruleName = TO_INTEGER_RULE_NAME,
+          toIntegerNode = this.getNodeByRuleName(ruleName);
+
+    return toIntegerNode;
   }
 
   getNodesQueryNode() {
@@ -60,6 +69,13 @@ export default class ExpressionNode extends NonTerminalNode {
           nodeSQueryNode = this.getNodeByRuleName(ruleName);
 
     return nodeSQueryNode;
+  }
+
+  getTryIntegerNode() {
+    const ruleName = TRY_INTEGER_RULE_NAME,
+          tryIntegerNode = this.getNodeByRuleName(ruleName);
+
+    return tryIntegerNode;
   }
 
   getReturnBlockNode() {

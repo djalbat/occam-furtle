@@ -78,7 +78,10 @@ export default define(class Type extends Element {
           break;
         }
 
-        default: {
+        case STRING_TYPE_NAME:
+        case BOOLEAN_TYPE_NAME:
+        case INTEGER_TYPE_NAME:
+        case NOMINAL_VALUE_TYPE_NAME: {
           equalTo = true;
 
           break;

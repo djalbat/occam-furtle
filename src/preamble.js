@@ -20,6 +20,8 @@ import Reference from "./element/reference";
 import Procedure from "./element/procedure";
 import NodeQuery from "./element/nodeQuery";
 import Parameter from "./element/parameter";
+import ToInteger from "./element/toInteger";
+import TryInteger from "./element/tryInteger";
 import Parameters from "./element/parameters";
 import NodesQuery from "./element/nodesQuery";
 import Expression from "./element/expression";

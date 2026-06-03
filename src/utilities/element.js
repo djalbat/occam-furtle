@@ -330,6 +330,20 @@ export function primitiveFromPrimitiveNode(primitiveNode, context) {
   return primitive;
 }
 
+export function toIntegerFromToIntegerNode(toIntegerNode, context) {
+  const { ToInteger } = elements,
+        node = toIntegerNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromToIntegerNode(toIntegerNode, context);
+
+  context = null;
+
+  const toInteger = new ToInteger(context, string, node, breakPoint, variable);
+
+  return toInteger;
+}
+
 export function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   const { NodesQuery } = elements,
         node = nodesQueryNode,  ///
@@ -370,6 +384,8 @@ export function expressionFromExpressionNode(expressionNode, context) {
         ternary = ternaryFromExpressionNode(expressionNode, context),
         nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
         nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
+        toInteger = toIntegerFromExpressionNode(expressionNode, context),
+        tryInteger = tryIntegerFromExpressionNode(expressionNode, context),
         returnBlock = returnBlockFromExpressionNode(expressionNode, context),
         procedureCall = procedureCallFromExpressionNode(expressionNode, context),
         properties = [
@@ -380,6 +396,8 @@ export function expressionFromExpressionNode(expressionNode, context) {
           ternary,
           nodeQuery,
           nodesQuery,
+          toInteger,
+          tryInteger,
           returnBlock,
           procedureCall
         ],
@@ -389,9 +407,23 @@ export function expressionFromExpressionNode(expressionNode, context) {
 
   context = null;
 
-  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, returnBlock, procedureCall);
+  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, toInteger, tryInteger, returnBlock, procedureCall);
 
   return expression;
+}
+
+export function tryIntegerFromTryIntegerNode(tryIntegerNode, context) {
+  const { TryInteger } = elements,
+        node = tryIntegerNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromTryIntegerNode(tryIntegerNode, context);
+
+  context = null;
+
+  const tryInteger = new TryInteger(context, string, node, breakPoint, variable);
+
+  return tryInteger;
 }
 
 export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
@@ -808,6 +840,20 @@ export function variableFromReduceNode(reduceNode, context) {
   return variable;
 }
 
+export function queryFromNodeQueryNode(nodeQueryNode, context) {
+  const string = nodeQueryNode.getString(),
+    expressionString = string,  ///
+    query = Query.fromExpressionString(expressionString);
+
+  return query;
+}
+
+export function valueFromPrimitiveNode(primitiveNode, context) {
+  const value = primitiveNode.getValue();
+
+  return value;
+}
+
 export function termFromExpressionNode(expressionNode, context) {
   let term = null;
 
@@ -832,40 +878,6 @@ export function someFromExpressionNode(expressionNode, context) {
   return some;
 }
 
-export function queryFromNodeQueryNode(nodeQueryNode, context) {
-  const string = nodeQueryNode.getString(),
-        expressionString = string,  ///
-        query = Query.fromExpressionString(expressionString);
-
-  return query;
-}
-
-export function valueFromPrimitiveNode(primitiveNode, context) {
-  const value = primitiveNode.getValue();
-
-  return value;
-}
-
-export function queryFromNodesQueryNode(nodesQueryNode, context) {
-  const string = nodesQueryNode.getString(),
-        expressionString = string,  ///
-        query = Query.fromExpressionString(expressionString);
-
-  return query;
-}
-
-export function everyFromExpressionNode(expressionNode, context) {
-  let every = null;
-
-  const everyNode = expressionNode.getEveryNode();
-
-  if (everyNode !== null) {
-    every = everyFromEveryNode(everyNode, context);
-  }
-
-  return every;
-}
-
 export function negatedTermFromTermNode(termNode, context) {
   let negatedTerm = null;
 
@@ -888,6 +900,26 @@ export function logicalTermFromTermNode(termNode, context) {
   }
 
   return logicalTerm;
+}
+
+export function queryFromNodesQueryNode(nodesQueryNode, context) {
+  const string = nodesQueryNode.getString(),
+        expressionString = string,  ///
+        query = Query.fromExpressionString(expressionString);
+
+  return query;
+}
+
+export function everyFromExpressionNode(expressionNode, context) {
+  let every = null;
+
+  const everyNode = expressionNode.getEveryNode();
+
+  if (everyNode !== null) {
+    every = everyFromEveryNode(everyNode, context);
+  }
+
+  return every;
 }
 
 export function typeFromLogicalTermNode(logicalTermNode, context) {
@@ -996,6 +1028,13 @@ export function bracketedTermFromTermNode(termNode, context) {
   return bracketedTerm;
 }
 
+export function variableFromToIntegerNode(toIntegerNode, context) {
+  const variableNode = toIntegerNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
 export function termFromBracketedTermNode(bracketedTermNode, context) {
   const termNode = bracketedTermNode.getTermNode(),
     term = termFromTermNode(termNode, context);
@@ -1028,6 +1067,13 @@ export function expressionFromVariableNode(variableNode, context) {
   return expression;
 }
 
+export function variableFromTryIntegerNode(tryIntegerNode, context) {
+  const variableNode = tryIntegerNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
 export function variableFromNodesQueryNode(nodesQueryNode, context) {
   const variableNode = nodesQueryNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -1052,6 +1098,18 @@ export function ifExpressionFromTernaryNode(ternaryNode, context) {
         ifExpression = expressionFromExpressionNode(ifExpressionNode, context);
 
   return ifExpression;
+}
+
+export function toIntegerFromExpressionNode(expressionNode, context) {
+  let toInteger = null;
+
+  const toIntegerNode = expressionNode.getToIntegerNode();
+
+  if (toIntegerNode !== null) {
+    toInteger = toIntegerFromToIntegerNode(toIntegerNode, context);
+  }
+
+  return toInteger;
 }
 
 export function nodeQueryFromExpressionNode(expressionNode, context) {
@@ -1117,17 +1175,23 @@ export function nodesQueryFromExpressionNode(expressionNode, context) {
   return nodesQuery;
 }
 
+export function tryIntegerFromExpressionNode(expressionNode, context) {
+  let tryInteger = null;
+
+  const tryIntegerNode = expressionNode.getTryIntegerNode();
+
+  if (tryIntegerNode !== null) {
+    tryInteger = tryIntegerFromTryIntegerNode(tryIntegerNode, context);
+  }
+
+  return tryInteger;
+}
+
 export function rightTermFromLogicalTermNode(logicalTermNode, context) {
   const rightTermNode = logicalTermNode.getRightTermNode(),
        rightTerm = termFromTermNode(rightTermNode, context);
 
   return rightTerm;
-}
-
-export function negatedFromComparisonTermNode(comparisonTermNode, context) {
-  const negated = comparisonTermNode.isNegated();
-
-  return negated;
 }
 
 export function elseExpressionFromTernaryNode(ternaryNode, context) {
@@ -1149,6 +1213,12 @@ export function returnBlockFromExpressionNode(expressionNode, context) {
   return returnBlock;
 }
 
+export function negatedFromComparisonTermNode(comparisonTermNode, context) {
+  const negated = comparisonTermNode.isNegated();
+
+  return negated;
+}
+
 export function anonymousProcedureFromSomeNode(someNode, context) {
   const anonymousProcedureNode = someNode.getAnonymousProcedureNode(),
         anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
@@ -1160,6 +1230,12 @@ export function nonsensicalFromReturnBlockNode(returnBlockNode, context) {
   const nonsensical = returnBlockNode.isNonsensical();
 
   return nonsensical;
+}
+
+export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
+  const disjunction = logicalTermNode.isDisjunction();
+
+  return disjunction;
 }
 
 export function referenceFromProcedureCallNode(procedureCallNode, context) {
@@ -1174,12 +1250,6 @@ export function leftTermFromCompzrisonTermNode(comparisonTermNode, context) {
         leftTerm = termFromTermNode(leftTermNode, context);
 
   return leftTerm;
-}
-
-export function disjunctionFromLogicalTermNode(logicalTermNode, context) {
-  const disjunction = logicalTermNode.isDisjunction();
-
-  return disjunction;
 }
 
 export function typeFromAnonymousProcedureNode(anonymousProcedureNode, context) {

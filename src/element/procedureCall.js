@@ -29,13 +29,13 @@ export default define(class ProcedureCall extends Element {
 
     const procedureCallString = this.getString();  ///
 
-    context.trace(`Evaluating the '${procedureCallString}' procedure call...`);
+    context.trace(`Evaluating the '${procedureCallString}' function call...`);
 
     const procedureName = this.getProcedureName(),
           procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
 
     if (!procedurePresent) {
-      const message = `The '${procedureCallString} procedure is not present.'`,
+      const message = `The '${procedureCallString}' function is not present.'`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -46,7 +46,7 @@ export default define(class ProcedureCall extends Element {
           value = await procedure.call(values, context),
           valueString = value.getString();
 
-    context.debug(`...evaluated the '${procedureCallString}' procedure call as '${valueString}'.`);
+    context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
 
     return value;
   }

@@ -21,6 +21,8 @@ import PrimitiveNode from "./node/primitive";
 import ReferenceNode from "./node/reference";
 import ParameterNode from "./node/parameter";
 import NodeQueryNode from "./node/nodeQuery";
+import ToIntegerNode from "./node/toInteger";
+import TryIntegerNode from "./node/tryInteger";
 import NodesQueryNode from "./node/nodesQuery";
 import ExpressionNode from "./node/expression";
 import ParametersNode from "./node/parameters";
@@ -63,6 +65,8 @@ import { STEP_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          EXPRESSION_RULE_NAME,
          PARAMETERS_RULE_NAME,
+         TO_INTEGER_RULE_NAME,
+         TRY_INTEGER_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          RETURN_BLOCK_RULE_NAME,
          LOGICAL_TERM_RULE_NAME,
@@ -101,9 +105,11 @@ const NonTerminalNodeMap = {
   [PRIMITIVE_RULE_NAME]: PrimitiveNode,
   [REFERENCE_RULE_NAME]: ReferenceNode,
   [PARAMETER_RULE_NAME]: ParameterNode,
+  [TO_INTEGER_RULE_NAME]: ToIntegerNode,
   [NODE_QUERY_RULE_NAME]: NodeQueryNode,
   [EXPRESSION_RULE_NAME]: ExpressionNode,
   [PARAMETERS_RULE_NAME]: ParametersNode,
+  [TRY_INTEGER_RULE_NAME]: TryIntegerNode,
   [NODES_QUERY_RULE_NAME]: NodesQueryNode,
   [RETURN_BLOCK_RULE_NAME]: ReturnBlockNode,
   [LOGICAL_TERM_RULE_NAME]: LogicalTermNode,

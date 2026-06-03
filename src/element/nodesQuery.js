@@ -29,10 +29,10 @@ export default define(class NodesQuery extends Element {
 
     const nodesQueryString = this.getString();  ///
 
-    context.trace(`Evaluating the '${nodesQueryString}' nodes query...`);
+    context.trace(`Evaluating the '${nodesQueryString}' function...`);
 
     if (this.query === null) {
-      const message = `Cannot evaluate the '${nodesQueryString}' nodes query because its expression is malformed.`,
+      const message = `Cannot evaluate the '${nodesQueryString}' function because its expression is malformed.`,
             exception = Exception.fromMessage(message);
 
       throw exception;
@@ -72,7 +72,7 @@ export default define(class NodesQuery extends Element {
 
     const valueString = value.getString();
 
-    context.debug(`...evaluated the '${nodesQueryString}' nodes query as '${valueString}'.`);
+    context.debug(`...evaluated the '${nodesQueryString}' function as '${valueString}'.`);
 
     return value;
   }

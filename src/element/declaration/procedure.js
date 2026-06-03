@@ -21,14 +21,14 @@ export default define(class ProcedureDeclaration extends Element {
 
     const procedureDeclarationString = this.getString();
 
-    context.trace(`Verifying the '${procedureDeclarationString}' procedure declaration...`)
+    context.trace(`Verifying the '${procedureDeclarationString}' function declaration...`)
 
     const procedure = this.getProcedure();
 
     context.addProcedure(procedure);
 
     if (verifies) {
-      context.debug(`...verified the '${procedureDeclarationString}' procedure declaration.`)
+      context.debug(`...verified the '${procedureDeclarationString}' function declaration.`)
     }
 
     return verifies;
