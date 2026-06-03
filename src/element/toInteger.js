@@ -7,6 +7,7 @@ import Exception from "../exception";
 import { TEN } from "../constants";
 import { define } from "../elements";
 import { valueFromInteger } from "../utilities/value";
+import { integerRegularExpresssion } from "./tryInteger";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 export default define(class ToInteger extends Element {
@@ -46,19 +47,17 @@ export default define(class ToInteger extends Element {
 
       case STRING_TYPE_NAME:
       case NOMINAL_VALUE_TYPE_NAME: {
-        const radix = TEN,
-              valueString = value.getString();
+        const valueString = value.getString(),
+              boolean = integerRegularExpresssion.test(valueString);
 
-        integer = parseInt(valueString, radix);
-
-        const nan = isNaN(integer);
-
-        if (nan) {
+        if (!boolean) {
           const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' value is not an integer.`,
                 exception = Exception.fromMessage(message);
 
           throw exception;
         }
+
+        integer = Number(valueString);
 
         break;
       }

@@ -72,6 +72,8 @@ const bnf = `
     
     
     
+    lengthOf                ::=  "lengthOf"<NO_WHITESPACE>"(" variable ")" ;
+    
     toInteger               ::=  "toInteger"<NO_WHITESPACE>"(" variable ")" ;
     
     tryInteger              ::=  "tryInteger"<NO_WHITESPACE>"(" variable ")" ;
@@ -107,6 +109,8 @@ const bnf = `
                               |  every
     
                               |  some
+                              
+                              |  lengthOf
                              
                               |  toInteger
                              

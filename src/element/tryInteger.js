@@ -4,10 +4,11 @@ import { Element } from "occam-languages";
 
 import Exception from "../exception";
 
-import { TEN } from "../constants";
 import { define } from "../elements";
 import { valueFromBoolean } from "../utilities/value";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+
+export const integerRegularExpresssion = /^[+-]?\d+$/;
 
 export default define(class TryInteger extends Element {
   constructor(context, string, node, breakPoint, variable) {
@@ -46,12 +47,9 @@ export default define(class TryInteger extends Element {
 
       case STRING_TYPE_NAME:
       case NOMINAL_VALUE_TYPE_NAME: {
-        const radix = TEN,
-              valueString = value.getString(),
-              integer = parseInt(valueString, radix),
-              nan = isNaN(integer);
+        const valueString = value.getString();
 
-        boolean = !nan;
+        boolean = integerRegularExpresssion.test(valueString);
 
         break;
       }
@@ -68,3 +66,4 @@ export default define(class TryInteger extends Element {
 
   static name = "TryInteger";
 });
+
