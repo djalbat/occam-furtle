@@ -17,6 +17,7 @@ import BindingsNode from "./node/bindings";
 import DocumentNode from "./node/document";
 import VariableNode from "./node/variable";
 import NonsenseNode from "./node/nonsense";
+import LengthOfNode from "./node/lengthOf";
 import PrimitiveNode from "./node/primitive";
 import ReferenceNode from "./node/reference";
 import ParameterNode from "./node/parameter";
@@ -59,6 +60,7 @@ import { STEP_RULE_NAME,
          DOCUMENT_RULE_NAME,
          VARIABLE_RULE_NAME,
          NONSENSE_RULE_NAME,
+         LENGTH_OF_RULE_NAME,
          PRIMITIVE_RULE_NAME,
          REFERENCE_RULE_NAME,
          PARAMETER_RULE_NAME,
@@ -102,6 +104,7 @@ const NonTerminalNodeMap = {
   [VARIABLE_RULE_NAME]: VariableNode,
   [NONSENSE_RULE_NAME]: NonsenseNode,
   [DOCUMENT_RULE_NAME]: DocumentNode,
+  [LENGTH_OF_RULE_NAME]: LengthOfNode,
   [PRIMITIVE_RULE_NAME]: PrimitiveNode,
   [REFERENCE_RULE_NAME]: ReferenceNode,
   [PARAMETER_RULE_NAME]: ParameterNode,

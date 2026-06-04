@@ -112,7 +112,9 @@ export function primtiveStringFromStringLiteral(stringLiteral) {
 }
 
 export function primtiveStringFromNominalValues(nominalValues) {
-  const primtiveString = nominalValues.reduce((primitiveString, nominalValue) => {
+  let primtiveString;
+
+  primtiveString = nominalValues.reduce((primitiveString, nominalValue) => {
     const nominalValueString = nominalValue.getString();
 
     primitiveString = (primitiveString !== null) ?
@@ -121,6 +123,8 @@ export function primtiveStringFromNominalValues(nominalValues) {
 
     return primitiveString;
   }, null);
+
+  primtiveString = `[${primtiveString}]`;
 
   return primtiveString;
 }

@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Expression extends Element {
-  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, toInteger, tryInteger, returnBlock, procedureCall) {
+  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, returnBlock, procedureCall) {
     super(context, string, node, breakPoint);
 
     this.term = term;
@@ -15,6 +15,7 @@ export default define(class Expression extends Element {
     this.ternary = ternary;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
+    this.lengthOf = lengthOf;
     this.toInteger = toInteger;
     this.tryInteger = tryInteger;
     this.returnBlock = returnBlock;
@@ -47,6 +48,10 @@ export default define(class Expression extends Element {
 
   getNodesQuery() {
     return this.nodesQuery;
+  }
+
+  getLengthOf() {
+    return this.lengthOf;
   }
 
   getToInteger() {
@@ -84,6 +89,8 @@ export default define(class Expression extends Element {
       type = this.nodeQuery.getType();
     } else if (this.nodesQuery !== null) {
       type = this.nodesQuery.getType();
+    } else if (this.lengthOf !== null) {
+      type = this.lengthOf.getType();
     } else if (this.toInteger !== null) {
       type = this.toInteger.getType();
     } else if (this.tryInteger !== null) {
@@ -108,6 +115,8 @@ export default define(class Expression extends Element {
       value = this.nodeQuery.evaluate(context);
     } else if (this.nodesQuery !== null) {
       value = this.nodesQuery.evaluate(context);
+    } else if (this.lengthOf !== null) {
+      value = this.lengthOf.evaluate(context);
     } else if (this.toInteger !== null) {
       value = this.toInteger.evaluate(context);
     } else if (this.tryInteger !== null) {

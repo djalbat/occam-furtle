@@ -15,6 +15,7 @@ import Ternary from "./element/ternary";
 import Binding from "./element/binding";
 import Bindings from "./element/bindings";
 import Variable from "./element/variable";
+import LengthOf from "./element/lengthOf";
 import Primitive from "./element/primitive";
 import Reference from "./element/reference";
 import Procedure from "./element/procedure";

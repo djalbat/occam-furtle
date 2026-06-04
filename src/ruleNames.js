@@ -17,6 +17,7 @@ export const VARIABLE_RULE_NAME = "variable";
 export const NONSENSE_RULE_NAME = "nonsense";
 export const DOCUMENT_RULE_NAME = "document";
 export const BINDINGS_RULE_NAME = "bindings";
+export const LENGTH_OF_RULE_NAME = "lengthOf";
 export const PRIMITIVE_RULE_NAME = "primitive";
 export const REFERENCE_RULE_NAME = "reference";
 export const PARAMETER_RULE_NAME = "parameter";

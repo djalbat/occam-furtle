@@ -7,6 +7,7 @@ import { TERM_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
+         LENGTH_OF_RULE_NAME,
          TO_INTEGER_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          TRY_INTEGER_RULE_NAME,
@@ -50,16 +51,23 @@ export default class ExpressionNode extends NonTerminalNode {
     return ternaryNode;
   }
 
+  getLengthOfNode() {
+    const ruleName = LENGTH_OF_RULE_NAME,
+          lengthOfNode = this.getNodeByRuleName(ruleName);
+
+    return lengthOfNode;
+  }
+
   getNodeQueryNode() {
     const ruleName = NODE_QUERY_RULE_NAME,
-      nodeQueryNode = this.getNodeByRuleName(ruleName);
+          nodeQueryNode = this.getNodeByRuleName(ruleName);
 
     return nodeQueryNode;
   }
 
   getToIntegerNode() {
     const ruleName = TO_INTEGER_RULE_NAME,
-          toIntegerNode = this.getNodeByRuleName(ruleName);
+      toIntegerNode = this.getNodeByRuleName(ruleName);
 
     return toIntegerNode;
   }

@@ -5,8 +5,8 @@ import Exception from "./exception";
 import NominalValueProperty from "./nominalValueProperty";
 
 import { nominalValuePropertiesStringFromNominalValuePropertiesArray } from "./utilities/string";
-import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "./parameterNames";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "./typeNames";
+import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "./parameterNames";
 
 class NominalValueProperties {
   constructor(string, array) {
@@ -72,28 +72,27 @@ function nominalValuePropertiesArrayFromNothing() {
   const names = [
           CONTENT_PARAMETER_NAME,
           TERMINAL_PARAMETER_NAME,
-          CHILD_NODES_PARAMETER_NAME
+          NO_WHITESPACE_PARAMETER_NAME,
+          CHILD_NODES_PARAMETER_NAME,
         ],
         typeNames = [
           STRING_TYPE_NAME,
+          BOOLEAN_TYPE_NAME,
           BOOLEAN_TYPE_NAME,
           LIST_TYPE_NAME
         ],
         argumentTypeNames = [
           null,
           null,
+          null,
           NOMINAL_VALUE_TYPE_NAME
         ],
-        types = typeNames.map((typeName, index) => {
+        nominalValuePropertiesArray = names.map((name, index) => {
           const { Type } = elements,
                 context = null,
+                typeName = typeNames[index],
                 argumentTypeName = argumentTypeNames[index],
-                type = Type.fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context);
-
-          return type;
-        }),
-        nominalValuePropertiesArray = names.map((name, index) => {
-          const type = types[index],
+                type = Type.fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context),
                 nominalValueProperty = NominalValueProperty.fromNameAndType(name, type);
 
           return nominalValueProperty;

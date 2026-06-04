@@ -7,7 +7,6 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { LIST_TYPE_NAME } from "../../typeNames";
-import { primtiveStringFromNominalValues } from "../../utilities/string";
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {

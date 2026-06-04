@@ -7,11 +7,10 @@ import Exception from "../../exception";
 import nominalValueProperties from "../../nominalValueProperties";
 
 import { define } from "../../elements";
-import { valueFromNodesAndNominalValue } from "../../utilities/value";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
-import { termFromBoolean, termFromStringLiteral } from "../../utilities/term";
-import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME } from "../../parameterNames";
+import { valueFromBoolean, valueFromStringLiteral, valueFromNodesAndNominalValue } from "../../utilities/value";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
+import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "../../parameterNames";
 
 export default define(class ObjectAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, namedBindings) {
@@ -61,23 +60,31 @@ export default define(class ObjectAssigment extends Element {
 
     context.trace(`Evaluating the '${namedBindingString}' named binding against the '${termString}' term...`);
 
+    let value;
+
     const name = namedBinding.getName();
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        term = this.evaluateContentNamedBinding(namedBinding, term, context);
+        value = this.evaluateContentNamedBinding(namedBinding, term, context);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        term = this.evaluateTerminalNamedBinding(namedBinding, term, context);
+        value = this.evaluateTerminalNamedBinding(namedBinding, term, context);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        term = this.evaluateChildNodesNamedBinding(namedBinding, term, context);
+        value = this.evaluateChildNodesNamedBinding(namedBinding, term, context);
+
+        break;
+      }
+
+      case NO_WHITESPACE_PARAMETER_NAME: {
+        value = this.evaluateNoWhitespaceNamedBinding(namedBinding, term, context);
 
         break;
       }
@@ -86,7 +93,7 @@ export default define(class ObjectAssigment extends Element {
     const { Variable } = elements,
           variable = Variable.fromNamedBinding(namedBinding, context);
 
-    variable.assign(term, context);
+    variable.assign(value, context);
 
     context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
   }
@@ -123,15 +130,13 @@ export default define(class ObjectAssigment extends Element {
     const terminalNode = node,  ///
           content = terminalNode.getContent(),
           string = content,  ///
-          stringLiteral = stringLiteralFromString(string);
+          stringLiteral = stringLiteralFromString(string),
+          value = valueFromStringLiteral(stringLiteral, context),
+          valueSttring = value.getString();
 
-    term = termFromStringLiteral(stringLiteral, context);
+    context.debug(`...evaluated the content '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    const termSttring = term.getString();
-
-    context.debug(`...evaluated the content '${namedBindingString}' named binding as '${termSttring}'.`);
-
-    return term;
+    return value;
   }
 
   evaluateTerminalNamedBinding(namedBinding, term, context) {
@@ -154,17 +159,14 @@ export default define(class ObjectAssigment extends Element {
           nominalValue = primitiveValue,  ///
           node = nominalValue.getNode(),
           nodeTerminalNode = node.isTerminalNode(),
-          terminal = nodeTerminalNode;  ///
+          terminal = nodeTerminalNode,  ///
+          boolean = terminal, ///
+          value = valueFromBoolean(boolean, context),  ///
+          valueSttring = value.getString();
 
-    const boolean = terminal; ///
+    context.debug(`...evaluated the terminal '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    term = termFromBoolean(boolean, context);  ///
-
-    const termSttring = term.getString();
-
-    context.debug(`...evaluated the terminal '${namedBindingString}' named binding as '${termSttring}'.`);
-
-    return term;
+    return value;
   }
 
   evaluateChildNodesNamedBinding(namedBinding, term, context) {
@@ -203,6 +205,46 @@ export default define(class ObjectAssigment extends Element {
           valueSttring = value.getString();
 
     context.debug(`...evaluated the childNodes '${namedBindingString}' named binding as '${valueSttring}'.`);
+
+    return value;
+  }
+
+  evaluateNoWhitespaceNamedBinding(namedBinding, term, context) {
+    const type = namedBinding.getType(),
+          namedBindingString = namedBinding.getString();
+
+    context.trace(`Evaluating the no whitespace '${namedBindingString}' named binding...`);
+
+    const typeBooleanType = type.isBooleanType();
+
+    if (!typeBooleanType) {
+      const namedBindingString = namedBinding.getString(),
+            message = `The '${namedBindingString}' named binding's type should be '${BOOLEAN_TYPE_NAME}'.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const primitiveValue = term.getPrimitiveValue(),
+          nominalValue = primitiveValue,  ///
+          node = nominalValue.getNode(),
+          nodeTerminalNode = node.isTerminalNode();
+
+    if (!nodeTerminalNode) {
+      const termString = term.getString(),
+            message = `The '${termString}' term's node must be terminal.`,
+            exception = Exception.fromMessage(message);
+
+      throw exception;
+    }
+
+    const terminalNode = node,  ///
+          noWhiteapce = terminalNode.isNoWhitespaceNode(),
+          boolean = noWhiteapce,  ///
+          value = valueFromBoolean(boolean, context),
+          valueSttring = value.getString();
+
+    context.debug(`...evaluated the no whitespace '${namedBindingString}' named binding as '${valueSttring}'.`);
 
     return value;
   }

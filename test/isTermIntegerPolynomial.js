@@ -10,7 +10,7 @@ const { nodesQuery } = queryUtilities,
       { TRACE_LEVEL } = levels;
 
 const logLevel = TRACE_LEVEL,
-      filePath = "polynomials/Funcions/Polynomials.ftl",
+      filePath = "polynomials/Funcions/Integer polynomials.ftl",
       projectName = "polynomials",
       procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";

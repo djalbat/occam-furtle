@@ -271,6 +271,20 @@ export function bindingsFromBindingsNode(bindingsNode, context) {
   return bindings;
 }
 
+export function lengthOfFromLengthOfNode(lengthOfNode, context) {
+  const { LengthOf } = elements,
+        node = lengthOfNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromLengthOfNode(lengthOfNode, context);
+
+  context = null;
+
+  const lengthOf = new LengthOf(context, string, node, breakPoint, variable);
+
+  return lengthOf;
+}
+
 export function referenceFromReferenceNode(referenceNode, context) {
   const { Reference } = elements,
         node = referenceNode, ///
@@ -384,6 +398,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
         ternary = ternaryFromExpressionNode(expressionNode, context),
         nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
         nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
+        lengthOf = lengthOfFromExpressionNode(expressionNode, context),
         toInteger = toIntegerFromExpressionNode(expressionNode, context),
         tryInteger = tryIntegerFromExpressionNode(expressionNode, context),
         returnBlock = returnBlockFromExpressionNode(expressionNode, context),
@@ -396,6 +411,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
           ternary,
           nodeQuery,
           nodesQuery,
+          lengthOf,
           toInteger,
           tryInteger,
           returnBlock,
@@ -407,7 +423,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
 
   context = null;
 
-  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, toInteger, tryInteger, returnBlock, procedureCall);
+  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, returnBlock, procedureCall);
 
   return expression;
 }
@@ -955,6 +971,13 @@ export function argumentTypeFromTypeNode(typeNode, context) {
   return argumentType;
 }
 
+export function variableFromLengthOfNode(lengthOfNode, context) {
+  const variableNode = lengthOfNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
 export function reduceFromExpressionNode(expressionNode, context) {
   let reduce = null;
 
@@ -1079,6 +1102,18 @@ export function variableFromNodesQueryNode(nodesQueryNode, context) {
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
+}
+
+export function lengthOfFromExpressionNode(expressionNode, context) {
+  let lengthOf = null;
+
+  const lengthOfNode = expressionNode.getLengthOfNode();
+
+  if (lengthOfNode !== null) {
+    lengthOf = lengthOfFromLengthOfNode(lengthOfNode, context);
+  }
+
+  return lengthOf;
 }
 
 export function arrayAssignmentFromStepNode(stepNode, context) {

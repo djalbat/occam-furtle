@@ -22,7 +22,7 @@ export default class NominalValueProperty {
   }
 
   compareNamedBinding(namedBinding, context) {
-    let namedBindingCompares;
+    let namedBindingCompares = false;
 
     const nominalValuePropertyString = this.string, ///
           namedBindingString = namedBinding.getString();
@@ -34,7 +34,9 @@ export default class NominalValueProperty {
           nameEqualToNamedBindingName = (this.name === namedBindingName),
           typeEqualToNamedBindingType = this.type.isEqualTo(namedBindingType);
 
-    namedBindingCompares = (nameEqualToNamedBindingName && typeEqualToNamedBindingType);
+    if (nameEqualToNamedBindingName && typeEqualToNamedBindingType) {
+      namedBindingCompares = true;
+    }
 
     if (namedBindingCompares) {
       context.debug(`...compared the '${nominalValuePropertyString}' node property with the '${namedBindingString}' named binding.`);
