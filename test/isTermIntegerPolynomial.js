@@ -15,7 +15,7 @@ const logLevel = TRACE_LEVEL,
       procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";
 
-const content = `12x = x
+const content = `12x^2 = x
 `,
       termNodesQuery = nodesQuery("/step/statement/equality!/term");
 
