@@ -7,9 +7,9 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodeQuery } = queryUtilities,
-      { ERROR_LEVEL } = levels;
+      { TRACE_LEVEL } = levels;
 
-const logLevel = ERROR_LEVEL,
+const logLevel = TRACE_LEVEL,
       filePath = "first-order-logic/Functions/Free and bound variables.ftl",
       projectName = "first-order-logic",
       procedureName = "isVariableBound",
@@ -19,7 +19,7 @@ const content = `∀n n = n
 `,
       termNodeQuery = nodeQuery("/step/statement/argument!/term!");
 
-describe(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

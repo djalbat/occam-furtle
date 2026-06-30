@@ -19,7 +19,7 @@ const content = `12x^2 = x
 `,
       termNodesQuery = nodesQuery("/step/statement/equality!/term");
 
-describe.only(projectName, () => {
+describe.skip(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

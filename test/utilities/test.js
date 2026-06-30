@@ -1,15 +1,12 @@
 "use strict";
 
-const { arrayUtilities } =require("necessary"),
-      { Log, verificationUtilities } =require("occam-languages");
+const { Log, verificationUtilities } =require("occam-languages");
 
 const { FileContextFromFilePath } = require("../utilities/fileContext"),
       { releaseContextFromDependency } = require("../utilities/releaseContext"),
       { procedureFromFilePathProcedureName } = require("../utilities/furtle");
-const {log} = require("necessary/lib/utilities/logging");
 
-const { first } = arrayUtilities,
-      { createReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
+const { createReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
 function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, callback) {
   let releaseContext = null;
