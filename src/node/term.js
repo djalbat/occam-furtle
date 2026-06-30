@@ -1,6 +1,7 @@
 "use strict";
 
-import { NonTerminalNode } from "occam-languages";
+import { nodeMixins } from "occam-languages";
+import { NonTerminalNode } from "occam-grammar-utilities";
 
 import { VARIABLE_RULE_NAME,
          PRIMITIVE_RULE_NAME,
@@ -70,3 +71,5 @@ export default class TermNode extends NonTerminalNode {
     return termNode;
   }
 }
+
+Object.assign(TermNode.prototype, nodeMixins);
