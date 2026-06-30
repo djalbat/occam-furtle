@@ -10,7 +10,7 @@ import { VARIABLE_RULE_NAME,
          BRACKETED_TERM_RULE_NAME,
          COMPARISON_TERM_RULE_NAME } from "../ruleNames";
 
-export default class TermNode extends NonTerminalNode {
+class TermNode extends NonTerminalNode {
   getVariableNode() {
     const ruleName = VARIABLE_RULE_NAME,
           variableNode = this.getNodeByRuleName(ruleName);
@@ -73,3 +73,5 @@ export default class TermNode extends NonTerminalNode {
 }
 
 Object.assign(TermNode.prototype, nodeMixins);
+
+export default TermNode;
