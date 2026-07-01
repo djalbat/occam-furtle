@@ -89,3 +89,9 @@ export default class BlockContext extends Context {
     return blockContext;
   }
 }
+
+export function isContextBlockContext(context) {
+  const contextBlockContext = BlockContext.prototype.isPrototypeOf(context);
+
+  return contextBlockContext;
+}

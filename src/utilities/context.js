@@ -2,6 +2,8 @@
 
 import BlockContext from "../context/block";
 
+import { isContextBlockContext } from "../context/block";
+
 export function free(innerFunction, context) {
   context = freeContext(context); ///
 
@@ -17,12 +19,12 @@ export function confine(innerFunction, variables, context) {
 }
 
 function freeContext(context) {
-  let contextBlockContext = (context instanceof BlockContext);
+  let contextBlockContext = isContextBlockContext(context);
 
   while (contextBlockContext) {
     context = context.getContext();
 
-    contextBlockContext = (context instanceof BlockContext)
+    contextBlockContext = isContextBlockContext(context);
   }
 
   return context;
