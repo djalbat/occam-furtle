@@ -3,7 +3,9 @@
 import { lexerUtilities } from "occam-lexers";
 import { parserUtilities } from "occam-parsers";
 import { eliminateLeftRecursion } from "occam-grammar-utilities";
-import { FurtleLexer,FurtleParser } from "../../index"; ///
+
+import FurtleLexer from "../../furtle/lexer";
+import FurtleParser from "../../furtle/parser";
 
 const { rulesFromBNF, parserFromRules } = parserUtilities,
       { lexerFromRules, rulesFromEntries } = lexerUtilities;
