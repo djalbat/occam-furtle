@@ -15,11 +15,11 @@ const logLevel = TRACE_LEVEL,
       procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";
 
-const content = `12x^2 = x
+const content = `x^2 = x
 `,
       termNodesQuery = nodesQuery("/step/statement/equality!/term");
 
-describe.skip(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

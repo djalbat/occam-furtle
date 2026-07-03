@@ -19,7 +19,7 @@ const content = `∀n n = n
 `,
       termNodeQuery = nodeQuery("/step/statement/argument!/term!");
 
-describe.only(projectName, () => {
+describe(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///
