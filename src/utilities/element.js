@@ -207,6 +207,36 @@ export function ternaryFromTernaryNode(ternaryNode, context) {
   return ternary;
 }
 
+export function containsFromContainsNode(containsNode, context) {
+  const { Contains } = elements,
+        node = containsNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromContainsNode(containsNode, context),
+        substring = substringFromContainsNode(containsNode, context);
+
+  context = null;
+
+  const contains = new Contains(context, string, node, breakPoint, variable, substring);
+
+  return contains;
+}
+
+export function endsWithFromEndsWithNode(endsWithNode, context) {
+  const { EndsWith } = elements,
+        node = endsWithNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromEndsWithNode(endsWithNode, context),
+        substring = substringFromEndsWithNode(endsWithNode, context);
+
+  context = null;
+
+  const endsWith = new EndsWith(context, string, node, breakPoint, variable, substring);
+
+  return endsWith;
+}
+
 export function variableFromVariableNode(variableNode, context) {
   const { Variable } = elements,
         node = variableNode,  ///
@@ -356,6 +386,21 @@ export function toIntegerFromToIntegerNode(toIntegerNode, context) {
   return toInteger;
 }
 
+export function startsWithFromStartsWithNode(startsWithNode, context) {
+  const { StartsWith } = elements,
+        node = startsWithNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromStartsWithNode(startsWithNode, context),
+        substring = substringFromStartsWithNode(startsWithNode, context);
+
+  context = null;
+
+  const startsWith = new StartsWith(context, string, node, breakPoint, variable, substring);
+
+  return startsWith;
+}
+
 export function nodesQueryFromNodesQueryNode(nodesQueryNode, context) {
   const { NodesQuery } = elements,
         node = nodesQueryNode,  ///
@@ -399,6 +444,9 @@ export function expressionFromExpressionNode(expressionNode, context) {
         lengthOf = lengthOfFromExpressionNode(expressionNode, context),
         toInteger = toIntegerFromExpressionNode(expressionNode, context),
         tryInteger = tryIntegerFromExpressionNode(expressionNode, context),
+        contains = containsFromExpressionNode(expressionNode, context),
+        endsWith = endsWithFromExpressionNode(expressionNode, context),
+        startsWith = startsWithFromExpressionNode(expressionNode, context),
         returnBlock = returnBlockFromExpressionNode(expressionNode, context),
         procedureCall = procedureCallFromExpressionNode(expressionNode, context),
         properties = [
@@ -412,6 +460,9 @@ export function expressionFromExpressionNode(expressionNode, context) {
           lengthOf,
           toInteger,
           tryInteger,
+          contains,
+          endsWith,
+          startsWith,
           returnBlock,
           procedureCall
         ],
@@ -421,7 +472,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
 
   context = null;
 
-  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, returnBlock, procedureCall);
+  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall);
 
   return expression;
 }
@@ -942,6 +993,20 @@ export function argumentTypeFromTypeNode(typeNode, context) {
 
 export function variableFromLengthOfNode(lengthOfNode, context) {
   const variableNode = lengthOfNode.getVariableNode(),
+    variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
+export function variableFromContainsNode(containsNode, context) {
+  const variableNode = containsNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
+export function variableFromEndsWithNode(endsWithNode, context) {
+  const variableNode = endsWithNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
@@ -970,6 +1035,20 @@ export function nameFromNamedBindingNode(namedBindingNode, context) {
   const name = namedBindingNode.getName();
 
   return name;
+}
+
+export function substringFromContainsNode(containsNode, context) {
+  const string = containsNode.getString(),
+        substring = string;  ///
+
+  return substring;
+}
+
+export function substringFromEndsWithNode(endsWithNode, context) {
+  const string = endsWithNode.getString(),
+        substring = string;  ///
+
+  return substring;
 }
 
 export function aliasFromNamedBindingNode(namedBindingNode, context) {
@@ -1055,6 +1134,13 @@ export function variableFromTryIntegerNode(tryIntegerNode, context) {
   return variable;
 }
 
+export function variableFromStartsWithNode(startsWithNode, context) {
+  const variableNode = startsWithNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
 export function variableFromNodesQueryNode(nodesQueryNode, context) {
   const variableNode = nodesQueryNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -1072,6 +1158,30 @@ export function lengthOfFromExpressionNode(expressionNode, context) {
   }
 
   return lengthOf;
+}
+
+export function containsFromExpressionNode(expressionNode, context) {
+  let contains = null;
+
+  const containsNode = expressionNode.getContainsNode();
+
+  if (containsNode !== null) {
+    contains = containsFromContainsNode(containsNode, context);
+  }
+
+  return contains;
+}
+
+export function endsWithFromExpressionNode(expressionNode, context) {
+  let endsWith = null;
+
+  const endsWithNode = expressionNode.getEndsWithNode();
+
+  if (endsWithNode !== null) {
+    endsWith = endsWithFromEndsWithNode(endsWithNode, context);
+  }
+
+  return endsWith;
 }
 
 export function ifExpressionFromTernaryNode(ternaryNode, context) {
@@ -1110,6 +1220,13 @@ export function nodeQueryFromExpressionNode(expressionNode, context) {
   }
 
   return nodeQuery;
+}
+
+export function substringFromStartsWithNode(startsWithNode, context) {
+  const string = startsWithNode.getString(),
+        substring = string;  ///
+
+  return substring;
 }
 
 export function leftTermFromLogicalTermNode(logicalTermNode, context) {
@@ -1168,6 +1285,18 @@ export function tryIntegerFromExpressionNode(expressionNode, context) {
   }
 
   return tryInteger;
+}
+
+export function startsWithFromExpressionNode(expressionNode, context) {
+  let startsWith = null;
+
+  const startsWithNode = expressionNode.getStartsWithNode();
+
+  if (startsWithNode !== null) {
+    startsWith = startsWithFromStartsWithNode(startsWithNode, context);
+  }
+
+  return startsWith;
 }
 
 export function rightTermFromLogicalTermNode(logicalTermNode, context) {

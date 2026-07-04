@@ -5,7 +5,7 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Expression extends Element {
-  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, returnBlock, procedureCall) {
+  constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall) {
     super(context, string, node, breakPoint);
 
     this.term = term;
@@ -18,6 +18,9 @@ export default define(class Expression extends Element {
     this.lengthOf = lengthOf;
     this.toInteger = toInteger;
     this.tryInteger = tryInteger;
+    this.contains = contains;
+    this.endsWith = endsWith;
+    this.startsWith = startsWith;
     this.returnBlock = returnBlock;
     this.procedureCall = procedureCall;
   }
@@ -62,6 +65,18 @@ export default define(class Expression extends Element {
     return this.tryInteger;
   }
 
+  getContains() {
+    return this.contains;
+  }
+
+  getEndsWith() {
+    return this.endsWith;
+  }
+
+  getStartsWith() {
+    return this.startsWith;
+  }
+
   getReturnBlock() {
     return this.returnBlock;
   }
@@ -95,6 +110,12 @@ export default define(class Expression extends Element {
       type = this.toInteger.getType();
     } else if (this.tryInteger !== null) {
       type = this.tryInteger.getType();
+    } else if (this.contains !== null) {
+      type = this.contains.getType();
+    } else if (this.endsWith !== null) {
+      type = this.endsWith.getType();
+    } else if (this.startsWith !== null) {
+      type = this.startsWith.getType();
     } else if (this.returnBlock !== null) {
       type = this.returnBlock.getType();
     } else if (this.procedureCall !== null) {
@@ -121,6 +142,12 @@ export default define(class Expression extends Element {
       value = this.toInteger.evaluate(context);
     } else if (this.tryInteger !== null) {
       value = this.tryInteger.evaluate(context);
+    } else if (this.contains !== null) {
+      value = this.contains.evaluate(context);
+    } else if (this.endsWith !== null) {
+      value = this.endsWith.evaluate(context);
+    } else if (this.startsWith !== null) {
+      value = this.startsWith.evaluate(context);
     } else if (this.some !== null) {
       value = await this.some.evaluate(context);
     } else if (this.every !== null) {
