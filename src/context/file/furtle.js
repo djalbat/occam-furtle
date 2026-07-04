@@ -1,10 +1,15 @@
 "use strict";
 
 import { FileContext } from "occam-languages";
+import { queryUtilities } from "occam-query";
 
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 import { proceduresFromJSON, proceduresToProceduresJSON } from "../../utilities/json";
+
+const { nodesQuery } = queryUtilities;
+
+const procedureNodesQuery = nodesQuery("/document/procedure");
 
 export default class FurtleFileContext extends FileContext {
   constructor(context, fileContent, filePath, tokens, node, json, lexer, parser, procedures) {
@@ -131,6 +136,22 @@ export default class FurtleFileContext extends FileContext {
     this.debug(`Added the '${procedureString}' function to the '${filePath}' file context.`);
   }
 
+  findProcedureNode(label) {
+    const node = this.getNode(),
+          labelNode = label.getNode(),
+          documentNode = node,  ///
+          procedureNodes = procedureNodesQuery(documentNode),
+          procedureNode = procedureNodes.find((procedureNode) => {
+            const labelMatches = procedureNode.matchLabelNode(labelNode);
+
+            if (labelMatches) {
+              return true;
+            }
+          }) || null;
+
+    return procedureNode;
+  }
+
   findProcedureByProcedureName(procedureName) {
     const procedures = this.getProcedures(),
           procedure = procedures.find((procedure) => {
@@ -160,17 +181,15 @@ export default class FurtleFileContext extends FileContext {
   }
 
   initialise() {
+    super.initialise(); ///
+
     const json = this.getJSON();
 
-    if (json === null) {
-      super.initialise();
+    if (json !== null) {
+      const fileContext = this; ///
 
-      return;
+      this.procedures = proceduresFromJSON(json, fileContext);
     }
-
-    const fileContext = this; ///
-
-    this.procedures = proceduresFromJSON(json, fileContext);
   }
 
   async verifyFile() {

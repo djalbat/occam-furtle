@@ -57,18 +57,6 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     assert.isTrue(releaseContextsVerify);
   });
 
-  it(procedureName, async () => {
-    const context = releaseContext, ///
-          procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
-          nominalValues = nominalValuesFromNothing(context);
-
-    const term = await procedure.callNominally(nominalValues),
-          primitiveValue = term.getPrimitiveValue(),
-          boolean = primitiveValue; ///
-
-    assert.isTrue(boolean);
-  });
-
   let json,
       entries,
       customGrammar;
@@ -82,10 +70,23 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   });
 
   it("unserialise", () => {
-    const name = projectName, ///
-          releaseContxt = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+    const name = projectName; ///
 
-    releaseContxt.initialise(releaseContexts, FileContextFromFilePath);
+    releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+
+    releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+  });
+
+  it(procedureName, async () => {
+    const context = releaseContext, ///
+          procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
+          nominalValues = nominalValuesFromNothing(context);
+
+    const term = await procedure.callNominally(nominalValues),
+          primitiveValue = term.getPrimitiveValue(),
+          boolean = primitiveValue; ///
+
+    assert.isTrue(boolean);
   });
 }
 

@@ -6,6 +6,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { valuesFromNominalValues } from "../utilities/values";
+import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
 
@@ -78,6 +79,8 @@ export default define(class Procedure extends Element {
 
     this.parameters.compareValues(values, context);
 
+    this.guaranteeReturnBlock();
+
     const variables = variablesFromValuesAndParameters(values, this.parameters, context),
           value = await this.returnBlock.evaluate(variables, context),
           valueType = value.getType(),
@@ -112,6 +115,18 @@ export default define(class Procedure extends Element {
     context.debug(`...called the '${procedureString}' function nominally.`);
 
     return term;
+  }
+
+  guaranteeReturnBlock() {
+    if (this.returnBlock != null) {
+      return;
+    }
+
+    const node = this.getNode(),
+          context = this.getContext(),
+          procedureNode = node;
+
+    this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
 
   toJSON() {
@@ -152,9 +167,8 @@ export default define(class Procedure extends Element {
           parameters = parametersFromJSON(json, context),
           procedureNode = context.findProcedureNode(label),
           returnBlock = null, ///
-          node = procedureNode; ///
-
-    const procedure = new Prpcedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
+          node = procedureNode, ///
+          procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
 
     return procedure;
   }

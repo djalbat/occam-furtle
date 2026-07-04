@@ -33,5 +33,19 @@ export default class ProcedureNode extends NonTerminalNode {
     return returnBlockNode;
   }
 
+  matchLabelNode(labelNode) {
+    let labelNodeMatches;
+
+    const labelNodeA = labelNode; ///
+
+    labelNode = this.getLabelNode();
+
+    const labelNodeB = labelNode; ///
+
+    labelNodeMatches = labelNodeA.match(labelNodeB);  ///
+
+    return labelNodeMatches;
+  }
+
   static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ProcedureNode, ruleName, childNodes, opacity, precedence); }
 }
