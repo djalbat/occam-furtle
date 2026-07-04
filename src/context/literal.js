@@ -19,6 +19,20 @@ export default class LiteralContext extends Context {
     this.tokens = tokens;
   }
 
+  getLexer() {
+    const context = this.getContext(),
+          lexer = context.getLexer();
+
+    return lexer;
+  }
+
+  getParser() {
+    const context = this.getContext(),
+          parser = context.getParser();
+
+    return parser;
+  }
+
   nodeAsString(node) {
     const string = nodeAsString(node, this.tokens);
 
@@ -29,12 +43,6 @@ export default class LiteralContext extends Context {
     const string = nodesAsString(nodes, this.tokens);
 
     return string;
-  }
-
-  static fromTokens(tokens, context) {
-    const literalContext = new LiteralContext(context, tokens);
-
-    return literalContext;
   }
 
   static fromNothing(context) {

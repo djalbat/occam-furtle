@@ -147,9 +147,9 @@ export default define(class Procedure extends Element {
   static fromJSON(json, context) {
     const { string } = json,
           breakPoint = breakPointFromJSON(json),
-          type = typeFromJSON(json),
-          label = labelFromJSON(json),
-          parameters = parametersFromJSON(json),
+          type = typeFromJSON(json, context),
+          label = labelFromJSON(json, context),
+          parameters = parametersFromJSON(json, context),
           procedureNode = context.findProcedureNode(label),
           returnBlock = null, ///
           node = procedureNode; ///

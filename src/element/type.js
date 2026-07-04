@@ -5,6 +5,7 @@ import { Element, breakPointUtilities } from "occam-languages";
 import { define } from "../elements";
 
 import { instantiate } from "../utilities/context";
+import { instantiateType } from "../process/instantiate";
 import { typeStringFromTypeNameAndArgumentTypeName } from "../utilities/string";
 import { nameFromTypeNode, argumentTypeFromTypeNode } from "../utilities/element";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
