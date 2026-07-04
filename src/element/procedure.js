@@ -127,10 +127,19 @@ export default define(class Procedure extends Element {
   static name = "Procedure";
 
   static fromJSON(json, context) {
-    debugger
+    return instantiate((context) => {
+      const { string } = json,
+            procedureNode = instantiatePrpcedure(string, context),
+            node = procedureNode,  ///
+            breakPoint = breakPointFromJSON(json),
+            frame = frameFromPrpcedureNode(procedureNode, context),
+            goal = goalFromPrpcedureNode(procedureNode, context);
 
+      context = null;
 
-    // breakPoint = breakPointFromJSON(json),
+      const procedure = new Prpcedure(context, string, node, breakPoint, frame, goal);
 
+      return procedure;
+    }, context);
   }
 });
