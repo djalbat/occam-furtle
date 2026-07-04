@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import { define } from "../elements";
 
 import { typeStringFromTypeNameAndArgumentTypeName } from "../utilities/string";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
+
+const { breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Type extends Element {
   constructor(context, string, node, breakPoint, name, argumentType) {
@@ -90,6 +92,25 @@ export default define(class Type extends Element {
     }
 
     return equalTo;
+  }
+
+  toJSON() {
+    const string = this.getString();
+
+    let breakPoint;
+
+    breakPoint = this.getBreakPoint();
+
+    const breakPointJSON = breakPointToBreakPointJSON(breakPoint);
+
+    breakPoint = breakPointJSON;  ///
+
+    const json = {
+      string,
+      breakPoint
+    };
+
+    return json;
   }
 
   static name = "Type";

@@ -1,12 +1,15 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { valuesFromNominalValues } from "../utilities/values";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
+import { typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
+
+const { breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -94,13 +97,40 @@ export default define(class Procedure extends Element {
   }
 
   toJSON() {
-    const typeJSON =
+    const typeJSON = typeToTypeJSON(this.type),
+          labelJSON = labelToLabelJSON(this.label),
+          parametersJSON = parametersToParametersJSON(this.parameters),
+          string = this.getString();
 
+    let breakPoint;
+
+    breakPoint = this.getBreakPoint();
+
+    const breakPointJSON = breakPointToBreakPointJSON(breakPoint);
+
+    breakPoint = breakPointJSON;  ///
+
+    const type = typeJSON,  ///
+          label = labelJSON,  ///
+          parameters = parametersJSON,  ///
+          json = {
+            string,
+            breakPoint,
+            type,
+            label,
+            parameters
+          };
+
+    return json;
   }
 
   static name = "Procedure";
 
   static fromJSON(json, context) {
+    debugger
+
+
+    // breakPoint = breakPointFromJSON(json),
 
   }
 });

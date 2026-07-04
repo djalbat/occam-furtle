@@ -1,6 +1,6 @@
 "use strict";
 
-const { Log, verificationUtilities } =require("occam-languages");
+const { Log, ReleaseContext, verificationUtilities } =require("occam-languages");
 
 const { FileContextFromFilePath } = require("../utilities/fileContext"),
       { releaseContextFromDependency } = require("../utilities/releaseContext"),
@@ -8,19 +8,18 @@ const { FileContextFromFilePath } = require("../utilities/fileContext"),
 
 const { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
-function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, callback) {
+function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, nominalValuesFromNothing) {
   let releaseContext = null;
 
-  const releaseContexts = [];
+  const log = Log.fromLogLevel(logLevel),
+        callback = async (context, breakPoint) => {
+          ///
+        },
+        releaseContexts = [];
 
   let context;
 
   before(() => {
-    const log = Log.fromLogLevel(logLevel),
-          callback = async (context, breakPoint) => {
-            ///
-          };
-
     context = {
       log,
       callback,
@@ -61,7 +60,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   it(procedureName, async () => {
     const context = releaseContext, ///
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
-          nominalValues = callback(context);
+          nominalValues = nominalValuesFromNothing(context);
 
     const term = await procedure.callNominally(nominalValues),
           primitiveValue = term.getPrimitiveValue(),
@@ -84,7 +83,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
   it("unserialise", () => {
     const name = projectName, ///
-      releaseContxt = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+          releaseContxt = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
 
     releaseContxt.initialise(releaseContexts, FileContextFromFilePath);
   });

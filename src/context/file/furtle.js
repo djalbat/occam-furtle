@@ -203,7 +203,6 @@ export default class FurtleFileContext extends FileContext {
     return json;
   }
 
-
   static fromFile(file, context) {
     const lexer = furtleLexer,  ///
           parser = furtleParser,  ///
