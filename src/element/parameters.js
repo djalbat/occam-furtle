@@ -5,6 +5,9 @@ import { Element, breakPointUtilities } from "occam-languages";
 import Exception from "../exception";
 
 import { define } from "../elements";
+import { instantiate } from "../utilities/context";
+import { instantiateParameters } from "../process/instantiate";
+import { parametersArrayFromParametersNode } from "../utilities/element";
 
 const { breakPointToBreakPointJSON } = breakPointUtilities;
 
@@ -82,6 +85,19 @@ export default define(class Parameters extends Element {
   static name = "Parameters";
 
   static fromJSON(json, context) {
-    debugger
+    return instantiate((context) => {
+      const { string } = json,
+            parametersNode = instantiateParameters(string, context),
+            node = parametersNode,  ///
+            breakPoint = null,
+            parametersArray = parametersArrayFromParametersNode(parametersNode, context),
+            array = parametersArray; ///
+
+      context = null;
+
+      const parameters = new Parameters(context, string, node, breakPoint, array);
+
+      return parameters;
+    }, context);
   }
 });

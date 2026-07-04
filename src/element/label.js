@@ -3,6 +3,9 @@
 import { Element, breakPointUtilities } from "occam-languages";
 
 import { define } from "../elements";
+import { instantiate } from "../utilities/context";
+import { instantiateLabel } from "../process/instantiate";
+import { nameFromLabelNode } from "../utilities/element";
 
 const { breakPointToBreakPointJSON } = breakPointUtilities;
 
@@ -45,6 +48,18 @@ export default define(class Label extends Element {
   static name = "Label";
 
   static fromJSON(json, context) {
-    debugger
+    return instantiate((context) => {
+      const { string } = json,
+            labelNode = instantiateLabel(string, context),
+            node = labelNode,  ///
+            breakPoint = null,
+            name = nameFromLabelNode(labelNode, context);
+
+      context = null;
+
+      const label = new Label(context, string, node, breakPoint, name);
+
+      return label;
+    }, context);
   }
 });
