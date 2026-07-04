@@ -4,7 +4,6 @@ import { Element } from "occam-languages";
 
 import Exception from "../exception";
 
-import { TEN } from "../constants";
 import { define } from "../elements";
 import { valueFromInteger } from "../utilities/value";
 import { integerRegularExpresssion } from "./tryInteger";

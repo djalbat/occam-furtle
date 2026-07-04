@@ -7,9 +7,9 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodeQuery } = queryUtilities,
-      { ERROR_LEVEL } = levels;
+      { TRACE_LEVEL } = levels;
 
-const logLevel = ERROR_LEVEL,
+const logLevel = TRACE_LEVEL,
       filePath = "decimal-numbers/Functions/Natural numbers.ftl",
       projectName = "decimal-numbers",
       procedureName = "isTermNaturalNumber",

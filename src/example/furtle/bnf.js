@@ -64,10 +64,6 @@ const bnf = `
     
     returnBlock..           ::=  "{" ( statement | nonsense )* returnStatement "}" ;
                                      
-    nodesQuery              ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
-    
-    nodeQuery               ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
-    
     ternary                 ::=  "if" "(" term ")" expression "else" expression ;
     
     reduce                  ::=  "reduce"<NO_WHITESPACE>"(" variable "," anonymousProcedure "," value ")" ;
@@ -78,11 +74,21 @@ const bnf = `
     
     
     
+    nodesQuery              ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
+    
+    nodeQuery               ::=  "nodeQuery"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
+    
     lengthOf                ::=  "lengthOf"<NO_WHITESPACE>"(" variable ")" ;
     
     toInteger               ::=  "toInteger"<NO_WHITESPACE>"(" variable ")" ;
     
     tryInteger              ::=  "tryInteger"<NO_WHITESPACE>"(" variable ")" ;
+    
+    startsWith              ::=  "startsWith"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
+    
+    endsWith                ::=  "endsWith"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
+    
+    contains                ::=  "contains"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
     
     
     
@@ -104,10 +110,6 @@ const bnf = `
      
                               |  returnBlock
     
-                              |  nodesQuery
-                              
-                              |  nodeQuery
-                              
                               |  ternary
                               
                               |  reduce
@@ -116,12 +118,22 @@ const bnf = `
     
                               |  some
                               
+                              |  nodesQuery
+                              
+                              |  nodeQuery
+                              
                               |  lengthOf
                              
                               |  toInteger
                              
                               |  tryInteger
                              
+                              |  startsWith
+                              
+                              |  endsWith
+                              
+                              |  contains
+                              
                               |  term
                               
                               ;
