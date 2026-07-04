@@ -6,7 +6,7 @@ const { FileContextFromFilePath } = require("../utilities/fileContext"),
       { releaseContextFromDependency } = require("../utilities/releaseContext"),
       { procedureFromFilePathProcedureName } = require("../utilities/furtle");
 
-const { createReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
+const { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
 function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, callback) {
   let releaseContext = null;
@@ -38,7 +38,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     assert.isTrue(releaseContextsCreated);
   });
 
-  it("initialises", async () => {
+  it("initialises", () => {
     initialiseReleaseContexts(context);
 
     releaseContext = releaseContexts.find((releaseContext) => {
@@ -52,6 +52,12 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     assert.isNotNull(releaseContext);
   });
 
+  it("verifies", async () => {
+    const releaseContextsVerify = await verifyReleaseContexts(context);
+
+    assert.isTrue(releaseContextsVerify);
+  });
+
   it(procedureName, async () => {
     const context = releaseContext, ///
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
@@ -62,6 +68,25 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
           boolean = primitiveValue; ///
 
     assert.isTrue(boolean);
+  });
+
+  let json,
+      entries,
+      customGrammar;
+
+  it("serialise", () => {
+    json = releaseContext.toJSON();
+
+    entries = releaseContext.getEntries();
+
+    customGrammar = releaseContext.getCustomGrammar();
+  });
+
+  it("unserialise", () => {
+    const name = projectName, ///
+      releaseContxt = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+
+    releaseContxt.initialise(releaseContexts, FileContextFromFilePath);
   });
 }
 

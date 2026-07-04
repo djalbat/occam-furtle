@@ -6,6 +6,7 @@ import FurtleLexer from "../../furtle/lexer";
 import FurtleParser from "../../furtle/parser";
 
 import { verifyFile } from "../../process/verify";
+import { proceduresFromJSON, proceduresToProceduresJSON } from "../../utilities/json";
 
 const { furtleLexerFromNothing, furtleParserFromNothing } = furtleUtilities;
 
@@ -165,16 +166,18 @@ export default class FurtleFileContext extends FileContext {
     ///
   }
 
-  initialise(json) {
-    super.initialise();
+  initialise() {
+    const json = this.getJSON();
 
-    this.procedures = [];
+    if (json === null) {
+      super.initialise();
 
-    const node = this.getNode(),
-          context = this, ///
-          fileNode = node;  ///
+      return;
+    }
 
-    verifyFile(fileNode, context);
+    const fileContext = this; ///
+
+    this.procedures = proceduresFromJSON(json, fileContext);
   }
 
   async verifyFile() {
@@ -187,15 +190,19 @@ export default class FurtleFileContext extends FileContext {
   }
 
   toJSON() {
-    const filePath = this.getFilePath(),
+    const proceduresJSON = proceduresToProceduresJSON(this.procedures),
           fileContent = this.getFileContent(),
+          filePath = this.getFilePath(),
+          procedures = proceduresJSON,  ///
           json = {
+            fileContent,
             filePath,
-            fileContent
+            procedures
           };
 
     return json;
   }
+
 
   static fromFile(file, context) {
     const lexer = furtleLexer,  ///

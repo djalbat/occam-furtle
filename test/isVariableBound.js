@@ -15,11 +15,11 @@ const logLevel = TRACE_LEVEL,
       procedureName = "isVariableBound",
       projectsDirectoryPath = "../../Logic";
 
-const content = `∀n n = n
-`,
-      termNodeQuery = nodeQuery("/step/statement/argument!/term!");
+const termNodeQuery = nodeQuery("/step/statement/argument!/term!"),
+      content = `∀n n = n
+`;
 
-describe(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

@@ -93,5 +93,14 @@ export default define(class Procedure extends Element {
     return term;
   }
 
+  toJSON() {
+    const typeJSON =
+
+  }
+
   static name = "Procedure";
+
+  static fromJSON(json, context) {
+
+  }
 });
