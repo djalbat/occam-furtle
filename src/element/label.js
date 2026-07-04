@@ -43,4 +43,8 @@ export default define(class Label extends Element {
   }
 
   static name = "Label";
+
+  static fromJSON(json, context) {
+    debugger
+  }
 });

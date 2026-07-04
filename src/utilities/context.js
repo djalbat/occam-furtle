@@ -1,6 +1,7 @@
 "use strict";
 
 import BlockContext from "../context/block";
+import LiteralContext from "../context/literal";
 
 import { isContextBlockContext } from "../context/block";
 
@@ -14,6 +15,14 @@ export function confine(innerFunction, variables, context) {
   const blockContext = BlockContext.fromVariables(variables, context);
 
   context = blockContext;  ///
+
+  return innerFunction(context);
+}
+
+export function instantiate(innerFunction, context) {
+  const literalContext = LiteralContext.fromNothing(context);
+
+  context = literalContext;  ///
 
   return innerFunction(context);
 }

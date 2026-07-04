@@ -7,7 +7,7 @@ import Exception from "../exception";
 import { define } from "../elements";
 import { valuesFromNominalValues } from "../utilities/values";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
-import { typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
+import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
 
 const { breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
@@ -145,19 +145,17 @@ export default define(class Procedure extends Element {
   static name = "Procedure";
 
   static fromJSON(json, context) {
-    return instantiate((context) => {
-      const { string } = json,
-            procedureNode = instantiatePrpcedure(string, context),
-            node = procedureNode,  ///
-            breakPoint = breakPointFromJSON(json),
-            frame = frameFromPrpcedureNode(procedureNode, context),
-            goal = goalFromPrpcedureNode(procedureNode, context);
+    const { string } = json,
+          breakPoint = breakPointFromJSON(json),
+          type = typeFromJSON(json),
+          label = labelFromJSON(json),
+          parameters = parametersFromJSON(json),
+          procedureNode = context.findProcedureNode(label),
+          returnBlock = null, ///
+          node = procedureNode; ///
 
-      context = null;
+    const procedure = new Prpcedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
 
-      const procedure = new Prpcedure(context, string, node, breakPoint, frame, goal);
-
-      return procedure;
-    }, context);
+    return procedure;
   }
 });

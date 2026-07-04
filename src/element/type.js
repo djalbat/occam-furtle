@@ -4,7 +4,9 @@ import { Element, breakPointUtilities } from "occam-languages";
 
 import { define } from "../elements";
 
+import { instantiate } from "../utilities/context";
 import { typeStringFromTypeNameAndArgumentTypeName } from "../utilities/string";
+import { nameFromTypeNode, argumentTypeFromTypeNode } from "../utilities/element";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, INTEGER_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../typeNames";
 
 const { breakPointToBreakPointJSON } = breakPointUtilities;
@@ -114,6 +116,23 @@ export default define(class Type extends Element {
   }
 
   static name = "Type";
+
+  static fromJSON(json, context) {
+    return instantiate((context) => {
+      const { string } = json,
+            typeNode = instantiateType(string, context),
+            node = typeNode,  ///
+            breakPoint = null,
+            name = nameFromTypeNode(typeNode, context),
+            argumentType = argumentTypeFromTypeNode(typeNode, context);
+
+      context = null;
+
+      const type = new Type(context, string, node, breakPoint, name, argumentType);
+
+      return type;
+    }, context);
+  }
 
   static fromTypeName(typeName, context) {
     let type = null;
