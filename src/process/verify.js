@@ -3,12 +3,12 @@
 import { SimplePass } from "occam-languages";
 import { queryUtilities } from "occam-query";
 
-import { errorFromErrorNode, procedureDeclarationFromProcedureDeclarationNode } from "../utilities/element";
+import { errorFromErrorNode, procedureFromProcedureNode } from "../utilities/element";
 
 const { nodeQuery } = queryUtilities;
 
 const errorNodeQuery = nodeQuery("/error"),
-      procedureDeclarationNodeQuery = nodeQuery("/procedureDeclaration");
+      procedureNodeQuery = nodeQuery("/procedure");
 
 class TopLevelPass extends SimplePass {
   static maps = [
@@ -28,14 +28,14 @@ class TopLevelPass extends SimplePass {
       }
     },
     {
-      nodeQuery: procedureDeclarationNodeQuery,
-      run: (procedureDeclarationNode, context) => {
+      nodeQuery: procedureNodeQuery,
+      run: (procedureNode, context) => {
         let success = false;
 
-        const procedureDeclaration = procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context),
-              procedureDeclarationVerifies = procedureDeclaration.verify(context);
+        const procedure = procedureFromProcedureNode(procedureNode, context),
+              procedureVerifies = procedure.verify(context);
 
-        if (procedureDeclarationVerifies) {
+        if (procedureVerifies) {
           success = true;
         }
 

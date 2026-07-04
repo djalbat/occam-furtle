@@ -4,7 +4,7 @@ import { Element } from "occam-languages";
 
 import { define } from "../elements";
 
-export default define(class Step extends Element {
+export default define(class Statement extends Element {
   constructor(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssignments) {
     super(context, string, node, breakPoint);
 
@@ -37,5 +37,5 @@ export default define(class Step extends Element {
     }
   }
 
-  static name = "Step";
+  static name = "Statement";
 });

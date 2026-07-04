@@ -1,14 +1,14 @@
 "use strict";
 
 const LATIN = "[\\p{Script=Latin}]",
-      DECIMAL = "[0-9]";
+  DECIMAL = "[0-9]";
 
 const entries = [
   {
     "bracket": "^(?:\\{|\\})"
   },
   {
-    "primary-keyword": "^return"
+    "primary-keyword": "^(?:export|import|from|return)"
   },
   {
     "secondary-keyword": "^(?:as|if|else)"

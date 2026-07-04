@@ -1,6 +1,5 @@
 "use strict";
 
-import Step from "./element/step";
 import Some from "./element/some";
 import Term from "./element/term";
 import Type from "./element/type";
@@ -22,6 +21,7 @@ import Procedure from "./element/procedure";
 import NodeQuery from "./element/nodeQuery";
 import Parameter from "./element/parameter";
 import ToInteger from "./element/toInteger";
+import Statement from "./element/statement";
 import TryInteger from "./element/tryInteger";
 import Parameters from "./element/parameters";
 import NodesQuery from "./element/nodesQuery";
@@ -35,9 +35,8 @@ import NamedBindings from "./element/bindings/named";
 import BracketedTerm from "./element/term/bracketed";
 import ComparisonTerm from "./element/term/comparison";
 import ArrayAssigment from "./element/assignment/array";
-import ReturnStatement from "./element/statement/return";
+import ReturnStatement from "./element/returnStatement";
 import ObjectAssignment from "./element/assignment/object";
-import AnonymousProcedure from "./element/procedure/anonymous";
+import AnonymousProcedure from "./element/anonymousProcedure";
 import VariableAssignment from "./element/assignment/variable";
 import VariableAssignments from "./element/assignments/variable";
-import ProcedureDeclaration from "./element/declaration/procedure";

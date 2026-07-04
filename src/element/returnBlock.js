@@ -10,16 +10,16 @@ import { confine } from "../utilities/context";
 const { asyncForEach } = asynchronousUtilities;
 
 export default define(class ReturnBlock extends Element {
-  constructor(context, string, node, breakPoint, steps, nonsensical, returnStatement) {
+  constructor(context, string, node, breakPoint, statements, nonsensical, returnStatement) {
     super(context, string, node, breakPoint);
 
-    this.steps = steps;
+    this.statements = statements;
     this.nonsensical = nonsensical;
     this.returnStatement = returnStatement;
   }
 
-  getSteps() {
-    return this.steps;
+  getStatements() {
+    return this.statements;
   }
 
   isNonsensical() {
@@ -51,8 +51,8 @@ export default define(class ReturnBlock extends Element {
     let value;
 
     await confine(async (context) => {
-      await asyncForEach(this.steps, async (step) => {
-        await step.evaluate(context);
+      await asyncForEach(this.statements, async (statement) => {
+        await statement.evaluate(context);
       });
 
       value = this.returnStatement.evaluate(context);

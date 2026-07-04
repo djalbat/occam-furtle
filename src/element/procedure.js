@@ -51,6 +51,24 @@ export default define(class Procedure extends Element {
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
 
+  verify(context) {
+    const verifies = true;
+
+    const procedureString = this.getString();
+
+    context.trace(`Verifying the '${procedureString}' function...`)
+
+    const procedure = this; ///
+
+    context.addProcedure(procedure);
+
+    if (verifies) {
+      context.debug(`...verified the '${procedureString}' function.`)
+    }
+
+    return verifies;
+  }
+
   async call(values, context) {
     await this.break(context);
 

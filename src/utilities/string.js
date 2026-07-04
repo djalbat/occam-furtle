@@ -129,20 +129,6 @@ export function primtiveStringFromNominalValues(nominalValues) {
   return primtiveString;
 }
 
-export function procedureDeclarationStringFromProcedure(procedure) {
-  const type = procedure.getType(),
-        label = procedure.getLabel(),
-        parameters = procedure.getParameters(),
-        returnStatement = procedure.getReturnStatement(),
-        typeString = type.getString(),
-        labelString = label.getString(),
-        parametersString = parameters.getString(),
-        returnStatementString = returnStatement.getString(),
-        procedureDelcarationString = `${typeString} ${labelString }(${parametersString}) { ... ${returnStatementString} }`;
-
-  return procedureDelcarationString;
-}
-
 export function returnBlockStringFromReturnStatementNode(returnStatement) {
   const returnStatementString = returnStatement.getString(),
         returnBlockString = `{ ... ${returnStatementString} }`;

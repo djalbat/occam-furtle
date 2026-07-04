@@ -2,7 +2,7 @@
 
 import { Element } from "occam-languages";
 
-import { define } from "../../elements";
+import { define } from "../elements";
 
 export default define(class ReturnStatement extends Element {
   constructor(context, string, node, breakPoint, value) {

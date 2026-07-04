@@ -2,10 +2,10 @@
 
 import { Element } from "occam-languages";
 
-import Exception from "../../exception";
+import Exception from "../exception";
 
-import { define } from "../../elements";
-import { variablesFromValuesAndParameters } from "../../utilities/parameters";
+import { define } from "../elements";
+import { variablesFromValuesAndParameters } from "../utilities/parameters";
 
 export default define(class AnonymousProcedure extends Element {
   constructor(context, string, node, breakPoint, type, parameters, returnBlock) {

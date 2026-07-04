@@ -1,6 +1,5 @@
 "use strict";
 
-export const STEP_RULE_NAME = "step";
 export const SOME_RULE_NAME = "some";
 export const TERM_RULE_NAME = "term";
 export const TYPE_RULE_NAME = "type";
@@ -17,6 +16,8 @@ export const VARIABLE_RULE_NAME = "variable";
 export const NONSENSE_RULE_NAME = "nonsense";
 export const DOCUMENT_RULE_NAME = "document";
 export const BINDINGS_RULE_NAME = "bindings";
+export const STATEMENT_RULE_NAME = "statement";
+export const PROCEDURE_RULE_NAME = "procedure";
 export const LENGTH_OF_RULE_NAME = "lengthOf";
 export const PRIMITIVE_RULE_NAME = "primitive";
 export const REFERENCE_RULE_NAME = "reference";
@@ -41,5 +42,4 @@ export const OBJECT_ASSIGNMENT_RULE_NAME = "objectAssignment";
 export const VARIABLE_ASSIGNMENT_RULE_NAME = "variableAssignment";
 export const ANONYMOUS_PROCEDURE_RULE_NAME = "anonymousProcedure";
 export const VARIABLE_ASSIGNMENTS_RULE_NAME = "variableAssignments";
-export const PROCEDURE_DECLARATION_RULE_NAME = "procedureDeclaration";
 

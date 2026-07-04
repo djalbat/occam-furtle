@@ -10,7 +10,6 @@ import { ternaryStringFromTerm,
          termStringFromProperties,
          valueStringFromProperties,
          expressionStringFromProperties,
-         procedureDeclarationStringFromProcedure,
          returnBlockStringFromReturnStatementNode,
          variableAssignmentStringFromTypeAndVariable,
          someStringFromVariableAndAnonymousProcedure,
@@ -19,22 +18,6 @@ import { ternaryStringFromTerm,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
          variableAssignmentStringFromTypeAndVariableAssignmentsArray,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
-
-export function stepFromStepNode(stepNode, context) {
-  const { Step } = elements,
-        node = stepNode,  ///
-        string = context.nodeAsString(node),
-        breakPoint = null,
-        arrayAssignment = arrayAssignmentFromStepNode(stepNode, context),
-        objectAssigment = objectAssignmentFromStepNode(stepNode, context),
-        variableAssigments = variableAssignmentsFromStepNode(stepNode, context);
-
-  context = null;
-
-  const step = new Step(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssigments);
-
-  return step;
-}
 
 export function someFromSomeNode(someNode, context) {
   const { Some } = elements,
@@ -113,22 +96,6 @@ export function valueFromValueNode(valueNode, context) {
   const value = new Value(context, string, node, breakPoint, variable, primitive);
 
   return value;
-}
-
-export function termsFromTermsNode(termsNode, context) {
-  const { Terms } = elements,
-        node = termsNode, ///
-        string = context.nodeAsString(node),
-        termNodes = termsNode.getTermNodes(),
-        termsArray = termsArrayFromTermNodes(termNodes, context),
-        array = termsArray, ///
-        breakPoint = null;
-
-  context = null;
-
-  const terms = new Terms(context, string, node, breakPoint, array);
-
-  return terms;
 }
 
 export function errorFromErrorNode(errorNode, context) {
@@ -283,6 +250,37 @@ export function lengthOfFromLengthOfNode(lengthOfNode, context) {
   const lengthOf = new LengthOf(context, string, node, breakPoint, variable);
 
   return lengthOf;
+}
+
+export function statementFromStatementNode(statementNode, context) {
+  const { Statement } = elements,
+        node = statementNode,  ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        arrayAssignment = arrayAssignmentFromStatementNode(statementNode, context),
+        objectAssigment = objectAssignmentFromStatementNode(statementNode, context),
+        variableAssigments = variableAssignmentsFromStatementNode(statementNode, context);
+
+  context = null;
+
+  const statement = new Statement(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssigments);
+
+  return statement;
+}
+
+export function procedureFromProcedureNode(procedureNode, context) {
+  const { Procedure } = elements,
+        node = procedureNode,  ///
+        type = typeFromProcedureNode(procedureNode, context),
+        label = labelFromProcedureNode(procedureNode, context),
+        parameters = parametersFromProcedureNode(procedureNode, context),
+        returnBlock = returnBlockFromProcedureNode(procedureNode, context),
+        procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
+        string = procedureString, ///
+        breakPoint = null,
+        procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
+
+  return procedure;
 }
 
 export function referenceFromReferenceNode(referenceNode, context) {
@@ -445,7 +443,7 @@ export function tryIntegerFromTryIntegerNode(tryIntegerNode, context) {
 export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
   const { ReturnBlock } = elements,
         node = returnBlockNode, ///
-        steps = stepsFromReturnBlockNode(returnBlockNode, context),
+        statements = statementsFromReturnBlockNode(returnBlockNode, context),
         nonsensical = nonsensicalFromReturnBlockNode(returnBlockNode, context),
         returnStatement = returnStatementFromReturnBlockNode(returnBlockNode, context),
         returnBlockString = returnBlockStringFromReturnStatementNode(returnStatement),
@@ -454,7 +452,7 @@ export function returnBlockFromReturnBlockNode(returnBlockNode, context) {
 
   context = null;
 
-  const returnBlock = new ReturnBlock(context, string, node, breakPoint, steps, nonsensical, returnStatement);
+  const returnBlock = new ReturnBlock(context, string, node, breakPoint, statements, nonsensical, returnStatement);
 
   return returnBlock;
 }
@@ -564,21 +562,6 @@ export function namedBindingsFromObjectAssignmentNode(objectAssignmentNode, cont
   return namedBindings;
 }
 
-export function procedureFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { Procedure } = elements,
-        node = procedureDeclarationNode,  ///
-        type = typeFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        label = labelFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        parameters = parametersFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        returnBlock = returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
-        string = procedureString, ///
-        breakPoint = null,
-        procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
-
-  return procedure;
-}
-
 export function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
   const { ArrayAssignment } = elements,
         node = arrayAssignmentNode, ///
@@ -657,21 +640,6 @@ export function variableAssignmentsFromVariableAssignmentsNode(variableAssignmen
   return variableAssignments;
 }
 
-export function procedureDeclarationFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const { ProcedureDeclaration } = elements,
-        node = procedureDeclarationNode,  ///
-        procedure = procedureFromProcedureDeclarationNode(procedureDeclarationNode, context),
-        procedureDeclarationString = procedureDeclarationStringFromProcedure(procedure),
-        string = procedureDeclarationString,  ///
-        breakPoint = null;
-
-  context = null;
-
-  const procedureDeclaration = new ProcedureDeclaration(context, string, node, breakPoint, procedure);
-
-  return procedureDeclaration;
-}
-
 export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variableAssignmentNode, context) {
   const { VariableAssignment } = elements,
         node = variableAssignmentNode,  ///
@@ -683,19 +651,6 @@ export function variableAssignmentFromTypeAndVariableAssignmentNode(type, variab
         assignment = new VariableAssignment(context, string, node, breakPoint, variable, expression);
 
   return assignment;
-}
-
-export function variableFromTypeAndVariableNode(type, variableNode, context) {
-  const { Variable } = elements,
-        node = variableNode,  ///
-        name = nameFromVariableNode(variableNode),
-        value = valueFromTypeAndVariableNode(type, variableNode, context),
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        breakPoint = null,
-        variable = new Variable(context, string, node, breakPoint, type, name, value);
-
-  return variable;
 }
 
 export function nameFromTypeNode(typeNode, context) {
@@ -769,6 +724,13 @@ export function nameFromVariableNode(variableNode) {
 
 export function typeFromVariableNode(variableNode, context) {
   const type = null;
+
+  return type;
+}
+
+export function typeFromProcedureNode(procedureNode, context) {
+  const typeNode = procedureNode.getTypeNode(),
+        type = typeFromTypeNode(typeNode, context);
 
   return type;
 }
@@ -868,6 +830,13 @@ export function valueFromPrimitiveNode(primitiveNode, context) {
   const value = primitiveNode.getValue();
 
   return value;
+}
+
+export function labelFromProcedureNode(procedureNode, context) {
+  const labelNode = procedureNode.getLabelNode(),
+        label = labelFromLabelNode(labelNode, context);
+
+  return label;
 }
 
 export function termFromExpressionNode(expressionNode, context) {
@@ -990,17 +959,6 @@ export function reduceFromExpressionNode(expressionNode, context) {
   return reduce;
 }
 
-export function stepsFromReturnBlockNode(returnBlockNode, context) {
-  const stepNodes = returnBlockNode.getStepNodes(),
-        steps = stepNodes.map((stepNode) => {
-          const step = stepFromStepNode(stepNode, context);
-
-          return step;
-        });
-
-  return steps;
-}
-
 export function typeFromNamedBindingNode(namedBindingNode, context) {
   const typeNode = namedBindingNode.getTypeNode(),
         type = typeFromTypeNode(typeNode, context);
@@ -1116,23 +1074,18 @@ export function lengthOfFromExpressionNode(expressionNode, context) {
   return lengthOf;
 }
 
-export function arrayAssignmentFromStepNode(stepNode, context) {
-  let arrayAssignment = null;
-
-  const arrayAssignmentNode = stepNode.getArrayAssignmentNode();
-
-  if (arrayAssignmentNode !== null) {
-    arrayAssignment = arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context);
-  }
-
-  return arrayAssignment;
-}
-
 export function ifExpressionFromTernaryNode(ternaryNode, context) {
   const ifExpressionNode = ternaryNode.getIfExpressionNode(),
         ifExpression = expressionFromExpressionNode(ifExpressionNode, context);
 
   return ifExpression;
+}
+
+export function parametersFromProcedureNode(procedureNode, context) {
+  const parametersNode = procedureNode.getParametersNode(),
+        parameters = parametersFromParametersNode(parametersNode, context);
+
+  return parameters;
 }
 
 export function toIntegerFromExpressionNode(expressionNode, context) {
@@ -1173,6 +1126,13 @@ export function valuesFromProcedureCallNode(procedureCallNode, context) {
   return values;
 }
 
+export function returnBlockFromProcedureNode(procedureNode, context) {
+  const returnBlockNode = procedureNode.getReturnBlockNode(),
+        returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
+
+  return returnBlock;
+}
+
 export function valueFromTypeAndVariableNode(type, variableNode, context) {
   const value = null;
 
@@ -1184,18 +1144,6 @@ export function valueFromReturnStatementNode(returnStatementNode, context) {
         value = valueFromValueNode(valueNode, context);
 
   return value;
-}
-
-export function objectAssignmentFromStepNode(stepNode, context) {
-  let objectAssignment = null;
-
-  const objectAssignmentNode = stepNode.getObjectAssignmentNode();
-
-  if (objectAssignmentNode !== null) {
-    objectAssignment = objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context);
-  }
-
-  return objectAssignment;
 }
 
 export function nodesQueryFromExpressionNode(expressionNode, context) {
@@ -1248,6 +1196,17 @@ export function returnBlockFromExpressionNode(expressionNode, context) {
   return returnBlock;
 }
 
+export function statementsFromReturnBlockNode(returnBlockNode, context) {
+  const statementNodes = returnBlockNode.getStatementNodes(),
+        statements = statementNodes.map((statementNode) => {
+          const statement = statementFromStatementNode(statementNode, context);
+
+          return statement;
+        });
+
+  return statements;
+}
+
 export function negatedFromComparisonTermNode(comparisonTermNode, context) {
   const negated = comparisonTermNode.isNegated();
 
@@ -1294,16 +1253,17 @@ export function typeFromAnonymousProcedureNode(anonymousProcedureNode, context) 
   return type;
 }
 
-export function variableAssignmentsFromStepNode(stepNode, context) {
-  let variableAssignments = null;
+export function variableFromTypeAndVariableNode(type, variableNode, context) {
+  const { Variable } = elements,
+        node = variableNode,  ///
+        name = nameFromVariableNode(variableNode),
+        value = valueFromTypeAndVariableNode(type, variableNode, context),
+        variableString = variableStringFromName(name),
+        string = variableString,  ///
+        breakPoint = null,
+        variable = new Variable(context, string, node, breakPoint, type, name, value);
 
-  const variableAssignmentsNode = stepNode.getVariableAssignmentsNode();
-
-  if (variableAssignmentsNode !== null) {
-    variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
-  }
-
-  return variableAssignments;
+  return variable;
 }
 
 export function anonymousProcedureFromEveryNode(everyNode, context) {
@@ -1360,6 +1320,18 @@ export function anonymousProcedureFromReduceNode(reduceNode, context) {
   return anonymousProcedure;
 }
 
+export function arrayAssignmentFromStatementNode(statementNode, context) {
+  let arrayAssignment = null;
+
+  const arrayAssignmentNode = statementNode.getArrayAssignmentNode();
+
+  if (arrayAssignmentNode !== null) {
+    arrayAssignment = arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context);
+  }
+
+  return arrayAssignment;
+}
+
 export function variableFromObjectAssignmentNode(objectAssignmentNode, context) {
   const variableNode = objectAssignmentNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -1367,18 +1339,16 @@ export function variableFromObjectAssignmentNode(objectAssignmentNode, context) 
   return variable;
 }
 
-export function typeFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const typeNode = procedureDeclarationNode.getTypeNode(),
-        type = typeFromTypeNode(typeNode, context);
+export function objectAssignmentFromStatementNode(statementNode, context) {
+  let objectAssignment = null;
 
-  return type;
-}
+  const objectAssignmentNode = statementNode.getObjectAssignmentNode();
 
-export function labelFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const labelNode = procedureDeclarationNode.getLabelNode(),
-        label = labelFromLabelNode(labelNode, context);
+  if (objectAssignmentNode !== null) {
+    objectAssignment = objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context);
+  }
 
-  return label;
+  return objectAssignment;
 }
 
 export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
@@ -1386,6 +1356,18 @@ export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
         returnStatement = returnStatementFromReturnStatementNode(returnStatementNode, context);
 
   return returnStatement;
+}
+
+export function variableAssignmentsFromStatementNode(statementNode, context) {
+  let variableAssignments = null;
+
+  const variableAssignmentsNode = statementNode.getVariableAssignmentsNode();
+
+  if (variableAssignmentsNode !== null) {
+    variableAssignments = variableAssignmentsFromVariableAssignmentsNode(variableAssignmentsNode, context);
+  }
+
+  return variableAssignments;
 }
 
 export function expressionFromVariableAssignmentNode(variableAssigmentNode, context) {
@@ -1404,20 +1386,6 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
 
 export function returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const returnBlockNode = anonymousProcedureNode.getReturnBlockNode(),
-        returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
-
-  return returnBlock;
-}
-
-export function parametersFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const parametersNode = procedureDeclarationNode.getParametersNode(),
-        parameters = parametersFromParametersNode(parametersNode, context);
-
-  return parameters;
-}
-
-export function returnBlockFromProcedureDeclarationNode(procedureDeclarationNode, context) {
-  const returnBlockNode = procedureDeclarationNode.getReturnBlockNode(),
         returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
 
   return returnBlock;

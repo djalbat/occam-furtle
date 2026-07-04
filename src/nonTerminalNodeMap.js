@@ -1,6 +1,5 @@
 "use strict";
 
-import StepNode from "./node/step";
 import SomeNode from "./node/some";
 import TermNode from "./node/term";
 import TypeNode from "./node/type";
@@ -21,8 +20,10 @@ import LengthOfNode from "./node/lengthOf";
 import PrimitiveNode from "./node/primitive";
 import ReferenceNode from "./node/reference";
 import ParameterNode from "./node/parameter";
+import StatementNode from "./node/statement";
 import NodeQueryNode from "./node/nodeQuery";
 import ToIntegerNode from "./node/toInteger";
+import ProcedureNode from "./node/procedure";
 import TryIntegerNode from "./node/tryInteger";
 import NodesQueryNode from "./node/nodesQuery";
 import ExpressionNode from "./node/expression";
@@ -35,16 +36,14 @@ import ProcedureCallNode from "./node/procedureCall";
 import NamedBindingsNode from "./node/bindings/named";
 import BracketedTermNode from "./node/term/bracketed";
 import ComparisonTermNode from "./node/term/comparison";
-import ReturnStatementNode from "./node/statement/return";
+import ReturnStatementNode from "./node/returnStatement";
 import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
-import AnonymousProcedureNode from "./node/procedure/anoymous";
+import AnonymousProcedureNode from "./node/anoymousProcedure";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
-import ProcedureDeclarationNode from "./node/declaration/procedure";
 
-import { STEP_RULE_NAME,
-         SOME_RULE_NAME,
+import { SOME_RULE_NAME,
          TERM_RULE_NAME,
          TYPE_RULE_NAME,
          TERMS_RULE_NAME,
@@ -64,6 +63,8 @@ import { STEP_RULE_NAME,
          PRIMITIVE_RULE_NAME,
          REFERENCE_RULE_NAME,
          PARAMETER_RULE_NAME,
+         STATEMENT_RULE_NAME,
+         PROCEDURE_RULE_NAME,
          NODE_QUERY_RULE_NAME,
          EXPRESSION_RULE_NAME,
          PARAMETERS_RULE_NAME,
@@ -83,11 +84,9 @@ import { STEP_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
-         VARIABLE_ASSIGNMENTS_RULE_NAME,
-         PROCEDURE_DECLARATION_RULE_NAME } from "./ruleNames";
+         VARIABLE_ASSIGNMENTS_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
-  [STEP_RULE_NAME]: StepNode,
   [SOME_RULE_NAME]: SomeNode,
   [TERM_RULE_NAME]: TermNode,
   [TYPE_RULE_NAME]: TypeNode,
@@ -107,7 +106,9 @@ const NonTerminalNodeMap = {
   [LENGTH_OF_RULE_NAME]: LengthOfNode,
   [PRIMITIVE_RULE_NAME]: PrimitiveNode,
   [REFERENCE_RULE_NAME]: ReferenceNode,
+  [STATEMENT_RULE_NAME]: StatementNode,
   [PARAMETER_RULE_NAME]: ParameterNode,
+  [PROCEDURE_RULE_NAME]: ProcedureNode,
   [TO_INTEGER_RULE_NAME]: ToIntegerNode,
   [NODE_QUERY_RULE_NAME]: NodeQueryNode,
   [EXPRESSION_RULE_NAME]: ExpressionNode,
@@ -127,8 +128,7 @@ const NonTerminalNodeMap = {
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
-  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode,
-  [PROCEDURE_DECLARATION_RULE_NAME]: ProcedureDeclarationNode
+  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode
 };
 
 export default NonTerminalNodeMap;

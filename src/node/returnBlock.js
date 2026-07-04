@@ -2,7 +2,7 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { STEP_RULE_NAME, NONSENSE_RULE_NAME, RETURN_STATEMENT_RULE_NAME } from "../ruleNames";
+import { STATEMENT_RULE_NAME, NONSENSE_RULE_NAME, RETURN_STATEMENT_RULE_NAME } from "../ruleNames";
 
 export default class ReturnBlockNode extends NonTerminalNode {
   isNonsensical() {
@@ -13,11 +13,11 @@ export default class ReturnBlockNode extends NonTerminalNode {
     return nonsensical;
   }
 
-  getStepNodes() {
-    const ruleName = STEP_RULE_NAME,
-          stepNodes = this.getNodesByRuleName(ruleName);
+  getStatementNodes() {
+    const ruleName = STATEMENT_RULE_NAME,
+          statementNodes = this.getNodesByRuleName(ruleName);
 
-    return stepNodes;
+    return statementNodes;
   }
 
   getNonsenseNodes() {

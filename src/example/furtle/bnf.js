@@ -2,15 +2,17 @@
 
 const bnf = `
 
-    document                ::=  ( procedureDeclaration | error )+ ;
+    document                ::=  ( importStatement | procedure | error )+ ;
     
     
     
-    procedureDeclaration    ::=  type label<NO_WHITESPACE>"(" parameters? ")" returnBlock ;
+    procedure               ::=  "export"? type label<NO_WHITESPACE>"(" parameters? ")" returnBlock ;
+    
+    importStatement         ::=  "import" importBindings "from" [string-literal] ";" ;
     
     anonymousProcedure      ::=  type "(" parameters? ")" returnBlock ;
     
-    step                    ::=  variableAssignments
+    statement               ::=  variableAssignments
                               
                               |  objectAssignment
      
@@ -30,6 +32,8 @@ const bnf = `
     
 
 
+    importBindings          ::=  importBinding ( "," importBinding )* ;
+    
     namedBindings           ::=  namedBinding ( "," namedBinding )* ;
     
     parameters              ::=  parameter ( "," parameter )* ;
@@ -42,6 +46,8 @@ const bnf = `
     
 
 
+    importBinding           ::=  reference ( "as" label )? ;   
+    
     namedBinding            ::=  type [name] ( "as" [name] )? ;   
     
     parameter               ::=  type [name] ;
@@ -56,7 +62,7 @@ const bnf = `
     
     procedureCall           ::=  reference<NO_WHITESPACE>"(" values? ")" ;
     
-    returnBlock..           ::=  "{" ( step | nonsense )* returnStatement "}" ;
+    returnBlock..           ::=  "{" ( statement | nonsense )* returnStatement "}" ;
                                      
     nodesQuery              ::=  "nodesQuery"<NO_WHITESPACE>"(" variable "," [string-literal] ")" ;
     
