@@ -1,8 +1,10 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import { define } from "../../elements";
+
+const { unbreakable } = continuationUtilities;
 
 export default define(class VariableAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, expression) {
@@ -20,23 +22,21 @@ export default define(class VariableAssignment extends Element {
     return this.expression;
   }
 
-  async evaluate(context) {
-    let value;
-
+  evaluate = unbreakable(function (context, continuation) {
     const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    value = await this.expression.evaluate(context);
+    this.expression.evaluate(context, (value, continuation) => {
+      this.variable.assign(value, context);
 
-    this.variable.assign(value, context);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
-
-    return value;
-  }
+      continuation(value);
+    }, continuation);
+  });
 
   static name = "VariableAssignment";
 });

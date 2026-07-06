@@ -1,13 +1,13 @@
 "use strict";
 
-import { Element, asynchronousUtilities } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { confine } from "../utilities/context";
 
-const { asyncForEach } = asynchronousUtilities;
+const { forEach, unbreakable } = continuationUtilities;
 
 export default define(class ReturnBlock extends Element {
   constructor(context, string, node, breakPoint, statements, nonsensical, returnStatement) {
@@ -30,8 +30,10 @@ export default define(class ReturnBlock extends Element {
     return this.returnStatement;
   }
 
-  async evaluate(variables, context) {
-    if (context === undefined) {
+  evaluate = unbreakable(function (variables, context, continuation) {
+    if (continuation === undefined) {
+      continuation = context; ///
+
       context = variables;  ///
 
       variables = [];
@@ -48,22 +50,24 @@ export default define(class ReturnBlock extends Element {
       throw exception;
     }
 
-    let value;
+    confine((context) => {
+      this.evaluateStatements(context, (continuation) => {
+        this.returnStatement.evaluate(context, (value) => {
+          const valueString = value.getString();
 
-    await confine(async (context) => {
-      await asyncForEach(this.statements, async (statement) => {
-        await statement.evaluate(context);
+          context.debug(`Evaluated the '${returnBlockString}' return block as '${valueString}'.`);
+
+          continuation(value);
+        }, continuation);
       });
-
-      value = this.returnStatement.evaluate(context);
     }, variables, context);
+  });
 
-    const valueString = value.getString();
-
-    context.debug(`Evaluated the '${returnBlockString}' return block as '${valueString}'.`);
-
-    return value;
-  }
+  evaluateStatements = unbreakable(function (context, continuation) {
+    forEach(this.statements, (statement, continuation) => {
+      statement.evaluate(context, continuation);
+    }, continuation);
+  });
 
   static name = "ReturnBlock";
 });

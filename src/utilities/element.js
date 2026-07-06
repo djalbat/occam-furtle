@@ -288,12 +288,12 @@ export function statementFromStatementNode(statementNode, context) {
         string = context.nodeAsString(node),
         breakPoint = null,
         arrayAssignment = arrayAssignmentFromStatementNode(statementNode, context),
-        objectAssigment = objectAssignmentFromStatementNode(statementNode, context),
+        objectAssignment = objectAssignmentFromStatementNode(statementNode, context),
         variableAssigments = variableAssignmentsFromStatementNode(statementNode, context);
 
   context = null;
 
-  const statement = new Statement(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssigments);
+  const statement = new Statement(context, string, node, breakPoint, arrayAssignment, objectAssignment, variableAssigments);
 
   return statement;
 }
@@ -643,7 +643,7 @@ export function returnStatementFromReturnStatementNode(returnStatementNode, cont
 }
 
 export function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, context) {
-  const { ObjectAssigment } = elements,
+  const { ObjectAssignment } = elements,
         node = objectAssignmentNode,  ///
         string = context.nodeAsString(node),
         breakPoint = null,
@@ -652,7 +652,7 @@ export function objectAssignmentFromObjectAssignmentNode(objectAssignmentNode, c
 
   context = null;
 
-  const objectAssignment = new ObjectAssigment(context, string, node, breakPoint, variable, namedBindings);
+  const objectAssignment = new ObjectAssignment(context, string, node, breakPoint, variable, namedBindings);
 
   return objectAssignment;
 }

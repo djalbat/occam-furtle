@@ -12,7 +12,7 @@ import { valueFromBoolean, valueFromStringLiteral, valueFromNodesAndNominalValue
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "../../parameterNames";
 
-export default define(class ObjectAssigment extends Element {
+export default define(class ObjectAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, namedBindings) {
     super(context, string, node, breakPoint);
 
@@ -249,5 +249,5 @@ export default define(class ObjectAssigment extends Element {
     return value;
   }
 
-  static name = "ObjectAssigment";
+  static name = "ObjectAssignment";
 });

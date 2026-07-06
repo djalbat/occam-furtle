@@ -1,15 +1,17 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import { define } from "../elements";
 
+const { unbreakable } = continuationUtilities;
+
 export default define(class Statement extends Element {
-  constructor(context, string, node, breakPoint, arrayAssignment, objectAssigment, variableAssignments) {
+  constructor(context, string, node, breakPoint, arrayAssignment, objectAssignment, variableAssignments) {
     super(context, string, node, breakPoint);
 
     this.arrayAssignment = arrayAssignment;
-    this.objectAssigment = objectAssigment;
+    this.objectAssignment = objectAssignment;
     this.variableAssignments = variableAssignments;
   }
 
@@ -17,25 +19,25 @@ export default define(class Statement extends Element {
     return this.arrayAssignment;
   }
 
-  getObjectAssigment() {
-    return this.objectAssigment;
+  getObjectAssignment() {
+    return this.objectAssignment;
   }
 
   getVariableAssignments() {
     return this.variableAssignments;
   }
 
-  async evaluate(context) {
+  evaluate = unbreakable(function (context, continuation) {
     if (false) {
       ///
     } else if (this.arrayAssignment !== null) {
-      this.arrayAssignment.evaluate(context);
-    } else if (this.objectAssigment !== null) {
-      this.objectAssigment.evaluate(context);
+      this.arrayAssignment.evaluate(context, continuation);
+    } else if (this.objectAssignment !== null) {
+      this.objectAssignment.evaluate(context, continuation);
     } else if (this.variableAssignments !== null) {
-      await this.variableAssignments.evaluate(context);
+      this.variableAssignments.evaluate(context, continuation);
     }
-  }
+  });
 
   static name = "Statement";
 });

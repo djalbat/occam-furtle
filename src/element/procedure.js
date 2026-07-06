@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
@@ -10,7 +10,8 @@ import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
 
-const { breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
+const { breakable, unbreakable } = continuationUtilities,
+      { breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -52,71 +53,6 @@ export default define(class Procedure extends Element {
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
 
-  verify(context) {
-    const verifies = true;
-
-    const procedureString = this.getString();
-
-    context.trace(`Verifying the '${procedureString}' function...`)
-
-    const procedure = this; ///
-
-    context.addProcedure(procedure);
-
-    if (verifies) {
-      context.debug(`...verified the '${procedureString}' function.`)
-    }
-
-    return verifies;
-  }
-
-  async call(values, context) {
-    await this.break(context);
-
-    const procedureString = this.getString();  ///
-
-    context.trace(`Calling the '${procedureString}' procedure...`);
-
-    this.parameters.compareValues(values, context);
-
-    this.guaranteeReturnBlock();
-
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          value = await this.returnBlock.evaluate(variables, context),
-          valueType = value.getType(),
-          typeEqualToValueType = this.type.isEqualTo(valueType);
-
-    if (!typeEqualToValueType) {
-      const valueString = value.getString(),
-            typeString = this.type.getString(),
-            message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
-
-    context.debug(`...called the '${procedureString}' procedure.`);
-
-    return value;
-  }
-
-  async callNominally(nominalValues) {
-    const context = this.getContext();
-
-    await this.break(context);
-
-    const procedureString = this.getString();  ///
-
-    context.trace(`Calling the '${procedureString}' function nominally...`);
-
-    const values = valuesFromNominalValues(nominalValues, context),
-          term = await this.call(values, context);
-
-    context.debug(`...called the '${procedureString}' function nominally.`);
-
-    return term;
-  }
-
   guaranteeReturnBlock() {
     if (this.returnBlock != null) {
       return;
@@ -128,6 +64,71 @@ export default define(class Procedure extends Element {
 
     this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
+
+  verify = unbreakable(function (context) {
+    let verifies;
+
+    const procedureString = this.getString();
+
+    context.trace(`Verifying the '${procedureString}' function...`)
+
+    const procedure = this; ///
+
+    context.addProcedure(procedure);
+
+    verifies = true;
+
+    if (verifies) {
+      context.debug(`...verified the '${procedureString}' function.`)
+    }
+
+    return verifies;
+  });
+
+  call = breakable(function (values, context, continuation) {
+    const procedureString = this.getString();  ///
+
+    context.trace(`Calling the '${procedureString}' procedure...`);
+
+    this.parameters.compareValues(values, context);
+
+    this.guaranteeReturnBlock();
+
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context);
+
+    this.returnBlock.evaluate(variables, context, (value) => {
+      const valueType = value.getType(),
+            typeEqualToValueType = this.type.isEqualTo(valueType);
+
+      if (!typeEqualToValueType) {
+        const valueString = value.getString(),
+              typeString = this.type.getString(),
+              message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
+              exception = Exception.fromMessage(message);
+
+        throw exception;
+      }
+
+      context.debug(`...called the '${procedureString}' procedure.`);
+
+      continuation(value);
+    });
+  });
+
+  callNominally = unbreakable(function (nominalValues, continuation) {
+    const context = this.getContext(),
+          procedureString = this.getString();  ///
+
+    context.trace(`Calling the '${procedureString}' function nominally...`);
+
+    const values = valuesFromNominalValues(nominalValues, context);
+
+    this.call(values, context, (term) => {
+      context.debug(`...called the '${procedureString}' function nominally.`);
+
+      continuation(term);
+    });
+  });
 
   toJSON() {
     const typeJSON = typeToTypeJSON(this.type),

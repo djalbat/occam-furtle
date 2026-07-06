@@ -12,8 +12,8 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   let releaseContext = null;
 
   const log = Log.fromLogLevel(logLevel),
-        callback = async (context, breakPoint) => {
-          ///
+        callback = (breakPoint, resume, context) => {
+          resume();
         },
         releaseContexts = [];
 
@@ -51,10 +51,10 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     assert.isNotNull(releaseContext);
   });
 
-  it("verifies", async () => {
-    const releaseContextsVerify = await verifyReleaseContexts(context);
-
-    assert.isTrue(releaseContextsVerify);
+  it("verifies", () => {
+    verifyReleaseContexts(context, (releaseContextsVerify) => {
+      assert.isTrue(releaseContextsVerify);
+    });
   });
 
   let json,
@@ -77,16 +77,19 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     releaseContext.initialise(releaseContexts, FileContextFromFilePath);
   });
 
-  it(procedureName, async () => {
+  it(procedureName, (done) => {
     const context = releaseContext, ///
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
           nominalValues = nominalValuesFromNothing(context);
 
-    const term = await procedure.callNominally(nominalValues),
-          primitiveValue = term.getPrimitiveValue(),
-          boolean = primitiveValue; ///
+    procedure.callNominally(nominalValues, context, (term) => {
+      const primitiveValue = term.getPrimitiveValue(),
+            boolean = primitiveValue; ///
 
-    assert.isTrue(boolean);
+      assert.isTrue(boolean);
+
+      done();
+    });
   });
 }
 
