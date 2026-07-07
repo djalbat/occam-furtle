@@ -1,15 +1,15 @@
 "use strict";
 
-import { Element, asynchronousUtilities } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { valueFromNominalValue } from "../utilities/value";
 import { LIST_TYPE_NAME } from "../typeNames";
+import { valueFromNominalValue } from "../utilities/value";
 
-const { asyncReduce } = asynchronousUtilities;
+const { reduce, breakable } = continuationUtilities;
 
 export default define(class Reduce extends Element {
   constructor(context, string, node, breakPoint, variable, inivialValue, anonymousProcedure) {
@@ -32,18 +32,13 @@ export default define(class Reduce extends Element {
     return this.anonymousProcedure;
   }
 
-  async evaluate(context) {
-    let value;
-
-    await this.break(context);
-
+  evaluate = breakable(function (context, continuation) {
     const reduceString = this.getString();
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    value = this.variable.evaluate(context);
-
-    const valueType = value.getType(),
+    const value = this.variable.evaluate(context),
+          valueType = value.getType(),
           valueTypeListType = valueType.isListType();
 
     if (!valueTypeListType) {
@@ -56,9 +51,9 @@ export default define(class Reduce extends Element {
 
     const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue, ///
-          inivialValue = await this.inivialValue.evaluate(context);
+          inivialValue = this.inivialValue.evaluate(context);
 
-    value = await asyncReduce(nominalValues, async (currentValue, nominalValue) => {
+    reduce(nominalValues, (currentValue, nominalValue, continuation) => {
       let value;
 
       const { Values } = elements;
@@ -71,17 +66,15 @@ export default define(class Reduce extends Element {
 
       values.addValue(value);
 
-      value = await this.anonymousProcedure.call(values, context);
+      this.anonymousProcedure.call(values, context, continuation);
+    }, inivialValue, (value) => {
+      const valueString = value.getString();
 
-      return value;
-    }, inivialValue);
+      context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-    const valueString = value.getString();
-
-    context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
-
-    return value;
-  }
+      continuation(value);
+    });
+  });
 
   static name = "Reduce";
 });

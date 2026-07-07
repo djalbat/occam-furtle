@@ -6,7 +6,7 @@ import Exception from "../exception";
 
 import { define } from "../elements";
 import { LIST_TYPE_NAME } from "../typeNames";
-import {valueFromInteger} from "../utilities/value";
+import { valueFromInteger } from "../utilities/value";
 
 export default define(class LengthOf extends Element {
   constructor(context, string, node, breakPoint, variable) {

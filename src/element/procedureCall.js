@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { free } from "../utilities/context";
 import { define } from "../elements";
+
+const { breakable } = continuationUtilities;
 
 export default define(class ProcedureCall extends Element {
   constructor(context, string, node, breakPoint, reference, values) {
@@ -25,9 +27,7 @@ export default define(class ProcedureCall extends Element {
 
   getProcedureName() { return this.reference.getProcedureName(); }
 
-  async evaluate(context) {
-    await this.break(context);
-
+  evaluate = breakable(function (context, continuation) {
     const procedureCallString = this.getString();  ///
 
     context.trace(`Evaluating the '${procedureCallString}' function call...`);
@@ -42,21 +42,19 @@ export default define(class ProcedureCall extends Element {
       throw exception;
     }
 
-    let value;
-
     const procedure = context.findProcedureByProcedureName(procedureName),
           values = this.values.evaluate(context);
 
-    await free(async (context) => {
-      value = await procedure.call(values, context);
+    free((context) => {
+      procedure.call(values, context, (value) => {
+        const valueString = value.getString();
+
+        context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
+
+        continuation(value);
+      });
     }, context);
-
-    const valueString = value.getString();
-
-    context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
-
-    return value;
-  }
+  });
 
   static name = "ProcedureCall";
 });

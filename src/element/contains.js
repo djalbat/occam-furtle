@@ -1,15 +1,12 @@
 "use strict";
 
 import { Element } from "occam-languages";
-import { stringUtilities } from "necessary";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { STRING_TYPE_NAME } from "../typeNames";
 import { valueFromBoolean } from "../utilities/value";
-
-const { indexOf } = stringUtilities;
 
 export default define(class Contains extends Element {
   constructor(context, string, node, breakPoint, variable, substring) {

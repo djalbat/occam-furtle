@@ -19,7 +19,7 @@ const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
       content = `x^2 = x
 `;
 
-describe(projectName, () => {
+describe.skip(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

@@ -1,12 +1,14 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
 import { LIST_TYPE_NAME } from "../../typeNames";
+
+const { breakable } = continuationUtilities;
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -24,7 +26,7 @@ export default define(class ArrayAssigment extends Element {
     return this.bindings;
   }
 
-  evaluate(context) {
+  evaluate = breakable(function (context) {
     const arrayAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
@@ -67,7 +69,7 @@ export default define(class ArrayAssigment extends Element {
     });
 
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
-  }
+  });
 
   evaluateBinding(binding, value, context) {
     const valueString = value.getString(),

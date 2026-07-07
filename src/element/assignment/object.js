@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
@@ -11,6 +11,8 @@ import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { valueFromBoolean, valueFromStringLiteral, valueFromNodesAndNominalValue } from "../../utilities/value";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "../../parameterNames";
+
+const { breakable } = continuationUtilities;
 
 export default define(class ObjectAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, namedBindings) {
@@ -28,7 +30,7 @@ export default define(class ObjectAssignment extends Element {
     return this.namedBindings;
   }
 
-  evaluate(context) {
+  evaluate = breakable(function (context) {
     const objectAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
@@ -52,7 +54,7 @@ export default define(class ObjectAssignment extends Element {
     });
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
-  }
+  });
 
   evaluateNamedBinding(namedBinding, term, context) {
     const termString = term.getString(),

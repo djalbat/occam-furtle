@@ -27,7 +27,7 @@ export default define(class VariableAssignment extends Element {
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    this.expression.evaluate(context, (value, continuation) => {
+    this.expression.evaluate(context, (value) => {
       this.variable.assign(value, context);
 
       const valueString = value.getString();
@@ -35,7 +35,7 @@ export default define(class VariableAssignment extends Element {
       context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
       continuation(value);
-    }, continuation);
+    });
   });
 
   static name = "VariableAssignment";

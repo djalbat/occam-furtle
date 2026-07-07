@@ -24,9 +24,11 @@ export default define(class VariableAssignments extends Element {
 
     forEach(this.array, (variableAssignment, continuation) => {
       variableAssignment.evaluate(context, continuation);
-    }, continuation);
+    }, () => {
+      context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
 
-    context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
+      continuation();
+    });
   });
 
   static name = "VariableAssignments";

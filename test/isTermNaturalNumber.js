@@ -7,9 +7,9 @@ const { createSuite } = require("./utilities/test"),
       { nominalValuesFromContent } = require("./utilities/nominal");
 
 const { nodeQuery } = queryUtilities,
-      { TRACE_LEVEL } = levels;
+      { ERROR_LEVEL } = levels;
 
-const logLevel = TRACE_LEVEL,
+const logLevel = ERROR_LEVEL,
       filePath = "decimal-numbers/Functions/Natural numbers.ftl",
       projectName = "decimal-numbers",
       procedureName = "isTermNaturalNumber",
@@ -19,7 +19,7 @@ const termNodeQuery = nodeQuery("/step/statement/equality!/term[0]"),
       content = `12 = x
 `;
 
-describe.only(projectName, () => {
+describe(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///

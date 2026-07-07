@@ -1,8 +1,10 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import { define } from "../elements";
+
+const { unbreakable } = continuationUtilities;
 
 export default define(class Expression extends Element {
   constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall) {
@@ -125,8 +127,8 @@ export default define(class Expression extends Element {
     return type;
   }
 
-  async evaluate(context) {
-    let value;
+  evaluate = unbreakable(function (context, continuation) {
+    let value = null;
 
     if (false) {
       ///
@@ -148,22 +150,32 @@ export default define(class Expression extends Element {
       value = this.endsWith.evaluate(context);
     } else if (this.startsWith !== null) {
       value = this.startsWith.evaluate(context);
-    } else if (this.some !== null) {
-      value = await this.some.evaluate(context);
-    } else if (this.every !== null) {
-      value = await  this.every.evaluate(context);
-    } else if (this.reduce !== null) {
-      value = await this.reduce.evaluate(context);
-    } else if (this.ternary !== null) {
-      value = await this.ternary.evaluate(context);
-    } else if (this.returnBlock !== null) {
-      value = await this.returnBlock.evaluate(context);
-    } else if (this.procedureCall !== null) {
-      value = await this.procedureCall.evaluate(context);
     }
 
-    return value;
-  }
+    if (value !== null) {
+      continuation(value);
+
+      return;
+    }
+
+    if (false) {
+      ///
+    } else if (this.some !== null) {
+      this.some.evaluate(context, continuation);
+    } else if (this.every !== null) {
+       this.every.evaluate(context, continuation);
+    } else if (this.reduce !== null) {
+      this.reduce.evaluate(context, continuation);
+    } else if (this.ternary !== null) {
+      this.ternary.evaluate(context, continuation);
+    } else if (this.returnBlock !== null) {
+      const variables = [];
+
+      this.returnBlock.evaluate(variables, context, continuation);
+    } else if (this.procedureCall !== null) {
+      this.procedureCall.evaluate(context, continuation);
+    }
+  });
 
   static name = "Expression";
 });

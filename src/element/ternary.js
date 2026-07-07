@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE_NAME } from "../typeNames";
+
+const { unbreakable } = continuationUtilities;
 
 export default define(class Ternary extends Element {
   constructor(context, string, node, breakPoint, term, ifExpression, elseExpression) {
@@ -28,16 +30,13 @@ export default define(class Ternary extends Element {
     return this.elseExpression;
   }
 
-  async evaluate(context) {
-    let value;
-
+  evaluate = unbreakable(function (context, continuation) {
     const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    value = this.term.evaluate(context);
-
-    const valueType = value.getType(),
+    const value = this.term.evaluate(context),
+          valueType = value.getType(),
           valueTypeBooleanType = valueType.isBooleanType();
 
     if (!valueTypeBooleanType) {
@@ -49,18 +48,19 @@ export default define(class Ternary extends Element {
     }
 
     const primitiveValue = value.getPrimitiveValue(),
-          boolean = primitiveValue; ///
+          boolean = primitiveValue, ///
+          expression = boolean ?
+                         this.ifExpression :
+                           this.elseExpression;
 
-    value = boolean ?
-              await this.ifExpression.evaluate(context) :
-                await this.elseExpression.evaluate(context);
+    expression.evaluate(context, (value) => {
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
-
-    return value;
-  }
+      continuation(value);
+    });
+  });
 
   static name = "Ternary";
 });

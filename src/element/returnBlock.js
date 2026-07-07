@@ -31,14 +31,6 @@ export default define(class ReturnBlock extends Element {
   }
 
   evaluate = unbreakable(function (variables, context, continuation) {
-    if (continuation === undefined) {
-      continuation = context; ///
-
-      context = variables;  ///
-
-      variables = [];
-    }
-
     const returnBlockString = this.getString(); ///
 
     context.trace(`Evaluating the '${returnBlockString}' return block...`);
@@ -51,22 +43,29 @@ export default define(class ReturnBlock extends Element {
     }
 
     confine((context) => {
-      this.evaluateStatements(context, (continuation) => {
-        this.returnStatement.evaluate(context, (value) => {
-          const valueString = value.getString();
+      this.evaluateStatements(context, () => {
+        const value = this.returnStatement.evaluate(context),
+              valueString = value.getString();
 
-          context.debug(`Evaluated the '${returnBlockString}' return block as '${valueString}'.`);
+        context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
-          continuation(value);
-        }, continuation);
+        continuation(value);
       });
     }, variables, context);
   });
 
   evaluateStatements = unbreakable(function (context, continuation) {
+    const returnBlockString = this.getString(); ///
+
+    context.trace(`Evaluating the '${returnBlockString}' return block's statements...`);
+
     forEach(this.statements, (statement, continuation) => {
       statement.evaluate(context, continuation);
-    }, continuation);
+    }, () => {
+      context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
+
+      continuation();
+    });
   });
 
   static name = "ReturnBlock";

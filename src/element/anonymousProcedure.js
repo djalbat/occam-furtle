@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
+
+const { unbreakable } = continuationUtilities;
 
 export default define(class AnonymousProcedure extends Element {
   constructor(context, string, node, breakPoint, type, parameters, returnBlock) {
@@ -28,31 +30,33 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  async call(values, context) {
+  call = unbreakable(function (values, context, continuatino) {
     const anonymousProcedureString = this.getString(); ///
 
-    context.trace(`Calling the '${anonymousProcedureString}' anonymous procedure...`);
+    context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
 
     this.parameters.compareValues(values, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context),
-          value = await this.returnBlock.evaluate(variables, context),
-          valueType = value.getType(),
-          typeEqualToValueType = this.type.isEqualTo(valueType);
+    const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    if (!typeEqualToValueType) {
-      const valueString = value.getString(),
-            typeString = this.type.getString(),
-            message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous procedure's '${typeString}' type.`,
-            exception = Exception.fromMessage(message);
+    this.returnBlock.evaluate(variables, context, (value) => {
+      const valueType = value.getType(),
+            typeEqualToValueType = this.type.isEqualTo(valueType);
 
-      throw exception;
-    }
+      if (!typeEqualToValueType) {
+        const valueString = value.getString(),
+              typeString = this.type.getString(),
+              message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous function's '${typeString}' type.`,
+              exception = Exception.fromMessage(message);
 
-    context.debug(`...called the '${anonymousProcedureString}' anonymous procedure.`);
+        throw exception;
+      }
 
-    return value;
-  }
+      context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
+
+      continuatino(value);
+    });
+  });
 
   static name = "AnonymousProcedure";
 });

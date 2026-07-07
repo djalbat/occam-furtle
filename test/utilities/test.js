@@ -12,8 +12,8 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   let releaseContext = null;
 
   const log = Log.fromLogLevel(logLevel),
-        callback = (breakPoint, resume, context) => {
-          resume();
+        callback = (breakPoint, context, continuation) => {
+          continuation();
         },
         releaseContexts = [];
 
@@ -82,8 +82,8 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
           nominalValues = nominalValuesFromNothing(context);
 
-    procedure.callNominally(nominalValues, context, (term) => {
-      const primitiveValue = term.getPrimitiveValue(),
+    procedure.callNominally(nominalValues, (value) => {
+      const primitiveValue = value.getPrimitiveValue(),
             boolean = primitiveValue; ///
 
       assert.isTrue(boolean);
