@@ -1,13 +1,11 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { BOOLEAN_TYPE_NAME } from "../typeNames";
-
-const { unbreakable } = continuationUtilities;
 
 export default define(class Ternary extends Element {
   constructor(context, string, node, breakPoint, term, ifExpression, elseExpression) {
@@ -30,7 +28,7 @@ export default define(class Ternary extends Element {
     return this.elseExpression;
   }
 
-  evaluate = unbreakable(function (context, continuation) {
+  evaluate(context, continuation) {
     const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
@@ -60,7 +58,7 @@ export default define(class Ternary extends Element {
 
       continuation(value);
     });
-  });
+  }
 
   static name = "Ternary";
 });

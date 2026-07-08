@@ -1,10 +1,8 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element } from "occam-languages";
 
 import { define } from "../elements";
-
-const { unbreakable } = continuationUtilities;
 
 export default define(class Expression extends Element {
   constructor(context, string, node, breakPoint, term, some, every, reduce, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall) {
@@ -127,7 +125,7 @@ export default define(class Expression extends Element {
     return type;
   }
 
-  evaluate = unbreakable(function (context, continuation) {
+  evaluate(context, continuation) {
     let value = null;
 
     if (false) {
@@ -175,7 +173,7 @@ export default define(class Expression extends Element {
     } else if (this.procedureCall !== null) {
       this.procedureCall.evaluate(context, continuation);
     }
-  });
+  }
 
   static name = "Expression";
 });

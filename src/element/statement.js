@@ -1,10 +1,8 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element } from "occam-languages";
 
 import { define } from "../elements";
-
-const { unbreakable } = continuationUtilities;
 
 export default define(class Statement extends Element {
   constructor(context, string, node, breakPoint, arrayAssignment, objectAssignment, variableAssignments) {
@@ -27,7 +25,7 @@ export default define(class Statement extends Element {
     return this.variableAssignments;
   }
 
-  evaluate = unbreakable(function (context, continuation) {
+  evaluate(context, continuation) {
     if (false) {
       ///
     } else if (this.arrayAssignment !== null) {
@@ -37,7 +35,7 @@ export default define(class Statement extends Element {
     } else if (this.variableAssignments !== null) {
       this.variableAssignments.evaluate(context, continuation);
     }
-  });
+  }
 
   static name = "Statement";
 });

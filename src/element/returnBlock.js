@@ -7,7 +7,7 @@ import Exception from "../exception";
 import { define } from "../elements";
 import { confine } from "../utilities/context";
 
-const { forEach, unbreakable } = continuationUtilities;
+const { forEach } = continuationUtilities;
 
 export default define(class ReturnBlock extends Element {
   constructor(context, string, node, breakPoint, statements, nonsensical, returnStatement) {
@@ -30,7 +30,7 @@ export default define(class ReturnBlock extends Element {
     return this.returnStatement;
   }
 
-  evaluate = unbreakable(function (variables, context, continuation) {
+  evaluate(variables, context, continuation) {
     const returnBlockString = this.getString(); ///
 
     context.trace(`Evaluating the '${returnBlockString}' return block...`);
@@ -52,9 +52,9 @@ export default define(class ReturnBlock extends Element {
         continuation(value);
       });
     }, variables, context);
-  });
+  }
 
-  evaluateStatements = unbreakable(function (context, continuation) {
+  evaluateStatements(context, continuation) {
     const returnBlockString = this.getString(); ///
 
     context.trace(`Evaluating the '${returnBlockString}' return block's statements...`);
@@ -66,7 +66,7 @@ export default define(class ReturnBlock extends Element {
 
       continuation();
     });
-  });
+  }
 
   static name = "ReturnBlock";
 });

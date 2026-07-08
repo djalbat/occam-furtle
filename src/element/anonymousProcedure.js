@@ -1,13 +1,11 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
-
-const { unbreakable } = continuationUtilities;
 
 export default define(class AnonymousProcedure extends Element {
   constructor(context, string, node, breakPoint, type, parameters, returnBlock) {
@@ -30,7 +28,7 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  call = unbreakable(function (values, context, continuatino) {
+  call(values, context, continuatino) {
     const anonymousProcedureString = this.getString(); ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
@@ -56,7 +54,7 @@ export default define(class AnonymousProcedure extends Element {
 
       continuatino(value);
     });
-  });
+  }
 
   static name = "AnonymousProcedure";
 });

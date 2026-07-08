@@ -10,7 +10,7 @@ import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
 
-const { breakable, unbreakable } = continuationUtilities,
+const { breakable } = continuationUtilities,
       { breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Procedure extends Element {
@@ -65,7 +65,7 @@ export default define(class Procedure extends Element {
     this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
 
-  verify = unbreakable(function (context) {
+  verify(context, continuation) {
     let verifies;
 
     const procedureString = this.getString();
@@ -82,7 +82,7 @@ export default define(class Procedure extends Element {
       context.debug(`...verified the '${procedureString}' function.`)
     }
 
-    return verifies;
+    continuation(verifies);
   });
 
   call = breakable(function (values, context, continuation) {
@@ -115,7 +115,7 @@ export default define(class Procedure extends Element {
     });
   });
 
-  callNominally = unbreakable(function (nominalValues, continuation) {
+  callNominally(nominalValues, continuation) {
     const context = this.getContext(),
           procedureString = this.getString();  ///
 
@@ -128,7 +128,7 @@ export default define(class Procedure extends Element {
 
       continuation(value);
     });
-  });
+  }
 
   toJSON() {
     const typeJSON = typeToTypeJSON(this.type),
