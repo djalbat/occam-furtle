@@ -83,7 +83,7 @@ export default define(class Procedure extends Element {
     }
 
     continuation(verifies);
-  });
+  }
 
   call = breakable(function (values, context, continuation) {
     const procedureString = this.getString();  ///
