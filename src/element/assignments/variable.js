@@ -1,10 +1,11 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import { define } from "../../elements";
 
-const { forEach, breakable } = continuationUtilities;
+const { forEach } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class VariableAssignments extends Element {
   constructor(context, string, node, breakPoint, array) {

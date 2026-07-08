@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import elements from "../elements";
 import Exception from "../exception";
@@ -9,7 +9,8 @@ import { define } from "../elements";
 import { LIST_TYPE_NAME } from "../typeNames";
 import { valueFromNominalValue } from "../utilities/value";
 
-const { reduce, breakable } = continuationUtilities;
+const { reduce } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class Reduce extends Element {
   constructor(context, string, node, breakPoint, variable, inivialValue, anonymousProcedure) {

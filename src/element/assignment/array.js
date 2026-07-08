@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
@@ -8,7 +8,7 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 import { LIST_TYPE_NAME } from "../../typeNames";
 
-const { breakable } = continuationUtilities;
+const { breakable } = breakPointUtilities;
 
 export default define(class ArrayAssigment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -26,7 +26,7 @@ export default define(class ArrayAssigment extends Element {
     return this.bindings;
   }
 
-  evaluate = breakable(function (context) {
+  evaluate = breakable(function (context, continuation) {
     const arrayAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
@@ -69,6 +69,8 @@ export default define(class ArrayAssigment extends Element {
     });
 
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
+
+    continuation();
   });
 
   evaluateBinding(binding, value, context) {

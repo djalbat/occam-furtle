@@ -1,13 +1,13 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { free } from "../utilities/context";
 import { define } from "../elements";
 
-const { breakable } = continuationUtilities;
+const { breakable } = breakPointUtilities;
 
 export default define(class ProcedureCall extends Element {
   constructor(context, string, node, breakPoint, reference, values) {

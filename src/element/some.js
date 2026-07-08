@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import elements from "../elements";
 import Exception from "../exception";
@@ -9,7 +9,8 @@ import { define } from "../elements";
 import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
-const { some, breakable } = continuationUtilities;
+const { some } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class Some extends Element {
   constructor(context, string, node, breakPoint, variable, anonymousProcedure) {
