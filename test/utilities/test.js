@@ -51,9 +51,11 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     assert.isNotNull(releaseContext);
   });
 
-  it("verifies", () => {
+  it("verifies", (done) => {
     verifyReleaseContexts(context, (releaseContextsVerify) => {
       assert.isTrue(releaseContextsVerify);
+
+      done();
     });
   });
 
