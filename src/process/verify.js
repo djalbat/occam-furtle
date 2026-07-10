@@ -15,21 +15,17 @@ class TopLevelPass extends ContinuationPass {
     {
       nodeQuery: errorNodeQuery,
       run: (errorNode, context, continuation) => {
-        setImmediate(() => {
-          const error = errorFromErrorNode(errorNode, context);
+        const error = errorFromErrorNode(errorNode, context);
 
-          error.verify(context, continuation);
-        });
+        error.verify(context, continuation);
       }
     },
     {
       nodeQuery: procedureNodeQuery,
       run: (procedureNode, context, continuation) => {
-        setImmediate(() => {
-          const procedure = procedureFromProcedureNode(procedureNode, context);
+        const procedure = procedureFromProcedureNode(procedureNode, context);
 
-          procedure.verify(context, continuation);
-        });
+        procedure.verify(context, continuation);
       }
     }
   ];
