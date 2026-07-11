@@ -70,7 +70,7 @@ export default define(class ArrayAssigment extends Element {
 
     context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
 
-    continuation();
+    return continuation();
   });
 
   evaluateBinding(binding, value, context) {

@@ -51,7 +51,7 @@ export default define(class ProcedureCall extends Element {
 
         context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
 
-        continuation(value);
+        return continuation(value);
       });
     }, context);
   });

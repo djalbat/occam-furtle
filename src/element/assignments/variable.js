@@ -28,7 +28,7 @@ export default define(class VariableAssignments extends Element {
     }, () => {
       context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
 
-      continuation();
+      return continuation();
     });
   });
 

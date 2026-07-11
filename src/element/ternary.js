@@ -56,7 +56,7 @@ export default define(class Ternary extends Element {
 
       context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-      continuation(value);
+      return continuation(value);
     });
   }
 

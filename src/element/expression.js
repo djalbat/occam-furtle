@@ -151,9 +151,7 @@ export default define(class Expression extends Element {
     }
 
     if (value !== null) {
-      continuation(value);
-
-      return;
+      return continuation(value);
     }
 
     if (false) {

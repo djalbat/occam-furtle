@@ -67,7 +67,7 @@ export default define(class Every extends Element {
 
         const boolean = value.getBoolean();
 
-        continuation(boolean);
+        return continuation(boolean);
       });
     }, (boolean) => {
       const value = valueFromBoolean(boolean, context),
@@ -75,7 +75,7 @@ export default define(class Every extends Element {
 
       context.trace(`...evaluated the '${everyString}' every as '${valueString}'.`);
 
-      continuation(value);
+      return continuation(value);
     });
   });
 

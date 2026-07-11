@@ -32,7 +32,7 @@ export default define(class VariableAssignment extends Element {
 
       context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-      continuation(value);
+      return continuation(value);
     });
   }
 

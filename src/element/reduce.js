@@ -73,7 +73,7 @@ export default define(class Reduce extends Element {
 
       context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-      continuation(value);
+      return continuation(value);
     });
   });
 

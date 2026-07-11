@@ -68,7 +68,7 @@ export default define(class Some extends Element {
         const primitiveValue = value.getPrimitiveValue(),
               boolean = primitiveValue; ///
 
-        continuation(boolean);
+        return continuation(boolean);
       });
     }, (boolean) => {
       const value = valueFromBoolean(boolean, context),
@@ -76,7 +76,7 @@ export default define(class Some extends Element {
 
       context.trace(`...evaluated the '${someString}' some as '${valueString}'.`);
 
-      continuation(value);
+      return continuation(value);
     });
   });
 

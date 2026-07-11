@@ -55,7 +55,7 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
 
-    continuation();
+    return continuation();
   });
 
   evaluateNamedBinding(namedBinding, term, context) {

@@ -81,7 +81,7 @@ export default define(class Procedure extends Element {
       context.debug(`...verified the '${procedureString}' function.`)
     }
 
-    continuation(verifies);
+    return continuation(verifies);
   }
 
   call = breakable(function (values, context, continuation) {
@@ -110,7 +110,7 @@ export default define(class Procedure extends Element {
 
       context.debug(`...called the '${procedureString}' procedure.`);
 
-      continuation(value);
+      return continuation(value);
     });
   });
 
@@ -125,7 +125,7 @@ export default define(class Procedure extends Element {
     this.call(values, context, (value) => {
       context.debug(`...called the '${procedureString}' function nominally.`);
 
-      continuation(value);
+      return continuation(value);
     });
   }
 

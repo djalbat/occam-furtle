@@ -49,7 +49,7 @@ export default define(class ReturnBlock extends Element {
 
         context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
-        continuation(value);
+        return continuation(value);
       });
     }, variables, context);
   }
@@ -64,7 +64,7 @@ export default define(class ReturnBlock extends Element {
     }, () => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
 
-      continuation();
+      return continuation();
     });
   }
 
