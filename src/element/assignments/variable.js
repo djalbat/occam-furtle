@@ -23,8 +23,8 @@ export default define(class VariableAssignments extends Element {
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 
-    forEach(this.array, (variableAssignment, continuation) => {
-      variableAssignment.evaluate(context, continuation);
+    return forEach(this.array, (variableAssignment, continuation) => {
+      return variableAssignment.evaluate(context, continuation);
     }, () => {
       context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
 

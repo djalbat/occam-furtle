@@ -48,7 +48,7 @@ export default define(class Every extends Element {
 
     const nodes = value.getNodes();
 
-    every(nodes, (node, continuation) => {
+    return every(nodes, (node, continuation) => {
       const { Values } = elements,
             value = valueFromNode(node, context),
             values = Values.fromValue(value, context);

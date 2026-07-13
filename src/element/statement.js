@@ -26,14 +26,16 @@ export default define(class Statement extends Element {
   }
 
   evaluate(context, continuation) {
-    if (false) {
-      ///
-    } else if (this.arrayAssignment !== null) {
-      this.arrayAssignment.evaluate(context, continuation);
-    } else if (this.objectAssignment !== null) {
-      this.objectAssignment.evaluate(context, continuation);
-    } else if (this.variableAssignments !== null) {
-      this.variableAssignments.evaluate(context, continuation);
+    if (this.arrayAssignment !== null) {
+      return this.arrayAssignment.evaluate(context, continuation);
+    }
+
+    if (this.objectAssignment !== null) {
+      return this.objectAssignment.evaluate(context, continuation);
+    }
+
+    if (this.variableAssignments !== null) {
+      return this.variableAssignments.evaluate(context, continuation);
     }
   }
 

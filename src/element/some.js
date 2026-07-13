@@ -48,7 +48,7 @@ export default define(class Some extends Element {
     const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue; ///
 
-    some(nominalValues, (nominalValue, continuation) => {
+    return some(nominalValues, (nominalValue, continuation) => {
       const { Values } = elements,
             value = valueFromNominalValue(nominalValue),
             values = Values.fromValue(value, context);

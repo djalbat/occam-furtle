@@ -59,8 +59,8 @@ export default define(class ReturnBlock extends Element {
 
     context.trace(`Evaluating the '${returnBlockString}' return block's statements...`);
 
-    forEach(this.statements, (statement, continuation) => {
-      statement.evaluate(context, continuation);
+    return forEach(this.statements, (statement, continuation) => {
+      return statement.evaluate(context, continuation);
     }, () => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
 

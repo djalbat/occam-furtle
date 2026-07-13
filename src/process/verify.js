@@ -17,7 +17,7 @@ class TopLevelPass extends ContinuationPass {
       run: (errorNode, context, continuation) => {
         const error = errorFromErrorNode(errorNode, context);
 
-        error.verify(context, continuation);
+        return error.verify(context, continuation);
       }
     },
     {
@@ -25,7 +25,7 @@ class TopLevelPass extends ContinuationPass {
       run: (procedureNode, context, continuation) => {
         const procedure = procedureFromProcedureNode(procedureNode, context);
 
-        procedure.verify(context, continuation);
+        return procedure.verify(context, continuation);
       }
     }
   ];
@@ -36,5 +36,5 @@ const topLevelPass = new TopLevelPass();
 export function verifyFile(fileNode, context, continuation) {
   const node = fileNode; ///
 
-  topLevelPass.run(node, context, continuation);
+  return topLevelPass.run(node, context, continuation);
 }

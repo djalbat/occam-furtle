@@ -54,7 +54,7 @@ export default define(class Reduce extends Element {
           nominalValues = primitiveValue, ///
           inivialValue = this.inivialValue.evaluate(context);
 
-    reduce(nominalValues, (currentValue, nominalValue, continuation) => {
+    return reduce(nominalValues, (currentValue, nominalValue, continuation) => {
       let value;
 
       const { Values } = elements;
@@ -67,7 +67,7 @@ export default define(class Reduce extends Element {
 
       values.addValue(value);
 
-      this.anonymousProcedure.call(values, context, continuation);
+      return this.anonymousProcedure.call(values, context, continuation);
     }, inivialValue, (value) => {
       const valueString = value.getString();
 

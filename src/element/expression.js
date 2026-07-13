@@ -154,22 +154,30 @@ export default define(class Expression extends Element {
       return continuation(value);
     }
 
-    if (false) {
-      ///
-    } else if (this.some !== null) {
-      this.some.evaluate(context, continuation);
-    } else if (this.every !== null) {
-       this.every.evaluate(context, continuation);
-    } else if (this.reduce !== null) {
-      this.reduce.evaluate(context, continuation);
-    } else if (this.ternary !== null) {
-      this.ternary.evaluate(context, continuation);
-    } else if (this.returnBlock !== null) {
+    if (this.some !== null) {
+      return this.some.evaluate(context, continuation);
+    }
+
+    if (this.every !== null) {
+       return this.every.evaluate(context, continuation);
+    }
+
+    if (this.reduce !== null) {
+      return this.reduce.evaluate(context, continuation);
+    }
+
+    if (this.ternary !== null) {
+      return this.ternary.evaluate(context, continuation);
+    }
+
+    if (this.returnBlock !== null) {
       const variables = [];
 
-      this.returnBlock.evaluate(variables, context, continuation);
-    } else if (this.procedureCall !== null) {
-      this.procedureCall.evaluate(context, continuation);
+      return this.returnBlock.evaluate(variables, context, continuation);
+    }
+
+    if (this.procedureCall !== null) {
+      return this.procedureCall.evaluate(context, continuation);
     }
   }
 
