@@ -87,7 +87,7 @@ export default define(class Procedure extends Element {
   call = breakable(function (values, context, continuation) {
     const procedureString = this.getString();  ///
 
-    context.trace(`Calling the '${procedureString}' procedure...`);
+    context.trace(`Calling the '${procedureString}' function...`);
 
     this.parameters.compareValues(values, context);
 
@@ -102,13 +102,13 @@ export default define(class Procedure extends Element {
       if (!typeEqualToValueType) {
         const valueString = value.getString(),
               typeString = this.type.getString(),
-              message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' procedure's '${typeString}' type.`,
+              message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' function's '${typeString}' type.`,
               exception = Exception.fromMessage(message);
 
         throw exception;
       }
 
-      context.debug(`...called the '${procedureString}' procedure.`);
+      context.debug(`...called the '${procedureString}' function.`);
 
       return continuation(value);
     });

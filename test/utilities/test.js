@@ -13,7 +13,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
   const log = Log.fromLogLevel(logLevel),
         callback = (breakPoint, context, continuation) => {
-          continuation();
+          continuation(breakPoint);
         },
         releaseContexts = [];
 
