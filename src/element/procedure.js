@@ -122,7 +122,7 @@ export default define(class Procedure extends Element {
 
     const values = valuesFromNominalValues(nominalValues, context);
 
-    this.call(values, context, (value) => {
+    return this.call(values, context, (value) => {
       context.debug(`...called the '${procedureString}' function nominally.`);
 
       return continuation(value);
