@@ -81,7 +81,7 @@ export default define(class Procedure extends Element {
       context.debug(`...verified the '${procedureString}' function.`)
     }
 
-    return continuation(verifies);
+    return continuation(verifies, context);
   }
 
   call = breakable(function (values, context, continuation) {
