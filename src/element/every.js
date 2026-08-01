@@ -9,7 +9,7 @@ import { define } from "../elements";
 import { valueFromNode, valueFromBoolean } from "../utilities/value";
 import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 
-const { every } = continuationUtilities,
+const { asynchronousEvery } = continuationUtilities,
       { breakable } = breakPointUtilities;
 
 export default define(class Every extends Element {
