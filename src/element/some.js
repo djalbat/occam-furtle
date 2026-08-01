@@ -9,8 +9,8 @@ import { define } from "../elements";
 import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
-const { some } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+const { breakable } = breakPointUtilities,
+      { asynchronousSome } = continuationUtilities;
 
 export default define(class Some extends Element {
   constructor(context, string, node, breakPoint, variable, anonymousProcedure) {
@@ -48,7 +48,7 @@ export default define(class Some extends Element {
     const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue; ///
 
-    return some(nominalValues, (nominalValue, continuation) => {
+    return asynchronousSome(nominalValues, (nominalValue, continuation) => {
       const { Values } = elements,
             value = valueFromNominalValue(nominalValue),
             values = Values.fromValue(value, context);

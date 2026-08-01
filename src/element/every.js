@@ -9,8 +9,8 @@ import { define } from "../elements";
 import { valueFromNode, valueFromBoolean } from "../utilities/value";
 import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 
-const { asynchronousEvery } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+const { breakable } = breakPointUtilities,
+      { asynchronousEvery } = continuationUtilities;
 
 export default define(class Every extends Element {
   constructor(context, string, node, breakPoint, variable, anonymousProcedure) {
@@ -48,7 +48,7 @@ export default define(class Every extends Element {
 
     const nodes = value.getNodes();
 
-    return every(nodes, (node, continuation) => {
+    return asynchronousEvery(nodes, (node, continuation) => {
       const { Values } = elements,
             value = valueFromNode(node, context),
             values = Values.fromValue(value, context);
