@@ -10,7 +10,7 @@ import { LIST_TYPE_NAME } from "../../typeNames";
 
 const { breakable } = breakPointUtilities;
 
-export default define(class ArrayAssigment extends Element {
+export default define(class ListAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
     super(context, string, node, breakPoint);
 
@@ -27,9 +27,9 @@ export default define(class ArrayAssigment extends Element {
   }
 
   evaluate = breakable(function (context, continuation) {
-    const arrayAssignmentString = this.getString(); ///
+    const listAssignmentString = this.getString(); ///
 
-    context.trace(`Evaluating the '${arrayAssignmentString}' array assignment...`);
+    context.trace(`Evaluating the '${listAssignmentString}' list assignment...`);
 
     const value = this.variable.evaluate(context),
           valueType = value.getType(),
@@ -68,7 +68,7 @@ export default define(class ArrayAssigment extends Element {
       }
     });
 
-    context.debug(`...evaluated the '${arrayAssignmentString}' array assignment.`);
+    context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
 
     return continuation();
   });
@@ -101,5 +101,5 @@ export default define(class ArrayAssigment extends Element {
     context.debug(`...evaluated the '${bindingString}' binding against the '${valueString}' value.`);
   }
 
-  static name = "ArrayAssignment";
+  static name = "ListAssignment";
 });

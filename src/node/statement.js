@@ -2,14 +2,14 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { ARRAY_ASSIGNMENT_RULE_NAME, OBJECT_ASSIGNMENT_RULE_NAME, VARIABLE_ASSIGNMENTS_RULE_NAME } from "../ruleNames"
+import { LIST_ASSIGNMENT_RULE_NAME, OBJECT_ASSIGNMENT_RULE_NAME, VARIABLE_ASSIGNMENTS_RULE_NAME } from "../ruleNames"
 
 export default class StatementNode extends NonTerminalNode {
-  getArrayAssignmentNode() {
-    const ruleName = ARRAY_ASSIGNMENT_RULE_NAME,
-          arrayAssignmentNode = this.getNodeByRuleName(ruleName);
+  getListAssignmentNode() {
+    const ruleName = LIST_ASSIGNMENT_RULE_NAME,
+          listAssignmentNode = this.getNodeByRuleName(ruleName);
 
-    return arrayAssignmentNode;
+    return listAssignmentNode;
   }
 
   getObjectAssignmentNode() {

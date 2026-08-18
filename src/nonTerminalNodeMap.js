@@ -39,8 +39,8 @@ import ProcedureCallNode from "./node/procedureCall";
 import NamedBindingsNode from "./node/bindings/named";
 import BracketedTermNode from "./node/term/bracketed";
 import ComparisonTermNode from "./node/term/comparison";
+import ListAssignmentNode from "./node/assignment/list";
 import ReturnStatementNode from "./node/returnStatement";
-import ArrayAssignmentNode from "./node/assignment/array";
 import ObjectAssignmentNode from "./node/assignment/object";
 import AnonymousProcedureNode from "./node/anoymousProcedure";
 import VariableAssignmentNode from "./node/assignment/variable";
@@ -85,8 +85,8 @@ import { SOME_RULE_NAME,
          BRACKETED_TERM_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
          COMPARISON_TERM_RULE_NAME,
+         LIST_ASSIGNMENT_RULE_NAME,
          RETURN_STATEMENT_RULE_NAME,
-         ARRAY_ASSIGNMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
@@ -131,9 +131,9 @@ const NonTerminalNodeMap = {
   [NAMED_BINDINGS_RULE_NAME]: NamedBindingsNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
   [BRACKETED_TERM_RULE_NAME]: BracketedTermNode,
+  [LIST_ASSIGNMENT_RULE_NAME]: ListAssignmentNode,
   [COMPARISON_TERM_RULE_NAME]: ComparisonTermNode,
   [RETURN_STATEMENT_RULE_NAME]: ReturnStatementNode,
-  [ARRAY_ASSIGNMENT_RULE_NAME]: ArrayAssignmentNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,

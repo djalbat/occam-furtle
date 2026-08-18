@@ -4,7 +4,7 @@ import AssignmentrNode from "../../node/assignment";
 
 import { VARIABLE_RULE_NAME, BINDINGS_RULE_NAME } from "../../ruleNames";
 
-export default class ArrayAssignmentNode extends AssignmentrNode {
+export default class ListAssignmentNode extends AssignmentrNode {
   getVariableNode() {
     const ruleName = VARIABLE_RULE_NAME,
           variableNode = this.getNodeByRuleName(ruleName);
@@ -19,5 +19,5 @@ export default class ArrayAssignmentNode extends AssignmentrNode {
     return parametersNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentrNode.fromRuleNameChildNodesOpacityAndPrecedence(ArrayAssignmentNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentrNode.fromRuleNameChildNodesOpacityAndPrecedence(ListAssignmentNode, ruleName, childNodes, opacity, precedence); }
 }

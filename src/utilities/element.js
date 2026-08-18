@@ -287,13 +287,13 @@ export function statementFromStatementNode(statementNode, context) {
         node = statementNode,  ///
         string = context.nodeAsString(node),
         breakPoint = null,
-        arrayAssignment = arrayAssignmentFromStatementNode(statementNode, context),
+        listAssignment = listAssignmentFromStatementNode(statementNode, context),
         objectAssignment = objectAssignmentFromStatementNode(statementNode, context),
-        variableAssigments = variableAssignmentsFromStatementNode(statementNode, context);
+        variableAssignments = variableAssignmentsFromStatementNode(statementNode, context);
 
   context = null;
 
-  const statement = new Statement(context, string, node, breakPoint, arrayAssignment, objectAssignment, variableAssigments);
+  const statement = new Statement(context, string, node, breakPoint, listAssignment, objectAssignment, variableAssignments);
 
   return statement;
 }
@@ -606,26 +606,26 @@ export function comparisonTermFromComparisonTermNode(comparisonTermNode, context
   return comparisonTerm;
 }
 
+export function listAssignmentFromListAssignmentNode(listAssignmentNode, context) {
+  const { ListAssignment } = elements,
+        node = listAssignmentNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        variable = variableFromListAssignmentNode(listAssignmentNode, context),
+        bindings = bindingsFromListAssignmentNode(listAssignmentNode, context);
+
+  context = null;
+
+  const listAssignment = new ListAssignment(context, string, node, breakPoint, variable, bindings);
+
+  return listAssignment;
+}
+
 export function namedBindingsFromObjectAssignmentNode(objectAssignmentNode, context) {
   const namedBindingsNode = objectAssignmentNode.getNamedBindingsNode(),
         namedBindings = namedBindingsFromNamedBindingsNode(namedBindingsNode, context);
 
   return namedBindings;
-}
-
-export function arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context) {
-  const { ArrayAssignment } = elements,
-        node = arrayAssignmentNode, ///
-        string = context.nodeAsString(node),
-        breakPoint = null,
-        variable = variableFromArrayAssignmentNode(arrayAssignmentNode, context),
-        bindings = bindingsFromArrayAssignmentNode(arrayAssignmentNode, context);
-
-  context = null;
-
-  const arrayAssignment = new ArrayAssignment(context, string, node, breakPoint, variable, bindings);
-
-  return arrayAssignment;
 }
 
 export function returnStatementFromReturnStatementNode(returnStatementNode, context) {
@@ -1256,13 +1256,6 @@ export function valueFromTypeAndVariableNode(type, variableNode, context) {
   return value;
 }
 
-export function valueFromReturnStatementNode(returnStatementNode, context) {
-  const valueNode = returnStatementNode.getValueNode(),
-        value = valueFromValueNode(valueNode, context);
-
-  return value;
-}
-
 export function nodesQueryFromExpressionNode(expressionNode, context) {
   let nodesQuery = null;
 
@@ -1304,6 +1297,13 @@ export function rightTermFromLogicalTermNode(logicalTermNode, context) {
        rightTerm = termFromTermNode(rightTermNode, context);
 
   return rightTerm;
+}
+
+export function valueFromReturnStatementNode(returnStatementNode, context) {
+  const valueNode = returnStatementNode.getValueNode(),
+        value = valueFromValueNode(valueNode, context);
+
+  return value;
 }
 
 export function elseExpressionFromTernaryNode(ternaryNode, context) {
@@ -1421,18 +1421,30 @@ export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
   return rightTerm;
 }
 
-export function variableFromArrayAssignmentNode(arrayAssignmentNode, context) {
-  const variableNode = arrayAssignmentNode.getVariableNode(),
+export function variableFromListAssignmentNode(listAssignmentNode, context) {
+  const variableNode = listAssignmentNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
 }
 
-export function bindingsFromArrayAssignmentNode(arrayAssignmentNode, context) {
-  const bindingsNode = arrayAssignmentNode.getBindingsNode(),
+export function bindingsFromListAssignmentNode(listAssignmentNode, context) {
+  const bindingsNode = listAssignmentNode.getBindingsNode(),
         bindings = bindingsFromBindingsNode(bindingsNode, context);
 
   return bindings;
+}
+
+export function listAssignmentFromStatementNode(statementNode, context) {
+  let listAssignment = null;
+
+  const listAssignmentNode = statementNode.getListAssignmentNode();
+
+  if (listAssignmentNode !== null) {
+    listAssignment = listAssignmentFromListAssignmentNode(listAssignmentNode, context);
+  }
+
+  return listAssignment;
 }
 
 export function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
@@ -1447,18 +1459,6 @@ export function anonymousProcedureFromReduceNode(reduceNode, context) {
         anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
   return anonymousProcedure;
-}
-
-export function arrayAssignmentFromStatementNode(statementNode, context) {
-  let arrayAssignment = null;
-
-  const arrayAssignmentNode = statementNode.getArrayAssignmentNode();
-
-  if (arrayAssignmentNode !== null) {
-    arrayAssignment = arrayAssignmentFromArrayAssignmentNode(arrayAssignmentNode, context);
-  }
-
-  return arrayAssignment;
 }
 
 export function variableFromObjectAssignmentNode(objectAssignmentNode, context) {
@@ -1499,8 +1499,8 @@ export function variableAssignmentsFromStatementNode(statementNode, context) {
   return variableAssignments;
 }
 
-export function expressionFromVariableAssignmentNode(variableAssigmentNode, context) {
-  const expressionNode = variableAssigmentNode.getExpressionNode(),
+export function expressionFromVariableAssignmentNode(variableAssignmentNode, context) {
+  const expressionNode = variableAssignmentNode.getExpressionNode(),
         expression = expressionFromExpressionNode(expressionNode, context);
 
   return expression;

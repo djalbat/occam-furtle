@@ -16,7 +16,7 @@ const bnf = `
                               
                               |  objectAssignment
      
-                              |  arrayAssignment
+                              |  listAssignment
                               
                               ;  
       
@@ -28,7 +28,7 @@ const bnf = `
     
     objectAssignment        ::=  "{" namedBindings "}" "=" variable ";" ;
     
-    arrayAssignment         ::=  "[" bindings "]" "=" variable ";" ;
+    listAssignment          ::=  "[" bindings "]" "=" variable ";" ;
     
 
 
