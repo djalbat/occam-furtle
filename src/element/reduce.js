@@ -9,8 +9,8 @@ import { define } from "../elements";
 import { LIST_TYPE_NAME } from "../typeNames";
 import { valueFromNominalValue } from "../utilities/value";
 
-const { breakable } = breakPointUtilities,
-      { asynchronousReduce } = continuationUtilities;
+const { reduce } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class Reduce extends Element {
   constructor(context, string, node, breakPoint, variable, inivialValue, anonymousProcedure) {
@@ -54,7 +54,7 @@ export default define(class Reduce extends Element {
           nominalValues = primitiveValue, ///
           inivialValue = this.inivialValue.evaluate(context);
 
-    return asynchronousReduce(nominalValues, (currentValue, nominalValue, continuation) => {
+    return reduce(nominalValues, (currentValue, nominalValue, continuation) => {
       let value;
 
       const { Values } = elements;

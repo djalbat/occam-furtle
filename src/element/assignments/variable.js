@@ -4,8 +4,8 @@ import { Element, breakPointUtilities, continuationUtilities } from "occam-langu
 
 import { define } from "../../elements";
 
-const { breakable } = breakPointUtilities,
-      { asynchronousForEach } = continuationUtilities;
+const { forEach } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class VariableAssignments extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -23,7 +23,7 @@ export default define(class VariableAssignments extends Element {
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 
-    return asynchronousForEach(this.array, (variableAssignment, continuation) => {
+    return forEach(this.array, (variableAssignment, continuation) => {
       return variableAssignment.evaluate(context, continuation);
     }, () => {
       context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);

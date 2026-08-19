@@ -7,7 +7,7 @@ import Exception from "../exception";
 import { define } from "../elements";
 import { confine } from "../utilities/context";
 
-const { asynchronousForEach } = continuationUtilities;
+const { forEach } = continuationUtilities;
 
 export default define(class ReturnBlock extends Element {
   constructor(context, string, node, breakPoint, statements, nonsensical, returnStatement) {
@@ -59,7 +59,7 @@ export default define(class ReturnBlock extends Element {
 
     context.trace(`Evaluating the '${returnBlockString}' return block's statements...`);
 
-    return asynchronousForEach(this.statements, (statement, continuation) => {
+    return forEach(this.statements, (statement, continuation) => {
       return statement.evaluate(context, continuation);
     }, () => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
