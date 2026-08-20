@@ -42,8 +42,8 @@ export default define(class ReturnBlock extends Element {
       throw exception;
     }
 
-    confine((context) => {
-      this.evaluateStatements(context, () => {
+    return confine((context) => {
+      return this.evaluateStatements(context, back, () => {
         const value = this.returnStatement.evaluate(context),
               valueString = value.getString();
 
@@ -61,7 +61,7 @@ export default define(class ReturnBlock extends Element {
 
     return forEach(this.statements, (statement, back, forward) => {
       return statement.evaluate(context, back, forward);
-    }, () => {
+    }, back, () => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
 
       return forward();

@@ -89,7 +89,7 @@ export default define(class Procedure extends Element {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    this.returnBlock.evaluate(variables, context, (value) => {
+    return this.returnBlock.evaluate(variables, context, back, (value) => {
       const valueType = value.getType(),
             typeEqualToValueType = this.type.isEqualTo(valueType);
 
