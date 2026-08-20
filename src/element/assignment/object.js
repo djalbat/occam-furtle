@@ -35,25 +35,26 @@ export default define(class ObjectAssignment extends Element {
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType(),
-          valueTypeNominalValueType = valueType.isNominalValueType();
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeNominalValueType = valueType.isNominalValueType();
 
-    if (!valueTypeNominalValueType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+      if (!valueTypeNominalValueType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-      return back(exception);
-    }
+        return back(exception);
+      }
 
-    return nominalValueProperties.compareNamedBindings(this.namedBindings, context, back, () => {
-      return this.namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
-        return this.evaluateNamedBinding(namedBinding, value, context, back, forward);
-      }, back, () => {
-        context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
+      return nominalValueProperties.compareNamedBindings(this.namedBindings, context, back, () => {
+        return this.namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
+          return this.evaluateNamedBinding(namedBinding, value, context, back, forward);
+        }, back, () => {
+          context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
 
-        return forward();
+          return forward();
+        });
       });
     });
   });

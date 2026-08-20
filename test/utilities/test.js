@@ -101,10 +101,8 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
     procedure.callNominally(nominalValues, back, forward);
 
-    function back() {
-      assert.isTrue(false);
-
-      done();
+    function back(exception) {
+      throw exception;
     }
 
     function forward(value) {

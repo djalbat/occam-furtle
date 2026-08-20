@@ -25,7 +25,7 @@ export default define(class VariableAssignments extends Element {
 
     return forEach(this.array, (variableAssignment, back, forward) => {
       return variableAssignment.evaluate(context, back, forward);
-    }, () => {
+    }, back, () => {
       context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
 
       return forward();
