@@ -59,7 +59,7 @@ export default define(class Variable extends Element {
     return value;
   }
 
-  assign(value, context) {
+  assign(value, context, back, forward) {
     const nested = false,
           valueString = value.getString(),
           variableName = this.name, ///
@@ -72,7 +72,7 @@ export default define(class Variable extends Element {
       const message = `The '${variableString}' variable is already present.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const valueType = value.getType(),
@@ -84,16 +84,18 @@ export default define(class Variable extends Element {
             message = `The '${variableString} variable's '${typeString}' type does not compare to the value's '${valueTypeString}' type.'`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     this.value = value;
 
     const variable = this;  ///
 
-    context.addVariable(variable);
+    return context.addVariable(variable, back, () => {
+      context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
 
-    context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
+      forward();
+    });
   }
 
   static name = "Variable";

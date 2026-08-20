@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
@@ -8,7 +8,8 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 import { LIST_TYPE_NAME } from "../../typeNames";
 
-const { breakable } = breakPointUtilities;
+const { forEach } = continuationUtilities,
+      { breakable } = breakPointUtilities;
 
 export default define(class ListAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -58,22 +59,24 @@ export default define(class ListAssignment extends Element {
 
     const values = value.lift(context);
 
-    this.bindings.forEachBinding((binding, index) => {
+    return forEach(this.bindings, (binding, back, forward, index) => {
       const elided = binding.isElided();
 
-      if (!elided) {
-        const value = values[index];
-
-        this.evaluateBinding(binding, value, context);
+      if (elided) {
+        return forward();
       }
+
+      const value = values[index];
+
+      return this.evaluateBinding(binding, value, context, back, forward);
+    }, () => {
+      context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
+
+      return forward();
     });
-
-    context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
-
-    return forward();
   });
 
-  evaluateBinding(binding, value, context) {
+  evaluateBinding(binding, value, context, back, forward) {
     const valueString = value.getString(),
           bindingString = binding.getString();
 
@@ -96,9 +99,11 @@ export default define(class ListAssignment extends Element {
     const { Variable } = elements,
           variable = Variable.fromBinding(binding, context);
 
-    variable.assign(value, context);
+    return variable.assign(value, context, back, () => {
+      context.debug(`...evaluated the '${bindingString}' binding against the '${valueString}' value.`);
 
-    context.debug(`...evaluated the '${bindingString}' binding against the '${valueString}' value.`);
+      return forward();
+    });
   }
 
   static name = "ListAssignment";

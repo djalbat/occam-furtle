@@ -29,7 +29,7 @@ export default class BlockContext extends Context {
     return variables;
   }
 
-  addVariable(variable) {
+  addVariable(variable, back, forward) {
     const nested = false,
           variableName = variable.getName(),
           variableString = variable.getString(),
@@ -39,7 +39,7 @@ export default class BlockContext extends Context {
       const message = `The '${variableString}' variable is already present.'`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      throw back(exception);
     }
 
     const context = this; ///
@@ -47,6 +47,8 @@ export default class BlockContext extends Context {
     context.trace(`Added the '${variableString}' variable to the context.`);
 
     this.variables.push(variable);
+
+    return forward();
   }
 
   findProcedureByProcedureName(procedureName) {

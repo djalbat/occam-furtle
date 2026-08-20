@@ -58,7 +58,7 @@ export default define(class ObjectAssignment extends Element {
     return forward();
   });
 
-  evaluateNamedBinding(namedBinding, term, context) {
+  evaluateNamedBinding(namedBinding, term, context, back, forward) {
     const termString = term.getString(),
           namedBindingString = namedBinding.getString();
 
@@ -97,9 +97,11 @@ export default define(class ObjectAssignment extends Element {
     const { Variable } = elements,
           variable = Variable.fromNamedBinding(namedBinding, context);
 
-    variable.assign(value, context);
+    return variable.assign(value, context, back, () => {
+      context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
 
-    context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
+      forward();
+    });
   }
 
   evaluateContentNamedBinding(namedBinding, term, context) {

@@ -26,13 +26,13 @@ export default define(class VariableAssignment extends Element {
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
     return this.expression.evaluate(context, back, (value) => {
-      this.variable.assign(value, context);
+      return this.variable.assign(value, context, back, () => {
+        const valueString = value.getString();
 
-      const valueString = value.getString();
+        context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-      context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
-
-      return forward(value);
+        return forward(value);
+      });
     });
   }
 
