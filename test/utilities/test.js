@@ -12,8 +12,8 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   let releaseContext = null;
 
   const log = Log.fromLogLevel(logLevel),
-        callback = (breakPoint, context, continuation) => {
-          continuation(breakPoint);
+        callback = (breakPoint, context, back, forward) => {
+          forward(breakPoint);
         },
         releaseContexts = [];
 
@@ -30,11 +30,14 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     };
   });
 
-  it("creates", async () => {
-    const dependencyName = projectName,  ///
-          releaseContextsCreated = await createReleaseContexts(dependencyName, context);
+  it("creates", (done) => {
+    const dependencyName = projectName;  ///
 
-    assert.isTrue(releaseContextsCreated);
+    return createReleaseContexts(dependencyName, context, (releaseContextsCreated) => {
+      assert.isTrue(releaseContextsCreated);
+
+      done();
+    });
   });
 
   it("initialises", () => {
