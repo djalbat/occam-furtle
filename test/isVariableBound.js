@@ -20,7 +20,7 @@ const statementNodeQuery = nodeQuery("/step/statement!"),
       content = `∀n n = n
 `;
 
-describe.skip(projectName, () => {
+describe(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const stepNode = node,  ///
