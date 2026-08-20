@@ -30,7 +30,7 @@ export default define(class ObjectAssignment extends Element {
     return this.namedBindings;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const objectAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
@@ -55,7 +55,7 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
 
-    return continuation();
+    return forward();
   });
 
   evaluateNamedBinding(namedBinding, term, context) {

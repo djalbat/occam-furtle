@@ -20,7 +20,7 @@ export default define(class VariableAssignment extends Element {
     return this.expression;
   }
 
-  evaluate(context, continuation) {
+  evaluate(context, back, forward) {
     const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
@@ -32,7 +32,7 @@ export default define(class VariableAssignment extends Element {
 
       context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-      return continuation(value);
+      return forward(value);
     });
   }
 

@@ -28,7 +28,7 @@ export default define(class Some extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const someString = this.getString();
 
     context.trace(`Evaluating the '${someString}' some...`);
@@ -48,7 +48,7 @@ export default define(class Some extends Element {
     const primitiveValue = value.getPrimitiveValue(),
           nominalValues = primitiveValue; ///
 
-    return some(nominalValues, (nominalValue, continuation) => {
+    return some(nominalValues, (nominalValue, back, forward) => {
       const { Values } = elements,
             value = valueFromNominalValue(nominalValue),
             values = Values.fromValue(value, context);
@@ -68,7 +68,7 @@ export default define(class Some extends Element {
         const primitiveValue = value.getPrimitiveValue(),
               boolean = primitiveValue; ///
 
-        return continuation(boolean);
+        return forward(boolean);
       });
     }, (boolean) => {
       const value = valueFromBoolean(boolean, context),
@@ -76,7 +76,7 @@ export default define(class Some extends Element {
 
       context.trace(`...evaluated the '${someString}' some as '${valueString}'.`);
 
-      return continuation(value);
+      return forward(value);
     });
   });
 

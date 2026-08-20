@@ -18,17 +18,17 @@ export default define(class VariableAssignments extends Element {
     return this.array;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const variableAssignmentsString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentsString}' variable assignments...`);
 
-    return forEach(this.array, (variableAssignment, continuation) => {
-      return variableAssignment.evaluate(context, continuation);
+    return forEach(this.array, (variableAssignment, back, forward) => {
+      return variableAssignment.evaluate(context, back, forward);
     }, () => {
       context.debug(`...evaluated the '${variableAssignmentsString}' variable assignments.`);
 
-      return continuation();
+      return forward();
     });
   });
 

@@ -192,12 +192,12 @@ export default class FurtleFileContext extends FileContext {
     }
   }
 
-  verifyFile(continuation) {
+  verifyFile(back, forward) {
     const node = this.getNode(),
           context = this, ///
           fileNode = node;  ///
 
-    return verifyFile(fileNode, context, continuation);
+    return verifyFile(fileNode, context, back, forward);
   }
 
   toJSON() {

@@ -33,7 +33,7 @@ export default define(class Reduce extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const reduceString = this.getString();
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
@@ -54,7 +54,7 @@ export default define(class Reduce extends Element {
           nominalValues = primitiveValue, ///
           inivialValue = this.inivialValue.evaluate(context);
 
-    return reduce(nominalValues, (currentValue, nominalValue, continuation) => {
+    return reduce(nominalValues, (currentValue, nominalValue, back, forward) => {
       let value;
 
       const { Values } = elements;
@@ -67,13 +67,13 @@ export default define(class Reduce extends Element {
 
       values.addValue(value);
 
-      return this.anonymousProcedure.call(values, context, continuation);
+      return this.anonymousProcedure.call(values, context, back, forward);
     }, inivialValue, (value) => {
       const valueString = value.getString();
 
       context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-      return continuation(value);
+      return forward(value);
     });
   });
 

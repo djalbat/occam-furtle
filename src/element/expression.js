@@ -125,7 +125,7 @@ export default define(class Expression extends Element {
     return type;
   }
 
-  evaluate(context, continuation) {
+  evaluate(context, back, forward) {
     let value = null;
 
     if (false) {
@@ -151,33 +151,33 @@ export default define(class Expression extends Element {
     }
 
     if (value !== null) {
-      return continuation(value);
+      return forward(value);
     }
 
     if (this.some !== null) {
-      return this.some.evaluate(context, continuation);
+      return this.some.evaluate(context, back, forward);
     }
 
     if (this.every !== null) {
-       return this.every.evaluate(context, continuation);
+       return this.every.evaluate(context, back, forward);
     }
 
     if (this.reduce !== null) {
-      return this.reduce.evaluate(context, continuation);
+      return this.reduce.evaluate(context, back, forward);
     }
 
     if (this.ternary !== null) {
-      return this.ternary.evaluate(context, continuation);
+      return this.ternary.evaluate(context, back, forward);
     }
 
     if (this.returnBlock !== null) {
       const variables = [];
 
-      return this.returnBlock.evaluate(variables, context, continuation);
+      return this.returnBlock.evaluate(variables, context, back, forward);
     }
 
     if (this.procedureCall !== null) {
-      return this.procedureCall.evaluate(context, continuation);
+      return this.procedureCall.evaluate(context, back, forward);
     }
   }
 

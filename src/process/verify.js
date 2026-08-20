@@ -14,18 +14,18 @@ class TopLevelPass extends ContinuationPass {
   static maps = [
     {
       nodeQuery: errorNodeQuery,
-      run: (errorNode, context, continuation) => {
+      run: (errorNode, context, back, forward) => {
         const error = errorFromErrorNode(errorNode, context);
 
-        return error.verify(context, continuation);
+        return error.verify(context, back, forward);
       }
     },
     {
       nodeQuery: procedureNodeQuery,
-      run: (procedureNode, context, continuation) => {
+      run: (procedureNode, context, back, forward) => {
         const procedure = procedureFromProcedureNode(procedureNode, context);
 
-        return procedure.verify(context, continuation);
+        return procedure.verify(context, back, forward);
       }
     }
   ];
@@ -33,8 +33,8 @@ class TopLevelPass extends ContinuationPass {
 
 const topLevelPass = new TopLevelPass();
 
-export function verifyFile(fileNode, context, continuation) {
+export function verifyFile(fileNode, context, back, forward) {
   const node = fileNode; ///
 
-  return topLevelPass.run(node, context, continuation);
+  return topLevelPass.run(node, context, back, forward);
 }

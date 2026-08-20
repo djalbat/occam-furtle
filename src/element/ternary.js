@@ -28,7 +28,7 @@ export default define(class Ternary extends Element {
     return this.elseExpression;
   }
 
-  evaluate(context, continuation) {
+  evaluate(context, back, forward) {
     const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
@@ -56,7 +56,7 @@ export default define(class Ternary extends Element {
 
       context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-      return continuation(value);
+      return forward(value);
     });
   }
 

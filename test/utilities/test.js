@@ -33,11 +33,17 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   it("creates", (done) => {
     const dependencyName = projectName;  ///
 
-    return createReleaseContexts(dependencyName, context, (releaseContextsCreated) => {
+    return createReleaseContexts(dependencyName, context, fail, succeed);
+
+    function fail(exception) {
+      throw exception;
+    }
+
+    function succeed(releaseContextsCreated) {
       assert.isTrue(releaseContextsCreated);
 
       done();
-    });
+    }
   });
 
   it("initialises", () => {
@@ -55,11 +61,17 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   });
 
   it("verifies", (done) => {
-    verifyReleaseContexts(context, (releaseContextsVerify) => {
-      assert.isTrue(releaseContextsVerify);
+    verifyReleaseContexts(context, fail, succeed);
+
+    function fail(exception) {
+      throw exception;
+    }
+
+    function succeed() {
+      assert.isTrue(true);
 
       done();
-    });
+    }
   });
 
   let json,
@@ -87,14 +99,22 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
           nominalValues = nominalValuesFromNothing(context);
 
-    procedure.callNominally(nominalValues, (value) => {
+    procedure.callNominally(nominalValues, back, forward);
+
+    function back() {
+      assert.isTrue(false);
+
+      done();
+    }
+
+    function forward(value) {
       const primitiveValue = value.getPrimitiveValue(),
             boolean = primitiveValue; ///
 
       assert.isTrue(boolean);
 
       done();
-    });
+    }
   });
 }
 

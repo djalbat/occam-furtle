@@ -29,7 +29,7 @@ export default define(class Every extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const everyString = this.getString();
 
     context.trace(`Evaluating the '${everyString}' every...`);
@@ -48,7 +48,7 @@ export default define(class Every extends Element {
 
     const nodes = value.getNodes();
 
-    return every(nodes, (node, continuation) => {
+    return every(nodes, (node, back, forward) => {
       const { Values } = elements,
             value = valueFromNode(node, context),
             values = Values.fromValue(value, context);
@@ -67,7 +67,7 @@ export default define(class Every extends Element {
 
         const boolean = value.getBoolean();
 
-        return continuation(boolean);
+        return forward(boolean);
       });
     }, (boolean) => {
       const value = valueFromBoolean(boolean, context),
@@ -75,7 +75,7 @@ export default define(class Every extends Element {
 
       context.trace(`...evaluated the '${everyString}' every as '${valueString}'.`);
 
-      return continuation(value);
+      return forward(value);
     });
   });
 

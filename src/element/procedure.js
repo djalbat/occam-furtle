@@ -64,9 +64,7 @@ export default define(class Procedure extends Element {
     this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
 
-  verify(context, continuation) {
-    let verifies;
-
+  verify(context, back, forward) {
     const procedureString = this.getString();
 
     context.trace(`Verifying the '${procedureString}' function...`)
@@ -75,16 +73,12 @@ export default define(class Procedure extends Element {
 
     context.addProcedure(procedure);
 
-    verifies = true;
+    context.debug(`...verified the '${procedureString}' function.`)
 
-    if (verifies) {
-      context.debug(`...verified the '${procedureString}' function.`)
-    }
-
-    return continuation(verifies, context);
+    return forward(context);
   }
 
-  call = breakable(function (values, context, continuation) {
+  call = breakable(function (values, context, back, forward) {
     const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' function...`);
@@ -110,11 +104,11 @@ export default define(class Procedure extends Element {
 
       context.debug(`...called the '${procedureString}' function.`);
 
-      return continuation(value);
+      return forward(value);
     });
   });
 
-  callNominally(nominalValues, continuation) {
+  callNominally(nominalValues, back, forward) {
     const context = this.getContext(),
           procedureString = this.getString();  ///
 
@@ -122,10 +116,10 @@ export default define(class Procedure extends Element {
 
     const values = valuesFromNominalValues(nominalValues, context);
 
-    return this.call(values, context, (value) => {
+    return this.call(values, context, back, (value) => {
       context.debug(`...called the '${procedureString}' function nominally.`);
 
-      return continuation(value);
+      return forward(value);
     });
   }
 

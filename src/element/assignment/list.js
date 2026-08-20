@@ -26,7 +26,7 @@ export default define(class ListAssignment extends Element {
     return this.bindings;
   }
 
-  evaluate = breakable(function (context, continuation) {
+  evaluate = breakable(function (context, back, forward) {
     const listAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${listAssignmentString}' list assignment...`);
@@ -70,7 +70,7 @@ export default define(class ListAssignment extends Element {
 
     context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
 
-    return continuation();
+    return forward();
   });
 
   evaluateBinding(binding, value, context) {
