@@ -53,7 +53,7 @@ export default define(class Some extends Element {
             value = valueFromNominalValue(nominalValue),
             values = Values.fromValue(value, context);
 
-      this.anonymousProcedure.call(values, context, (value) => {
+      return this.anonymousProcedure.call(values, context, back, (value) => {
         const valueType = value.getType(),
               valueTypeBooleanType = valueType.isBooleanType();
 

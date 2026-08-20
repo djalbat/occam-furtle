@@ -28,7 +28,7 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  call(values, context, continuatino) {
+  call(values, context, back, forward) {
     const anonymousProcedureString = this.getString(); ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
@@ -37,7 +37,7 @@ export default define(class AnonymousProcedure extends Element {
 
     const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    this.returnBlock.evaluate(variables, context, (value) => {
+    return this.returnBlock.evaluate(variables, context, back, (value) => {
       const valueType = value.getType(),
             typeEqualToValueType = this.type.isEqualTo(valueType);
 
@@ -52,7 +52,7 @@ export default define(class AnonymousProcedure extends Element {
 
       context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
 
-      continuatino(value);
+      return forward(value);
     });
   }
 

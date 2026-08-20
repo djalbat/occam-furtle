@@ -25,7 +25,7 @@ export default define(class VariableAssignment extends Element {
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    this.expression.evaluate(context, (value) => {
+    return this.expression.evaluate(context, back, (value) => {
       this.variable.assign(value, context);
 
       const valueString = value.getString();

@@ -45,8 +45,8 @@ export default define(class ProcedureCall extends Element {
     const procedure = context.findProcedureByProcedureName(procedureName),
           values = this.values.evaluate(context);
 
-    free((context) => {
-      procedure.call(values, context, (value) => {
+    return free((context) => {
+      return procedure.call(values, context, back, (value) => {
         const valueString = value.getString();
 
         context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
