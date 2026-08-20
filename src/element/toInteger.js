@@ -20,7 +20,7 @@ export default define(class ToInteger extends Element {
     return this.variable;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const toIntegerString = this.getString();  ///
@@ -41,7 +41,7 @@ export default define(class ToInteger extends Element {
         const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
               exception = Exception.fromMessage(message);
 
-        throw exception;
+        return back(exception);
       }
 
       case STRING_TYPE_NAME:
@@ -53,7 +53,7 @@ export default define(class ToInteger extends Element {
           const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' value is not an integer.`,
                 exception = Exception.fromMessage(message);
 
-          throw exception;
+          return back(exception);
         }
 
         integer = Number(valueString);
@@ -68,7 +68,7 @@ export default define(class ToInteger extends Element {
 
     context.debug(`...evaluated the '${toIntegerString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "ToInteger";

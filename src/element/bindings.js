@@ -29,9 +29,15 @@ export default define(class Bindings extends Element {
     return binding;
   }
 
-  forEachBinding(callback) { this.array.forEach(callback); }
+  forEachBinding(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return forEach(this.array, callback, back, forward);
+    }
 
-  compareTerms(terms, context) {
+    this.array.forEach(callback);
+  }
+
+  compareTerms(terms, context, back, forward) {
     const termsString = terms.getString(),
           bindingsString = this.getString(); ///
 
@@ -44,18 +50,22 @@ export default define(class Bindings extends Element {
       const message = `The '${termsString}' expressions and '${bindingsString}' bindings are not of the same length.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
-    this.forEachBinding((binding, index) => {
-      if (binding !== null) {
-        const term = terms.getTerm(index);
-
-        binding.compareTerm(term, context);
+    return this.forEachBinding((binding, back, forward, index) => {
+      if (binding === null) {
+        return forward();
       }
-    });
 
-    context.debug(`...compared the '${termsString}' terms against the '${bindingsString}' bindings.`);
+      const term = terms.getTerm(index);
+
+      return binding.compareTerm(term, context, back, forward);
+    }, back, () => {
+      context.debug(`...compared the '${termsString}' terms against the '${bindingsString}' bindings.`);
+
+      forward();
+    });
   }
 
   static name = "Bindings";

@@ -15,7 +15,7 @@ export default define(class ReturnStatement extends Element {
     return this.value;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const returnStatementString = this.getString();  ///
@@ -28,7 +28,7 @@ export default define(class ReturnStatement extends Element {
 
     context.debug(`...evaluated the '${returnStatementString}' return statement as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "ReturnStatement";

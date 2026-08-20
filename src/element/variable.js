@@ -34,7 +34,7 @@ export default define(class Variable extends Element {
     return comparesToVariableName;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     const variableString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableString}' variable...`);
@@ -47,7 +47,7 @@ export default define(class Variable extends Element {
       const message = `The '${variableString}' variable is not present.'`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const variable = context.findVariableByVariableName(variableName),
@@ -56,7 +56,7 @@ export default define(class Variable extends Element {
 
     context.debug(`...evaluated the '${variableString}' variable as the '${valueString}' value.`);
 
-    return value;
+    return forward(value);
   }
 
   assign(value, context, back, forward) {

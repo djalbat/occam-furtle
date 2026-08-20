@@ -24,7 +24,7 @@ export default define(class StartsWith extends Element {
     return this.substring;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const startsWithString = this.getString();  ///
@@ -41,7 +41,7 @@ export default define(class StartsWith extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const string = value.getString(),
@@ -53,7 +53,7 @@ export default define(class StartsWith extends Element {
 
     context.debug(`...evaluated the '${startsWithString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "StartsWith";

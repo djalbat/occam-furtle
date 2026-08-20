@@ -69,7 +69,7 @@ export default define(class ListAssignment extends Element {
       const value = values[index];
 
       return this.evaluateBinding(binding, value, context, back, forward);
-    }, () => {
+    }, back, () => {
       context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
 
       return forward();

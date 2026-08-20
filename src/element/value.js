@@ -50,18 +50,14 @@ export default define(class Value extends Element {
     return boolean;
   }
 
-  evaluate(context) {
-    let value;
-
+  evaluate(context, back, forward) {
     if (false) {
       ///
     } else if (this.variable !== null) {
-      value = this.variable.evaluate(context);
+      return this.variable.evaluate(context, back, forward);
     } else if (this.primitive !== null) {
-      value = this.primitive.evaluate(context);
+      return this.primitive.evaluate(context, back, forward);
     }
-
-    return value;
   }
 
   isEqualTo(value) {

@@ -24,7 +24,7 @@ export default define(class Contains extends Element {
     return this.substring;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const containsString = this.getString();  ///
@@ -41,7 +41,7 @@ export default define(class Contains extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const string = value.getString(),
@@ -53,7 +53,7 @@ export default define(class Contains extends Element {
 
     context.debug(`...evaluated the '${containsString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "Contains";

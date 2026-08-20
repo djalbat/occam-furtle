@@ -38,7 +38,7 @@ export default define(class Terms extends Element {
 
   forEachTerm(callback) { this.array.forEach(callback); }
 
-  evaluate(context) {
+  evaluate(context, back,  forwarsd) {
     const valuesArray = this.mapTerm((term) => {
             const value = term.evaluate(context);
 
@@ -55,7 +55,7 @@ export default define(class Terms extends Element {
     const { Values } = elements,
           values = new Values(context, string, node, breakPoint, array);
 
-    return values;
+    return forwarsd(values);
   }
 
   static name = "Terms";

@@ -34,7 +34,7 @@ export default define(class LogicalTerm extends Element {
     return this.rightTerm;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const logicalTermString = this.getString(); ///
@@ -53,7 +53,7 @@ export default define(class LogicalTerm extends Element {
             message = `The '${leftValueString}' left term's type is '${leftValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     if (!rightValueTypeBooleanType) {
@@ -61,7 +61,7 @@ export default define(class LogicalTerm extends Element {
             message = `The '${rightValueString}' right term's type is '${rightValueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const leftValuePrimitiveValue = leftValue.getPrimitiveValue(),
@@ -78,7 +78,7 @@ export default define(class LogicalTerm extends Element {
 
     context.debug(`...evaluated the '${logicalTermString}' logical value as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "LogicalTerm";

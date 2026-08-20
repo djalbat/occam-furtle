@@ -24,7 +24,7 @@ export default define(class NegatedTerm extends Element {
     return this.term;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const negatedTermString = this.getString(); ///
@@ -41,7 +41,7 @@ export default define(class NegatedTerm extends Element {
             message = `The '${valueString}' left value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     let boolean;
@@ -58,7 +58,7 @@ export default define(class NegatedTerm extends Element {
 
     context.debug(`...evaluated the '${negatedTermString}' negated value as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "NegatedTerm";

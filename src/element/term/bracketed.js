@@ -17,7 +17,7 @@ export default define(class BracketedTerm extends Element {
 
   getType() { return this.term.getType(); }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const bracketedTermString = this.getString(); ///
@@ -30,7 +30,7 @@ export default define(class BracketedTerm extends Element {
 
     context.debug(`...evaluated the '${bracketedTermString}' bracketed term as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "BracketedTerm";

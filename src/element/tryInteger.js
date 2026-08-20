@@ -21,7 +21,7 @@ export default define(class TryInteger extends Element {
     return this.variable;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const tryIntegerString = this.getString();  ///
@@ -42,7 +42,7 @@ export default define(class TryInteger extends Element {
         const message = `Cannot evaluate the '${tryIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
               exception = Exception.fromMessage(message);
 
-        throw exception;
+        return back(exception);
       }
 
       case STRING_TYPE_NAME:
@@ -61,7 +61,7 @@ export default define(class TryInteger extends Element {
 
     context.debug(`...evaluated the '${tryIntegerString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "TryInteger";

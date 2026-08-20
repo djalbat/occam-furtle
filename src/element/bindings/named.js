@@ -1,10 +1,12 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../../exception";
 
 import { define } from "../../elements";
+
+const { forEach } = continuationUtilities;
 
 export default define(class NamedBindings extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -31,9 +33,15 @@ export default define(class NamedBindings extends Element {
 
   someNamedBinding(callback) { return this.array.some(callback); }
 
-  forEachNamedBinding(callback) { this.array.forEach(callback); }
+  forEachNamedBinding(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return forEach(this.array, callback, back, forward);
+    }
 
-  compareTerms(terms, context) {
+    this.array.forEach(callback);
+  }
+
+  compareTerms(terms, context, back, forward) {
     const termsString = terms.getString(),
           namedBindingsString = this.getString(); ///
 
@@ -46,18 +54,22 @@ export default define(class NamedBindings extends Element {
       const message = `The '${termsString}' terms and '${namedBindingsString}' named bindings are not of the same length.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
-    this.forEachNamedBinding((namedBinding, index) => {
+    return this.forEachNamedBinding((namedBinding, back, forward, index) => {
       if (namedBinding !== null) {
-        const term = terms.getTerm(index);
-
-        namedBinding.compareTerm(term, context);
+        forward();
       }
-    });
 
-    context.debug(`...compared the '${termsString}' terms with the '${namedBindingsString}' named bindings.`);
+      const term = terms.getTerm(index);
+
+      return namedBinding.compareTerm(term, context, back, forward);
+    }, back, () => {
+      context.debug(`...compared the '${termsString}' terms with the '${namedBindingsString}' named bindings.`);
+
+      forward();
+    });
   }
 
   compareNamedBinding(namedBinding, context) {

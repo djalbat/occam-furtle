@@ -24,7 +24,7 @@ export default define(class NodesQuery extends Element {
     return this.query;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const nodesQueryString = this.getString();  ///
@@ -35,7 +35,7 @@ export default define(class NodesQuery extends Element {
       const message = `Cannot evaluate the '${nodesQueryString}' function because its expression is malformed.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     value = this.variable.evaluate(context);
@@ -48,7 +48,7 @@ export default define(class NodesQuery extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     let node;
@@ -63,7 +63,7 @@ export default define(class NodesQuery extends Element {
             message = `The '${valueString}' value's node is null.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const nodes = this.query.execute(node);
@@ -74,7 +74,7 @@ export default define(class NodesQuery extends Element {
 
     context.debug(`...evaluated the '${nodesQueryString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "NodesQuery";

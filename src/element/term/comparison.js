@@ -28,7 +28,7 @@ export default define(class ComparisonTerm extends Element {
     return this.rightTerm;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const comparisonTermString = this.getString(); ///
@@ -49,7 +49,7 @@ export default define(class ComparisonTerm extends Element {
             message = `The '${leftValueString}' left term's type is '${leftValueTypeString}' whereas the '${rightValueString}' right term's type is '${rightValueTypeString}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
@@ -66,7 +66,7 @@ export default define(class ComparisonTerm extends Element {
 
     context.debug(`...evaluated the '${comparisonTermString}' comparison value as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "ComparisonTerm";

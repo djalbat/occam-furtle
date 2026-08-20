@@ -27,9 +27,9 @@ export default define(class Binding extends Element {
     return this.elided;
   }
 
-  compareTerm(term, context) {
+  compareTerm(term, context, back, forward) {
     if (this.elided) {
-      return;
+      return forward();
     }
 
     const termString = term.getString(),
@@ -45,10 +45,12 @@ export default define(class Binding extends Element {
             message = `The '${termString}' term's '${termType}' type is not equal to the '${bindingString}' binding's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     context.debug(`...comparing the '${termString}' term against the '${bindingString}' binding.`);
+
+    return forward();
   }
 
   static name = "Binding";

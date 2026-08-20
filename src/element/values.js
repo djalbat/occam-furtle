@@ -36,7 +36,7 @@ export default define(class Values extends Element {
 
   forEachValue(callback) { this.array.forEach(callback); }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     const valuesArray = this.mapValue((value) => {
             value = value.evaluate(context);
 
@@ -52,7 +52,7 @@ export default define(class Values extends Element {
 
     const values = new Values(context, string, node, breakPoint, array);
 
-    return values;
+    return forward(values);
   }
 
   static name = "Values";

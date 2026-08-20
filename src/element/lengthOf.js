@@ -19,7 +19,7 @@ export default define(class LengthOf extends Element {
     return this.variable;
   }
 
-  evaluate(context) {
+  evaluate(context, back, forward) {
     let value;
 
     const lengthOfString = this.getString();  ///
@@ -36,7 +36,7 @@ export default define(class LengthOf extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = value.getPrimitiveValue(),
@@ -49,7 +49,7 @@ export default define(class LengthOf extends Element {
 
     context.debug(`...evaluated the '${lengthOfString}' function as '${valueString}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "LengthOf";

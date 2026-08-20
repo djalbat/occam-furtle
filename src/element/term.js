@@ -76,26 +76,22 @@ export default define(class Term extends Element {
     return boolean;
   }
 
-  evaluate(context) {
-    let value;
-
+  evaluate(context, back, forward) {
     if (false) {
       ///
     } else if (this.variable !== null) {
-      value = this.variable.evaluate(context);
+      return this.variable.evaluate(context, back, forward);
     } else if (this.primitive !== null) {
-      value = this.primitive.evaluate(context);
+      return this.primitive.evaluate(context, back, forward);
     } else if (this.negatedTerm !== null) {
-      value = this.negatedTerm.evaluate(context);
+      return this.negatedTerm.evaluate(context, back, forward);
     } else if (this.logicalTerm !== null) {
-      value = this.logicalTerm.evaluate(context);
+      return this.logicalTerm.evaluate(context, back, forward);
     } else if (this.bracketedTerm !== null) {
-      value = this.bracketedTerm.evaluate(context);
+      return this.bracketedTerm.evaluate(context, back, forward);
     } else if (this.comparisonTerm !== null) {
-      value = this.comparisonTerm.evaluate(context);
+      return this.comparisonTerm.evaluate(context, back, forward);
     }
-
-    return value;
   }
 
   isEqualTo(term) {
