@@ -31,20 +31,12 @@ export default define(class NamedBindings extends Element {
     return namedBinding;
   }
 
-  someNamedBinding(callback, back = null, forward = null) {
-    if (forward === null) {
-      return some(this.array, callback, back, forward);
-    }
-
-    return this.array.some(callback);
+  someNamedBinding(callback, back, forward) {
+    return some(this.array, callback, back, forward);
   }
 
-  forEachNamedBinding(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return forEach(this.array, callback, back, forward);
-    }
-
-    this.array.forEach(callback);
+  forEachNamedBinding(callback, back, forward) {
+    return forEach(this.array, callback, back, forward);
   }
 
   compareTerms(terms, context, back, forward) {
@@ -64,8 +56,8 @@ export default define(class NamedBindings extends Element {
     }
 
     return this.forEachNamedBinding((namedBinding, back, forward, index) => {
-      if (namedBinding !== null) {
-        forward();
+      if (namedBinding === null) {
+        return forward();
       }
 
       const term = terms.getTerm(index);
@@ -74,7 +66,7 @@ export default define(class NamedBindings extends Element {
     }, back, () => {
       context.debug(`...compared the '${termsString}' terms with the '${namedBindingsString}' named bindings.`);
 
-      forward();
+      return forward();
     });
   }
 
@@ -106,12 +98,14 @@ export default define(class NamedBindings extends Element {
     });
   }
 
-  compareNamedBindings(namedBindings, context) {
-    namedBindings.forEachNamedBinding((namedBinding) => {
-      if (namedBinding !== null) {
-        this.compareNamedBinding(namedBinding, context);
+  compareNamedBindings(namedBindings, context, back, forward) {
+    return namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
+      if (namedBinding === null) {
+        return forward();
       }
-    });
+
+      return this.compareNamedBinding(namedBinding, context, back, forward);
+    }, back, forward);
   }
 
   static name = "NamedBindings";

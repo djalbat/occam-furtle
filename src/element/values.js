@@ -34,19 +34,11 @@ export default define(class Values extends Element {
     this.array.push(value);
   }
 
-  mapValue(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return map(this.array, callback, back, forward);
-    }
-
-    return this.array.map(callback);
+  mapValue(callback, back, forward) {
+    return map(this.array, callback, back, forward);
   }
 
-  forEachValue(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return forEach(this.array, callback, back, forward);
-    }
-
+  forEachValue(callback) {
     this.array.forEach(callback);
   }
 

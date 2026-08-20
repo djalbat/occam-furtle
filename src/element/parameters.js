@@ -35,12 +35,8 @@ export default define(class Parameters extends Element {
     return parameter;
   }
 
-  forEachParameter(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return forEach(this.array, callback, back, forward);
-    }
-
-    this.array.forEach(callback);
+  forEachParameter(callback, back, forward) {
+    return forEach(this.array, callback, back, forward);
   }
 
   compareValues(values, context, back, forward) {
@@ -59,7 +55,7 @@ export default define(class Parameters extends Element {
       return back(exception);
     }
 
-    return this.forEachParameter((parameter, index, back, forward) => {
+    return this.forEachParameter((parameter, back, forward, index) => {
       if (parameter === null) {
         return forward();
       }

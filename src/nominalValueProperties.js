@@ -26,12 +26,8 @@ class NominalValueProperties {
     return this.array;
   }
 
-  someNominalValueProperty(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return some(this.array, callback, back, forward);
-    }
-
-    return this.array.some(callback);
+  someNominalValueProperty(callback, back, forward) {
+    return some(this.array, callback, back, forward);
   }
 
   compareNamedBinding(namedBinding, context, back, forward) {

@@ -7,7 +7,7 @@ import elements from "../elements";
 import { define } from "../elements";
 import { termsStringFromTermsArray, valuesStringFromValuesArray } from "../utilities/string";
 
-const { map, forEach } = continuationUtilities;
+const { map } = continuationUtilities;
 
 export default define(class Terms extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -36,40 +36,27 @@ export default define(class Terms extends Element {
     this.array.push(term);
   }
 
-  mapTerm(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return map(this.array, callback, back, forward);
-    }
-
-    return this.array.map(callback);
+  mapTerm(callback, back, forward) {
+    return map(this.array, callback, back, forward);
   }
 
-  forEachTerm(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return forEach(this.array, callback, back, forward);
-    }
+  evaluate(context, back, forwarsd) {
+    return this.mapTerm((term, back, forward) => {
+      return term.evaluate(context, back, forward);
+    }, back, (valuesArray) => {
+      const valuesString = valuesStringFromValuesArray(valuesArray, context),
+            string = valuesString, ///
+            array = valuesArray, ///
+            node = null,
+            breakPoint = null;
 
-    this.array.forEach(callback);
-  }
+      context = null;
 
-  evaluate(context, back,  forwarsd) {
-    const valuesArray = this.mapTerm((term) => {
-            const value = term.evaluate(context);
+      const { Values } = elements,
+            values = new Values(context, string, node, breakPoint, array);
 
-            return value;
-          }),
-          valuesString = valuesStringFromValuesArray(valuesArray, context),
-          string = valuesString, ///
-          array = valuesArray, ///
-          node = null,
-          breakPoint = null;
-
-    context = null;
-
-    const { Values } = elements,
-          values = new Values(context, string, node, breakPoint, array);
-
-    return forwarsd(values);
+      return forwarsd(values);
+    });
   }
 
   static name = "Terms";

@@ -31,12 +31,8 @@ export default define(class Bindings extends Element {
     return binding;
   }
 
-  forEachBinding(callback, back = null, forward = null) {
-    if (forward !== null) {
-      return forEach(this.array, callback, back, forward);
-    }
-
-    this.array.forEach(callback);
+  forEachBinding(callback, back, forward) {
+    return forEach(this.array, callback, back, forward);
   }
 
   compareTerms(terms, context, back, forward) {

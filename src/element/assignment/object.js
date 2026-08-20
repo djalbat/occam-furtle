@@ -47,14 +47,14 @@ export default define(class ObjectAssignment extends Element {
       return back(exception);
     }
 
-    nominalValueProperties.compareNamedBindings(this.namedBindings, context);
+    return nominalValueProperties.compareNamedBindings(this.namedBindings, context, back, () => {
+      return this.namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
+        return this.evaluateNamedBinding(namedBinding, value, context, back, forward);
+      }, back, () => {
+        context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
 
-    return this.namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
-      this.evaluateNamedBinding(namedBinding, value, context, back, forward);
-    }, back, () => {
-      context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
-
-      return forward();
+        return forward();
+      });
     });
   });
 
