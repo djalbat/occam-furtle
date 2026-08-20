@@ -43,7 +43,7 @@ export default define(class Every extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const nodes = value.getNodes();
@@ -62,14 +62,14 @@ export default define(class Every extends Element {
                 message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                 exception = Exception.fromMessage(message);
 
-          throw exception;
+          return back(exception);
         }
 
         const boolean = value.getBoolean();
 
         return forward(boolean);
       });
-    }, (boolean) => {
+    }, back, (boolean) => {
       const value = valueFromBoolean(boolean, context),
             valueString = value.getString();
 

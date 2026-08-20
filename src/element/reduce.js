@@ -47,7 +47,7 @@ export default define(class Reduce extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = value.getPrimitiveValue(),
@@ -68,7 +68,7 @@ export default define(class Reduce extends Element {
       values.addValue(value);
 
       return this.anonymousProcedure.call(values, context, back, forward);
-    }, inivialValue, (value) => {
+    }, inivialValue, back, (value) => {
       const valueString = value.getString();
 
       context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);

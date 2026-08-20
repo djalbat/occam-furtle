@@ -39,7 +39,7 @@ export default define(class ProcedureCall extends Element {
       const message = `The '${procedureCallString}' function is not present.'`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const procedure = context.findProcedureByProcedureName(procedureName),

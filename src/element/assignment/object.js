@@ -44,7 +44,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     nominalValueProperties.compareNamedBindings(this.namedBindings, context);
@@ -64,47 +64,49 @@ export default define(class ObjectAssignment extends Element {
 
     context.trace(`Evaluating the '${namedBindingString}' named binding against the '${termString}' term...`);
 
-    let value;
-
     const name = namedBinding.getName();
+
+    let evaluateNamedBinding;
 
     switch (name) {
       case CONTENT_PARAMETER_NAME: {
-        value = this.evaluateContentNamedBinding(namedBinding, term, context);
+        evaluateNamedBinding = this.evaluateContentNamedBinding.bind(this);
 
         break;
       }
 
       case TERMINAL_PARAMETER_NAME: {
-        value = this.evaluateTerminalNamedBinding(namedBinding, term, context);
+        evaluateNamedBinding = this.evaluateTerminalNamedBinding.bind(this);
 
         break;
       }
 
       case CHILD_NODES_PARAMETER_NAME: {
-        value = this.evaluateChildNodesNamedBinding(namedBinding, term, context);
+        evaluateNamedBinding = this.evaluateChildNodesNamedBinding.bind(this);
 
         break;
       }
 
       case NO_WHITESPACE_PARAMETER_NAME: {
-        value = this.evaluateNoWhitespaceNamedBinding(namedBinding, term, context);
+        evaluateNamedBinding = this.evaluateNoWhitespaceNamedBinding.bind(this);
 
         break;
       }
     }
 
-    const { Variable } = elements,
-          variable = Variable.fromNamedBinding(namedBinding, context);
+    return evaluateNamedBinding(namedBinding, term, context, back, (value) => {
+      const { Variable } = elements,
+            variable = Variable.fromNamedBinding(namedBinding, context);
 
-    return variable.assign(value, context, back, () => {
-      context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
+      return variable.assign(value, context, back, () => {
+        context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
 
-      forward();
+        forward();
+      });
     });
   }
 
-  evaluateContentNamedBinding(namedBinding, term, context) {
+  evaluateContentNamedBinding(namedBinding, term, context, back, forward) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -117,7 +119,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${namedBindingString}' named binding's type should be '${STRING_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = term.getPrimitiveValue(),
@@ -130,7 +132,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${termString}' term's node must be terminal.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const terminalNode = node,  ///
@@ -142,10 +144,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the content '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return value;
+    return forward(value);
   }
 
-  evaluateTerminalNamedBinding(namedBinding, term, context) {
+  evaluateTerminalNamedBinding(namedBinding, term, context, back, forward) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -158,7 +160,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${namedBindingString}' named binding's type should be '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = term.getPrimitiveValue(),
@@ -172,10 +174,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the terminal '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return value;
+    return forward(value);
   }
 
-  evaluateChildNodesNamedBinding(namedBinding, term, context) {
+  evaluateChildNodesNamedBinding(namedBinding, term, context, back, forward) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -188,7 +190,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${namedBindingString}' named binding's type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = term.getPrimitiveValue(),
@@ -201,7 +203,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${termString}' term's node must be non-terminal.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const nonTerminalNode = node,  ///
@@ -212,10 +214,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the childNodes '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return value;
+    return forward(value);
   }
 
-  evaluateNoWhitespaceNamedBinding(namedBinding, term, context) {
+  evaluateNoWhitespaceNamedBinding(namedBinding, term, context, back, forward) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -228,7 +230,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${namedBindingString}' named binding's type should be '${BOOLEAN_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = term.getPrimitiveValue(),
@@ -241,7 +243,7 @@ export default define(class ObjectAssignment extends Element {
             message = `The '${termString}' term's node must be terminal.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const terminalNode = node,  ///
@@ -252,7 +254,7 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the no whitespace '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return value;
+    return forward(value);
   }
 
   static name = "ObjectAssignment";

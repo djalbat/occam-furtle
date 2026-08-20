@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
@@ -9,7 +9,8 @@ import { instantiate } from "../utilities/context";
 import { instantiateParameters } from "../process/instantiate";
 import { parametersArrayFromParametersNode } from "../utilities/element";
 
-const { breakPointToBreakPointJSON } = breakPointUtilities;
+const { forEach } = continuationUtilities,
+      { breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Parameters extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -34,9 +35,15 @@ export default define(class Parameters extends Element {
     return parameter;
   }
 
-  forEachParameter(callback) { this.array.forEach(callback); }
+  forEachParameter(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return forEach(this.array, callback, back, forward);
+    }
 
-  compareValues(values, context) {
+    this.array.forEach(callback);
+  }
+
+  compareValues(values, context, back, forward) {
     const valuesString = values.getString(),
           parametersString = this.getString(); ///
 
@@ -49,18 +56,22 @@ export default define(class Parameters extends Element {
       const message = `The '${valuesString}' expressions and '${parametersString}' parameters are not of the same length.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
-    this.forEachParameter((parameter, index) => {
-      if (parameter !== null) {
-        const value = values.getValue(index);
-
-        parameter.compareValue(value, context);
+    return this.forEachParameter((parameter, index, back, forward) => {
+      if (parameter === null) {
+        return forward();
       }
-    });
 
-    context.debug(`...compared the '${valuesString}' values against the '${parametersString}' parameters.`);
+      const value = values.getValue(index);
+
+      return parameter.compareValue(value, context, back, forward);
+    }, back, () => {
+      context.debug(`...compared the '${valuesString}' values against the '${parametersString}' parameters.`);
+
+      return forward();
+    });
   }
 
   toJSON() {

@@ -1,5 +1,7 @@
 "use strict";
 
+import { continuationUtilities } from "occam-languages";
+
 import elements from "./elements";
 import Exception from "./exception";
 import NominalValueProperty from "./nominalValueProperty";
@@ -7,6 +9,8 @@ import NominalValueProperty from "./nominalValueProperty";
 import { nominalValuePropertiesStringFromNominalValuePropertiesArray } from "./utilities/string";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "./typeNames";
 import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "./parameterNames";
+
+const { some } = continuationUtilities;
 
 class NominalValueProperties {
   constructor(string, array) {
@@ -22,36 +26,40 @@ class NominalValueProperties {
     return this.array;
   }
 
-  someNominalValueProperty(callback) { return this.array.some(callback); }
+  someNominalValueProperty(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return some(this.array, callback, back, forward);
+    }
 
-  compareNamedBinding(namedBinding, context) {
+    return this.array.some(callback);
+  }
+
+  compareNamedBinding(namedBinding, context, back, forward) {
     const namedBindingString = namedBinding.getString(),
           nominalValuePropertiesString = this.string; ///
 
     context.trace(`Comparing the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties...`);
 
-    const namedBindingsCompare = this.someNominalValueProperty((nominalValueProperty) => {
-      const namedBindingComparesToNominalValueProperty = nominalValueProperty.compareNamedBinding(namedBinding, context);
+    return this.someNominalValueProperty((nominalValueProperty, back, forward) => {
+      return nominalValueProperty.compareNamedBinding(namedBinding, context, back, forward);
+    }, back, (namedBindingsCompare) => {
+      if (!namedBindingsCompare) {
+        const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nominalValuePropertiesString}' node properties.`,
+              exception = Exception.fromMessage(message);
 
-      if (namedBindingComparesToNominalValueProperty) {
-        return true;
+        return back(exception);
       }
+
+      context.debug(`...compared the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties.`);
+
+      return forward();
     });
-
-    if (!namedBindingsCompare) {
-      const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nominalValuePropertiesString}' node properties.`,
-            exception = Exception.fromMessage(message);
-
-      throw exception;
-    }
-
-    context.debug(`...compared the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties.`);
   }
 
-  compareNamedBindings(namedBindings, context) {
-    namedBindings.forEachNamedBinding((namedBinding) => {
-      this.compareNamedBinding(namedBinding, context);
-    });
+  compareNamedBindings(namedBindings, context, back, forward) {
+    return namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
+      return this.compareNamedBinding(namedBinding, context, back, forward);
+    }, back, forward);
   }
 
   static fromNothing() {

@@ -39,7 +39,7 @@ export default define(class ReturnBlock extends Element {
       const message = `The return block is nonsensical.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     return confine((context) => {

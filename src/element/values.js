@@ -1,9 +1,11 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import { define } from "../elements";
 import { valuesStringFromValuesArray } from "../utilities/string";
+
+const { map, forEach } = continuationUtilities;
 
 export default define(class Values extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -32,27 +34,38 @@ export default define(class Values extends Element {
     this.array.push(value);
   }
 
-  mapValue(callback) { return this.array.map(callback); }
+  mapValue(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return map(this.array, callback, back, forward);
+    }
 
-  forEachValue(callback) { this.array.forEach(callback); }
+    return this.array.map(callback);
+  }
+
+  forEachValue(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return forEach(this.array, callback, back, forward);
+    }
+
+    this.array.forEach(callback);
+  }
 
   evaluate(context, back, forward) {
-    const valuesArray = this.mapValue((value) => {
-            value = value.evaluate(context);
+    return this.mapValue((value, back, forward) => {
+      return value.evaluate(context, back, forward);
+    }, back, (valuesArray) => {
+      const valuesString = valuesStringFromValuesArray(valuesArray, context),
+            string = valuesString, ///
+            array = valuesArray, ///
+            node = null,
+            breakPoint = null;
 
-            return value;
-          }),
-          valuesString = valuesStringFromValuesArray(valuesArray, context),
-          string = valuesString, ///
-          array = valuesArray, ///
-          node = null,
-          breakPoint = null;
+      context = null;
 
-    context = null;
+      const values = new Values(context, string, node, breakPoint, array);
 
-    const values = new Values(context, string, node, breakPoint, array);
-
-    return forward(values);
+      return forward(values);
+    });
   }
 
   static name = "Values";

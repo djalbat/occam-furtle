@@ -22,7 +22,7 @@ export default define(class Parameter extends Element {
     return this.name;
   }
 
-  compareValue(value, context) {
+  compareValue(value, context, back, forward) {
     const valueString = value.getString(),
           parameterString = this.getString();  ///
 
@@ -36,10 +36,12 @@ export default define(class Parameter extends Element {
             message = `The '${valueString}' value's '${valueType}' type is not equal to the '${parameterString}' parameter's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     context.debug(`...comparing the '${valueString}' value against the '${parameterString}' parameter.`);
+
+    return forward();
   }
 
   static name = "Parameter";

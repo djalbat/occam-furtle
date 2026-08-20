@@ -83,28 +83,28 @@ export default define(class Procedure extends Element {
 
     context.trace(`Calling the '${procedureString}' function...`);
 
-    this.parameters.compareValues(values, context);
+    return this.parameters.compareValues(values, context, back, () => {
+      this.guaranteeReturnBlock();
 
-    this.guaranteeReturnBlock();
+      const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context);
+      return this.returnBlock.evaluate(variables, context, back, (value) => {
+        const valueType = value.getType(),
+              typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    return this.returnBlock.evaluate(variables, context, back, (value) => {
-      const valueType = value.getType(),
-            typeEqualToValueType = this.type.isEqualTo(valueType);
+        if (!typeEqualToValueType) {
+          const valueString = value.getString(),
+                typeString = this.type.getString(),
+                message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' function's '${typeString}' type.`,
+                exception = Exception.fromMessage(message);
 
-      if (!typeEqualToValueType) {
-        const valueString = value.getString(),
-              typeString = this.type.getString(),
-              message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' function's '${typeString}' type.`,
-              exception = Exception.fromMessage(message);
+          return back(exception);
+        }
 
-        throw exception;
-      }
+        context.debug(`...called the '${procedureString}' function.`);
 
-      context.debug(`...called the '${procedureString}' function.`);
-
-      return forward(value);
+        return forward(value);
+      });
     });
   });
 

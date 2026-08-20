@@ -39,7 +39,7 @@ export default class BlockContext extends Context {
       const message = `The '${variableString}' variable is already present.'`,
             exception = Exception.fromMessage(message);
 
-      throw back(exception);
+      return back(exception);
     }
 
     const context = this; ///

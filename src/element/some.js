@@ -42,7 +42,7 @@ export default define(class Some extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const primitiveValue = value.getPrimitiveValue(),
@@ -62,7 +62,7 @@ export default define(class Some extends Element {
                 message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
                 exception = Exception.fromMessage(message);
 
-          throw exception;
+          return back(exception);
         }
 
         const primitiveValue = value.getPrimitiveValue(),

@@ -41,7 +41,7 @@ export default define(class ListAssignment extends Element {
             message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const bindingsLength = this.bindings.getLength(),
@@ -54,7 +54,7 @@ export default define(class ListAssignment extends Element {
             message = `The length of the '${bindingsString}' bindings is greater than the length of the '${valueString}' list.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const values = value.lift(context);
@@ -93,7 +93,7 @@ export default define(class ListAssignment extends Element {
             message = `The '${bindingString}' binding's '${bindingTypeString}' type is not equal to the '${valueString}' value's '${valueTypeString}' type.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     const { Variable } = elements,

@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import elements from "../elements";
 
 import { define } from "../elements";
 import { termsStringFromTermsArray, valuesStringFromValuesArray } from "../utilities/string";
+
+const { map, forEach } = continuationUtilities;
 
 export default define(class Terms extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -34,9 +36,21 @@ export default define(class Terms extends Element {
     this.array.push(term);
   }
 
-  mapTerm(callback) { return this.array.map(callback); }
+  mapTerm(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return map(this.array, callback, back, forward);
+    }
 
-  forEachTerm(callback) { this.array.forEach(callback); }
+    return this.array.map(callback);
+  }
+
+  forEachTerm(callback, back = null, forward = null) {
+    if (forward !== null) {
+      return forEach(this.array, callback, back, forward);
+    }
+
+    this.array.forEach(callback);
+  }
 
   evaluate(context, back,  forwarsd) {
     const valuesArray = this.mapTerm((term) => {

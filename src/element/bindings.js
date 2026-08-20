@@ -1,10 +1,12 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
+
+const { forEach } = continuationUtilities;
 
 export default define(class Bindings extends Element {
   constructor(context, string, node, breakPoint, array) {

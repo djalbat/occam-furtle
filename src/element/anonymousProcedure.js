@@ -33,26 +33,26 @@ export default define(class AnonymousProcedure extends Element {
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
 
-    this.parameters.compareValues(values, context);
+    return this.parameters.compareValues(values, context, back, () => {
+      const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-    const variables = variablesFromValuesAndParameters(values, this.parameters, context);
+      return this.returnBlock.evaluate(variables, context, back, (value) => {
+        const valueType = value.getType(),
+              typeEqualToValueType = this.type.isEqualTo(valueType);
 
-    return this.returnBlock.evaluate(variables, context, back, (value) => {
-      const valueType = value.getType(),
-            typeEqualToValueType = this.type.isEqualTo(valueType);
+        if (!typeEqualToValueType) {
+          const valueString = value.getString(),
+                typeString = this.type.getString(),
+                message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous function's '${typeString}' type.`,
+                exception = Exception.fromMessage(message);
 
-      if (!typeEqualToValueType) {
-        const valueString = value.getString(),
-              typeString = this.type.getString(),
-              message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous function's '${typeString}' type.`,
-              exception = Exception.fromMessage(message);
+          return back(exception);
+        }
 
-        throw exception;
-      }
+        context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
 
-      context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
-
-      return forward(value);
+        return forward(value);
+      });
     });
   }
 

@@ -42,7 +42,7 @@ export default define(class NamedBinding extends Element {
     return aliasedName;
   }
 
-  compareTerm(term, context) {
+  compareTerm(term, context, back, forward) {
     const termString = term.getString(),
           namedBindingString = this.getString();  ///
 
@@ -56,13 +56,15 @@ export default define(class NamedBinding extends Element {
             message = `The '${termString}' term's '${termType}' type is not equal to '${namedBindingString}' named binding's '${typeString}' type.`,
             exception = Exception.fromMessage(message);
 
-      throw exception;
+      return back(exception);
     }
 
     context.debug(`...compared the '${termString}' term with the '${namedBindingString}' named binding.`);
+
+    return forward();
   }
 
-  compareNamedBinding(namedBinding, context) {
+  compareNamedBinding(namedBinding, context, back, forward) {
     let namedBindingCompares;
 
     const namedBindingA = this,  ///
@@ -84,7 +86,7 @@ export default define(class NamedBinding extends Element {
       context.debug(`...compared the '${namedBindingAString}' named binding with the '${namedBindingBString}' named binding.`);
     }
 
-    return namedBindingCompares;
+    return forward(namedBindingCompares);
   }
 
   static name = "NamedBinding";

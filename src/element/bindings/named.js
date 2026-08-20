@@ -6,7 +6,7 @@ import Exception from "../../exception";
 
 import { define } from "../../elements";
 
-const { forEach } = continuationUtilities;
+const { some, forEach } = continuationUtilities;
 
 export default define(class NamedBindings extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -31,7 +31,13 @@ export default define(class NamedBindings extends Element {
     return namedBinding;
   }
 
-  someNamedBinding(callback) { return this.array.some(callback); }
+  someNamedBinding(callback, back = null, forward = null) {
+    if (forward === null) {
+      return some(this.array, callback, back, forward);
+    }
+
+    return this.array.some(callback);
+  }
 
   forEachNamedBinding(callback, back = null, forward = null) {
     if (forward !== null) {
@@ -72,32 +78,32 @@ export default define(class NamedBindings extends Element {
     });
   }
 
-  compareNamedBinding(namedBinding, context) {
+  compareNamedBinding(namedBinding, context, back, forward) {
     const namedBindingString = namedBinding.getString(),
           namedBindingsString = this.getString(); ///
 
     context.trace(`Comparing the '${namedBindingString}' namedBinding with the '${namedBindingsString}' named bindings...`);
 
-    const namedBindingA = namedBinding, ///
-          namedBindingCompares = this.someNamedBinding((namedBinding) => {
-            if (namedBinding !== null) {
-              const namedBindingB = namedBinding, ///
-                    namedBindingBComparesToNamedBindingA = namedBindingA.compareNamedBinding(namedBindingB, context);
+    const namedBindingA = namedBinding; ///
 
-              if (namedBindingBComparesToNamedBindingA) {
-                return true;
-              }
-            }
-          });
+    return this.someNamedBinding((namedBinding) => {
+      if (namedBinding !== null) {
+        const namedBindingB = namedBinding; ///
 
-    if (!namedBindingCompares) {
-      const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`,
-            exception = Exception.fromMessage(message);
+        return namedBindingA.compareNamedBinding(namedBindingB, context, back, forward);
+      }
+    }, back, (namedBindingCompares) => {
+      if (!namedBindingCompares) {
+        const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`,
+              exception = Exception.fromMessage(message);
 
-      throw exception;
-    }
+        return back(exception);
+      }
 
-    context.debug(`...compared the '${namedBindingString}' namedBinding with the '${namedBindingsString}' named bindings.`);
+      context.debug(`...compared the '${namedBindingString}' namedBinding with the '${namedBindingsString}' named bindings.`);
+
+      return forward();
+    });
   }
 
   compareNamedBindings(namedBindings, context) {
