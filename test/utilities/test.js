@@ -61,13 +61,13 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   });
 
   it("verifies", (done) => {
-    verifyReleaseContexts(context, fail, succeed);
+    verifyReleaseContexts(context, back, forward);
 
-    function fail(exception) {
+    function back(exception) {
       throw exception;
     }
 
-    function succeed() {
+    function forward() {
       assert.isTrue(true);
 
       done();
