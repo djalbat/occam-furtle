@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import elements from "../../elements";
 import Exception from "../../exception";
@@ -8,8 +8,7 @@ import Exception from "../../exception";
 import { define } from "../../elements";
 import { LIST_TYPE_NAME } from "../../typeNames";
 
-const { forEach } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+const { breakable } = breakPointUtilities;
 
 export default define(class ListAssignment extends Element {
   constructor(context, string, node, breakPoint, variable, bindings) {
@@ -32,47 +31,48 @@ export default define(class ListAssignment extends Element {
 
     context.trace(`Evaluating the '${listAssignmentString}' list assignment...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType(),
-          valueTypeListType = valueType.isListType();
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeListType = valueType.isListType();
 
-    if (!valueTypeListType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+      if (!valueTypeListType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-      return back(exception);
-    }
-
-    const bindingsLength = this.bindings.getLength(),
-          primitiveValue = value.getPrimitiveValue(),
-          primitiveValueLength = primitiveValue.length;
-
-    if (bindingsLength > primitiveValueLength) {
-      const valueString = value.getString(),
-            bindingsString = this.bindings.getString(),
-            message = `The length of the '${bindingsString}' bindings is greater than the length of the '${valueString}' list.`,
-            exception = Exception.fromMessage(message);
-
-      return back(exception);
-    }
-
-    const values = value.lift(context);
-
-    return forEach(this.bindings, (binding, back, forward, index) => {
-      const elided = binding.isElided();
-
-      if (elided) {
-        return forward();
+        return back(exception);
       }
 
-      const value = values[index];
+      const bindingsLength = this.bindings.getLength(),
+            primitiveValue = value.getPrimitiveValue(),
+            primitiveValueLength = primitiveValue.length;
 
-      return this.evaluateBinding(binding, value, context, back, forward);
-    }, back, () => {
-      context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
+      if (bindingsLength > primitiveValueLength) {
+        const valueString = value.getString(),
+              bindingsString = this.bindings.getString(),
+              message = `The length of the '${bindingsString}' bindings is greater than the length of the '${valueString}' list.`,
+              exception = Exception.fromMessage(message);
 
-      return forward();
+        return back(exception);
+      }
+
+      const values = value.lift(context);
+
+      return this.bindings.forEachBinding((binding, back, forward, index) => {
+        const elided = binding.isElided();
+
+        if (elided) {
+          return forward();
+        }
+
+        const value = values[index];
+
+        return this.evaluateBinding(binding, value, context, back, forward);
+      }, back, () => {
+        context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
+
+        return forward();
+      });
     });
   });
 

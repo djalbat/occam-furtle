@@ -38,9 +38,11 @@ export default class NominalValueProperty {
       namedBindingCompares = true;
     }
 
-    if (namedBindingCompares) {
-      context.debug(`...compared the '${nominalValuePropertyString}' node property with the '${namedBindingString}' named binding.`);
+    if (!namedBindingCompares) {
+      return back();
     }
+
+    context.debug(`...compared the '${nominalValuePropertyString}' node property with the '${namedBindingString}' named binding.`);
 
     return forward(namedBindingCompares);
   }

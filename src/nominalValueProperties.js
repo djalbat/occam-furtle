@@ -38,14 +38,12 @@ class NominalValueProperties {
 
     return this.someNominalValueProperty((nominalValueProperty, back, forward) => {
       return nominalValueProperty.compareNamedBinding(namedBinding, context, back, forward);
-    }, back, (namedBindingsCompare) => {
-      if (!namedBindingsCompare) {
-        const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nominalValuePropertiesString}' node properties.`,
-              exception = Exception.fromMessage(message);
+    }, () => {
+      const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nominalValuePropertiesString}' node properties.`,
+            exception = Exception.fromMessage(message);
 
-        return back(exception);
-      }
-
+      return back(exception);
+    }, () => {
       context.debug(`...compared the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties.`);
 
       return forward();

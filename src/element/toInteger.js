@@ -21,54 +21,52 @@ export default define(class ToInteger extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const toIntegerString = this.getString();  ///
 
     context.trace(`Evaluating the '${toIntegerString}' function...`);
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeName = valueType.getName();
 
-    const valueType = value.getType(),
-          valueTypeName = valueType.getName();
+      let integer;
 
-    let integer;
-
-    switch (valueTypeName) {
-      case LIST_TYPE_NAME:
-      case BOOLEAN_TYPE_NAME:
-      case INTEGER_TYPE_NAME: {
-        const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
-              exception = Exception.fromMessage(message);
-
-        return back(exception);
-      }
-
-      case STRING_TYPE_NAME:
-      case NOMINAL_VALUE_TYPE_NAME: {
-        const valueString = value.getString(),
-              boolean = integerRegularExpresssion.test(valueString);
-
-        if (!boolean) {
-          const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' value is not an integer.`,
+      switch (valueTypeName) {
+        case LIST_TYPE_NAME:
+        case BOOLEAN_TYPE_NAME:
+        case INTEGER_TYPE_NAME: {
+          const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
                 exception = Exception.fromMessage(message);
 
           return back(exception);
         }
 
-        integer = Number(valueString);
+        case STRING_TYPE_NAME:
+        case NOMINAL_VALUE_TYPE_NAME: {
+          const valueString = value.getString(),
+                boolean = integerRegularExpresssion.test(valueString);
 
-        break;
+          if (!boolean) {
+            const message = `Cannot evaluate the '${toIntegerString}' function because the '${valueTypeName}' value is not an integer.`,
+                  exception = Exception.fromMessage(message);
+
+            return back(exception);
+          }
+
+          integer = Number(valueString);
+
+          break;
+        }
       }
-    }
 
-    value = valueFromInteger(integer);
+      value = valueFromInteger(integer);
 
-    const valueString = value.getString();
+      const valueString = value.getString();
 
-    context.debug(`...evaluated the '${toIntegerString}' function as '${valueString}'.`);
+      context.debug(`...evaluated the '${toIntegerString}' function as '${valueString}'.`);
 
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "ToInteger";

@@ -25,35 +25,33 @@ export default define(class StartsWith extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const startsWithString = this.getString();  ///
 
     context.trace(`Evaluating the '${startsWithString}' function...`);
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeStringType = valueType.isStringType();
 
-    const valueType = value.getType(),
-          valueTypeStringType = valueType.isStringType();
+      if (!valueTypeStringType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeStringType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const string = value.getString(),
+            boolean = string.startsWith(this.substring);
 
-    const string = value.getString(),
-          boolean = string.startsWith(this.substring);
+      value = valueFromBoolean(boolean);
 
-    value = valueFromBoolean(boolean);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${startsWithString}' function as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${startsWithString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "StartsWith";

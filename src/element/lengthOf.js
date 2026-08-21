@@ -20,36 +20,34 @@ export default define(class LengthOf extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const lengthOfString = this.getString();  ///
 
     context.trace(`Evaluating the '${lengthOfString}' function...`);
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeListType = valueType.isListType();
 
-    const valueType = value.getType(),
-          valueTypeListType = valueType.isListType();
+      if (!valueTypeListType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeListType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const primitiveValue = value.getPrimitiveValue(),
+            length = primitiveValue.length,
+            integer = length; ///
 
-    const primitiveValue = value.getPrimitiveValue(),
-          length = primitiveValue.length,
-          integer = length; ///
+      value = valueFromInteger(integer, context);
 
-    value = valueFromInteger(integer, context);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${lengthOfString}' function as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${lengthOfString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "LengthOf";

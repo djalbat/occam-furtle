@@ -65,7 +65,7 @@ export default define(class NamedBinding extends Element {
   }
 
   compareNamedBinding(namedBinding, context, back, forward) {
-    let namedBindingCompares;
+    let namedBindingCompares = false;
 
     const namedBindingA = this,  ///
           namedBindingB = namedBinding; ///
@@ -80,7 +80,13 @@ export default define(class NamedBinding extends Element {
           nameEqualToNamedBindingName = (this.name === namedBindingName),
           typeEqualToNamedBindingType = this.type.isEqualTo(namedBindingType);
 
-    namedBindingCompares = (nameEqualToNamedBindingName && typeEqualToNamedBindingType);
+    if (nameEqualToNamedBindingName && typeEqualToNamedBindingType) {
+      namedBindingCompares = true;
+    }
+
+    if (!namedBindingCompares) {
+      return back();
+    }
 
     if (namedBindingCompares) {
       context.debug(`...compared the '${namedBindingAString}' named binding with the '${namedBindingBString}' named binding.`);

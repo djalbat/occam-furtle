@@ -22,46 +22,44 @@ export default define(class TryInteger extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const tryIntegerString = this.getString();  ///
 
     context.trace(`Evaluating the '${tryIntegerString}' function...`);
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeName = valueType.getName();
 
-    const valueType = value.getType(),
-          valueTypeName = valueType.getName();
+      let boolean;
 
-    let boolean;
+      switch (valueTypeName) {
+        case LIST_TYPE_NAME:
+        case BOOLEAN_TYPE_NAME:
+        case INTEGER_TYPE_NAME: {
+          const message = `Cannot evaluate the '${tryIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
+                exception = Exception.fromMessage(message);
 
-    switch (valueTypeName) {
-      case LIST_TYPE_NAME:
-      case BOOLEAN_TYPE_NAME:
-      case INTEGER_TYPE_NAME: {
-        const message = `Cannot evaluate the '${tryIntegerString}' function because the '${valueTypeName}' type of its argument is not supported.`,
-              exception = Exception.fromMessage(message);
+          return back(exception);
+        }
 
-        return back(exception);
+        case STRING_TYPE_NAME:
+        case NOMINAL_VALUE_TYPE_NAME: {
+          const valueString = value.getString();
+
+          boolean = integerRegularExpresssion.test(valueString);
+
+          break;
+        }
       }
 
-      case STRING_TYPE_NAME:
-      case NOMINAL_VALUE_TYPE_NAME: {
-        const valueString = value.getString();
+      value = valueFromBoolean(boolean);
 
-        boolean = integerRegularExpresssion.test(valueString);
+      const valueString = value.getString();
 
-        break;
-      }
-    }
+      context.debug(`...evaluated the '${tryIntegerString}' function as '${valueString}'.`);
 
-    value = valueFromBoolean(boolean);
-
-    const valueString = value.getString();
-
-    context.debug(`...evaluated the '${tryIntegerString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "TryInteger";

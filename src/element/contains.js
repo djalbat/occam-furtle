@@ -25,35 +25,33 @@ export default define(class Contains extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const containsString = this.getString();  ///
 
     context.trace(`Evaluating the '${containsString}' function...`);
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeStringType = valueType.isStringType();
 
-    const valueType = value.getType(),
-          valueTypeStringType = valueType.isStringType();
+      if (!valueTypeStringType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeStringType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${STRING_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const string = value.getString(),
+            boolean = string.contains(this.substring);
 
-    const string = value.getString(),
-          boolean = string.contains(this.substring);
+      value = valueFromBoolean(boolean);
 
-    value = valueFromBoolean(boolean);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${containsString}' function as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${containsString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "Contains";

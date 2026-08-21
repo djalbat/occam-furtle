@@ -25,40 +25,38 @@ export default define(class NegatedTerm extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const negatedTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${negatedTermString}' negated value...`);
 
-    value = this.term.evaluate(context);
+    return this.term.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeBooleanType = valueType.isBooleanType();
 
-    const valueType = value.getType(),
-          valueTypeBooleanType = valueType.isBooleanType();
+      if (!valueTypeBooleanType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' left value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeBooleanType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' left value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      let boolean;
 
-    let boolean;
+      const primitiveValue = value.getPrimitiveValue();
 
-    const primitiveValue = value.getPrimitiveValue();
+      boolean = primitiveValue; ///
 
-    boolean = primitiveValue; ///
+      boolean = !boolean;
 
-    boolean = !boolean;
+      value = valueFromBoolean(boolean, context);
 
-    value = valueFromBoolean(boolean, context);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${negatedTermString}' negated value as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${negatedTermString}' negated value as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "NegatedTerm";

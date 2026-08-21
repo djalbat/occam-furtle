@@ -74,25 +74,25 @@ export default define(class NamedBindings extends Element {
     const namedBindingString = namedBinding.getString(),
           namedBindingsString = this.getString(); ///
 
-    context.trace(`Comparing the '${namedBindingString}' namedBinding with the '${namedBindingsString}' named bindings...`);
+    context.trace(`Comparing the '${namedBindingString}' named binding with the '${namedBindingsString}' named bindings...`);
 
     const namedBindingA = namedBinding; ///
 
-    return this.someNamedBinding((namedBinding) => {
-      if (namedBinding !== null) {
-        const namedBindingB = namedBinding; ///
-
-        return namedBindingA.compareNamedBinding(namedBindingB, context, back, forward);
-      }
-    }, back, (namedBindingCompares) => {
-      if (!namedBindingCompares) {
-        const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`,
-              exception = Exception.fromMessage(message);
-
-        return back(exception);
+    return this.someNamedBinding((namedBinding, back, forward) => {
+      if (namedBinding === null) {
+        return forward();
       }
 
-      context.debug(`...compared the '${namedBindingString}' namedBinding with the '${namedBindingsString}' named bindings.`);
+      const namedBindingB = namedBinding; ///
+
+      return namedBindingA.compareNamedBinding(namedBindingB, context, back, forward);
+    }, () => {
+      const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`,
+            exception = Exception.fromMessage(message);
+
+      return back(exception);
+    }, () => {
+      context.debug(`...compared the '${namedBindingString}' named binding with the '${namedBindingsString}' named bindings.`);
 
       return forward();
     });

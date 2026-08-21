@@ -38,42 +38,43 @@ export default define(class Reduce extends Element {
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    const value = this.variable.evaluate(context),
-          valueType = value.getType(),
-          valueTypeListType = valueType.isListType();
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeListType = valueType.isListType();
 
-    if (!valueTypeListType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+      if (!valueTypeListType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${LIST_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-      return back(exception);
-    }
+        return back(exception);
+      }
 
-    const primitiveValue = value.getPrimitiveValue(),
-          nominalValues = primitiveValue, ///
-          inivialValue = this.inivialValue.evaluate(context);
+      const primitiveValue = value.getPrimitiveValue(),
+            nominalValues = primitiveValue, ///
+            inivialValue = this.inivialValue.evaluate(context);
 
-    return reduce(nominalValues, (currentValue, nominalValue, back, forward) => {
-      let value;
+      return reduce(nominalValues, (currentValue, nominalValue, back, forward) => {
+        let value;
 
-      const { Values } = elements;
+        const { Values } = elements;
 
-      value = currentValue; ///
+        value = currentValue; ///
 
-      const values = Values.fromValue(value, context);
+        const values = Values.fromValue(value, context);
 
-      value = valueFromNominalValue(nominalValue);
+        value = valueFromNominalValue(nominalValue);
 
-      values.addValue(value);
+        values.addValue(value);
 
-      return this.anonymousProcedure.call(values, context, back, forward);
-    }, inivialValue, back, (value) => {
-      const valueString = value.getString();
+        return this.anonymousProcedure.call(values, context, back, forward);
+      }, inivialValue, back, (value) => {
+        const valueString = value.getString();
 
-      context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
+        context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-      return forward(value);
+        return forward(value);
+      });
     });
   });
 

@@ -35,38 +35,40 @@ export default define(class ComparisonTerm extends Element {
 
     context.trace(`Evaluating the '${comparisonTermString}' comparison term...`);
 
-    const leftValue = this.leftTerm.evaluate(context),
-          rightValue = this.rightTerm.evaluate(context),
-          leftValueType = leftValue.getType(),
-          rightValueType = rightValue.getType(),
-          leftValueTypeEqualToRightValueType = leftValueType.isEqualTo(rightValueType);
+    return this.leftTerm.evaluate(context, back, (leftValue) => {
+      return this.rightTerm.evaluate(context, back, (rightValue) => {
+        const leftValueType = leftValue.getType(),
+              rightValueType = rightValue.getType(),
+              leftValueTypeEqualToRightValueType = leftValueType.isEqualTo(rightValueType);
 
-    if (!leftValueTypeEqualToRightValueType) {
-      const leftValueString = leftValue.getString(),
-            rightValueString = rightValue.getString(),
-            leftValueTypeString = leftValueType.getString(),
-            rightValueTypeString = rightValueType.getString(),
-            message = `The '${leftValueString}' left term's type is '${leftValueTypeString}' whereas the '${rightValueString}' right term's type is '${rightValueTypeString}'.`,
-            exception = Exception.fromMessage(message);
+        if (!leftValueTypeEqualToRightValueType) {
+          const leftValueString = leftValue.getString(),
+                rightValueString = rightValue.getString(),
+                leftValueTypeString = leftValueType.getString(),
+                rightValueTypeString = rightValueType.getString(),
+                message = `The '${leftValueString}' left term's type is '${leftValueTypeString}' whereas the '${rightValueString}' right term's type is '${rightValueTypeString}'.`,
+                exception = Exception.fromMessage(message);
 
-      return back(exception);
-    }
+          return back(exception);
+        }
 
-    const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
+        const leftValueEqualToRightValue = leftValue.isEqualTo(rightValue);
 
-    let boolean = leftValueEqualToRightValue; ///
+        let boolean = leftValueEqualToRightValue; ///
 
-    if (this.negated) {
-      boolean = !boolean; ///
-    }
+        if (this.negated) {
+          boolean = !boolean; ///
+        }
 
-    value = valueFromBoolean(boolean, context);
+        value = valueFromBoolean(boolean, context);
 
-    const valueString = value.getString();
+        const valueString = value.getString();
 
-    context.debug(`...evaluated the '${comparisonTermString}' comparison value as '${valueString}'.`);
+        context.debug(`...evaluated the '${comparisonTermString}' comparison value as '${valueString}'.`);
 
-    return forward(value);
+        return forward(value);
+      });
+    });
   }
 
   static name = "ComparisonTerm";

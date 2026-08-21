@@ -25,8 +25,6 @@ export default define(class NodesQuery extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const nodesQueryString = this.getString();  ///
 
     context.trace(`Evaluating the '${nodesQueryString}' function...`);
@@ -38,43 +36,43 @@ export default define(class NodesQuery extends Element {
       return back(exception);
     }
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeNominalValueType = valueType.isNominalValueType();
 
-    const valueType = value.getType(),
-          valueTypeNominalValueType = valueType.isNominalValueType();
+      if (!valueTypeNominalValueType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeNominalValueType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      let node;
 
-    let node;
+      const primitiveValue = value.getPrimitiveValue(),
+            nominalValue = primitiveValue;  ///
 
-    const primitiveValue = value.getPrimitiveValue(),
-          nominalValue = primitiveValue;  ///
+      node = nominalValue.getNode();
 
-    node = nominalValue.getNode();
+      if (node === null) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's node is null.`,
+              exception = Exception.fromMessage(message);
 
-    if (node === null) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's node is null.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const nodes = this.query.execute(node);
 
-    const nodes = this.query.execute(node);
+      value = valueFromNodesAndNominalValue(nodes, nominalValue);
 
-    value = valueFromNodesAndNominalValue(nodes, nominalValue);
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${nodesQueryString}' function as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${nodesQueryString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "NodesQuery";

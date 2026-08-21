@@ -29,8 +29,6 @@ export default define(class NodeQuery extends Element {
   }
 
   evaluate(context, back, forward) {
-    let value;
-
     const nodeQueryString = this.getString();  ///
 
     context.trace(`Evaluating the '${nodeQueryString}' function...`);
@@ -42,61 +40,61 @@ export default define(class NodeQuery extends Element {
       return back(exception);
     }
 
-    value = this.variable.evaluate(context);
+    return this.variable.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeNominalValueType = valueType.isNominalValueType();
 
-    const valueType = value.getType(),
-          valueTypeNominalValueType = valueType.isNominalValueType();
+      if (!valueTypeNominalValueType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-    if (!valueTypeNominalValueType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's '${valueType}' type should be '${NOMINAL_VALUE_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      let node;
 
-    let node;
+      const primitiveValue = value.getPrimitiveValue(),
+            nominalValue = primitiveValue;  ///
 
-    const primitiveValue = value.getPrimitiveValue(),
-          nominalValue = primitiveValue;  ///
+      node = nominalValue.getNode();
 
-    node = nominalValue.getNode();
+      if (node === null) {
+        const valueString = value.getString(),
+          message = `The '${valueString}' value's node is null.`,
+          exception = Exception.fromMessage(message);
 
-    if (node === null) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's node is null.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const nodes = this.query.execute(node),
+            nodesLength = nodes.length;
 
-    const nodes = this.query.execute(node),
-          nodesLength = nodes.length;
+      if (false) {
+        ///
+      } else if (nodesLength === 0) {
+        const nominalValue = NominalValue.fromNothing();
 
-    if (false) {
-      ///
-    } else if (nodesLength === 0) {
-      const nominalValue = NominalValue.fromNothing();
+        value = valueFromNominalValue(nominalValue);
+      } else if (nodesLength === 1) {
+        const firstNode = first(nodes);
 
-      value = valueFromNominalValue(nominalValue);
-    } else if (nodesLength === 1) {
-      const firstNode = first(nodes);
+        node = firstNode ///
 
-      node = firstNode ///
+        value = valueFromNodeAndNominalValue(node, nominalValue);
+      } else {
+        const message = `The length of the returned nodes is ${nodesLength} when it should be 0 or 1.`,
+              exception = Exception.fromMessage(message);
 
-      value = valueFromNodeAndNominalValue(node, nominalValue);
-    } else {
-      const message = `The length of the returned nodes is ${nodesLength} when it should be 0 or 1.`,
-            exception = Exception.fromMessage(message);
+        return back(exception);
+      }
 
-      return back(exception);
-    }
+      const valueString = value.getString();
 
-    const valueString = value.getString();
+      context.debug(`...evaluated the '${nodeQueryString}' function as '${valueString}'.`);
 
-    context.debug(`...evaluated the '${nodeQueryString}' function as '${valueString}'.`);
-
-    return forward(value);
+      return forward(value);
+    });
   }
 
   static name = "NodeQuery";

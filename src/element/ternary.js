@@ -33,30 +33,31 @@ export default define(class Ternary extends Element {
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    const value = this.term.evaluate(context),
-          valueType = value.getType(),
-          valueTypeBooleanType = valueType.isBooleanType();
+    return this.term.evaluate(context, back, (value) => {
+      const valueType = value.getType(),
+            valueTypeBooleanType = valueType.isBooleanType();
 
-    if (!valueTypeBooleanType) {
-      const valueString = value.getString(),
-            message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
-            exception = Exception.fromMessage(message);
+      if (!valueTypeBooleanType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
 
-      return back(exception);
-    }
+        return back(exception);
+      }
 
-    const primitiveValue = value.getPrimitiveValue(),
-          boolean = primitiveValue, ///
-          expression = boolean ?
-                         this.ifExpression :
-                           this.elseExpression;
+      const primitiveValue = value.getPrimitiveValue(),
+            boolean = primitiveValue, ///
+            expression = boolean ?
+                           this.ifExpression :
+                             this.elseExpression;
 
-    return expression.evaluate(context, back, (value) => {
-      const valueString = value.getString();
+      return expression.evaluate(context, back, (value) => {
+        const valueString = value.getString();
 
-      context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
+        context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-      return forward(value);
+        return forward(value);
+      });
     });
   }
 

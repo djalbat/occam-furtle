@@ -31,7 +31,7 @@ export default define(class VariableAssignment extends Element {
 
         context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-        return forward(value);
+        return forward();
       });
     });
   }

@@ -44,12 +44,13 @@ export default define(class ReturnBlock extends Element {
 
     return confine((context) => {
       return this.evaluateStatements(context, back, () => {
-        const value = this.returnStatement.evaluate(context),
-              valueString = value.getString();
+        return this.returnStatement.evaluate(context, back, (value) => {
+          const valueString = value.getString();
 
-        context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
+          context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
-        return forward(value);
+          return forward(value);
+        });
       });
     }, variables, context);
   }
