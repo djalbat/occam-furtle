@@ -43,15 +43,15 @@ export default define(class ReturnBlock extends Element {
     }
 
     return confine((context) => {
-      return this.evaluateStatements(context, back, (back) => {
-        return this.returnStatement.evaluate(context, back, (value, back) => {
+      return this.evaluateStatements(context, (back) => {
+        return this.returnStatement.evaluate(context, (value, back) => {
           const valueString = value.getString();
 
           context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
           return forward(value, back);
-        });
-      });
+        }, back);
+      }, back);
     }, variables, context);
   }
 
@@ -62,11 +62,11 @@ export default define(class ReturnBlock extends Element {
 
     return forEach(this.statements, (statement, forward, back) => {
       return statement.evaluate(context, forward, back);
-    }, back, (back) => {
+    }, (back) => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
 
       return forward(back);
-    });
+    }, back);
   }
 
   static name = "ReturnBlock";

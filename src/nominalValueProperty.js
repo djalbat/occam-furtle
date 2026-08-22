@@ -44,7 +44,7 @@ export default class NominalValueProperty {
 
     context.debug(`...compared the '${nominalValuePropertyString}' node property with the '${namedBindingString}' named binding.`);
 
-    return forward(namedBindingCompares, back);
+    return forward(back);
   }
 
   static name = "Parameter";
