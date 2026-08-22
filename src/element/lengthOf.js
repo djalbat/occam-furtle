@@ -19,12 +19,12 @@ export default define(class LengthOf extends Element {
     return this.variable;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const lengthOfString = this.getString();  ///
 
     context.trace(`Evaluating the '${lengthOfString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeListType = valueType.isListType();
 
@@ -46,8 +46,8 @@ export default define(class LengthOf extends Element {
 
       context.debug(`...evaluated the '${lengthOfString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "LengthOf";

@@ -64,7 +64,7 @@ export default define(class Procedure extends Element {
     this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
 
-  verify(context, back, forward) {
+  verify(context, forward, back) {
     const procedureString = this.getString();
 
     context.trace(`Verifying the '${procedureString}' function...`)
@@ -75,20 +75,20 @@ export default define(class Procedure extends Element {
 
     context.debug(`...verified the '${procedureString}' function.`)
 
-    return forward(context);
+    return forward(context, back);
   }
 
-  call = breakable(function (values, context, back, forward) {
+  call = breakable(function (values, context, forward, back) {
     const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' function...`);
 
-    return this.parameters.compareValues(values, context, back, () => {
+    return this.parameters.compareValues(values, context, (back) => {
       this.guaranteeReturnBlock();
 
       const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-      return this.returnBlock.evaluate(variables, context, back, (value) => {
+      return this.returnBlock.evaluate(variables, context, (value, back) => {
         const valueType = value.getType(),
               typeEqualToValueType = this.type.isEqualTo(valueType);
 
@@ -103,12 +103,12 @@ export default define(class Procedure extends Element {
 
         context.debug(`...called the '${procedureString}' function.`);
 
-        return forward(value);
-      });
-    });
+        return forward(value, back);
+      }, back);
+    }, back);
   });
 
-  callNominally(nominalValues, back, forward) {
+  callNominally(nominalValues, forward, back) {
     const context = this.getContext(),
           procedureString = this.getString();  ///
 
@@ -116,11 +116,11 @@ export default define(class Procedure extends Element {
 
     const values = valuesFromNominalValues(nominalValues, context);
 
-    return this.call(values, context, back, (value) => {
+    return this.call(values, context, (value, back) => {
       context.debug(`...called the '${procedureString}' function nominally.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   toJSON() {

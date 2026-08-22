@@ -27,9 +27,9 @@ export default define(class Binding extends Element {
     return this.elided;
   }
 
-  compareTerm(term, context, back, forward) {
+  compareTerm(term, context, forward, back) {
     if (this.elided) {
-      return forward();
+      return forward(back);
     }
 
     const termString = term.getString(),
@@ -50,7 +50,7 @@ export default define(class Binding extends Element {
 
     context.debug(`...comparing the '${termString}' term against the '${bindingString}' binding.`);
 
-    return forward();
+    return forward(back);
   }
 
   static name = "Binding";

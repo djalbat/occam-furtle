@@ -13,11 +13,11 @@ const { reduce } = continuationUtilities,
       { breakable } = breakPointUtilities;
 
 export default define(class Reduce extends Element {
-  constructor(context, string, node, breakPoint, variable, inivialValue, anonymousProcedure) {
+  constructor(context, string, node, breakPoint, variable, initialValue, anonymousProcedure) {
     super(context, string, node, breakPoint);
 
     this.variable = variable;
-    this.inivialValue = inivialValue;
+    this.initialValue = initialValue;
     this.anonymousProcedure = anonymousProcedure;
   }
 
@@ -26,19 +26,19 @@ export default define(class Reduce extends Element {
   }
 
   getInitialValue() {
-    return this.inivialValue;
+    return this.initialValue;
   }
 
   getAnonymousProcedure() {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, back, forward) {
+  evaluate = breakable(function (context, forward, back) {
     const reduceString = this.getString();
 
     context.trace(`Evaluating the '${reduceString}' reduce...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeListType = valueType.isListType();
 
@@ -51,32 +51,37 @@ export default define(class Reduce extends Element {
       }
 
       const primitiveValue = value.getPrimitiveValue(),
-            nominalValues = primitiveValue, ///
-            inivialValue = this.inivialValue.evaluate(context);
+            nominalValues = primitiveValue; ///
 
-      return reduce(nominalValues, (currentValue, nominalValue, back, forward) => {
-        let value;
+      return this.initialValue.evaluate(context, (initialValue, back) => {
+        return reduce(nominalValues, (currentValue, nominalValue, forward, back) => {
+          return this.callAnonymousProcedure(currentValue, nominalValue, context, forward, back);
+        }, initialValue, (value, back) => {
+          const valueString = value.getString();
 
-        const { Values } = elements;
+          context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
 
-        value = currentValue; ///
-
-        const values = Values.fromValue(value, context);
-
-        value = valueFromNominalValue(nominalValue);
-
-        values.addValue(value);
-
-        return this.anonymousProcedure.call(values, context, back, forward);
-      }, inivialValue, back, (value) => {
-        const valueString = value.getString();
-
-        context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
-
-        return forward(value);
-      });
-    });
+          return forward(value, back);
+        }, back);
+      }, back);
+    }, back);
   });
+
+  callAnonymousProcedure(currentValue, nominalValue, context, forward, back) {
+    let value;
+
+    const { Values } = elements;
+
+    value = currentValue; ///
+
+    const values = Values.fromValue(value, context);
+
+    value = valueFromNominalValue(nominalValue);
+
+    values.addValue(value);
+
+    return this.anonymousProcedure.call(values, context, forward, back);
+  }
 
   static name = "Reduce";
 });

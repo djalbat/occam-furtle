@@ -28,12 +28,12 @@ export default define(class Some extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, back, forward) {
+  evaluate = breakable(function (context, forward, back) {
     const someString = this.getString();
 
     context.trace(`Evaluating the '${someString}' some...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeListType = valueType.isListType();
 
@@ -48,38 +48,42 @@ export default define(class Some extends Element {
       const primitiveValue = value.getPrimitiveValue(),
             nominalValues = primitiveValue; ///
 
-      return some(nominalValues, (nominalValue, back, forward) => {
-        const { Values } = elements,
-              value = valueFromNominalValue(nominalValue),
-              values = Values.fromValue(value, context);
-
-        return this.anonymousProcedure.call(values, context, back, (value) => {
-          const valueType = value.getType(),
-                valueTypeBooleanType = valueType.isBooleanType();
-
-          if (!valueTypeBooleanType) {
-            const valueString = value.getString(),
-                  message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
-                  exception = Exception.fromMessage(message);
-
-            return back(exception);
-          }
-
-          const primitiveValue = value.getPrimitiveValue(),
-                boolean = primitiveValue; ///
-
-          return forward(boolean);
-        });
-      }, back, (boolean) => {
+      return some(nominalValues, (nominalValue, forward, back) => {
+        return this.callAnonymousProcedure(nominalValue, context, forward, back);
+      }, (boolean, back) => {
         const value = valueFromBoolean(boolean, context),
               valueString = value.getString();
 
         context.trace(`...evaluated the '${someString}' some as '${valueString}'.`);
 
-        return forward(value);
-      });
-    });
+        return forward(value, back);
+      }, back);
+    }, back);
   });
+
+  callAnonymousProcedure(nominalValue, context, forward, back) {
+    const { Values } = elements,
+          value = valueFromNominalValue(nominalValue),
+          values = Values.fromValue(value, context);
+
+    return this.anonymousProcedure.call(values, context, (value, back) => {
+      const valueType = value.getType(),
+            valueTypeBooleanType = valueType.isBooleanType();
+
+      if (!valueTypeBooleanType) {
+        const valueString = value.getString(),
+              message = `The '${valueString}' value's type is '${valueType}' when it should be of type '${BOOLEAN_TYPE_NAME}'.`,
+              exception = Exception.fromMessage(message);
+
+        return back(exception);
+      }
+
+      const primitiveValue = value.getPrimitiveValue(),
+            boolean = primitiveValue; ///
+
+      return forward(boolean, back);
+    }, back);
+  }
 
   static name = "Some";
 });

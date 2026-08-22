@@ -26,12 +26,12 @@ export default define(class Primitive extends Element {
     return this.value;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const { Term } = elements,
           primitive = this,
           term = Term.fromPrimitive(primitive, context);
 
-    return forward(term);
+    return forward(term, back);
   }
 
   isEqualTo(primitive) {

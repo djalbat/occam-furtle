@@ -30,12 +30,12 @@ export default define(class ObjectAssignment extends Element {
     return this.namedBindings;
   }
 
-  evaluate = breakable(function (context, back, forward) {
+  evaluate = breakable(function (context, forward, back) {
     const objectAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${objectAssignmentString}' object assignment...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeNominalValueType = valueType.isNominalValueType();
 
@@ -47,19 +47,19 @@ export default define(class ObjectAssignment extends Element {
         return back(exception);
       }
 
-      return nominalValueProperties.compareNamedBindings(this.namedBindings, context, back, () => {
-        return this.namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
-          return this.evaluateNamedBinding(namedBinding, value, context, back, forward);
-        }, back, () => {
+      return nominalValueProperties.compareNamedBindings(this.namedBindings, context, (back) => {
+        return this.namedBindings.forEachNamedBinding((namedBinding, forward, back) => {
+          return this.evaluateNamedBinding(namedBinding, value, context, forward, back);
+        }, (back) => {
           context.debug(`...evaluated the '${objectAssignmentString}' object assignment.`);
 
-          return forward();
-        });
-      });
-    });
+          return forward(back);
+        }, back);
+      }, back);
+    }, back);
   });
 
-  evaluateNamedBinding(namedBinding, term, context, back, forward) {
+  evaluateNamedBinding(namedBinding, term, context, forward, back) {
     const termString = term.getString(),
           namedBindingString = namedBinding.getString();
 
@@ -95,19 +95,19 @@ export default define(class ObjectAssignment extends Element {
       }
     }
 
-    return evaluateNamedBinding(namedBinding, term, context, back, (value) => {
+    return evaluateNamedBinding(namedBinding, term, context, (value, back) => {
       const { Variable } = elements,
             variable = Variable.fromNamedBinding(namedBinding, context);
 
-      return variable.assign(value, context, back, () => {
+      return variable.assign(value, context, (back) => {
         context.debug(`...evaluated the '${namedBindingString}' parameter named against the '${termString}' term.`);
 
-        forward();
-      });
-    });
+        return forward(back);
+      }, back);
+    }, back);
   }
 
-  evaluateContentNamedBinding(namedBinding, term, context, back, forward) {
+  evaluateContentNamedBinding(namedBinding, term, context, forward, back) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -145,10 +145,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the content '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return forward(value);
+    return forward(value, back);
   }
 
-  evaluateTerminalNamedBinding(namedBinding, term, context, back, forward) {
+  evaluateTerminalNamedBinding(namedBinding, term, context, forward, back) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -175,10 +175,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the terminal '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return forward(value);
+    return forward(value, back);
   }
 
-  evaluateChildNodesNamedBinding(namedBinding, term, context, back, forward) {
+  evaluateChildNodesNamedBinding(namedBinding, term, context, forward, back) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -215,10 +215,10 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the childNodes '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return forward(value);
+    return forward(value, back);
   }
 
-  evaluateNoWhitespaceNamedBinding(namedBinding, term, context, back, forward) {
+  evaluateNoWhitespaceNamedBinding(namedBinding, term, context, forward, back) {
     const type = namedBinding.getType(),
           namedBindingString = namedBinding.getString();
 
@@ -255,7 +255,7 @@ export default define(class ObjectAssignment extends Element {
 
     context.debug(`...evaluated the no whitespace '${namedBindingString}' named binding as '${valueSttring}'.`);
 
-    return forward(value);
+    return forward(value, back);
   }
 
   static name = "ObjectAssignment";

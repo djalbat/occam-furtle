@@ -34,18 +34,18 @@ export default define(class Values extends Element {
     this.array.push(value);
   }
 
-  mapValue(callback, back, forward) {
-    return map(this.array, callback, back, forward);
+  mapValue(callback, forward, back) {
+    return map(this.array, callback, forward, back);
   }
 
   forEachValue(callback) {
     this.array.forEach(callback);
   }
 
-  evaluate(context, back, forward) {
-    return this.mapValue((value, back, forward) => {
-      return value.evaluate(context, back, forward);
-    }, back, (valuesArray) => {
+  evaluate(context, forward, back) {
+    return this.mapValue((value, forward, back) => {
+      return value.evaluate(context, forward, back);
+    }, (valuesArray, back) => {
       const valuesString = valuesStringFromValuesArray(valuesArray, context),
             string = valuesString, ///
             array = valuesArray, ///
@@ -56,8 +56,8 @@ export default define(class Values extends Element {
 
       const values = new Values(context, string, node, breakPoint, array);
 
-      return forward(values);
-    });
+      return forward(values, back);
+    }, back);
   }
 
   static name = "Values";

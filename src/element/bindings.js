@@ -31,11 +31,11 @@ export default define(class Bindings extends Element {
     return binding;
   }
 
-  forEachBinding(callback, back, forward) {
-    return forEach(this.array, callback, back, forward);
+  forEachBinding(callback, forward, back) {
+    return forEach(this.array, callback, forward, back);
   }
 
-  compareTerms(terms, context, back, forward) {
+  compareTerms(terms, context, forward, back) {
     const termsString = terms.getString(),
           bindingsString = this.getString(); ///
 
@@ -51,19 +51,19 @@ export default define(class Bindings extends Element {
       return back(exception);
     }
 
-    return this.forEachBinding((binding, back, forward, index) => {
+    return this.forEachBinding((binding, forward, back, index) => {
       if (binding === null) {
-        return forward();
+        return forward(back);
       }
 
       const term = terms.getTerm(index);
 
-      return binding.compareTerm(term, context, back, forward);
-    }, back, () => {
+      return binding.compareTerm(term, context, forward, back);
+    }, (back) => {
       context.debug(`...compared the '${termsString}' terms against the '${bindingsString}' bindings.`);
 
-      forward();
-    });
+      return forward(back);
+    }, back);
   }
 
   static name = "Bindings";

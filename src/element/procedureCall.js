@@ -27,7 +27,7 @@ export default define(class ProcedureCall extends Element {
 
   getProcedureName() { return this.reference.getProcedureName(); }
 
-  evaluate = breakable(function (context, back, forward) {
+  evaluate = breakable(function (context, forward, back) {
     const procedureCallString = this.getString();  ///
 
     context.trace(`Evaluating the '${procedureCallString}' function call...`);
@@ -44,17 +44,17 @@ export default define(class ProcedureCall extends Element {
 
     const procedure = context.findProcedureByProcedureName(procedureName);
 
-    return this.values.evaluate(context, back, (values) => {
+    return this.values.evaluate(context, (values, back) => {
       return free((context) => {
-        return procedure.call(values, context, back, (value) => {
+        return procedure.call(values, context, (value, back) => {
           const valueString = value.getString();
 
           context.debug(`...evaluated the '${procedureCallString}' function call as '${valueString}'.`);
 
-          return forward(value);
-        });
+          return forward(value, back);
+        }, back);
       }, context);
-    });
+    }, back);
   });
 
   static name = "ProcedureCall";

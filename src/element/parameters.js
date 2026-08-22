@@ -35,11 +35,11 @@ export default define(class Parameters extends Element {
     return parameter;
   }
 
-  forEachParameter(callback, back, forward) {
-    return forEach(this.array, callback, back, forward);
+  forEachParameter(callback, forward, back) {
+    return forEach(this.array, callback, forward, back);
   }
 
-  compareValues(values, context, back, forward) {
+  compareValues(values, context, forward, back) {
     const valuesString = values.getString(),
           parametersString = this.getString(); ///
 
@@ -55,19 +55,19 @@ export default define(class Parameters extends Element {
       return back(exception);
     }
 
-    return this.forEachParameter((parameter, back, forward, index) => {
+    return this.forEachParameter((parameter, forward, back, index) => {
       if (parameter === null) {
-        return forward();
+        return forward(back);
       }
 
       const value = values.getValue(index);
 
-      return parameter.compareValue(value, context, back, forward);
-    }, back, () => {
+      return parameter.compareValue(value, context, forward, back);
+    }, (back) => {
       context.debug(`...compared the '${valuesString}' values against the '${parametersString}' parameters.`);
 
-      return forward();
-    });
+      return forward(back);
+    }, back);
   }
 
   toJSON() {

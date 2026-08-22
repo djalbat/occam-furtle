@@ -24,7 +24,7 @@ export default define(class NodesQuery extends Element {
     return this.query;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const nodesQueryString = this.getString();  ///
 
     context.trace(`Evaluating the '${nodesQueryString}' function...`);
@@ -36,7 +36,7 @@ export default define(class NodesQuery extends Element {
       return back(exception);
     }
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeNominalValueType = valueType.isNominalValueType();
 
@@ -71,8 +71,8 @@ export default define(class NodesQuery extends Element {
 
       context.debug(`...evaluated the '${nodesQueryString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "NodesQuery";

@@ -28,12 +28,12 @@ export default define(class Ternary extends Element {
     return this.elseExpression;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const ternaryString = this.getString(); ///
 
     context.trace(`Evaluating the '${ternaryString}' ternary...`);
 
-    return this.term.evaluate(context, back, (value) => {
+    return this.term.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeBooleanType = valueType.isBooleanType();
 
@@ -51,14 +51,14 @@ export default define(class Ternary extends Element {
                            this.ifExpression :
                              this.elseExpression;
 
-      return expression.evaluate(context, back, (value) => {
+      return expression.evaluate(context, (value, back) => {
         const valueString = value.getString();
 
         context.debug(`...evaluated the '${ternaryString}' ternary as '${valueString}'.`);
 
-        return forward(value);
-      });
-    });
+        return forward(value, back);
+      }, back);
+    }, back);
   }
 
   static name = "Ternary";

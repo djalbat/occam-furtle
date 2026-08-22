@@ -125,41 +125,41 @@ export default define(class Expression extends Element {
     return type;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     if (false) {
       ///
     } else if (this.term !== null) {
-      return this.term.evaluate(context, back, forward);
+      return this.term.evaluate(context, forward, back);
     } else if (this.nodeQuery !== null) {
-      return this.nodeQuery.evaluate(context, back, forward);
+      return this.nodeQuery.evaluate(context, forward, back);
     } else if (this.nodesQuery !== null) {
-      return this.nodesQuery.evaluate(context, back, forward);
+      return this.nodesQuery.evaluate(context, forward, back);
     } else if (this.lengthOf !== null) {
-      return this.lengthOf.evaluate(context, back, forward);
+      return this.lengthOf.evaluate(context, forward, back);
     } else if (this.toInteger !== null) {
-      return this.toInteger.evaluate(context, back, forward);
+      return this.toInteger.evaluate(context, forward, back);
     } else if (this.tryInteger !== null) {
-      return this.tryInteger.evaluate(context, back, forward);
+      return this.tryInteger.evaluate(context, forward, back);
     } else if (this.contains !== null) {
-      return this.contains.evaluate(context, back, forward);
+      return this.contains.evaluate(context, forward, back);
     } else if (this.endsWith !== null) {
-      return this.endsWith.evaluate(context, back, forward);
+      return this.endsWith.evaluate(context, forward, back);
     } else if (this.startsWith !== null) {
-      return this.startsWith.evaluate(context, back, forward);
+      return this.startsWith.evaluate(context, forward, back);
     } else if (this.some !== null) {
-      return this.some.evaluate(context, back, forward);
+      return this.some.evaluate(context, forward, back);
     } else if (this.every !== null) {
-     return this.every.evaluate(context, back, forward);
+     return this.every.evaluate(context, forward, back);
     } else if (this.reduce !== null) {
-      return this.reduce.evaluate(context, back, forward);
+      return this.reduce.evaluate(context, forward, back);
     } else if (this.ternary !== null) {
-      return this.ternary.evaluate(context, back, forward);
+      return this.ternary.evaluate(context, forward, back);
     } else if (this.procedureCall !== null) {
-      return this.procedureCall.evaluate(context, back, forward);
+      return this.procedureCall.evaluate(context, forward, back);
     } else if (this.returnBlock !== null) {
       const variables = [];
 
-      return this.returnBlock.evaluate(variables, context, back, forward);
+      return this.returnBlock.evaluate(variables, context, forward, back);
     }
   }
 

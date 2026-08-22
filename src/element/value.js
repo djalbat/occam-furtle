@@ -50,13 +50,13 @@ export default define(class Value extends Element {
     return boolean;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     if (false) {
       ///
     } else if (this.variable !== null) {
-      return this.variable.evaluate(context, back, forward);
+      return this.variable.evaluate(context, forward, back);
     } else if (this.primitive !== null) {
-      return this.primitive.evaluate(context, back, forward);
+      return this.primitive.evaluate(context, forward, back);
     }
   }
 

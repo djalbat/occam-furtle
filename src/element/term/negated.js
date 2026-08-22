@@ -24,12 +24,12 @@ export default define(class NegatedTerm extends Element {
     return this.term;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const negatedTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${negatedTermString}' negated value...`);
 
-    return this.term.evaluate(context, back, (value) => {
+    return this.term.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeBooleanType = valueType.isBooleanType();
 
@@ -55,8 +55,8 @@ export default define(class NegatedTerm extends Element {
 
       context.debug(`...evaluated the '${negatedTermString}' negated value as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "NegatedTerm";

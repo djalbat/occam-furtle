@@ -20,20 +20,20 @@ export default define(class VariableAssignment extends Element {
     return this.expression;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const variableAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableAssignmentString}' variable assignment...`);
 
-    return this.expression.evaluate(context, back, (value) => {
-      return this.variable.assign(value, context, back, () => {
+    return this.expression.evaluate(context, (value, back) => {
+      return this.variable.assign(value, context, (back) => {
         const valueString = value.getString();
 
         context.debug(`...evaluated the '${variableAssignmentString}' variable assignment as '${valueString}'.`);
 
-        return forward();
-      });
-    });
+        return forward(back);
+      }, back);
+    }, back);
   }
 
   static name = "VariableAssignment";

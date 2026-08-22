@@ -25,17 +25,17 @@ export default define(class Statement extends Element {
     return this.variableAssignments;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     if (this.listAssignment !== null) {
-      return this.listAssignment.evaluate(context, back, forward);
+      return this.listAssignment.evaluate(context, forward, back);
     }
 
     if (this.objectAssignment !== null) {
-      return this.objectAssignment.evaluate(context, back, forward);
+      return this.objectAssignment.evaluate(context, forward, back);
     }
 
     if (this.variableAssignments !== null) {
-      return this.variableAssignments.evaluate(context, back, forward);
+      return this.variableAssignments.evaluate(context, forward, back);
     }
   }
 

@@ -28,15 +28,15 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  call(values, context, back, forward) {
+  call(values, context, forward, back) {
     const anonymousProcedureString = this.getString(); ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
 
-    return this.parameters.compareValues(values, context, back, () => {
+    return this.parameters.compareValues(values, context, (back) => {
       const variables = variablesFromValuesAndParameters(values, this.parameters, context);
 
-      return this.returnBlock.evaluate(variables, context, back, (value) => {
+      return this.returnBlock.evaluate(variables, context, (value, back) => {
         const valueType = value.getType(),
               typeEqualToValueType = this.type.isEqualTo(valueType);
 
@@ -51,9 +51,9 @@ export default define(class AnonymousProcedure extends Element {
 
         context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
 
-        return forward(value);
-      });
-    });
+        return forward(value, back);
+      }, back);
+    }, back);
   }
 
   static name = "AnonymousProcedure";

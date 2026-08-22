@@ -26,12 +26,12 @@ export default define(class ListAssignment extends Element {
     return this.bindings;
   }
 
-  evaluate = breakable(function (context, back, forward) {
+  evaluate = breakable(function (context, forward, back) {
     const listAssignmentString = this.getString(); ///
 
     context.trace(`Evaluating the '${listAssignmentString}' list assignment...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeListType = valueType.isListType();
 
@@ -58,25 +58,25 @@ export default define(class ListAssignment extends Element {
 
       const values = value.lift(context);
 
-      return this.bindings.forEachBinding((binding, back, forward, index) => {
+      return this.bindings.forEachBinding((binding, forward, back, index) => {
         const elided = binding.isElided();
 
         if (elided) {
-          return forward();
+          return forward(back);
         }
 
         const value = values[index];
 
-        return this.evaluateBinding(binding, value, context, back, forward);
-      }, back, () => {
+        return this.evaluateBinding(binding, value, context, forward, back);
+      }, (back) => {
         context.debug(`...evaluated the '${listAssignmentString}' list assignment.`);
 
-        return forward();
-      });
-    });
+        return forward(back);
+      }, back);
+    }, back);
   });
 
-  evaluateBinding(binding, value, context, back, forward) {
+  evaluateBinding(binding, value, context, forward, back) {
     const valueString = value.getString(),
           bindingString = binding.getString();
 
@@ -99,11 +99,11 @@ export default define(class ListAssignment extends Element {
     const { Variable } = elements,
           variable = Variable.fromBinding(binding, context);
 
-    return variable.assign(value, context, back, () => {
+    return variable.assign(value, context, (back) => {
       context.debug(`...evaluated the '${bindingString}' binding against the '${valueString}' value.`);
 
-      return forward();
-    });
+      return forward(back);
+    }, back);
   }
 
   static name = "ListAssignment";

@@ -24,12 +24,12 @@ export default define(class EndsWith extends Element {
     return this.substring;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const endsWithString = this.getString();  ///
 
     context.trace(`Evaluating the '${endsWithString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value) => {
       const valueType = value.getType(),
             valueTypeStringType = valueType.isStringType();
 
@@ -50,8 +50,8 @@ export default define(class EndsWith extends Element {
 
       context.debug(`...evaluated the '${endsWithString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "EndsWith";

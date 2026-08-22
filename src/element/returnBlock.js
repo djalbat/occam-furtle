@@ -30,7 +30,7 @@ export default define(class ReturnBlock extends Element {
     return this.returnStatement;
   }
 
-  evaluate(variables, context, back, forward) {
+  evaluate(variables, context, forward, back) {
     const returnBlockString = this.getString(); ///
 
     context.trace(`Evaluating the '${returnBlockString}' return block...`);
@@ -43,29 +43,29 @@ export default define(class ReturnBlock extends Element {
     }
 
     return confine((context) => {
-      return this.evaluateStatements(context, back, () => {
-        return this.returnStatement.evaluate(context, back, (value) => {
+      return this.evaluateStatements(context, back, (back) => {
+        return this.returnStatement.evaluate(context, back, (value, back) => {
           const valueString = value.getString();
 
           context.debug(`...evaluated the '${returnBlockString}' return block as '${valueString}'.`);
 
-          return forward(value);
+          return forward(value, back);
         });
       });
     }, variables, context);
   }
 
-  evaluateStatements(context, back, forward) {
+  evaluateStatements(context, forward, back) {
     const returnBlockString = this.getString(); ///
 
     context.trace(`Evaluating the '${returnBlockString}' return block's statements...`);
 
-    return forEach(this.statements, (statement, back, forward) => {
-      return statement.evaluate(context, back, forward);
-    }, back, () => {
+    return forEach(this.statements, (statement, forward, back) => {
+      return statement.evaluate(context, forward, back);
+    }, back, (back) => {
       context.debug(`...evaluated the '${returnBlockString}' return block's statements.`);
 
-      return forward();
+      return forward(back);
     });
   }
 

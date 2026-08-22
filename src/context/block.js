@@ -29,7 +29,7 @@ export default class BlockContext extends Context {
     return variables;
   }
 
-  addVariable(variable, back, forward) {
+  addVariable(variable, forward, back) {
     const nested = false,
           variableName = variable.getName(),
           variableString = variable.getString(),
@@ -48,7 +48,7 @@ export default class BlockContext extends Context {
 
     this.variables.push(variable);
 
-    return forward();
+    return forward(back);
   }
 
   findProcedureByProcedureName(procedureName) {

@@ -34,7 +34,7 @@ export default define(class Variable extends Element {
     return comparesToVariableName;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const variableString = this.getString(); ///
 
     context.trace(`Evaluating the '${variableString}' variable...`);
@@ -56,10 +56,10 @@ export default define(class Variable extends Element {
 
     context.debug(`...evaluated the '${variableString}' variable as the '${valueString}' value.`);
 
-    return forward(value);
+    return forward(value, back);
   }
 
-  assign(value, context, back, forward) {
+  assign(value, context, forward, back) {
     const nested = false,
           valueString = value.getString(),
           variableName = this.name, ///
@@ -91,11 +91,11 @@ export default define(class Variable extends Element {
 
     const variable = this;  ///
 
-    return context.addVariable(variable, back, () => {
+    return context.addVariable(variable, (back) => {
       context.debug(`...assigned the '${valueString}' value to the '${variableString}' variable.`);
 
-      forward();
-    });
+      return forward(back);
+    }, back);
   }
 
   static name = "Variable";

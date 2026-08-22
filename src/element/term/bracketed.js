@@ -17,18 +17,18 @@ export default define(class BracketedTerm extends Element {
 
   getType() { return this.term.getType(); }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const bracketedTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${bracketedTermString}' bracketed term...`);
 
-    return this.term.evaluate(context, back, (value) => {
+    return this.term.evaluate(context, (value, back) => {
       const valueString = value.getString();
 
       context.debug(`...evaluated the '${bracketedTermString}' bracketed term as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "BracketedTerm";

@@ -20,12 +20,12 @@ export default define(class ToInteger extends Element {
     return this.variable;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const toIntegerString = this.getString();  ///
 
     context.trace(`Evaluating the '${toIntegerString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeName = valueType.getName();
 
@@ -65,8 +65,8 @@ export default define(class ToInteger extends Element {
 
       context.debug(`...evaluated the '${toIntegerString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "ToInteger";

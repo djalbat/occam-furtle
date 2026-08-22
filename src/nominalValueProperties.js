@@ -26,34 +26,34 @@ class NominalValueProperties {
     return this.array;
   }
 
-  someNominalValueProperty(callback, back, forward) {
-    return some(this.array, callback, back, forward);
+  someNominalValueProperty(callback, forward, back) {
+    return some(this.array, callback, forward, back);
   }
 
-  compareNamedBinding(namedBinding, context, back, forward) {
+  compareNamedBinding(namedBinding, context, forward, back) {
     const namedBindingString = namedBinding.getString(),
           nominalValuePropertiesString = this.string; ///
 
     context.trace(`Comparing the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties...`);
 
-    return this.someNominalValueProperty((nominalValueProperty, back, forward) => {
-      return nominalValueProperty.compareNamedBinding(namedBinding, context, back, forward);
+    return this.someNominalValueProperty((nominalValueProperty, forward, back) => {
+      return nominalValueProperty.compareNamedBinding(namedBinding, context, forward, back);
     }, () => {
       const message = `The '${namedBindingString}' named binding does not compmare to any of the '${nominalValuePropertiesString}' node properties.`,
             exception = Exception.fromMessage(message);
 
       return back(exception);
-    }, () => {
+    }, (back) => {
       context.debug(`...compared the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties.`);
 
-      return forward();
+      return forward(back);
     });
   }
 
-  compareNamedBindings(namedBindings, context, back, forward) {
-    return namedBindings.forEachNamedBinding((namedBinding, back, forward) => {
-      return this.compareNamedBinding(namedBinding, context, back, forward);
-    }, back, forward);
+  compareNamedBindings(namedBindings, context, forward, back) {
+    return namedBindings.forEachNamedBinding((namedBinding, forward, back) => {
+      return this.compareNamedBinding(namedBinding, context, forward, back);
+    }, forward, back);
   }
 
   static fromNothing() {

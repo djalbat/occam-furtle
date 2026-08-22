@@ -33,16 +33,16 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   it("creates", (done) => {
     const dependencyName = projectName;  ///
 
-    return createReleaseContexts(dependencyName, context, fail, succeed);
-
-    function fail(exception) {
-      throw exception;
-    }
+    return createReleaseContexts(dependencyName, context, succeed, fail);
 
     function succeed(releaseContextsCreated) {
       assert.isTrue(releaseContextsCreated);
 
       done();
+    }
+
+    function fail(exception) {
+      throw exception;
     }
   });
 
@@ -61,16 +61,16 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
   });
 
   it("verifies", (done) => {
-    return verifyReleaseContexts(context, back, forward);
-
-    function back(exception) {
-      throw exception;
-    }
+    return verifyReleaseContexts(context, forward, back);
 
     function forward() {
       assert.isTrue(true);
 
       done();
+    }
+
+    function back(exception) {
+      throw exception;
     }
   });
 

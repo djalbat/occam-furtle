@@ -24,12 +24,12 @@ export default define(class StartsWith extends Element {
     return this.substring;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const startsWithString = this.getString();  ///
 
     context.trace(`Evaluating the '${startsWithString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeStringType = valueType.isStringType();
 
@@ -50,8 +50,8 @@ export default define(class StartsWith extends Element {
 
       context.debug(`...evaluated the '${startsWithString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "StartsWith";

@@ -15,18 +15,18 @@ export default define(class ReturnStatement extends Element {
     return this.value;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const returnStatementString = this.getString();  ///
 
     context.trace(`Evaluating the '${returnStatementString}' return statement...`);
 
-    return this.value.evaluate(context, back, (value) => {
+    return this.value.evaluate(context, (value, back) => {
       const valueString = value.getString();
 
       context.debug(`...evaluated the '${returnStatementString}' return statement as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "ReturnStatement";

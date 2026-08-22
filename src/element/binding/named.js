@@ -42,7 +42,7 @@ export default define(class NamedBinding extends Element {
     return aliasedName;
   }
 
-  compareTerm(term, context, back, forward) {
+  compareTerm(term, context, forward, back) {
     const termString = term.getString(),
           namedBindingString = this.getString();  ///
 
@@ -61,10 +61,10 @@ export default define(class NamedBinding extends Element {
 
     context.debug(`...compared the '${termString}' term with the '${namedBindingString}' named binding.`);
 
-    return forward();
+    return forward(back);
   }
 
-  compareNamedBinding(namedBinding, context, back, forward) {
+  compareNamedBinding(namedBinding, context, forward, back) {
     let namedBindingCompares = false;
 
     const namedBindingA = this,  ///
@@ -92,7 +92,7 @@ export default define(class NamedBinding extends Element {
       context.debug(`...compared the '${namedBindingAString}' named binding with the '${namedBindingBString}' named binding.`);
     }
 
-    return forward(namedBindingCompares);
+    return forward(namedBindingCompares, back);
   }
 
   static name = "NamedBinding";

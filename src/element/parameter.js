@@ -22,7 +22,7 @@ export default define(class Parameter extends Element {
     return this.name;
   }
 
-  compareValue(value, context, back, forward) {
+  compareValue(value, context, forward, back) {
     const valueString = value.getString(),
           parameterString = this.getString();  ///
 
@@ -41,7 +41,7 @@ export default define(class Parameter extends Element {
 
     context.debug(`...comparing the '${valueString}' value against the '${parameterString}' parameter.`);
 
-    return forward();
+    return forward(back);
   }
 
   static name = "Parameter";

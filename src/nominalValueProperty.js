@@ -21,7 +21,7 @@ export default class NominalValueProperty {
     return this.name;
   }
 
-  compareNamedBinding(namedBinding, context, back, forward) {
+  compareNamedBinding(namedBinding, context, forward, back) {
     let namedBindingCompares = false;
 
     const nominalValuePropertyString = this.string, ///
@@ -44,7 +44,7 @@ export default class NominalValueProperty {
 
     context.debug(`...compared the '${nominalValuePropertyString}' node property with the '${namedBindingString}' named binding.`);
 
-    return forward(namedBindingCompares);
+    return forward(namedBindingCompares, back);
   }
 
   static name = "Parameter";

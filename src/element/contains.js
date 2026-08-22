@@ -24,12 +24,12 @@ export default define(class Contains extends Element {
     return this.substring;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const containsString = this.getString();  ///
 
     context.trace(`Evaluating the '${containsString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeStringType = valueType.isStringType();
 
@@ -50,8 +50,8 @@ export default define(class Contains extends Element {
 
       context.debug(`...evaluated the '${containsString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "Contains";

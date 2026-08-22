@@ -21,12 +21,12 @@ export default define(class TryInteger extends Element {
     return this.variable;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     const tryIntegerString = this.getString();  ///
 
     context.trace(`Evaluating the '${tryIntegerString}' function...`);
 
-    return this.variable.evaluate(context, back, (value) => {
+    return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
             valueTypeName = valueType.getName();
 
@@ -58,8 +58,8 @@ export default define(class TryInteger extends Element {
 
       context.debug(`...evaluated the '${tryIntegerString}' function as '${valueString}'.`);
 
-      return forward(value);
-    });
+      return forward(value, back);
+    }, back);
   }
 
   static name = "TryInteger";

@@ -9,7 +9,7 @@ const { loadProject } = occamFileSystemUtilities,
       { readFile, isEntryFile } = necessaryFileSystemUtilities,
       { releaseContextFromJSON, releaseContextFromProject } = releaseContextUtilities;
 
-function releaseContextFromDependency(dependency, context, back, forward) {
+function releaseContextFromDependency(dependency, context, forward, back) {
   let releaseContext;
 
   const { projectsDirectoryPath } = context,

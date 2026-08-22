@@ -28,15 +28,15 @@ export default define(class ComparisonTerm extends Element {
     return this.rightTerm;
   }
 
-  evaluate(context, back, forward) {
+  evaluate(context, forward, back) {
     let value;
 
     const comparisonTermString = this.getString(); ///
 
     context.trace(`Evaluating the '${comparisonTermString}' comparison term...`);
 
-    return this.leftTerm.evaluate(context, back, (leftValue) => {
-      return this.rightTerm.evaluate(context, back, (rightValue) => {
+    return this.leftTerm.evaluate(context, (leftValue, back) => {
+      return this.rightTerm.evaluate(context, (rightValue, back) => {
         const leftValueType = leftValue.getType(),
               rightValueType = rightValue.getType(),
               leftValueTypeEqualToRightValueType = leftValueType.isEqualTo(rightValueType);
@@ -66,9 +66,9 @@ export default define(class ComparisonTerm extends Element {
 
         context.debug(`...evaluated the '${comparisonTermString}' comparison value as '${valueString}'.`);
 
-        return forward(value);
-      });
-    });
+        return forward(value, back);
+      }, back);
+    }, back);
   }
 
   static name = "ComparisonTerm";

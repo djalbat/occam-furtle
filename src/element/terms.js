@@ -36,14 +36,14 @@ export default define(class Terms extends Element {
     this.array.push(term);
   }
 
-  mapTerm(callback, back, forward) {
-    return map(this.array, callback, back, forward);
+  mapTerm(callback, forward, back) {
+    return map(this.array, callback, forward, back);
   }
 
-  evaluate(context, back, forwarsd) {
-    return this.mapTerm((term, back, forward) => {
-      return term.evaluate(context, back, forward);
-    }, back, (valuesArray) => {
+  evaluate(context, back, forward) {
+    return this.mapTerm((term, forward, back) => {
+      return term.evaluate(context, forward, back);
+    }, (valuesArray) => {
       const valuesString = valuesStringFromValuesArray(valuesArray, context),
             string = valuesString, ///
             array = valuesArray, ///
@@ -55,8 +55,8 @@ export default define(class Terms extends Element {
       const { Values } = elements,
             values = new Values(context, string, node, breakPoint, array);
 
-      return forwarsd(values);
-    });
+      return forward(values, back);
+    }, back);
   }
 
   static name = "Terms";
