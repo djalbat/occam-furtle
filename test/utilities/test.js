@@ -43,6 +43,10 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
     function fail(exception) {
       throw exception;
+
+      assert.isTrue(false);
+
+      done();
     }
   });
 
@@ -71,6 +75,10 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
     function back(exception) {
       throw exception;
+
+      assert.isTrue(false);
+
+      done();
     }
   });
 
