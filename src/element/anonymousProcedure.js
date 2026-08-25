@@ -1,11 +1,13 @@
 "use strict";
 
-import { Element } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
 import { define } from "../elements";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
+
+const { cut } = continuationUtilities;
 
 export default define(class AnonymousProcedure extends Element {
   constructor(context, string, node, breakPoint, type, parameters, returnBlock) {
@@ -29,6 +31,8 @@ export default define(class AnonymousProcedure extends Element {
   }
 
   call(values, context, forward, back) {
+    forward = cut(forward, back); ///
+
     const anonymousProcedureString = this.getString(); ///
 
     context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
@@ -41,9 +45,10 @@ export default define(class AnonymousProcedure extends Element {
               typeEqualToValueType = this.type.isEqualTo(valueType);
 
         if (!typeEqualToValueType) {
-          const valueString = value.getString(),
-                typeString = this.type.getString(),
-                message = `The '${valueString}' value's '${valueType}' type is not equal to the '${anonymousProcedureString}' anonymous function's '${typeString}' type.`,
+          const typeString = this.type.getString(),
+                valueString = value.getString(),
+                valueTypeString = valueType.getString(),
+                message = `The '${valueString}' value's '${valueTypeString}' type is not equal to the '${anonymousProcedureString}' anonymous function's '${typeString}' type.`,
                 exception = Exception.fromMessage(message);
 
           return back(exception);

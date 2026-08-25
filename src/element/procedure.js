@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
@@ -10,7 +10,8 @@ import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
 
-const { breakable, breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
+const { cut } = continuationUtilities,
+      { breakable, breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Procedure extends Element {
   constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
@@ -79,6 +80,8 @@ export default define(class Procedure extends Element {
   }
 
   call = breakable(function (values, context, forward, back) {
+    forward = cut(forward, back);
+
     const procedureString = this.getString();  ///
 
     context.trace(`Calling the '${procedureString}' function...`);
@@ -93,9 +96,10 @@ export default define(class Procedure extends Element {
               typeEqualToValueType = this.type.isEqualTo(valueType);
 
         if (!typeEqualToValueType) {
-          const valueString = value.getString(),
-                typeString = this.type.getString(),
-                message = `The '${valueString}' value's '${typeString}' type is not equal to the '${procedureString}' function's '${typeString}' type.`,
+          const typeString = this.type.getString(),
+                valueString = value.getString(),
+                valueTypeString = valueType.getString(),
+                message = `The '${valueString}' value's '${valueTypeString}' type is not equal to the '${procedureString}' function's '${typeString}' type.`,
                 exception = Exception.fromMessage(message);
 
           return back(exception);
