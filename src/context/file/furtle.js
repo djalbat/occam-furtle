@@ -1,13 +1,14 @@
 "use strict";
 
-import { FileContext } from "occam-languages";
 import { queryUtilities } from "occam-query";
+import { FileContext, continuationUtilities } from "occam-languages";
 
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 import { proceduresFromJSON, proceduresToProceduresJSON } from "../../utilities/json";
 
-const { nodesQuery } = queryUtilities;
+const { isolate } = continuationUtilities,
+      { nodesQuery } = queryUtilities;
 
 const procedureNodesQuery = nodesQuery("/document/procedure");
 
@@ -193,13 +194,13 @@ export default class FurtleFileContext extends FileContext {
   }
 
   verifyFile(forward, back) {
-    const node = this.getNode(),
-          context = this, ///
-          fileNode = node;  ///
+    return isolate((forward, back) => {
+      const node = this.getNode(),
+            context = this, ///
+            fileNode = node;  ///
 
-    return verifyFile(fileNode, context, ( _ , back) => {
-      return forward(back);
-    }, back);
+      return verifyFile(fileNode, context, forward, back);
+    }, forward, back);
   }
 
   toJSON() {
