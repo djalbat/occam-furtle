@@ -1,9 +1,13 @@
 "use strict";
 
+import { continuationUtilities } from "occam-languages";
+
 import BlockContext from "../context/block";
 import LiteralContext from "../context/literal";
 
 import { isContextBlockContext } from "../context/block";
+
+export const { isolate } = continuationUtilities;
 
 export function free(innerFunction, context) {
   context = freeContext(context); ///

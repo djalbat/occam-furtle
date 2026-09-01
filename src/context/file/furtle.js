@@ -1,14 +1,14 @@
 "use strict";
 
+import { FileContext } from "occam-languages";
 import { queryUtilities } from "occam-query";
-import { FileContext, continuationUtilities } from "occam-languages";
 
+import { isolate } from "../../utilities/context";
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
 import { proceduresFromJSON, proceduresToProceduresJSON } from "../../utilities/json";
 
-const { isolate } = continuationUtilities,
-      { nodesQuery } = queryUtilities;
+const { nodesQuery } = queryUtilities;
 
 const procedureNodesQuery = nodesQuery("/document/procedure");
 
