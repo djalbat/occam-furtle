@@ -49,7 +49,7 @@ export default define(class Every extends Element {
       const nodes = value.getNodes();
 
       return every(nodes, (node, forward, back) => {
-        return this.callAnonymousProcedure(node, context, forward, back);
+        return this.evaluateAnonymousProcedure(node, context, forward, back);
       }, (boolean, back) => {
         const value = valueFromBoolean(boolean, context),
               valueString = value.getString();
@@ -61,12 +61,12 @@ export default define(class Every extends Element {
     }, back);
   });
 
-  callAnonymousProcedure(node, context, forward, back) {
+  evaluateAnonymousProcedure(node, context, forward, back) {
     const { Values } = elements,
           value = valueFromNode(node, context),
           values = Values.fromValue(value, context);
 
-    return this.anonymousProcedure.call(values, context, (value, back) => {
+    return this.anonymousProcedure.evaluate(values, context, (value, back) => {
       const valueType = value.getType(),
             valueTypeBooleanType = valueType.isBooleanType();
 

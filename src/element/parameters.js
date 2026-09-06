@@ -1,6 +1,6 @@
 "use strict";
 
-import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
+import { Element, continuationUtilities } from "occam-languages";
 
 import Exception from "../exception";
 
@@ -9,8 +9,7 @@ import { instantiate } from "../utilities/context";
 import { instantiateParameters } from "../process/instantiate";
 import { parametersArrayFromParametersNode } from "../utilities/element";
 
-const { forEach } = continuationUtilities,
-      { breakPointToBreakPointJSON } = breakPointUtilities;
+const { forEach } = continuationUtilities
 
 export default define(class Parameters extends Element {
   constructor(context, string, node, breakPoint, array) {
@@ -73,17 +72,8 @@ export default define(class Parameters extends Element {
   toJSON() {
     const string = this.getString();
 
-    let breakPoint;
-
-    breakPoint = this.getBreakPoint();
-
-    const breakPointJSON = breakPointToBreakPointJSON(breakPoint);
-
-    breakPoint = breakPointJSON;  ///
-
     const json = {
-      string,
-      breakPoint
+      string
     };
 
     return json;

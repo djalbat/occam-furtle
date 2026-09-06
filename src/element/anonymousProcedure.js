@@ -30,7 +30,7 @@ export default define(class AnonymousProcedure extends Element {
     return this.returnBlock;
   }
 
-  call(values, context, forward, back) {
+  evaluate(values, context, forward, back) {
     forward = cut(forward, back); ///
 
     const anonymousProcedureString = this.getString(); ///

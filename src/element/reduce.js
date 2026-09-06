@@ -55,7 +55,7 @@ export default define(class Reduce extends Element {
 
       return this.initialValue.evaluate(context, (initialValue, back) => {
         return reduce(nominalValues, (currentValue, nominalValue, forward, back) => {
-          return this.callAnonymousProcedure(currentValue, nominalValue, context, forward, back);
+          return this.evaluateAnonymousProcedure(currentValue, nominalValue, context, forward, back);
         }, initialValue, (value, back) => {
           const valueString = value.getString();
 
@@ -67,7 +67,7 @@ export default define(class Reduce extends Element {
     }, back);
   });
 
-  callAnonymousProcedure(currentValue, nominalValue, context, forward, back) {
+  evaluateAnonymousProcedure(currentValue, nominalValue, context, forward, back) {
     let value;
 
     const { Values } = elements;
@@ -80,7 +80,7 @@ export default define(class Reduce extends Element {
 
     values.addValue(value);
 
-    return this.anonymousProcedure.call(values, context, forward, back);
+    return this.anonymousProcedure.evaluate(values, context, forward, back);
   }
 
   static name = "Reduce";

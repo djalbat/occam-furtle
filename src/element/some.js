@@ -49,7 +49,7 @@ export default define(class Some extends Element {
             nominalValues = primitiveValue; ///
 
       return some(nominalValues, (nominalValue, forward, back) => {
-        return this.callAnonymousProcedure(nominalValue, context, forward, back);
+        return this.evaluateAnonymousProcedure(nominalValue, context, forward, back);
       }, (boolean, back) => {
         const value = valueFromBoolean(boolean, context),
               valueString = value.getString();
@@ -61,12 +61,12 @@ export default define(class Some extends Element {
     }, back);
   });
 
-  callAnonymousProcedure(nominalValue, context, forward, back) {
+  evaluateAnonymousProcedure(nominalValue, context, forward, back) {
     const { Values } = elements,
           value = valueFromNominalValue(nominalValue),
           values = Values.fromValue(value, context);
 
-    return this.anonymousProcedure.call(values, context, (value, back) => {
+    return this.anonymousProcedure.evaluate(values, context, (value, back) => {
       const valueType = value.getType(),
             valueTypeBooleanType = valueType.isBooleanType();
 

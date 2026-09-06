@@ -5,8 +5,8 @@ import { Element } from "occam-languages";
 import Exception from "../../exception";
 
 import { define } from "../../elements";
-import { BOOLEAN_TYPE_NAME } from "../../typeNames";
 import { valueFromBoolean } from "../../utilities/value";
+import { BOOLEAN_TYPE_NAME } from "../../typeNames";
 
 export default define(class NegatedTerm extends Element {
   constructor(context, string, node, breakPoint, type, term) {

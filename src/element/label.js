@@ -1,13 +1,11 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element } from "occam-languages";
 
 import { define } from "../elements";
 import { instantiate } from "../utilities/context";
 import { instantiateLabel } from "../process/instantiate";
 import { nameFromLabelNode } from "../utilities/element";
-
-const { breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Label extends Element {
   constructor(context, string, node, breakPoint, name) {
@@ -29,17 +27,8 @@ export default define(class Label extends Element {
   toJSON() {
     const string = this.getString();
 
-    let breakPoint;
-
-    breakPoint = this.getBreakPoint();
-
-    const breakPointJSON = breakPointToBreakPointJSON(breakPoint);
-
-    breakPoint = breakPointJSON;  ///
-
     const json = {
-      string,
-      breakPoint
+      string
     };
 
     return json;

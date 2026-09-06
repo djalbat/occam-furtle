@@ -65,7 +65,7 @@ export default define(class Procedure extends Element {
     this.returnBlock = returnBlockFromProcedureNode(procedureNode, context);
   }
 
-  verify(context, forward, back) {
+  verify = breakable(function (context, forward, back) {
     const procedureString = this.getString();
 
     context.trace(`Verifying the '${procedureString}' function...`)
@@ -77,9 +77,9 @@ export default define(class Procedure extends Element {
     context.debug(`...verified the '${procedureString}' function.`)
 
     return forward(context, back);
-  }
+  });
 
-  call = breakable(function (values, context, forward, back) {
+  evaluate = breakable(function (values, context, forward, back) {
     forward = cut(forward, back);
 
     const procedureString = this.getString();  ///
@@ -120,7 +120,7 @@ export default define(class Procedure extends Element {
 
     const values = valuesFromNominalValues(nominalValues, context);
 
-    return this.call(values, context, (value, back) => {
+    return this.evaluate(values, context, (value, back) => {
       context.debug(`...called the '${procedureString}' function nominally.`);
 
       return forward(value, back);
