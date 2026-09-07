@@ -536,6 +536,22 @@ export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
   return logicalTerm;
 }
 
+export function importBindingFromImportBindingNode(importBindingNode, context) {
+  const { ImportBinding } = elements,
+        node = importBindingNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        label = labelFromImportBindingNode(importBindingNode, context),
+        reference = referenceFromImportBindingNode(importBindingNode, context);
+
+  context = null;
+
+  const importBinding = new ImportBinding(context, string, node, breakPoint, label, reference);
+
+  return importBinding;
+}
+
+
 export function namedBindingFromNamedBindingNode(namedBindingNode, context) {
   const { NamedBinding } = elements,
         node = namedBindingNode,  ///
@@ -627,6 +643,17 @@ export function namedBindingsFromObjectAssignmentNode(objectAssignmentNode, cont
         namedBindings = namedBindingsFromNamedBindingsNode(namedBindingsNode, context);
 
   return namedBindings;
+}
+
+export function importStatementFromImportStatementNode(importStatementNode, context) {
+  const { ImportStatement } = elements,
+        node = importStatementNode,  ///
+        string = context.nodeAsString(node),
+        importBindings = importBindingsFromImportStatementNode(importStatementNode, context),
+        breakPoint = null,
+        importStatement = new ImportStatement(context, string, node, breakPoint, importBindings);
+
+  return importStatement;
 }
 
 export function returnStatementFromReturnStatementNode(returnStatementNode, context) {
@@ -1191,6 +1218,18 @@ export function endsWithFromExpressionNode(expressionNode, context) {
   return endsWith;
 }
 
+export function labelFromImportBindingNode(importBindingNode, context) {
+  let label = null;
+
+  const labelNode = importBindingNode.getLabelNode();
+
+  if (labelNode !== null) {
+    label = labelFromLabelNode(labelNode, context);
+  }
+
+  return label;
+}
+
 export function ifExpressionFromTernaryNode(ternaryNode, context) {
   const ifExpressionNode = ternaryNode.getIfExpressionNode(),
         ifExpression = expressionFromExpressionNode(ifExpressionNode, context);
@@ -1389,15 +1428,36 @@ export function typeFromAnonymousProcedureNode(anonymousProcedureNode, context) 
   return type;
 }
 
+export function referenceFromImportBindingNode(importBindingNode, context) {
+  const referenceNode = importBindingNode.getReferenceNode(),
+        reference = referenceFromReferenceNode(referenceNode, context);
+
+  return reference;
+}
+
+export function variableFromListAssignmentNode(listAssignmentNode, context) {
+  const variableNode = listAssignmentNode.getVariableNode(),
+        variable = variableFromVariableNode(variableNode, context);
+
+  return variable;
+}
+
+export function bindingsFromListAssignmentNode(listAssignmentNode, context) {
+  const bindingsNode = listAssignmentNode.getBindingsNode(),
+        bindings = bindingsFromBindingsNode(bindingsNode, context);
+
+  return bindings;
+}
+
 export function variableFromTypeAndVariableNode(type, variableNode, context) {
   const { Variable } = elements,
-        node = variableNode,  ///
-        name = nameFromVariableNode(variableNode),
-        value = valueFromTypeAndVariableNode(type, variableNode, context),
-        variableString = variableStringFromName(name),
-        string = variableString,  ///
-        breakPoint = null,
-        variable = new Variable(context, string, node, breakPoint, type, name, value);
+    node = variableNode,  ///
+    name = nameFromVariableNode(variableNode),
+    value = valueFromTypeAndVariableNode(type, variableNode, context),
+    variableString = variableStringFromName(name),
+    string = variableString,  ///
+    breakPoint = null,
+    variable = new Variable(context, string, node, breakPoint, type, name, value);
 
   return variable;
 }
@@ -1407,6 +1467,18 @@ export function anonymousProcedureFromEveryNode(everyNode, context) {
         anonymousProcedure = anonymousProcedureFromAnonymousProcedureNode(anonymousProcedureNode, context);
 
   return anonymousProcedure;
+}
+
+export function listAssignmentFromStatementNode(statementNode, context) {
+  let listAssignment = null;
+
+  const listAssignmentNode = statementNode.getListAssignmentNode();
+
+  if (listAssignmentNode !== null) {
+    listAssignment = listAssignmentFromListAssignmentNode(listAssignmentNode, context);
+  }
+
+  return listAssignment;
 }
 
 export function procedureCallFromExpressionNode(expressionNode, context) {
@@ -1426,32 +1498,6 @@ export function rightTermFromCompzrisonTermNode(comparisonTermNode, context) {
         rightTerm = termFromTermNode(rightTermNode, context);
 
   return rightTerm;
-}
-
-export function variableFromListAssignmentNode(listAssignmentNode, context) {
-  const variableNode = listAssignmentNode.getVariableNode(),
-        variable = variableFromVariableNode(variableNode, context);
-
-  return variable;
-}
-
-export function bindingsFromListAssignmentNode(listAssignmentNode, context) {
-  const bindingsNode = listAssignmentNode.getBindingsNode(),
-        bindings = bindingsFromBindingsNode(bindingsNode, context);
-
-  return bindings;
-}
-
-export function listAssignmentFromStatementNode(statementNode, context) {
-  let listAssignment = null;
-
-  const listAssignmentNode = statementNode.getListAssignmentNode();
-
-  if (listAssignmentNode !== null) {
-    listAssignment = listAssignmentFromListAssignmentNode(listAssignmentNode, context);
-  }
-
-  return listAssignment;
 }
 
 export function typeFromVariableAssignmentsNode(variableAssignmentsNode, context) {
@@ -1520,6 +1566,13 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
   return parameters;
 }
 
+export function importBindingsFromImportStatementNode(importStatementNode, context) {
+  const importBindingNodes = importStatementNode.getImportBindingNodes(),
+        importBindings = importBindingsFromImportBindingNodes(importBindingNodes, context);
+
+  return importBindings;
+}
+
 export function returnBlockFromAnonymousProcedureNode(anonymousProcedureNode, context) {
   const returnBlockNode = anonymousProcedureNode.getReturnBlockNode(),
         returnBlock = returnBlockFromReturnBlockNode(returnBlockNode, context);
@@ -1574,6 +1627,16 @@ export function parametersArrayFromParametersNode(parametersNode, context) {
         });
 
   return parametersArray;
+}
+
+export function importBindingsFromImportBindingNodes(importBindingNodes, context) {
+  const importBindings = importBindingNodes.map((importBindingNode) => { ///
+          const importBinding = importBindingFromImportBindingNode(importBindingNode, context);
+
+          return importBinding;
+        });
+
+  return importBindings;
 }
 
 export function namedParametersArrayFromNamedBindingNodes(namedBindingNodes, context) {

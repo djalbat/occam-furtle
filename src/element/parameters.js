@@ -70,9 +70,11 @@ export default define(class Parameters extends Element {
   }
 
   toJSON() {
+    let json;
+
     const string = this.getString();
 
-    const json = {
+    json = {
       string
     };
 

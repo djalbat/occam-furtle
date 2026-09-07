@@ -1,7 +1,7 @@
 "use strict";
 
 const LATIN = "[\\p{Script=Latin}]",
-  DECIMAL = "[0-9]";
+      DECIMAL = "[0-9]";
 
 const entries = [
   {

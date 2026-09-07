@@ -96,10 +96,13 @@ export default define(class Type extends Element {
   }
 
   toJSON() {
-    const string = this.getString(),
-          json = {
-            string
-          };
+    let json;
+
+    const string = this.getString();
+
+    json = {
+      string
+    };
 
     return json;
   }

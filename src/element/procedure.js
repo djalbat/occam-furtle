@@ -151,11 +151,13 @@ export default define(class Procedure extends Element {
   }
 
   toJSON() {
-    const typeJSON = typeToTypeJSON(this.type),
+    let json;
+
+    const string = this.getString(),
+          typeJSON = typeToTypeJSON(this.type),
           labelJSON = labelToLabelJSON(this.label),
-          exportedJJSON = exportedToExportedJSON(this.label),
-          parametersJSON = parametersToParametersJSON(this.parameters),
-          string = this.getString();
+          exportedJJSON = exportedToExportedJSON(this.exported),
+          parametersJSON = parametersToParametersJSON(this.parameters);
 
     let breakPoint;
 
@@ -168,15 +170,16 @@ export default define(class Procedure extends Element {
     const type = typeJSON,  ///
           label = labelJSON,  ///
           exported = exportedJJSON, ///
-          parameters = parametersJSON,  ///
-          json = {
-            string,
-            breakPoint,
-            type,
-            label,
-            exported,
-            parameters
-          };
+          parameters = parametersJSON;  ///
+
+    json = {
+      string,
+      breakPoint,
+      type,
+      label,
+      exported,
+      parameters
+    };
 
     return json;
   }

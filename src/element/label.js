@@ -25,9 +25,11 @@ export default define(class Label extends Element {
   }
 
   toJSON() {
+    let json;
+
     const string = this.getString();
 
-    const json = {
+    json = {
       string
     };
 

@@ -204,15 +204,18 @@ export default class FurtleFileContext extends FileContext {
   }
 
   toJSON() {
-    const proceduresJSON = proceduresToProceduresJSON(this.procedures),
+    let json;
+
+    const filePath = this.getFilePath(),
           fileContent = this.getFileContent(),
-          filePath = this.getFilePath(),
-          procedures = proceduresJSON,  ///
-          json = {
-            fileContent,
-            filePath,
-            procedures
-          };
+          proceduresJSON = proceduresToProceduresJSON(this.procedures),
+          procedures = proceduresJSON;  ///
+
+    json = {
+      filePath,
+      fileContent,
+      procedures
+    };
 
     return json;
   }

@@ -3,12 +3,13 @@
 import { queryUtilities } from "occam-query";
 import { ContinuationPass } from "occam-languages";
 
-import { errorFromErrorNode, procedureFromProcedureNode } from "../utilities/element";
+import { errorFromErrorNode, procedureFromProcedureNode, importStatementFromImportStatementNode } from "../utilities/element";
 
 const { nodeQuery } = queryUtilities;
 
 const errorNodeQuery = nodeQuery("/error"),
-      procedureNodeQuery = nodeQuery("/procedure");
+      procedureNodeQuery = nodeQuery("/procedure"),
+      importStatementNodeQuery = nodeQuery("/importStatement");
 
 class TopLevelPass extends ContinuationPass {
   static maps = [
@@ -26,6 +27,14 @@ class TopLevelPass extends ContinuationPass {
         const procedure = procedureFromProcedureNode(procedureNode, context);
 
         return procedure.verify(context, forward, back);
+      }
+    },
+    {
+      nodeQuery: importStatementNodeQuery,
+      run: (importStatementNode, context, forward, back) => {
+        const importStatement = importStatementFromImportStatementNode(importStatementNode, context);
+
+        return importStatement.verify(context, forward, back);
       }
     }
   ];

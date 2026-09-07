@@ -35,11 +35,14 @@ import ReturnBlockNode from "./node/returnBlock";
 import LogicalTermNode from "./node/term/logical";
 import NegatedTermNode from "./node/term/negated";
 import NamedBindingNode from "./node/binding/named";
+import ImportBindingNode from "./node/importBinding";
 import ProcedureCallNode from "./node/procedureCall";
 import NamedBindingsNode from "./node/bindings/named";
 import BracketedTermNode from "./node/term/bracketed";
+import ImportBindingsNode from "./node/importBindings";
 import ComparisonTermNode from "./node/term/comparison";
 import ListAssignmentNode from "./node/assignment/list";
+import ImportStatementNode from "./node/importStatement";
 import ReturnStatementNode from "./node/returnStatement";
 import ObjectAssignmentNode from "./node/assignment/object";
 import AnonymousProcedureNode from "./node/anoymousProcedure";
@@ -81,12 +84,15 @@ import { SOME_RULE_NAME,
          LOGICAL_TERM_RULE_NAME,
          NEGATED_TERM_RULE_NAME,
          NAMED_BINDING_RULE_NAME,
+         IMPORT_BINDING_RULE_NAME,
          NAMED_BINDINGS_RULE_NAME,
          BRACKETED_TERM_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME,
+         IMPORT_BINDINGS_RULE_NAME,
          COMPARISON_TERM_RULE_NAME,
          LIST_ASSIGNMENT_RULE_NAME,
          RETURN_STATEMENT_RULE_NAME,
+         IMPORT_STATEMENT_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
@@ -128,11 +134,14 @@ const NonTerminalNodeMap = {
   [LOGICAL_TERM_RULE_NAME]: LogicalTermNode,
   [NEGATED_TERM_RULE_NAME]: NegatedTermNode,
   [NAMED_BINDING_RULE_NAME]: NamedBindingNode,
+  [IMPORT_BINDING_RULE_NAME]: ImportBindingNode,
   [NAMED_BINDINGS_RULE_NAME]: NamedBindingsNode,
   [PROCEDURE_CALL_RULE_NAME]: ProcedureCallNode,
   [BRACKETED_TERM_RULE_NAME]: BracketedTermNode,
+  [IMPORT_BINDINGS_RULE_NAME]: ImportBindingsNode,
   [LIST_ASSIGNMENT_RULE_NAME]: ListAssignmentNode,
   [COMPARISON_TERM_RULE_NAME]: ComparisonTermNode,
+  [IMPORT_STATEMENT_RULE_NAME]: ImportStatementNode,
   [RETURN_STATEMENT_RULE_NAME]: ReturnStatementNode,
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,

@@ -20,10 +20,36 @@ export function exportedToExportedJSON(exported) {
   return exportedJSON;
 }
 
+export function referenceToReferenceJSON(reference) {
+  const referenceJSON = reference.toJSON();
+
+  return referenceJSON;
+}
+
 export function parametersToParametersJSON(parameters) {
   const parameterJSON = parameters.toJSON();
 
   return parameterJSON;
+}
+
+export function proceduresToProceduresJSON(procedures) {
+  const proceduresJSON = procedures.map((procedure) => {
+    const procedureJSON = procedure.toJSON();
+
+    return procedureJSON;
+  });
+
+  return proceduresJSON;
+}
+
+export function importBindingsToImportBindingsJSON(importBindings) {
+  const importBindingsJSON = importBindings.map((importBinding) => {
+    const importBindingJSON = importBinding.toJSON();
+
+    return importBindingJSON;
+  });
+
+  return importBindingsJSON;
 }
 
 export function typeFromJSON(json, context) {
@@ -58,6 +84,19 @@ export function exportedFromJSON(json, context) {
   return exported;
 }
 
+export function referenceFromJSON(json, context) {
+  let { reference } = json;
+
+  const { Reference } = elements,
+        referenceJSON = reference;  ///
+
+  json = referenceJSON; ///
+
+  reference = Reference.fromJSON(json, context);
+
+  return reference;
+}
+
 export function parametersFromJSON(json, context) {
   let { parameters } = json;
 
@@ -87,12 +126,18 @@ export function proceduresFromJSON(json, context) {
   return procedures;
 }
 
-export function proceduresToProceduresJSON(procedures) {
-  const proceduresJSON = procedures.map((procedure) => {
-    const procedureJSON = procedure.toJSON();
+export function importBindingsFromJSON(json, context) {
+  let { importBindings } = json;
 
-    return procedureJSON;
+  const { ImportBinding } = elements,
+        importBindingsJSON = importBindings; ///
+
+  importBindings = importBindingsJSON.map((importBindingJSON) => {
+    const json = importBindingJSON,  ///
+          importBinding = ImportBinding.fromJSON(json, context);
+
+    return importBinding;
   });
 
-  return proceduresJSON;
+  return importBindings;
 }
