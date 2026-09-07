@@ -8,18 +8,18 @@ import { define } from "../elements";
 import { valuesFromNominalValues } from "../utilities/values";
 import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
-import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
-import {portFromHost} from "necessary/lib/utilities/http";
+import { typeFromJSON, labelFromJSON, exportedFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, exportedToExportedJSON, parametersToParametersJSON } from "../utilities/json";
 
 const { cut } = continuationUtilities,
       { breakable, breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
 
 export default define(class Procedure extends Element {
-  constructor(context, string, node, breakPoint, type, label, parameters, returnBlock) {
+  constructor(context, string, node, breakPoint, type, label, exported, parameters, returnBlock) {
     super(context, string, node, breakPoint);
 
     this.type = type;
     this.label = label;
+    this.exported = exported;
     this.parameters = parameters;
     this.returnBlock = returnBlock;
   }
@@ -30,6 +30,10 @@ export default define(class Procedure extends Element {
 
   getLabel() {
     return this.label;
+  }
+
+  isExported() {
+    return this.exported;
   }
 
   getParameters() {
@@ -149,6 +153,7 @@ export default define(class Procedure extends Element {
   toJSON() {
     const typeJSON = typeToTypeJSON(this.type),
           labelJSON = labelToLabelJSON(this.label),
+          exportedJJSON = exportedToExportedJSON(this.label),
           parametersJSON = parametersToParametersJSON(this.parameters),
           string = this.getString();
 
@@ -162,12 +167,14 @@ export default define(class Procedure extends Element {
 
     const type = typeJSON,  ///
           label = labelJSON,  ///
+          exported = exportedJJSON, ///
           parameters = parametersJSON,  ///
           json = {
             string,
             breakPoint,
             type,
             label,
+            exported,
             parameters
           };
 
@@ -181,11 +188,12 @@ export default define(class Procedure extends Element {
           breakPoint = breakPointFromJSON(json),
           type = typeFromJSON(json, context),
           label = labelFromJSON(json, context),
+          exported = exportedFromJSON(json, context),
           parameters = parametersFromJSON(json, context),
           procedureNode = context.findProcedureNode(label),
           returnBlock = null, ///
           node = procedureNode, ///
-          procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
+          procedure = new Procedure(context, string, node, breakPoint, type, label, exported, parameters, returnBlock);
 
     return procedure;
   }

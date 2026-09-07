@@ -7,4 +7,5 @@ export const SPECIAL_TOKEN_TYPE = "special";
 export const BOOLEAN_TOKEN_TYPE = "boolean";
 export const INTEGER_TOKEN_TYPE = "integer";
 export const STRING_LITERAL_TOKEN_TYPE = "string-literal";
+export const PRIMARY_KEYWORD_TOKEN_TYPE = "primary-keyword";
 

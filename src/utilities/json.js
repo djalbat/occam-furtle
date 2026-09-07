@@ -14,6 +14,12 @@ export function labelToLabelJSON(label) {
   return labelJSON;
 }
 
+export function exportedToExportedJSON(exported) {
+  const exportedJSON = exported;  ///
+
+  return exportedJSON;
+}
+
 export function parametersToParametersJSON(parameters) {
   const parameterJSON = parameters.toJSON();
 
@@ -44,6 +50,12 @@ export function labelFromJSON(json, context) {
   label = Label.fromJSON(json, context);
 
   return label;
+}
+
+export function exportedFromJSON(json, context) {
+  const { exported } = json;
+
+  return exported;
 }
 
 export function parametersFromJSON(json, context) {

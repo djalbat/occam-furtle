@@ -2,9 +2,36 @@
 
 import { NonTerminalNode } from "occam-languages";
 
+import { EXPORT } from "../constants";
+import { PRIMARY_KEYWORD_TOKEN_TYPE } from "../tokenTypes";
 import { TYPE_RULE_NAME, LABEL_RULE_NAME, PARAMETERS_RULE_NAME, RETURN_BLOCK_RULE_NAME } from "../ruleNames";
 
 export default class ProcedureNode extends NonTerminalNode {
+  isExported() {
+    let exported = false;
+
+    this.someChildNode((childNode) => {
+      const childNodeTerminalNode = childNode.isTerminalNode();
+
+      if (childNodeTerminalNode) {
+        const terminalNode = childNode, ///
+              type = terminalNode.getType();
+
+        if (type === PRIMARY_KEYWORD_TOKEN_TYPE) {
+          const content = terminalNode.getContent();
+
+          if (content === EXPORT) {
+            exported = true;
+
+            return true;
+          }
+        }
+      }
+    });
+
+    return exported;
+  };
+
   getTypeNode() {
     const ruleName = TYPE_RULE_NAME,
           labelNode = this.getNodeByRuleName(ruleName);

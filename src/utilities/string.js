@@ -1,5 +1,6 @@
 "use strict";
 
+import { EXPORT, EMPTY_STRING } from "../constants";
 import { stringFromStringLiteral } from "./stringLiteral";
 
 export function ternaryStringFromTerm(term) {
@@ -188,16 +189,6 @@ export function variableAssignmentStringFromVariableAssignment(variableAssignmen
   return variableAssignmentString;
 }
 
-export function procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock) {
-  const typeString = type.getString(),
-        labelString = label.getString(),
-        parametersString = parameters.getString(),
-        returnBlockString = returnBlock.getString(),
-        procedureString = `${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
-
-  return procedureString;
-}
-
 export function anonymousProcedureStringFromTypeParametersAndReturnBlock(type, parameters, returnBlock) {
   const typeString = type.getString(),
         parametersString = parameters.getString(),
@@ -239,6 +230,19 @@ export function variableAssignmentStringFromTypeAndVariableAssignmentsArray(type
   variableAssignmentsString = `${typeString} ${variableAssignmentsString} ;`; ///
 
   return variableAssignmentsString;
+}
+
+export function procedureStringFromTypeLabelExportedParametersAndReturnBlock(type, label, exported, parameters, returnBlock) {
+  const typeString = type.getString(),
+        labelString = label.getString(),
+        exportSTring = exported ?
+                        `${EXPORT} ` :
+                          EMPTY_STRING,
+        parametersString = parameters.getString(),
+        returnBlockString = returnBlock.getString(),
+        procedureString = `${exportSTring}${typeString} ${labelString}(${parametersString}) ${returnBlockString}`;
+
+  return procedureString;
 }
 
 export function reduceStringFromVariableInitialExpressionAndAnonymousProcedure(variable, initialExpression, anonymousProcedure) {

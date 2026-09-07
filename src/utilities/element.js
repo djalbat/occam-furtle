@@ -14,9 +14,9 @@ import { ternaryStringFromTerm,
          variableAssignmentStringFromTypeAndVariable,
          someStringFromVariableAndAnonymousProcedure,
          everyStringFromVariableAndAnonymousProcedure,
-         procedureStringFromTypeLabelParametersAndReturnBlock,
          anonymousProcedureStringFromTypeParametersAndReturnBlock,
          variableAssignmentStringFromTypeAndVariableAssignmentsArray,
+         procedureStringFromTypeLabelExportedParametersAndReturnBlock,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
 
 export function someFromSomeNode(someNode, context) {
@@ -303,12 +303,13 @@ export function procedureFromProcedureNode(procedureNode, context) {
         node = procedureNode,  ///
         type = typeFromProcedureNode(procedureNode, context),
         label = labelFromProcedureNode(procedureNode, context),
+        exported = exporetedFromProcedureNode(procedureNode, context),
         parameters = parametersFromProcedureNode(procedureNode, context),
         returnBlock = returnBlockFromProcedureNode(procedureNode, context),
-        procedureString = procedureStringFromTypeLabelParametersAndReturnBlock(type, label, parameters, returnBlock),
+        procedureString = procedureStringFromTypeLabelExportedParametersAndReturnBlock(type, label, exported, parameters, returnBlock),
         string = procedureString, ///
         breakPoint = null,
-        procedure = new Procedure(context, string, node, breakPoint, type, label, parameters, returnBlock);
+        procedure = new Procedure(context, string, node, breakPoint, type, label, exported, parameters, returnBlock);
 
   return procedure;
 }
@@ -1125,6 +1126,12 @@ export function expressionFromVariableNode(variableNode, context) {
   const expression = null;
 
   return expression;
+}
+
+export function exporetedFromProcedureNode(procedureNode, context) {
+  const exported = procedureNode.isExported();
+
+  return exported;
 }
 
 export function variableFromTryIntegerNode(tryIntegerNode, context) {
