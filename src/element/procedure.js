@@ -9,6 +9,7 @@ import { valuesFromNominalValues } from "../utilities/values";
 import { returnBlockFromProcedureNode } from "../utilities/element";
 import { variablesFromValuesAndParameters } from "../utilities/parameters";
 import { typeFromJSON, labelFromJSON, parametersFromJSON, typeToTypeJSON, labelToLabelJSON, parametersToParametersJSON } from "../utilities/json";
+import {portFromHost} from "necessary/lib/utilities/http";
 
 const { cut } = continuationUtilities,
       { breakable, breakPointFromJSON, breakPointToBreakPointJSON } = breakPointUtilities;
@@ -49,6 +50,13 @@ export default define(class Procedure extends Element {
     return boolean;
   }
 
+  getProcedureName() {
+    const name = this.getName(),
+          procedureName = name; ///
+
+    return procedureName;
+  }
+
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
@@ -66,15 +74,26 @@ export default define(class Procedure extends Element {
   }
 
   verify = breakable(function (context, forward, back) {
+    let procedure;
+
     const procedureString = this.getString();
 
-    context.trace(`Verifying the '${procedureString}' function...`)
+    context.trace(`Verifying the '${procedureString}' function...`);
 
-    const procedure = this; ///
+    const procedureName = this.getProcedureName(),
+          procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
+
+    if (procedurePresent) {
+      context.trace(`The '${procedureString}' function is already present.`);
+
+      return back();
+    }
+
+    procedure = this; ///
 
     context.addProcedure(procedure);
 
-    context.debug(`...verified the '${procedureString}' function.`)
+    context.debug(`...verified the '${procedureString}' function.`);
 
     return forward(context, back);
   });
