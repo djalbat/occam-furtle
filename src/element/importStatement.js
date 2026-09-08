@@ -1,13 +1,14 @@
 "use strict";
 
-import { Element, breakPointUtilities } from "occam-languages";
+import { Element, breakPointUtilities, continuationUtilities } from "occam-languages";
 
 import { define } from "../elements";
 import { instantiate } from "../utilities/context";
 import { instantiateImportStatement } from "../process/instantiate";
 import { releaseNameFromJSON, importBindingsFromJSON, releaseNameToReleaseNameJSON, importBindingsToImportBindingsJSON } from "../utilities/json";
 
-const { unbreakable } = breakPointUtilities;
+const { every } = continuationUtilities,
+      { unbreakable } = breakPointUtilities;
 
 export default define(class ImportStatement extends Element {
   constructor(context, string, node, breakPoint, releaseName, importBindings) {
@@ -44,7 +45,25 @@ export default define(class ImportStatement extends Element {
   }
 
   verify = unbreakable(function (context, forward, back) {
-    debugger
+    const importStatementString = this.getString(); ///
+
+    context.trace(`Verifying the '${importStatementString}' import statement...`);
+
+    return every(this.importBindings, (importBinding, context, forward, back) => {
+      return importBinding.verify(this.releaseName, context, forward, back);
+    }, context, (context, back) => {
+      context.debug(`...verified the '${importStatementString}' import statement.`);
+
+      return forward(context, back);
+    }, (exception) => {
+      if (exception) {
+        return back(exception);
+      }
+
+      context.trace(`Unable to verify the '${importStatementString}' import statement.`);
+
+      return back();
+    });
   });
 
   static name = "ImportStatement";

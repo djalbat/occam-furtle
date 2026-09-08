@@ -63,6 +63,8 @@ export default define(class Procedure extends Element {
 
   getReturnStatement() { return this.returnBlock.getReturnStatement(); }
 
+  compareReleaseName(releaseName) { return this.context.compareReleaseName(releaseName); }
+
   compareProcedureName(procedureName) { return this.label.compareProcedureName(procedureName); }
 
   guaranteeReturnBlock() {
@@ -78,8 +80,6 @@ export default define(class Procedure extends Element {
   }
 
   verify = breakable(function (context, forward, back) {
-    let procedure;
-
     const procedureString = this.getString();
 
     context.trace(`Verifying the '${procedureString}' function...`);
@@ -93,7 +93,7 @@ export default define(class Procedure extends Element {
       return back();
     }
 
-    procedure = this; ///
+    const procedure = this; ///
 
     context.addProcedure(procedure);
 

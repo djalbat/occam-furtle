@@ -22,6 +22,31 @@ export default define(class ImportBinding extends Element {
     return this.reference;
   }
 
+  getProcedureName() {
+    const referenceName = this.reference.getName(),
+          procedureName = referenceName;  ///
+
+    return procedureName;
+  }
+
+  verify(releaseName, context, forward, back) {
+    const importBindingString = this.getString(); ///
+
+    context.trace(`Verifying the '${importBindingString}' import binding...`);
+
+    const procedureName = this.getProcedureName(),
+          procedure = context.findProcedureByProcedureName(procedureName);
+
+    if (procedure === null) {
+      context.trace(`The '${procedureName}' procedure is not present.`);
+
+      return back();
+    }
+
+    const releaseNameCompares = procedure.compareReleaseName(releaseName);
+
+  }
+
   toJSON() {
     let json;
 

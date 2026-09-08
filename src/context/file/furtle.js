@@ -173,6 +173,8 @@ export default class FurtleFileContext extends FileContext {
     return procedurePresent;
   }
 
+  compareReleaseName(releaseName) { return this.context.compareReleaseName(releaseName); }
+
   clear() {
     this.procedures = [];
   }

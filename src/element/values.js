@@ -5,7 +5,7 @@ import { Element, continuationUtilities } from "occam-languages";
 import { define } from "../elements";
 import { valuesStringFromValuesArray } from "../utilities/string";
 
-const { map, forEach } = continuationUtilities;
+const { map } = continuationUtilities;
 
 export default define(class Values extends Element {
   constructor(context, string, node, breakPoint, array) {
