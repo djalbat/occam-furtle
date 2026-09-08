@@ -39,7 +39,9 @@ export default define(class Label extends Element {
   static name = "Label";
 
   static fromJSON(json, context) {
-    return instantiate((context) => {
+    let label;
+
+    instantiate((context) => {
       const { string } = json,
             labelNode = instantiateLabel(string, context),
             node = labelNode,  ///
@@ -48,9 +50,9 @@ export default define(class Label extends Element {
 
       context = null;
 
-      const label = new Label(context, string, node, breakPoint, name);
-
-      return label;
+      label = new Label(context, string, node, breakPoint, name);
     }, context);
+
+    return label;
   }
 });

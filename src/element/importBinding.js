@@ -5,6 +5,7 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 import { instantiateImportBinding } from "../process/instantiate";
 import { labelFromJSON, labelToLabelJSON, referenceFromJSON, referenceToReferenceJSON } from "../utilities/json";
+import {instantiate} from "../utilities/context";
 
 export default define(class ImportBinding extends Element {
   constructor(context, string, node, breakPoint, label, reference) {
@@ -22,11 +23,33 @@ export default define(class ImportBinding extends Element {
     return this.reference;
   }
 
-  getProcedureName() {
-    const referenceName = this.reference.getName(),
-          procedureName = referenceName;  ///
+  getLabelledProcedureName() {
+    const labelName = this.label.getName(),
+          labelledProcedureName = labelName;  ///
 
-    return procedureName;
+    return labelledProcedureName;
+  }
+
+  getReferencedProcedureName() {
+    const referenceName = this.reference.getName(),
+          referencedProcedureName = referenceName;  ///
+
+    return referencedProcedureName;
+  }
+
+  isAllowed() {
+    const labelledProcedureName = this.getLabelledProcedureName(),
+          referencedProcedureName = this.getReferencedProcedureName(),
+          aliased = (labelledProcedureName !== referencedProcedureName);
+
+    return aliased;
+  }
+
+  compareLablledProcedureName(labelledProcedureName) {
+    const labelName = this.label.getName(),
+          labelledProcedureNameCompares = (labelName === labelledProcedureName);
+
+    return labelledProcedureNameCompares;
   }
 
   verify(releaseName, context, forward, back) {
@@ -34,17 +57,73 @@ export default define(class ImportBinding extends Element {
 
     context.trace(`Verifying the '${importBindingString}' import binding...`);
 
-    const procedureName = this.getProcedureName(),
-          procedure = context.findProcedureByProcedureName(procedureName);
+    let procedureName,
+        procedurePresent;
 
-    if (procedure === null) {
+    const referencedProcedureName = this.getReferencedProcedureName();
+
+    procedureName = referencedProcedureName;  ///
+
+    procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
+
+    if (!procedurePresent) {
       context.trace(`The '${procedureName}' procedure is not present.`);
 
       return back();
     }
 
-    const releaseNameCompares = procedure.compareReleaseName(releaseName);
+    const labelledProcedureName = this.getLabelledProcedureName();
 
+    procedureName = labelledProcedureName;  ///
+
+    const aliased = this.isAllowed();
+
+    if (aliased) {
+      procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
+
+      if (procedurePresent) {
+        context.trace(`The '${procedureName}' procedure is already present.`);
+
+        return back();
+      }
+    }
+
+    const importBindingPresent = context.isImportBindingPresentByLabelledProcedureName(labelledProcedureName);
+
+    if (importBindingPresent) {
+      const labelString = this.label.getString();
+
+      context.trace(`The '${importBindingString}' import binding's '${labelString}' label is already present...`);
+
+      return back();
+    }
+
+    procedureName = referencedProcedureName;  ///
+
+    const procedure = context.findProcedureByProcedureName(procedureName),
+          releaseNameCompares = procedure.compareReleaseName(releaseName);
+
+    if (!releaseNameCompares) {
+      context.trace(`The '${procedureName}' procedure is not in the '${releaseName}' package.`);
+
+      return back();
+    }
+
+    const exported = procedure.isExported();
+
+    if (!exported) {
+      context.trace(`The '${procedureName}' procedure is not exported.`);
+
+      return back();
+    }
+
+    const importBinding = this;
+
+    context.addImportBinding(importBinding);
+
+    context.debug(`...verified the '${importBindingString}' import binding.`);
+
+    return forward(context, back);
   }
 
   toJSON() {
@@ -68,13 +147,18 @@ export default define(class ImportBinding extends Element {
   static name = "ImportBinding";
 
   static fromJSON(json, context) {
-    const { string } = json,
-          breakPoint = null,
-          importBindingNode = instantiateImportBinding(string, context),
-          label = labelFromJSON(json, context),
-          reference = referenceFromJSON(json, context),
-          node = importBindingNode, ///
-          importBinding = new ImportBinding(context, string, node, breakPoint, label, reference);
+    let importBinding;
+
+    instantiate((context) => {
+      const { string } = json,
+            breakPoint = null,
+            importBindingNode = instantiateImportBinding(string, context),
+            label = labelFromJSON(json, context),
+            reference = referenceFromJSON(json, context),
+            node = importBindingNode; ///
+
+      importBinding = new ImportBinding(context, string, node, breakPoint, label, reference);
+    }, context);
 
     return importBinding;
   }

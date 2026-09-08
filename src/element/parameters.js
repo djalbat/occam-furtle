@@ -84,7 +84,9 @@ export default define(class Parameters extends Element {
   static name = "Parameters";
 
   static fromJSON(json, context) {
-    return instantiate((context) => {
+    let parameters;
+
+    instantiate((context) => {
       const { string } = json,
             parametersNode = instantiateParameters(string, context),
             node = parametersNode,  ///
@@ -94,9 +96,9 @@ export default define(class Parameters extends Element {
 
       context = null;
 
-      const parameters = new Parameters(context, string, node, breakPoint, array);
-
-      return parameters;
+      parameters = new Parameters(context, string, node, breakPoint, array);
     }, context);
+
+    return parameters;
   }
 });

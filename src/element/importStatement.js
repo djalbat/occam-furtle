@@ -69,7 +69,9 @@ export default define(class ImportStatement extends Element {
   static name = "ImportStatement";
 
   static fromJSON(json, context) {
-    return instantiate((context) => {
+    let importStatement;
+
+    instantiate((context) => {
       const { string } = json,
             importStatementNode = instantiateImportStatement(string, context),
             node = importStatementNode,  ///
@@ -79,9 +81,9 @@ export default define(class ImportStatement extends Element {
 
       context = null;
 
-      const importStatement = new ImportStatement(context, string, node, breakPoint, releaseName, importBindings);
-
-      return importStatement;
+      importStatement = new ImportStatement(context, string, node, breakPoint, releaseName, importBindings);
     }, context);
+
+    return importStatement;
   }
 });

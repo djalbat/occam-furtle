@@ -110,7 +110,9 @@ export default define(class Type extends Element {
   static name = "Type";
 
   static fromJSON(json, context) {
-    return instantiate((context) => {
+    let type;
+
+    instantiate((context) => {
       const { string } = json,
             typeNode = instantiateType(string, context),
             node = typeNode,  ///
@@ -120,10 +122,10 @@ export default define(class Type extends Element {
 
       context = null;
 
-      const type = new Type(context, string, node, breakPoint, name, argumentType);
-
-      return type;
+      type = new Type(context, string, node, breakPoint, name, argumentType);
     }, context);
+
+    return type;
   }
 
   static fromTypeName(typeName, context) {

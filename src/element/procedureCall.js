@@ -31,16 +31,25 @@ export default define(class ProcedureCall extends Element {
     context.trace(`Evaluating the '${procedureCallString}' function call...`);
 
     const procedureName = this.getProcedureName(),
-          procedurePresent = context.isProcedurePresentByProcedureName(procedureName);
+          procedurePresent = context.isProcedurePresentByProcedureName(procedureName),
+          importedProcedurePresent = context.isImportedProcedurePresentByProcedureName(procedureName);
 
-    if (!procedurePresent) {
+    if (!procedurePresent && !importedProcedurePresent) {
       const message = `The '${procedureCallString}' function is not present.'`,
             exception = Exception.fromMessage(message);
 
       return back(exception);
     }
 
-    const procedure = context.findProcedureByProcedureName(procedureName);
+    let procedure;
+
+    if (!importedProcedurePresent) {
+      procedure = context.findProcedureByProcedureName(procedureName);
+    } else {
+      const importedProcedure = context.findImportedProcedureByProcedureName(procedureName);
+
+      procedure = importedProcedure;  ///
+    }
 
     return this.values.evaluate(context, (values, back) => {
       return free((context) => {

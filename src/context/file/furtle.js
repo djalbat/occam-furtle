@@ -6,19 +6,26 @@ import { queryUtilities } from "occam-query";
 import { isolate } from "../../utilities/context";
 import { verifyFile } from "../../process/verify";
 import { furtleLexer, furtleParser } from "../../utilities/furtle";
-import { proceduresFromJSON, proceduresToProceduresJSON } from "../../utilities/json";
+import {
+  proceduresFromJSON,
+  importBindingsFromJSON,
+  proceduresToProceduresJSON,
+  importBindingsToImportBindingsJSON
+} from "../../utilities/json";
+import procedure from "../../element/procedure";
 
 const { nodesQuery } = queryUtilities;
 
 const procedureNodesQuery = nodesQuery("/document/procedure");
 
 export default class FurtleFileContext extends FileContext {
-  constructor(context, fileContent, filePath, tokens, node, json, lexer, parser, procedures) {
+  constructor(context, fileContent, filePath, tokens, node, json, lexer, parser, procedures, importBindings) {
     super(context, fileContent, filePath, tokens, node, json);
 
     this.lexer = lexer;
     this.parser = parser;
     this.procedures = procedures;
+    this.importBindings = importBindings;
   }
 
   getLexer() {
@@ -27,6 +34,18 @@ export default class FurtleFileContext extends FileContext {
 
   getParser() {
     return this.parser;
+  }
+
+  getProcedures(includeRelease = true) {
+    const procedures = includeRelease ?
+                         this.context.getProcedures() :
+                           this.procedures;
+
+    return procedures;
+  }
+
+  getImportBindings() {
+    return this.importBindings;
   }
 
   getLabels(includeRelease = true) {
@@ -113,14 +132,6 @@ export default class FurtleFileContext extends FileContext {
     return metavariables;
   }
 
-  getProcedures(includeRelease = true) {
-    const procedures = includeRelease ?
-                         this.context.getProcedures() :
-                           this.procedures;
-
-    return procedures;
-  }
-
   getVariables(nested = true) {
     const variables = [];
 
@@ -135,6 +146,16 @@ export default class FurtleFileContext extends FileContext {
     const filePath = this.getFilePath();
 
     this.debug(`Added the '${procedureString}' function to the '${filePath}' file context.`);
+  }
+
+  addImportBinding(importBinding) {
+    const importBindingString = importBinding.getString();
+
+    this.importBindings.push(importBinding);
+
+    const filePath = this.getFilePath();
+
+    this.debug(`Added the '${importBindingString}' import binding to the '${filePath}' file context.`);
   }
 
   findProcedureNode(label) {
@@ -166,11 +187,61 @@ export default class FurtleFileContext extends FileContext {
     return procedure;
   }
 
+  findImportedProcedureByProcedureName(procedureName) {
+    let importedProcedure = null;
+
+    this.importBindings.some((importBinding) => {
+      const lablledProcedureName = procedureName; ///
+
+      const labelledProcedureNameClmpares = importBinding.compareLablledProcedureName(lablledProcedureName);
+
+      if (labelledProcedureNameClmpares) {
+        const referencedProcedureName = importBinding.getReferencedProcedureName();
+
+        procedureName = referencedProcedureName;  ///
+
+        const procedure = this.findProcedureByProcedureName(procedureName);
+
+        importedProcedure = procedure;  ///
+
+        return true;
+      }
+    });
+
+    return importedProcedure;
+  }
+
+  findImportBindingByLabelledProcedureName(labelledProcedureName) {
+    const importBinding = this.importBindings.find((importBinding) => {
+            const labelledProcedureNameCompares = importBinding.compareLablledProcedureName(labelledProcedureName);
+
+            if (labelledProcedureNameCompares) {
+              return true;
+            }
+          }) || null;
+
+    return importBinding;
+  }
+
   isProcedurePresentByProcedureName(procedureName) {
     const procedure = this.findProcedureByProcedureName(procedureName),
           procedurePresent = (procedure !== null);
 
     return procedurePresent;
+  }
+
+  isImportedProcedurePresentByProcedureName(procedureName) {
+    const importedProceudre = this.findImportedProcedureByProcedureName(procedureName),
+          importedProceudrePresent = (importedProceudre !== null);
+
+    return importedProceudrePresent;
+  }
+
+  isImportBindingPresentByLabelledProcedureName(labelledProcedureName) {
+    const importBinding = this.findImportBindingByLabelledProcedureName(labelledProcedureName),
+          importBindingPresent = (importBinding !== null);
+
+    return importBindingPresent;
   }
 
   compareReleaseName(releaseName) { return this.context.compareReleaseName(releaseName); }
@@ -192,6 +263,8 @@ export default class FurtleFileContext extends FileContext {
       const fileContext = this; ///
 
       this.procedures = proceduresFromJSON(json, fileContext);
+
+      this.importBindings = importBindingsFromJSON(json, fileContext);
     }
   }
 
@@ -211,12 +284,15 @@ export default class FurtleFileContext extends FileContext {
     const filePath = this.getFilePath(),
           fileContent = this.getFileContent(),
           proceduresJSON = proceduresToProceduresJSON(this.procedures),
-          procedures = proceduresJSON;  ///
+          importBindingsJSON = importBindingsToImportBindingsJSON(this.importBindings),
+          procedures = proceduresJSON,  ///
+          importBindings = importBindingsJSON;
 
     json = {
       filePath,
       fileContent,
-      procedures
+      procedures,
+      importBindings
     };
 
     return json;
@@ -226,7 +302,8 @@ export default class FurtleFileContext extends FileContext {
     const lexer = furtleLexer,  ///
           parser = furtleParser,  ///
           procedures = [],
-          furtleFileContext = FileContext.fromFile(FurtleFileContext, file, lexer, parser, procedures, context);
+          importBindings = [],
+          furtleFileContext = FileContext.fromFile(FurtleFileContext, file, lexer, parser, procedures, importBindings, context);
 
     return furtleFileContext;
   }
@@ -235,7 +312,8 @@ export default class FurtleFileContext extends FileContext {
     const lexer = furtleLexer,  ///
           parser = furtleParser,  ///
           procedures = null,
-          furtleFileContext = FileContext.fromJSON(FurtleFileContext, json, lexer, parser, procedures, context);
+          importBindings = null,
+          furtleFileContext = FileContext.fromJSON(FurtleFileContext, json, lexer, parser, procedures, importBindings, context);
 
     return furtleFileContext;
   }
