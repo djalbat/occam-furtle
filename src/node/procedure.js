@@ -10,24 +10,17 @@ export default class ProcedureNode extends NonTerminalNode {
   isExported() {
     let exported = false;
 
-    this.someChildNode((childNode) => {
-      const childNodeTerminalNode = childNode.isTerminalNode();
+    const tokenType = PRIMARY_KEYWORD_TOKEN_TYPE;
 
-      if (childNodeTerminalNode) {
-        const terminalNode = childNode, ///
-              type = terminalNode.getType();
+    this.someTerminalNode((terminalNode) => {
+      const content = terminalNode.getContent();
 
-        if (type === PRIMARY_KEYWORD_TOKEN_TYPE) {
-          const content = terminalNode.getContent();
+      if (content === EXPORT) {
+        exported = true;
 
-          if (content === EXPORT) {
-            exported = true;
-
-            return true;
-          }
-        }
+        return true;
       }
-    });
+    }, tokenType);
 
     return exported;
   };

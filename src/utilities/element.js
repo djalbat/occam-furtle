@@ -141,6 +141,20 @@ export function labelFromLabelNode(labelNode, context) {
   return label;
 }
 
+export function labelFromReferenceNode(referenceNode, context) {
+  const { Label } = elements,
+        node = referenceNode,
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        name = nameFromReferenceNode(referenceNode, context);
+
+  context = null;
+
+  const label = new Label(context, string, node, breakPoint, name);
+
+  return label;
+}
+
 export function valuesFromValuesNode(valuesNode, context) {
   const { Values } = elements,
         node = valuesNode, ///
@@ -536,22 +550,6 @@ export function logicalTermFromLogicalTermNode(logicalTermNode, context) {
   return logicalTerm;
 }
 
-export function importBindingFromImportBindingNode(importBindingNode, context) {
-  const { ImportBinding } = elements,
-        node = importBindingNode, ///
-        string = context.nodeAsString(node),
-        breakPoint = null,
-        label = labelFromImportBindingNode(importBindingNode, context),
-        reference = referenceFromImportBindingNode(importBindingNode, context);
-
-  context = null;
-
-  const importBinding = new ImportBinding(context, string, node, breakPoint, label, reference);
-
-  return importBinding;
-}
-
-
 export function namedBindingFromNamedBindingNode(namedBindingNode, context) {
   const { NamedBinding } = elements,
         node = namedBindingNode,  ///
@@ -610,6 +608,21 @@ export function procedureCallFromProcedureCallNode(procedureCallNode, context) {
   return procedureCall;
 }
 
+export function importBindingFromImportBindingNode(importBindingNode, context) {
+  const { ImportBinding } = elements,
+        node = importBindingNode, ///
+        string = context.nodeAsString(node),
+        breakPoint = null,
+        label = labelFromImportBindingNode(importBindingNode, context),
+        reference = referenceFromImportBindingNode(importBindingNode, context);
+
+  context = null;
+
+  const importBinding = new ImportBinding(context, string, node, breakPoint, label, reference);
+
+  return importBinding;
+}
+
 export function comparisonTermFromComparisonTermNode(comparisonTermNode, context) {
   const { ComparisonTerm } = elements,
         node = comparisonTermNode,  ///
@@ -649,9 +662,10 @@ export function importStatementFromImportStatementNode(importStatementNode, cont
   const { ImportStatement } = elements,
         node = importStatementNode,  ///
         string = context.nodeAsString(node),
+        releaseName = releaseNameFromImportStatementNode(importStatementNode, context),
         importBindings = importBindingsFromImportStatementNode(importStatementNode, context),
         breakPoint = null,
-        importStatement = new ImportStatement(context, string, node, breakPoint, importBindings);
+        importStatement = new ImportStatement(context, string, node, breakPoint, releaseName, importBindings);
 
   return importStatement;
 }
@@ -1225,6 +1239,10 @@ export function labelFromImportBindingNode(importBindingNode, context) {
 
   if (labelNode !== null) {
     label = labelFromLabelNode(labelNode, context);
+  } else {
+    const referenceNode = importBindingNode.getReferenceNode();
+
+    label = labelFromReferenceNode(referenceNode, context);
   }
 
   return label;
@@ -1566,6 +1584,12 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
   return parameters;
 }
 
+export function releaseNameFromImportStatementNode(importStatementNode, context) {
+  const releaseName = importStatementNode.getReleaseName();
+
+  return releaseName;
+}
+
 export function importBindingsFromImportStatementNode(importStatementNode, context) {
   const importBindingNodes = importStatementNode.getImportBindingNodes(),
         importBindings = importBindingsFromImportBindingNodes(importBindingNodes, context);
@@ -1585,16 +1609,6 @@ export function variableFromTypeAndVariableAssignmentNode(type, variableAssignme
         variable = variableFromTypeAndVariableNode(type, variableNode, context);
 
   return variable;
-}
-
-export function termsArrayFromTermNodes(termNodes, context) {
-  const termsArray = termNodes.map((termNode) => { ///
-    const term = termFromTermNode(termNode, context);
-
-    return term;
-  });
-
-  return termsArray;
 }
 
 export function valuesArrayFromValueNodes(valueNodes, context) {

@@ -42,6 +42,12 @@ export function proceduresToProceduresJSON(procedures) {
   return proceduresJSON;
 }
 
+export function releaseNameToReleaseNameJSON(releaseName) {
+  const releaseNameJSON = releaseName;  ///
+
+  return releaseNameJSON;
+}
+
 export function importBindingsToImportBindingsJSON(importBindings) {
   const importBindingsJSON = importBindings.map((importBinding) => {
     const importBindingJSON = importBinding.toJSON();
@@ -124,6 +130,12 @@ export function proceduresFromJSON(json, context) {
   });
 
   return procedures;
+}
+
+export function releaseNameFromJSON(json, context) {
+  const { releaseName } = json;
+
+  return releaseName;
 }
 
 export function importBindingsFromJSON(json, context) {
