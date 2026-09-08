@@ -32,34 +32,6 @@ const bnf = `
     
 
 
-    importBindings          ::=  importBinding ( "," importBinding )* ;
-    
-    namedBindings           ::=  namedBinding ( "," namedBinding )* ;
-    
-    parameters              ::=  parameter ( "," parameter )* ;
-    
-    bindings                ::=  binding ( "," binding )* ;
-    
-    values                  ::=  value ( "," value )* ;
-    
-    terms                   ::=  term ( "," term )* ;
-    
-
-
-    importBinding           ::=  reference ( "as" label )? ;   
-    
-    namedBinding            ::=  type [name] ( "as" [name] )? ;   
-    
-    parameter               ::=  type [name] ;
-
-    binding                 ::=  type [name]
-    
-                              |  ε 
-                                  
-                              ;
-
-
-    
     procedureCall           ::=  reference<NO_WHITESPACE>"(" values? ")" ;
     
     returnBlock..           ::=  "{" ( statement | nonsense )* returnStatement "}" ;
@@ -71,6 +43,10 @@ const bnf = `
     every                   ::=  "every"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ;
     
     some                    ::=  "some"<NO_WHITESPACE>"(" variable "," anonymousProcedure ")" ;
+
+    all                     ::=  "all"<NO_WHITESPACE>"(" variable "," referencesListLiteral ( "," values )? ")" ;
+    
+    exists                  ::=  "exists"<NO_WHITESPACE>"(" variable "," referencesListLiteral ( "," values )? ")" ;    
     
     
     
@@ -96,6 +72,40 @@ const bnf = `
     
     
     
+    referencesListLiteral   ::=  "[" references? "]" ;
+     
+     
+     
+    importBindings          ::=  importBinding ( "," importBinding )* ;
+    
+    namedBindings           ::=  namedBinding ( "," namedBinding )* ;
+    
+    parameters              ::=  parameter ( "," parameter )* ;
+    
+    references              ::=  reference ( "," reference )* ;
+    
+    bindings                ::=  binding ( "," binding )* ;
+    
+    values                  ::=  value ( "," value )* ;
+    
+    terms                   ::=  term ( "," term )* ;
+    
+
+
+    importBinding           ::=  reference ( "as" label )? ;   
+    
+    namedBinding            ::=  type [name] ( "as" [name] )? ;   
+    
+    parameter               ::=  type [name] ;
+
+    binding                 ::=  type [name]
+    
+                              |  ε 
+                                  
+                              ;
+
+
+    
     comparisonTerm          ::=  term ( "==" | "!=" ) term ; 
     
     bracketedTerm           ::=  "(" term ")" ; 
@@ -117,6 +127,10 @@ const bnf = `
                               |  every
     
                               |  some
+                              
+                              |  all
+                              
+                              |  exists
                               
                               |  nodesQuery
                               
@@ -156,7 +170,7 @@ const bnf = `
 
 
     
-     type                   ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Boolean" | "Integer" ) ">"
+    type                    ::=  "List"<NO_WHITESPACE>"<" ( "Node" | "String" | "Boolean" | "Integer" ) ">"
      
                               |  "Node"  
      
@@ -192,7 +206,7 @@ const bnf = `
 
     reference.              ::=  [name] ;
     
-    variable                ::=  [name] ;
+    variable.               ::=  [name] ;
     
     label.                  ::=  [name] ;
     
