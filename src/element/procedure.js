@@ -80,6 +80,8 @@ export default define(class Procedure extends Element {
   }
 
   verify = breakable(function (context, forward, back) {
+    forward = cut(forward, back); ///
+
     const procedureString = this.getString();
 
     context.trace(`Verifying the '${procedureString}' function...`);

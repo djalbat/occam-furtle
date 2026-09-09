@@ -2,10 +2,12 @@
 
 import { NonTerminalNode } from "occam-languages";
 
-import { TERM_RULE_NAME,
+import { ALL_RULE_NAME,
+         TERM_RULE_NAME,
          SOME_RULE_NAME,
          EVERY_RULE_NAME,
          REDUCE_RULE_NAME,
+         EXISTS_RULE_NAME,
          TERNARY_RULE_NAME,
          CONTAINS_RULE_NAME,
          LENGTH_OF_RULE_NAME,
@@ -19,6 +21,13 @@ import { TERM_RULE_NAME,
          PROCEDURE_CALL_RULE_NAME } from "../ruleNames";
 
 export default class ExpressionNode extends NonTerminalNode {
+  getAllNode() {
+    const ruleName = ALL_RULE_NAME,
+          allNode = this.getNodeByRuleName(ruleName);
+
+    return allNode;
+  }
+
   getTermNode() {
     const ruleName = TERM_RULE_NAME,
           termNode = this.getNodeByRuleName(ruleName);
@@ -45,6 +54,13 @@ export default class ExpressionNode extends NonTerminalNode {
           reduceNode = this.getNodeByRuleName(ruleName);
 
     return reduceNode;
+  }
+
+  getExistsNode() {
+    const ruleName = EXISTS_RULE_NAME,
+          existsNode = this.getNodeByRuleName(ruleName);
+
+    return existsNode;
   }
 
   getTernaryNode() {

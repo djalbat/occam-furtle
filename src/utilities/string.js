@@ -2,6 +2,7 @@
 
 import { EXPORT, EMPTY_STRING } from "../constants";
 import { stringFromStringLiteral } from "./stringLiteral";
+import {referenceFromReferenceNode} from "./element";
 
 export function ternaryStringFromTerm(term) {
   const termString = term.getString(),
@@ -84,11 +85,14 @@ export function valuesStringFromValuesArray(valuesArray) {
   return valuesString;
 }
 
-export function primtiveStringFromNominalValue(nominalValue) {
-  const string = nominalValue.getString(),
-        primtiveString = string;  ///
+export function allStringFromVariableAndValues(variable, values) {
+  const variableString = variable.getString(),
+        valuesString = values.getString(),
+        allString = (valuesString !== EMPTY_STRING) ?
+                     `all(${variableString}, ${valuesString})` :
+                       `all(${variableString})`;
 
-  return primtiveString;
+  return allString;
 }
 
 export function expressionStringFromProperties(properties) {
@@ -105,6 +109,13 @@ export function expressionStringFromProperties(properties) {
   return expressionString;
 }
 
+export function primtiveStringFromNominalValue(nominalValue) {
+  const string = nominalValue.getString(),
+        primtiveString = string;  ///
+
+  return primtiveString;
+}
+
 export function primtiveStringFromStringLiteral(stringLiteral) {
   const string = stringFromStringLiteral(stringLiteral),
         primtiveString = string;  ///
@@ -119,8 +130,8 @@ export function primtiveStringFromNominalValues(nominalValues) {
     const nominalValueString = nominalValue.getString();
 
     primitiveString = (primitiveString !== null) ?
-                       `${primitiveString}, ${nominalValueString}` :
-                          nominalValueString; ///
+                       `${primitiveString}, '${nominalValueString}'` :
+                        `'${nominalValueString}'`;
 
     return primitiveString;
   }, null);
@@ -128,6 +139,30 @@ export function primtiveStringFromNominalValues(nominalValues) {
   primtiveString = `[${primtiveString}]`;
 
   return primtiveString;
+}
+
+export function existsStringFromVariableAndValues(variable, values) {
+  const variableString = variable.getString(),
+        valuesString = values.getString(),
+        existsString = (valuesString !== EMPTY_STRING) ?
+                        `exists(${variableString}, ${valuesString})` :
+                          `exists(${variableString})`;
+
+  return existsString;
+}
+
+export function referencesStringFromReferencesArray(referencesArray) {
+  const referencesString = referencesArray.reduce((referencesString, reference) => {
+    const referenceString = reference.getString();
+
+    referencesString = (referencesString === null) ?
+                         referenceString :
+                          `${referencesString}, ${referenceString}`;
+
+    return referencesString;
+  }, null); ///
+
+  return referencesString;
 }
 
 export function returnBlockStringFromReturnStatementNode(returnStatement) {
@@ -155,6 +190,14 @@ export function typeStringFromTypeNameAndArgumentTypeName(typeName, argumentType
   }
 
   return typeString;
+}
+
+export function procedureCallStringFromReferenceAndValues(reference, values) {
+  const valuesString = values.getString(),
+        referenceString = reference.getString(),
+        procedureCallString = `${referenceString}(${valuesString})`;
+
+  return procedureCallString;
 }
 
 export function variableAssignmentStringFromTypeAndVariable(type, variable) {

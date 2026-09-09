@@ -12,7 +12,7 @@ const { nodesQuery } = queryUtilities,
 const logLevel = TRACE_LEVEL,
       filePath = "polynomials/Funcions/Integer polynomials.ftl",
       projectName = "polynomials",
-      procedureName = "isTermIntegerPolynomial",
+      procedureName = "isTermExponential",
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),

@@ -46,7 +46,7 @@ export default define(class Values extends Element {
     return this.mapValue((value, forward, back) => {
       return value.evaluate(context, forward, back);
     }, (valuesArray, back) => {
-      const valuesString = valuesStringFromValuesArray(valuesArray, context),
+      const valuesString = valuesStringFromValuesArray(valuesArray),
             string = valuesString, ///
             array = valuesArray, ///
             node = null,
@@ -60,13 +60,37 @@ export default define(class Values extends Element {
     }, back);
   }
 
+  merge(values, context) {
+    let array;
+
+    array = values.getArray();
+
+    const valuesArray = [
+            ...this.array,
+            ...array,
+          ],
+          valuesString = valuesStringFromValuesArray(valuesArray),
+          string = valuesString; ///
+
+    array = valuesArray; ///
+
+    const node = null,
+          breakPoint = null;
+
+    context = null;
+
+    values = new Values(context, string, node, breakPoint, array);
+
+    return values;
+  }
+
   static name = "Values";
 
   static fromValue(value, context) {
     const valuesArray = [
             value
           ],
-          valuesString = valuesStringFromValuesArray(valuesArray, context),
+          valuesString = valuesStringFromValuesArray(valuesArray),
           string = valuesString, ///
           array = valuesArray, ///
           node = null,

@@ -44,7 +44,7 @@ export default define(class Terms extends Element {
     return this.mapTerm((term, forward, back) => {
       return term.evaluate(context, forward, back);
     }, (valuesArray) => {
-      const valuesString = valuesStringFromValuesArray(valuesArray, context),
+      const valuesString = valuesStringFromValuesArray(valuesArray),
             string = valuesString, ///
             array = valuesArray, ///
             node = null,

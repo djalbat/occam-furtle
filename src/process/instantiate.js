@@ -3,7 +3,12 @@
 import { bnfUtilities } from "occam-languages";
 
 import { PERIOD, PERIOD_STRING_LITERAL } from "../constants";
-import { TYPE_RULE_NAME, LABEL_RULE_NAME, REFERENCE_RULE_NAME, PARAMETERS_RULE_NAME, IMPORT_BINDING_RULE_NAME, IMPORT_STATEMENT_RULE_NAME } from "../ruleNames";
+import { TYPE_RULE_NAME,
+         LABEL_RULE_NAME,
+         REFERENCE_RULE_NAME,
+         PARAMETERS_RULE_NAME,
+         IMPORT_BINDING_RULE_NAME,
+         IMPORT_STATEMENT_RULE_NAME } from "../ruleNames";
 
 const { instantiate, ruleFromRuleName } = bnfUtilities;
 

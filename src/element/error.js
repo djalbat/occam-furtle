@@ -1,17 +1,17 @@
 "use strict";
 
-import {Element, breakPointUtilities} from "occam-languages";
+import { Element, breakPointUtilities } from "occam-languages";
 
 import { define } from "../elements";
 
-const { breakable } = breakPointUtilities;
+const { unbreakable } = breakPointUtilities;
 
 export default define(class Error extends Element {
   constructor(context, string, node, breakPoint) {
     super(context, string, node, breakPoint);
   }
 
-  verify = breakable(function (context, forward, back) {
+  verify = unbreakable(function (context, forward, back) {
     const errorString = this.getString();  ///
 
     context.warning(`The '${errorString}' error cannot be verified.`);

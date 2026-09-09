@@ -6,6 +6,7 @@ import Exception from "../exception";
 
 import { free } from "../utilities/context";
 import { define } from "../elements";
+import { procedureCallStringFromReferenceAndValues } from "../utilities/string";
 
 export default define(class ProcedureCall extends Element {
   constructor(context, string, node, breakPoint, reference, values) {
@@ -65,4 +66,17 @@ export default define(class ProcedureCall extends Element {
   }
 
   static name = "ProcedureCall";
+
+  static fromReferenceAndValues(reference, values, context) {
+    const procedureCallString = procedureCallStringFromReferenceAndValues(reference, values),
+          node = null,
+          string = procedureCallString, ///
+          breakPoint = null;
+
+    context = null;
+
+    const procedureCall = new ProcedureCall(context, string, node, breakPoint, reference, values);
+
+    return procedureCall;
+  }
 });

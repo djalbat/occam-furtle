@@ -10,7 +10,7 @@ import { LIST_TYPE_NAME } from "../typeNames";
 import { valueFromNominalValue } from "../utilities/value";
 
 const { reduce } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+      { unbreakable } = breakPointUtilities;
 
 export default define(class Reduce extends Element {
   constructor(context, string, node, breakPoint, variable, initialValue, anonymousProcedure) {
@@ -33,10 +33,10 @@ export default define(class Reduce extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, forward, back) {
+  evaluate = unbreakable(function (context, forward, back) {
     const reduceString = this.getString();
 
-    context.trace(`Evaluating the '${reduceString}' reduce...`);
+    context.trace(`Evaluating the '${reduceString}' function...`);
 
     return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
@@ -59,7 +59,7 @@ export default define(class Reduce extends Element {
         }, initialValue, (value, back) => {
           const valueString = value.getString();
 
-          context.trace(`...evaluated the '${reduceString}' reduce as '${valueString}'.`);
+          context.trace(`...evaluated the '${reduceString}' function as '${valueString}'.`);
 
           return forward(value, back);
         }, back);

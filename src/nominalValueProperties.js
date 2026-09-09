@@ -12,6 +12,30 @@ import { TYPE_PARAMETER_NAME, CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, C
 
 const { some } = continuationUtilities;
 
+const properties = [
+  {
+    name: TYPE_PARAMETER_NAME,
+    typeName: STRING_TYPE_NAME
+  },
+  {
+    name: CONTENT_PARAMETER_NAME,
+    typeName: STRING_TYPE_NAME
+  },
+  {
+    name: TERMINAL_PARAMETER_NAME,
+    typeName: BOOLEAN_TYPE_NAME
+  },
+  {
+    name: NO_WHITESPACE_PARAMETER_NAME,
+    typeName: BOOLEAN_TYPE_NAME
+  },
+  {
+    name: CHILD_NODES_PARAMETER_NAME,
+    typeName: LIST_TYPE_NAME,
+    argumentTypeName: NOMINAL_VALUE_TYPE_NAME
+  }
+];
+
 class NominalValueProperties {
   constructor(string, array) {
     this.string = string;
@@ -71,35 +95,28 @@ const nominalValueProperties = NominalValueProperties.fromNothing();
 export default nominalValueProperties;
 
 function nominalValuePropertiesArrayFromNothing() {
-  const names = [
-          TYPE_PARAMETER_NAME,
-          CONTENT_PARAMETER_NAME,
-          TERMINAL_PARAMETER_NAME,
-          NO_WHITESPACE_PARAMETER_NAME,
-          CHILD_NODES_PARAMETER_NAME,
-        ],
-        typeNames = [
-          STRING_TYPE_NAME,
-          BOOLEAN_TYPE_NAME,
-          BOOLEAN_TYPE_NAME,
-          LIST_TYPE_NAME
-        ],
-        argumentTypeNames = [
-          null,
-          null,
-          null,
-          NOMINAL_VALUE_TYPE_NAME
-        ],
-        nominalValuePropertiesArray = names.map((name, index) => {
-          const { Type } = elements,
-                context = null,
-                typeName = typeNames[index],
-                argumentTypeName = argumentTypeNames[index],
-                type = Type.fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context),
+  const nominalValuePropertiesArray = properties.map((property) => {
+          const name = nameFromProperty(property),
+                type = typeFromProperty(property),
                 nominalValueProperty = NominalValueProperty.fromNameAndType(name, type);
 
           return nominalValueProperty;
         });
 
   return nominalValuePropertiesArray;
+}
+
+function nameFromProperty(property) {
+  const { name } = property;
+
+  return name;
+}
+
+function typeFromProperty(property) {
+  const { typeName, argumentTypeName = null } = property,
+        { Type } = elements,
+        context = null,
+        type = Type.fromTypeNameAndArgumentTypeName(typeName, argumentTypeName, context);
+
+  return type;
 }

@@ -6,11 +6,11 @@ import elements from "../elements";
 import Exception from "../exception";
 
 import { define } from "../elements";
-import { valueFromNode, valueFromBoolean } from "../utilities/value";
 import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
+import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
 const { every } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+      { unbreakable } = breakPointUtilities;
 
 export default define(class Every extends Element {
   constructor(context, string, node, breakPoint, variable, anonymousProcedure) {
@@ -29,10 +29,10 @@ export default define(class Every extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, forward, back) {
+  evaluate = unbreakable(function (context, forward, back) {
     const everyString = this.getString();
 
-    context.trace(`Evaluating the '${everyString}' every...`);
+    context.trace(`Evaluating the '${everyString}' function...`);
 
     return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
@@ -46,24 +46,26 @@ export default define(class Every extends Element {
         return back(exception);
       }
 
-      const nodes = value.getNodes();
+      const primitiveValue = value.getPrimitiveValue(),
+            nominalValues = primitiveValue; ///
 
-      return every(nodes, (node, forward, back) => {
-        return this.evaluateAnonymousProcedure(node, context, forward, back);
-      }, (boolean, back) => {
-        const value = valueFromBoolean(boolean, context),
+      return every(nominalValues, (nominalValue, context, forward, back) => {
+        return this.evaluateAnonymousProcedure(nominalValue, context, forward, back);
+      }, context, (context, back) => {
+        const boolean = true,
+              value = valueFromBoolean(boolean, context),
               valueString = value.getString();
 
-        context.trace(`...evaluated the '${everyString}' every as '${valueString}'.`);
+        context.trace(`...evaluated the '${everyString}' function as '${valueString}'.`);
 
         return forward(value, back);
       }, back);
     }, back);
   });
 
-  evaluateAnonymousProcedure(node, context, forward, back) {
+  evaluateAnonymousProcedure(nominalValue, context, forward, back) {
     const { Values } = elements,
-          value = valueFromNode(node, context),
+          value = valueFromNominalValue(nominalValue, context),
           values = Values.fromValue(value, context);
 
     return this.anonymousProcedure.evaluate(values, context, (value, back) => {

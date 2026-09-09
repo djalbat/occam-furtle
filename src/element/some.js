@@ -10,7 +10,7 @@ import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 import { valueFromBoolean, valueFromNominalValue } from "../utilities/value";
 
 const { some } = continuationUtilities,
-      { breakable } = breakPointUtilities;
+      { unbreakable } = breakPointUtilities;
 
 export default define(class Some extends Element {
   constructor(context, string, node, breakPoint, variable, anonymousProcedure) {
@@ -28,10 +28,10 @@ export default define(class Some extends Element {
     return this.anonymousProcedure;
   }
 
-  evaluate = breakable(function (context, forward, back) {
+  evaluate = unbreakable(function (context, forward, back) {
     const someString = this.getString();
 
-    context.trace(`Evaluating the '${someString}' some...`);
+    context.trace(`Evaluating the '${someString}' function...`);
 
     return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
@@ -50,11 +50,12 @@ export default define(class Some extends Element {
 
       return some(nominalValues, (nominalValue, forward, back) => {
         return this.evaluateAnonymousProcedure(nominalValue, context, forward, back);
-      }, (boolean, back) => {
-        const value = valueFromBoolean(boolean, context),
+      }, context, (context, back) => {
+        const boolean = true,
+              value = valueFromBoolean(boolean, context),
               valueString = value.getString();
 
-        context.trace(`...evaluated the '${someString}' some as '${valueString}'.`);
+        context.trace(`...evaluated the '${someString}' function as '${valueString}'.`);
 
         return forward(value, back);
       }, back);

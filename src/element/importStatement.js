@@ -7,7 +7,7 @@ import { instantiate } from "../utilities/context";
 import { instantiateImportStatement } from "../process/instantiate";
 import { releaseNameFromJSON, importBindingsFromJSON, releaseNameToReleaseNameJSON, importBindingsToImportBindingsJSON } from "../utilities/json";
 
-const { every } = continuationUtilities,
+const { cut, every } = continuationUtilities,
       { unbreakable } = breakPointUtilities;
 
 export default define(class ImportStatement extends Element {
@@ -45,6 +45,8 @@ export default define(class ImportStatement extends Element {
   }
 
   verify = unbreakable(function (context, forward, back) {
+    forward = cut(forward, back); ///
+
     const importStatementString = this.getString(); ///
 
     context.trace(`Verifying the '${importStatementString}' import statement...`);

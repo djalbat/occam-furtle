@@ -1,5 +1,6 @@
 "use strict";
 
+export const ALL_RULE_NAME = "all";
 export const SOME_RULE_NAME = "some";
 export const TERM_RULE_NAME = "term";
 export const TYPE_RULE_NAME = "type";
@@ -8,6 +9,7 @@ export const EVERY_RULE_NAME = "every";
 export const LABEL_RULE_NAME = "label";
 export const ERROR_RULE_NAME = "error";
 export const VALUE_RULE_NAME = "value";
+export const EXISTS_RULE_NAME = "exists";
 export const VALUES_RULE_NAME = "values";
 export const REDUCE_RULE_NAME = "reduce";
 export const TERNARY_RULE_NAME = "ternary";
@@ -24,6 +26,7 @@ export const PRIMITIVE_RULE_NAME = "primitive";
 export const REFERENCE_RULE_NAME = "reference";
 export const PARAMETER_RULE_NAME = "parameter";
 export const ENDS_WITH_RULE_NAME = "endsWith";
+export const REFERENCES_RULE_NAME = "references";
 export const NODE_QUERY_RULE_NAME = "nodeQuery";
 export const EXPRESSION_RULE_NAME = "expression";
 export const PARAMETERS_RULE_NAME = "parameters";
@@ -48,3 +51,4 @@ export const OBJECT_ASSIGNMENT_RULE_NAME = "objectAssignment";
 export const VARIABLE_ASSIGNMENT_RULE_NAME = "variableAssignment";
 export const ANONYMOUS_PROCEDURE_RULE_NAME = "anonymousProcedure";
 export const VARIABLE_ASSIGNMENTS_RULE_NAME = "variableAssignments";
+export const REFERENCE_LIST_LITERAL_RULE_NAME = "referencesListLiteral";

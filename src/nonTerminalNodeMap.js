@@ -1,5 +1,6 @@
 "use strict";
 
+import AllNode from "./node/all";
 import SomeNode from "./node/some";
 import TermNode from "./node/term";
 import TypeNode from "./node/type";
@@ -8,6 +9,7 @@ import EveryNode from "./node/every";
 import LabelNode from "./node/label";
 import ErrorNode from "./node/error";
 import ValueNode from "./node/value";
+import ExistsNode from "./node/exists";
 import ValuesNode from "./node/values";
 import ReduceNode from "./node/reduce";
 import TernaryNode from "./node/ternary";
@@ -26,6 +28,7 @@ import StatementNode from "./node/statement";
 import NodeQueryNode from "./node/nodeQuery";
 import ToIntegerNode from "./node/toInteger";
 import ProcedureNode from "./node/procedure";
+import ReferencesNode from "./node/references";
 import StartsWithNode from "./node/startsWith";
 import TryIntegerNode from "./node/tryInteger";
 import NodesQueryNode from "./node/nodesQuery";
@@ -48,8 +51,10 @@ import ObjectAssignmentNode from "./node/assignment/object";
 import AnonymousProcedureNode from "./node/anoymousProcedure";
 import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
+import ReferenceListLiteralNode from "./node/referencesListLiteral";
 
-import { SOME_RULE_NAME,
+import { ALL_RULE_NAME,
+         SOME_RULE_NAME,
          TERM_RULE_NAME,
          TYPE_RULE_NAME,
          TERMS_RULE_NAME,
@@ -57,6 +62,7 @@ import { SOME_RULE_NAME,
          LABEL_RULE_NAME,
          ERROR_RULE_NAME,
          VALUE_RULE_NAME,
+         EXISTS_RULE_NAME,
          VALUES_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
@@ -77,6 +83,7 @@ import { SOME_RULE_NAME,
          EXPRESSION_RULE_NAME,
          PARAMETERS_RULE_NAME,
          TO_INTEGER_RULE_NAME,
+         REFERENCES_RULE_NAME,
          TRY_INTEGER_RULE_NAME,
          NODES_QUERY_RULE_NAME,
          STARTS_WITH_RULE_NAME,
@@ -96,9 +103,11 @@ import { SOME_RULE_NAME,
          OBJECT_ASSIGNMENT_RULE_NAME,
          VARIABLE_ASSIGNMENT_RULE_NAME,
          ANONYMOUS_PROCEDURE_RULE_NAME,
-         VARIABLE_ASSIGNMENTS_RULE_NAME } from "./ruleNames";
+         VARIABLE_ASSIGNMENTS_RULE_NAME,
+         REFERENCE_LIST_LITERAL_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
+  [ALL_RULE_NAME]: AllNode,
   [SOME_RULE_NAME]: SomeNode,
   [TERM_RULE_NAME]: TermNode,
   [TYPE_RULE_NAME]: TypeNode,
@@ -107,6 +116,7 @@ const NonTerminalNodeMap = {
   [LABEL_RULE_NAME]: LabelNode,
   [ERROR_RULE_NAME]: ErrorNode,
   [VALUE_RULE_NAME]: ValueNode,
+  [EXISTS_RULE_NAME]: ExistsNode,
   [VALUES_RULE_NAME]: ValuesNode,
   [REDUCE_RULE_NAME]: ReduceNode,
   [TERNARY_RULE_NAME]: TernaryNode,
@@ -127,6 +137,7 @@ const NonTerminalNodeMap = {
   [NODE_QUERY_RULE_NAME]: NodeQueryNode,
   [EXPRESSION_RULE_NAME]: ExpressionNode,
   [PARAMETERS_RULE_NAME]: ParametersNode,
+  [REFERENCES_RULE_NAME]: ReferencesNode,
   [STARTS_WITH_RULE_NAME]: StartsWithNode,
   [TRY_INTEGER_RULE_NAME]: TryIntegerNode,
   [NODES_QUERY_RULE_NAME]: NodesQueryNode,
@@ -146,7 +157,8 @@ const NonTerminalNodeMap = {
   [OBJECT_ASSIGNMENT_RULE_NAME]: ObjectAssignmentNode,
   [ANONYMOUS_PROCEDURE_RULE_NAME]: AnonymousProcedureNode,
   [VARIABLE_ASSIGNMENT_RULE_NAME]: VariableAssignmentNode,
-  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode
+  [VARIABLE_ASSIGNMENTS_RULE_NAME]: VariableAssignmentsNode,
+  [REFERENCE_LIST_LITERAL_RULE_NAME]: ReferenceListLiteralNode
 };
 
 export default NonTerminalNodeMap;

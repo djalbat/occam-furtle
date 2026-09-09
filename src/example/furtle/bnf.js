@@ -28,7 +28,7 @@ const bnf = `
     
     objectAssignment        ::=  "{" namedBindings "}" "=" variable ";" ;
     
-    listAssignment         ::=  "[" bindings "]" "=" variable ";" ;
+    listAssignment          ::=  "[" bindings "]" "=" variable ";" ;
     
 
 
