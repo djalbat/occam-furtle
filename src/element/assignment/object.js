@@ -10,7 +10,7 @@ import { define } from "../../elements";
 import { stringLiteralFromString } from "../../utilities/stringLiteral";
 import { valueFromBoolean, valueFromStringLiteral, valueFromNodesAndNominalValue } from "../../utilities/value";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "../../typeNames";
-import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "../../parameterNames";
+import { TYPE_PARAMETER_NAME, CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "../../parameterNames";
 
 const { breakable } = breakPointUtilities;
 
@@ -70,6 +70,12 @@ export default define(class ObjectAssignment extends Element {
     let evaluateNamedBinding;
 
     switch (name) {
+      case TYPE_PARAMETER_NAME: {
+        evaluateNamedBinding = this.evaluateTypeNamedBinding.bind(this);
+
+        break;
+      }
+
       case CONTENT_PARAMETER_NAME: {
         evaluateNamedBinding = this.evaluateContentNamedBinding.bind(this);
 
@@ -105,6 +111,47 @@ export default define(class ObjectAssignment extends Element {
         return forward(back);
       }, back);
     }, back);
+  }
+
+  evaluateTypeNamedBinding(namedBinding, term, context, forward, back) {
+    const type = namedBinding.getType(),
+          namedBindingString = namedBinding.getString();
+
+    context.trace(`Evaluating the type '${namedBindingString}' named binding...`);
+
+    const typeStringType = type.isStringType();
+
+    if (!typeStringType) {
+      const namedBindingString = namedBinding.getString(),
+            message = `The '${namedBindingString}' named binding's type should be '${STRING_TYPE_NAME}'.`,
+            exception = Exception.fromMessage(message);
+
+      return back(exception);
+    }
+
+    const primitiveValue = term.getPrimitiveValue(),
+          nominalValue = primitiveValue,  ///
+          node = nominalValue.getNode(),
+          nodeTerminalNode = node.isTerminalNode();
+
+    if (!nodeTerminalNode) {
+      const termString = term.getString(),
+            message = `The '${termString}' term's node must be terminal.`,
+            exception = Exception.fromMessage(message);
+
+      return back(exception);
+    }
+
+    const terminalNode = node,  ///
+          terminalNodeType = terminalNode.getType(),
+          string = terminalNodeType,  ///
+          stringLiteral = stringLiteralFromString(string),
+          value = valueFromStringLiteral(stringLiteral, context),
+          valueSttring = value.getString();
+
+    context.debug(`...evaluated the type '${namedBindingString}' named binding as '${valueSttring}'.`);
+
+    return forward(value, back);
   }
 
   evaluateContentNamedBinding(namedBinding, term, context, forward, back) {

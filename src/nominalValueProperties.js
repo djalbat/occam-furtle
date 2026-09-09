@@ -8,7 +8,7 @@ import NominalValueProperty from "./nominalValueProperty";
 
 import { nominalValuePropertiesStringFromNominalValuePropertiesArray } from "./utilities/string";
 import { LIST_TYPE_NAME, STRING_TYPE_NAME, BOOLEAN_TYPE_NAME, NOMINAL_VALUE_TYPE_NAME } from "./typeNames";
-import { CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "./parameterNames";
+import { TYPE_PARAMETER_NAME, CONTENT_PARAMETER_NAME, TERMINAL_PARAMETER_NAME, CHILD_NODES_PARAMETER_NAME, NO_WHITESPACE_PARAMETER_NAME } from "./parameterNames";
 
 const { some } = continuationUtilities;
 
@@ -72,6 +72,7 @@ export default nominalValueProperties;
 
 function nominalValuePropertiesArrayFromNothing() {
   const names = [
+          TYPE_PARAMETER_NAME,
           CONTENT_PARAMETER_NAME,
           TERMINAL_PARAMETER_NAME,
           NO_WHITESPACE_PARAMETER_NAME,
