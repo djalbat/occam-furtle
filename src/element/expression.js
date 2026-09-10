@@ -5,15 +5,14 @@ import { Element } from "occam-languages";
 import { define } from "../elements";
 
 export default define(class Expression extends Element {
-  constructor(context, string, node, breakPoint, term, some, every, reduce, all, exists, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall) {
+  constructor(context, string, node, breakPoint, term, some, every, reduce, apply, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall) {
     super(context, string, node, breakPoint);
 
     this.term = term;
     this.some = some;
     this.every = every;
     this.reduce = reduce;
-    this.all = all;
-    this.exists = exists;
+    this.apply = apply;
     this.ternary = ternary;
     this.nodeQuery = nodeQuery;
     this.nodesQuery = nodesQuery;
@@ -43,12 +42,8 @@ export default define(class Expression extends Element {
     return this.reduce;
   }
 
-  getAll() {
-    return this.all;
-  }
-
-  getExists() {
-    return this.exists;
+  getApply() {
+    return this.apply;
   }
 
   getTernary() {
@@ -108,10 +103,8 @@ export default define(class Expression extends Element {
       type = this.every.getType();
     } else if (this.reduce !== null) {
       type = this.reduce.getType();
-    } else if (this.all !== null) {
-      type = this.all.getType();
-    } else if (this.exists !== null) {
-      type = this.exists.getType();
+    } else if (this.apply !== null) {
+      type = this.apply.getType();
     } else if (this.ternary !== null) {
       type = this.ternary.getType();
     } else if (this.nodeQuery !== null) {
@@ -166,10 +159,8 @@ export default define(class Expression extends Element {
      return this.every.evaluate(context, forward, back);
     } else if (this.reduce !== null) {
       return this.reduce.evaluate(context, forward, back);
-    } else if (this.all !== null) {
-      return this.all.evaluate(context, forward, back);
-    } else if (this.exists !== null) {
-      return this.exists.evaluate(context, forward, back);
+    } else if (this.apply !== null) {
+      return this.apply.evaluate(context, forward, back);
     } else if (this.ternary !== null) {
       return this.ternary.evaluate(context, forward, back);
     } else if (this.procedureCall !== null) {

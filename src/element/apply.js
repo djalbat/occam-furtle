@@ -12,7 +12,7 @@ import { LIST_TYPE_NAME, BOOLEAN_TYPE_NAME } from "../typeNames";
 const { every } = continuationUtilities,
       { unbreakable } = breakPointUtilities;
 
-export default define(class All extends Element {
+export default define(class Apply extends Element {
   constructor(context, string, node, breakPoint, values, variable, references) {
     super(context, string, node, breakPoint);
 
@@ -35,9 +35,9 @@ export default define(class All extends Element {
   }
 
   evaluate = unbreakable(function (context, forward, back) {
-    const allString = this.getString();
+    const applyString = this.getString();
 
-    context.trace(`Evaluating the '${allString}' function...`);
+    context.trace(`Evaluating the '${applyString}' function...`);
 
     return this.variable.evaluate(context, (value, back) => {
       const valueType = value.getType(),
@@ -93,7 +93,7 @@ export default define(class All extends Element {
               value = valueFromBoolean(boolean, context),
               valueString = value.getString();
 
-        context.trace(`...evaluated the '${allString}' function as '${valueString}'.`);
+        context.trace(`...evaluated the '${applyString}' function as '${valueString}'.`);
 
         return forward(value, back);
       }, back);
@@ -115,5 +115,5 @@ export default define(class All extends Element {
     return procedureCall.evaluate(context, forward, back);
   }
 
-  static name = "All";
+  static name = "Apply";
 });

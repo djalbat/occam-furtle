@@ -85,16 +85,6 @@ export function valuesStringFromValuesArray(valuesArray) {
   return valuesString;
 }
 
-export function allStringFromVariableAndValues(variable, values) {
-  const variableString = variable.getString(),
-        valuesString = values.getString(),
-        allString = (valuesString !== EMPTY_STRING) ?
-                     `all(${variableString}, ${valuesString})` :
-                       `all(${variableString})`;
-
-  return allString;
-}
-
 export function expressionStringFromProperties(properties) {
   let expressionString;
 
@@ -141,14 +131,14 @@ export function primtiveStringFromNominalValues(nominalValues) {
   return primtiveString;
 }
 
-export function existsStringFromVariableAndValues(variable, values) {
+export function applyStringFromVariableAndValues(variable, values) {
   const variableString = variable.getString(),
         valuesString = values.getString(),
-        existsString = (valuesString !== EMPTY_STRING) ?
-                        `exists(${variableString}, ${valuesString})` :
-                          `exists(${variableString})`;
+        applyString = (valuesString !== EMPTY_STRING) ?
+                       `apply(${variableString}, ${valuesString})` :
+                         `apply(${variableString})`;
 
-  return existsString;
+  return applyString;
 }
 
 export function referencesStringFromReferencesArray(referencesArray) {

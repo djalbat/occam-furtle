@@ -4,7 +4,7 @@ import { NonTerminalNode } from "occam-languages";
 
 import { VALUES_RULE_NAME, VARIABLE_RULE_NAME, REFERENCE_LIST_LITERAL_RULE_NAME } from "../ruleNames";
 
-export default class AllNode extends NonTerminalNode {
+export default class ApplyNode extends NonTerminalNode {
   getReferencesNode() {
     const referenceListLiteralNode = this.getReferenceListLiteralNode(),
           referencesNode = referenceListLiteralNode.getReferencesNode();
@@ -40,5 +40,5 @@ export default class AllNode extends NonTerminalNode {
     return referenceListLiteralNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(AllNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ApplyNode, ruleName, childNodes, opacity, precedence); }
 }

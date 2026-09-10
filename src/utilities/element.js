@@ -10,7 +10,7 @@ import { ternaryStringFromTerm,
          termStringFromProperties,
          valueStringFromProperties,
          expressionStringFromProperties,
-         allStringFromVariableAndValues,
+         applyStringFromVariableAndValues,
          referencesStringFromReferencesArray,
          returnBlockStringFromReturnStatementNode,
          variableAssignmentStringFromTypeAndVariable,
@@ -20,23 +20,6 @@ import { ternaryStringFromTerm,
          variableAssignmentStringFromTypeAndVariableAssignmentsArray,
          procedureStringFromTypeLabelExportedParametersAndReturnBlock,
          reduceStringFromVariableInitialExpressionAndAnonymousProcedure } from "../utilities/string";
-
-export function allFromAllNode(someNode, context) {
-  const { All } = elements,
-        node = someNode,  ///
-        values = valuesFromAllNode(someNode, context),
-        variable = variableFromAllNode(someNode, context),
-        references = referencesFromAllNode(someNode, context),
-        allString = allStringFromVariableAndValues(variable, values),
-        string = allString,  ///
-        breakPoint = null;
-
-  context = null;
-
-  const all = new All(context, string, node, breakPoint, values, variable, references);
-
-  return all;
-}
 
 export function someFromSomeNode(someNode, context) {
   const { Some } = elements,
@@ -95,6 +78,23 @@ export function typeFromTypeNode(typeNode, context) {
   const type = new Type(context, string, node, breakPoint, name, argumentType);
 
   return type;
+}
+
+export function applyFromApplyNode(someNode, context) {
+  const { Apply } = elements,
+        node = someNode,  ///
+        values = valuesFromApplyNode(someNode, context),
+        variable = variableFromApplyNode(someNode, context),
+        references = referencesFromApplyNode(someNode, context),
+        applyString = applyStringFromVariableAndValues(variable, values),
+        string = applyString,  ///
+        breakPoint = null;
+
+  context = null;
+
+  const apply = new Apply(context, string, node, breakPoint, values, variable, references);
+
+  return apply;
 }
 
 export function valueFromValueNode(valueNode, context) {
@@ -158,23 +158,6 @@ export function labelFromLabelNode(labelNode, context) {
   const label = new Label(context, string, node, breakPoint, name);
 
   return label;
-}
-
-export function existsFromExistsNode(someNode, context) {
-  const { Exists } = elements,
-        node = someNode,  ///
-        values = valuesFromExistsNode(someNode, context),
-        variable = variableFromExistsNode(someNode, context),
-        references = referencesFromExistsNode(someNode, context),
-        existsString = existsStringFromVariableAndValues(variable, values),
-        string = existsString,  ///
-        breakPoint = null;
-
-  context = null;
-
-  const exists = new Exists(context, string, node, breakPoint, values, variable, references);
-
-  return exists;
 }
 
 export function valuesFromValuesNode(valuesNode, context) {
@@ -489,8 +472,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
         some = someFromExpressionNode(expressionNode, context),
         every = everyFromExpressionNode(expressionNode, context),
         reduce = reduceFromExpressionNode(expressionNode, context),
-        all = allFromExpressionNode(expressionNode, context),
-        exists = existsFromExpressionNode(expressionNode, context),
+        apply = applyFromExpressionNode(expressionNode, context),
         ternary = ternaryFromExpressionNode(expressionNode, context),
         nodeQuery = nodeQueryFromExpressionNode(expressionNode, context),
         nodesQuery = nodesQueryFromExpressionNode(expressionNode, context),
@@ -507,8 +489,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
           some,
           every,
           reduce,
-          all,
-          exists,
+          apply,
           ternary,
           nodeQuery,
           nodesQuery,
@@ -527,7 +508,7 @@ export function expressionFromExpressionNode(expressionNode, context) {
 
   context = null;
 
-  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, all, exists, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall);
+  const expression = new Expression(context, string, node, breakPoint, term, some, every, reduce, apply, ternary, nodeQuery, nodesQuery, lengthOf, toInteger, tryInteger, contains, endsWith, startsWith, returnBlock, procedureCall);
 
   return expression;
 }
@@ -809,24 +790,17 @@ export function nameFromTypeNode(typeNode, context) {
   return name;
 }
 
-export function valuesFromAllNode(allNode, context) {
-  const valuesNode = allNode.getValuesNode(), ///
-        values = valuesFromValuesNode(valuesNode, context);
-
-  return values;
-}
-
 export function nameFromLabelNode(labelNode, context) {
   const name = labelNode.getName();
 
   return name;
 }
 
-export function variableFromAllNode(allNode, context) {
-  const variableNode = allNode.getVariableNode(), ///
-        variable = variableFromVariableNode(variableNode, context);
+export function valuesFromApplyNode(allNode, context) {
+  const valuesNode = allNode.getValuesNode(), ///
+        values = valuesFromValuesNode(valuesNode, context);
 
-  return variable;
+  return values;
 }
 
 export function valueFromReduceNode(reduceNode, context) {
@@ -861,13 +835,6 @@ export function typeFromBindingNode(bindingNode, context) {
   return type;
 }
 
-export function valuesFromExistsNode(existsNode, context) {
-  const valuesNode = existsNode.getValuesNode(), ///
-        values = valuesFromValuesNode(valuesNode, context);
-
-  return values;
-}
-
 export function variableFromSomeNode(someNode, context) {
   const variableNode = someNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
@@ -899,11 +866,11 @@ export function typeFromVariableNode(variableNode, context) {
   return type;
 }
 
-export function referencesFromAllNode(allNode, context) {
-  const referencesNode = allNode.getReferencesNode(),
-        references = referencesFromReferencesNode(referencesNode, context);
+export function variableFromApplyNode(allNode, context) {
+  const variableNode = allNode.getVariableNode(), ///
+        variable = variableFromVariableNode(variableNode, context);
 
-  return references;
+  return variable;
 }
 
 export function typeFromProcedureNode(procedureNode, context) {
@@ -977,18 +944,6 @@ export function variableFromValueNode(valueNode, context) {
   return variable;
 }
 
-export function allFromExpressionNode(expressionNode, context) {
-  let all = null;
-
-  const allNode = expressionNode.getAllNode();
-
-  if (allNode !== null) {
-    all = allFromAllNode(allNode, context);
-  }
-
-  return all;
-}
-
 export function primitiveFromValueNode(valueNode, context) {
   let primitive = null;
 
@@ -1003,13 +958,6 @@ export function primitiveFromValueNode(valueNode, context) {
 
 export function variableFromReduceNode(reduceNode, context) {
   const variableNode = reduceNode.getVariableNode(),
-        variable = variableFromVariableNode(variableNode, context);
-
-  return variable;
-}
-
-export function variableFromExistsNode(existsNode, context) {
-  const variableNode = existsNode.getVariableNode(), ///
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
@@ -1060,6 +1008,13 @@ export function someFromExpressionNode(expressionNode, context) {
   return some;
 }
 
+export function referencesFromApplyNode(allNode, context) {
+  const referencesNode = allNode.getReferencesNode(),
+        references = referencesFromReferencesNode(referencesNode, context);
+
+  return references;
+}
+
 export function negatedTermFromTermNode(termNode, context) {
   let negatedTerm = null;
 
@@ -1104,6 +1059,18 @@ export function everyFromExpressionNode(expressionNode, context) {
   return every;
 }
 
+export function applyFromExpressionNode(expressionNode, context) {
+  let apply = null;
+
+  const applyNode = expressionNode.getApplyNode();
+
+  if (applyNode !== null) {
+    apply = applyFromApplyNode(applyNode, context);
+  }
+
+  return apply;
+}
+
 export function typeFromLogicalTermNode(logicalTermNode, context) {
   const type = BOOLEAN_TYPE_NAME;
 
@@ -1123,18 +1090,6 @@ export function termFromNegatedTermNode(negatedTermNode, context) {
   return term;
 }
 
-export function existsFromExpressionNode(expressionNode, context) {
-  let exists = null;
-
-  const existsNode = expressionNode.getExistsNode();
-
-  if (existsNode !== null) {
-    exists = existsFromExistsNode(existsNode, context);
-  }
-
-  return exists;
-}
-
 export function argumentTypeFromTypeNode(typeNode, context) {
   let argumentType = null;
 
@@ -1147,13 +1102,6 @@ export function argumentTypeFromTypeNode(typeNode, context) {
   }
 
   return argumentType;
-}
-
-export function referencesFromExistsNode(existsNode, context) {
-  const referencesNode = existsNode.getReferencesNode(),
-        references = referencesFromReferencesNode(referencesNode, context);
-
-  return references;
 }
 
 export function variableFromLengthOfNode(lengthOfNode, context) {
@@ -1681,6 +1629,12 @@ export function returnStatementFromReturnBlockNode(returnBlockNode, context) {
   return returnStatement;
 }
 
+export function releaseNameFromImportStatementNode(importStatementNode, context) {
+  const releaseName = importStatementNode.getReleaseName();
+
+  return releaseName;
+}
+
 export function variableAssignmentsFromStatementNode(statementNode, context) {
   let variableAssignments = null;
 
@@ -1705,12 +1659,6 @@ export function parametersFromAnonymousProcedureNode(anonymousProcedureNode, con
         parameters = parametersFromParametersNode(parametersNode, context);
 
   return parameters;
-}
-
-export function releaseNameFromImportStatementNode(importStatementNode, context) {
-  const releaseName = importStatementNode.getReleaseName();
-
-  return releaseName;
 }
 
 export function importBindingsFromImportStatementNode(importStatementNode, context) {

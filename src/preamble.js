@@ -1,6 +1,5 @@
 "use strict";
 
-import All from "./element/all";
 import Some from "./element/some";
 import Term from "./element/term";
 import Type from "./element/type";
@@ -9,9 +8,9 @@ import Label from "./element/label";
 import Error from "./element/error";
 import Every from "./element/every";
 import Value from "./element/value";
+import Apply from "./element/apply";
 import Values from "./element/values";
 import Reduce from "./element/reduce";
-import Exists from "./element/exists";
 import Ternary from "./element/ternary";
 import Binding from "./element/binding";
 import Bindings from "./element/bindings";
