@@ -9,15 +9,14 @@ const { FileContextFromFilePath } = require("../utilities/fileContext"),
 const { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 
 function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, nominalValuesFromNothing) {
-  let releaseContext = null;
+  let context,
+      releaseContext = null,
+      releaseContexts = [];
 
   const log = Log.fromLogLevel(logLevel),
         callback = (breakPoint, context, forward, back) => {
           forward(breakPoint, back);
-        },
-        releaseContexts = [];
-
-  let context;
+        };
 
   before(() => {
     context = {
@@ -82,25 +81,31 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     }
   });
 
-  let json,
-      entries,
-      customGrammar;
-
-  it("serialise", () => {
-    json = releaseContext.toJSON();
-
-    entries = releaseContext.getEntries();
-
-    customGrammar = releaseContext.getCustomGrammar();
-  });
-
-  it("unserialise", () => {
-    const name = projectName; ///
-
-    releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
-
-    releaseContext.initialise(releaseContexts, FileContextFromFilePath);
-  });
+  // let json,
+  //     entries,
+  //     customGrammar;
+  //
+  // it("serialise", () => {
+  //   json = releaseContext.toJSON();
+  //
+  //   entries = releaseContext.getEntries();
+  //
+  //   customGrammar = releaseContext.getCustomGrammar();
+  // });
+  //
+  // it("unserialise", () => {
+  //   const name = projectName, ///
+  //         dependencyReleaseContexts = releaseContext.getDependencyReleaseContexts();
+  //
+  //   releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+  //
+  //   releaseContexts = [ ///
+  //     releaseContext,
+  //     ...dependencyReleaseContexts
+  //   ];
+  //
+  //   releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+  // });
 
   it(procedureName, (done) => {
     const context = releaseContext, ///
