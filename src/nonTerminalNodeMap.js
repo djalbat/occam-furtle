@@ -1,15 +1,14 @@
 "use strict";
 
-import AllNode from "./node/all";
 import SomeNode from "./node/some";
 import TermNode from "./node/term";
 import TypeNode from "./node/type";
+import ApplyNode from "./node/apply";
 import TermsNode from "./node/terms";
 import EveryNode from "./node/every";
 import LabelNode from "./node/label";
 import ErrorNode from "./node/error";
 import ValueNode from "./node/value";
-import ExistsNode from "./node/exists";
 import ValuesNode from "./node/values";
 import ReduceNode from "./node/reduce";
 import TernaryNode from "./node/ternary";
@@ -53,16 +52,15 @@ import VariableAssignmentNode from "./node/assignment/variable";
 import VariableAssignmentsNode from "./node/assignments/variable";
 import ReferenceListLiteralNode from "./node/referencesListLiteral";
 
-import { ALL_RULE_NAME,
-         SOME_RULE_NAME,
+import { SOME_RULE_NAME,
          TERM_RULE_NAME,
          TYPE_RULE_NAME,
+         APPLY_RULE_NAME,
          TERMS_RULE_NAME,
          EVERY_RULE_NAME,
          LABEL_RULE_NAME,
          ERROR_RULE_NAME,
          VALUE_RULE_NAME,
-         EXISTS_RULE_NAME,
          VALUES_RULE_NAME,
          REDUCE_RULE_NAME,
          TERNARY_RULE_NAME,
@@ -107,16 +105,15 @@ import { ALL_RULE_NAME,
          REFERENCE_LIST_LITERAL_RULE_NAME } from "./ruleNames";
 
 const NonTerminalNodeMap = {
-  [ALL_RULE_NAME]: AllNode,
   [SOME_RULE_NAME]: SomeNode,
   [TERM_RULE_NAME]: TermNode,
   [TYPE_RULE_NAME]: TypeNode,
+  [APPLY_RULE_NAME]: ApplyNode,
   [TERMS_RULE_NAME]: TermsNode,
   [EVERY_RULE_NAME]: EveryNode,
   [LABEL_RULE_NAME]: LabelNode,
   [ERROR_RULE_NAME]: ErrorNode,
   [VALUE_RULE_NAME]: ValueNode,
-  [EXISTS_RULE_NAME]: ExistsNode,
   [VALUES_RULE_NAME]: ValuesNode,
   [REDUCE_RULE_NAME]: ReduceNode,
   [TERNARY_RULE_NAME]: TernaryNode,

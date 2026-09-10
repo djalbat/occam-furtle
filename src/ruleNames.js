@@ -1,15 +1,14 @@
 "use strict";
 
-export const ALL_RULE_NAME = "all";
 export const SOME_RULE_NAME = "some";
 export const TERM_RULE_NAME = "term";
 export const TYPE_RULE_NAME = "type";
+export const APPLY_RULE_NAME = "apply";
 export const TERMS_RULE_NAME = "terms";
 export const EVERY_RULE_NAME = "every";
 export const LABEL_RULE_NAME = "label";
 export const ERROR_RULE_NAME = "error";
 export const VALUE_RULE_NAME = "value";
-export const EXISTS_RULE_NAME = "exists";
 export const VALUES_RULE_NAME = "values";
 export const REDUCE_RULE_NAME = "reduce";
 export const TERNARY_RULE_NAME = "ternary";
