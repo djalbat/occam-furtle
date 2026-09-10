@@ -81,31 +81,31 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     }
   });
 
-  // let json,
-  //     entries,
-  //     customGrammar;
-  //
-  // it("serialise", () => {
-  //   json = releaseContext.toJSON();
-  //
-  //   entries = releaseContext.getEntries();
-  //
-  //   customGrammar = releaseContext.getCustomGrammar();
-  // });
-  //
-  // it("unserialise", () => {
-  //   const name = projectName, ///
-  //         dependencyReleaseContexts = releaseContext.getDependencyReleaseContexts();
-  //
-  //   releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
-  //
-  //   releaseContexts = [ ///
-  //     releaseContext,
-  //     ...dependencyReleaseContexts
-  //   ];
-  //
-  //   releaseContext.initialise(releaseContexts, FileContextFromFilePath);
-  // });
+  let json,
+      entries,
+      customGrammar;
+
+  it("serialise", () => {
+    json = releaseContext.toJSON();
+
+    entries = releaseContext.getEntries();
+
+    customGrammar = releaseContext.getCustomGrammar();
+  });
+
+  it("unserialise", () => {
+    const name = projectName, ///
+          dependencyReleaseContexts = releaseContext.getDependencyReleaseContexts();
+
+    releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
+
+    releaseContexts = [ ///
+      releaseContext,
+      ...dependencyReleaseContexts
+    ];
+
+    releaseContext.initialise(releaseContexts, FileContextFromFilePath);
+  });
 
   it(procedureName, (done) => {
     const context = releaseContext, ///

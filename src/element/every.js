@@ -80,9 +80,14 @@ export default define(class Every extends Element {
         return back(exception);
       }
 
-      const boolean = value.getBoolean();
+      const primitiveValue = value.getPrimitiveValue(),
+            boolean = primitiveValue; ///
 
-      return forward(boolean, back);
+      if (!boolean) {
+        return back();
+      }
+
+      return forward(context, back);
     }, back);
   }
 

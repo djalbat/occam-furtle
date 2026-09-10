@@ -48,7 +48,7 @@ export default define(class Some extends Element {
       const primitiveValue = value.getPrimitiveValue(),
             nominalValues = primitiveValue; ///
 
-      return some(nominalValues, (nominalValue, forward, back) => {
+      return some(nominalValues, (nominalValue, context, forward, back) => {
         return this.evaluateAnonymousProcedure(nominalValue, context, forward, back);
       }, context, (context, back) => {
         const boolean = true,
@@ -82,7 +82,11 @@ export default define(class Some extends Element {
       const primitiveValue = value.getPrimitiveValue(),
             boolean = primitiveValue; ///
 
-      return forward(boolean, back);
+      if (!boolean) {
+        return back();
+      }
+
+      return forward(context, back);
     }, back);
   }
 

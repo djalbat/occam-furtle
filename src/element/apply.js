@@ -81,7 +81,7 @@ export default define(class Apply extends Element {
           }
 
           const primitiveValue = value.getPrimitiveValue(),
-                boolean = primitiveValue;
+                boolean = primitiveValue; ///
 
           if (!boolean) {
             return back();
