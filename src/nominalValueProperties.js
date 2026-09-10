@@ -66,9 +66,14 @@ class NominalValueProperties {
       context.debug(`...compared the '${namedBindingString}' named binding with the '${nominalValuePropertiesString}' node properties.`);
 
       return forward(back);
-    }, () => {
-      const message = `The '${namedBindingString}' named binding does not compare to any of the '${nominalValuePropertiesString}' node properties.`,
-            exception = Exception.fromMessage(message);
+    }, (exception) => {
+      if (exception) {
+        return back(exception);
+      }
+
+      const message = `The '${namedBindingString}' named binding does not compare to any of the '${nominalValuePropertiesString}' node properties.`;
+
+      exception = Exception.fromMessage(message);
 
       return back(exception);
     });

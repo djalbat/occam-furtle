@@ -56,12 +56,13 @@ export default define(class Apply extends Element {
             referencesLength = this.references.getLength();
 
       if (valuesLength !== referencesLength) {
-        const valueString = value.getString(),
-              referencesString = this.references.getString(),
-              message = `The ${valueString} values and '${referencesString}' function references are not the same length.`,
-              exception = Exception.fromMessage(message);
+        const boolean = false,
+              value = valueFromBoolean(boolean, context),
+              valueString = value.getString();
 
-        return back(exception);
+        context.trace(`...evaluated the '${applyString}' function as '${valueString}'.`);
+
+        return forward(value, back);
       }
 
       return every(values, (value, context, forward, back, index) => {

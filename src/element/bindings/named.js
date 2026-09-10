@@ -90,9 +90,14 @@ export default define(class NamedBindings extends Element {
       context.debug(`...compared the '${namedBindingString}' named binding with the '${namedBindingsString}' named bindings.`);
 
       return forward(back);
-    }, () => {
-      const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`,
-            exception = Exception.fromMessage(message);
+    }, (exception) => {
+      if (exception) {
+        return back(exception);
+      }
+
+      const message = `The '${namedBindingString}' namedBinding does not compare to any of the '${namedBindingsString}' named bindings.`;
+
+      exception = Exception.fromMessage(message);
 
       return back(exception);
     });

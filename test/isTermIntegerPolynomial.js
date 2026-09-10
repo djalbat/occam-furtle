@@ -12,11 +12,11 @@ const { nodesQuery } = queryUtilities,
 const logLevel = TRACE_LEVEL,
       filePath = "polynomials/Funcions/Integer polynomials.ftl",
       projectName = "polynomials",
-      procedureName = "isTermExponential",
+      procedureName = "isTermCompound",
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `x^2 = x
+      content = `2x^3 = x
 `;
 
 describe.only(projectName, () => {
