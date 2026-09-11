@@ -111,8 +111,6 @@ export default define(class Procedure extends Element {
 
     context.trace(`Evaluating the '${procedureString}' function...`);
 
-    console.log(values.array[0].primitive.value.node)
-
     return this.parameters.compareValues(values, context, (back) => {
       this.guaranteeReturnBlock();
 
