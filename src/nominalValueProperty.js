@@ -22,8 +22,6 @@ export default class NominalValueProperty {
   }
 
   compareNamedBinding(namedBinding, context, forward, back) {
-    let namedBindingCompares = false;
-
     const nominalValuePropertyString = this.string, ///
           namedBindingString = namedBinding.getString();
 
@@ -34,11 +32,7 @@ export default class NominalValueProperty {
           nameEqualToNamedBindingName = (this.name === namedBindingName),
           typeEqualToNamedBindingType = this.type.isEqualTo(namedBindingType);
 
-    if (nameEqualToNamedBindingName && typeEqualToNamedBindingType) {
-      namedBindingCompares = true;
-    }
-
-    if (!namedBindingCompares) {
+    if (!nameEqualToNamedBindingName || !typeEqualToNamedBindingType) {
       return back();
     }
 

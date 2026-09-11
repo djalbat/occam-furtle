@@ -26,6 +26,10 @@ export default define(class ProcedureCall extends Element {
 
   getProcedureName() { return this.reference.getProcedureName(); }
 
+  findProcedure(context) {
+
+  }
+
   evaluate(context, forward, back) {
     const procedureCallString = this.getString();  ///
 

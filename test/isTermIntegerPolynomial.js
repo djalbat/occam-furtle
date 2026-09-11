@@ -16,7 +16,7 @@ const logLevel = TRACE_LEVEL,
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `x^2 = x
+      content = `3x^2 = x
 `;
 
 describe.only(projectName, () => {
