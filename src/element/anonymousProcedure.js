@@ -35,7 +35,7 @@ export default define(class AnonymousProcedure extends Element {
 
     const anonymousProcedureString = this.getString(); ///
 
-    context.trace(`Calling the '${anonymousProcedureString}' anonymous function...`);
+    context.trace(`Evaluating the '${anonymousProcedureString}' anonymous function...`);
 
     return this.parameters.compareValues(values, context, (back) => {
       const variables = variablesFromValuesAndParameters(values, this.parameters, context);
@@ -54,7 +54,7 @@ export default define(class AnonymousProcedure extends Element {
           return back(exception);
         }
 
-        context.debug(`...called the '${anonymousProcedureString}' anonymous function.`);
+        context.debug(`...evaluated the '${anonymousProcedureString}' anonymous function.`);
 
         return forward(value, back);
       }, back);

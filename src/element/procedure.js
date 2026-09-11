@@ -109,7 +109,7 @@ export default define(class Procedure extends Element {
 
     const procedureString = this.getString();  ///
 
-    context.trace(`Calling the '${procedureString}' function...`);
+    context.trace(`Evaluating the '${procedureString}' function...`);
 
     return this.parameters.compareValues(values, context, (back) => {
       this.guaranteeReturnBlock();
@@ -130,7 +130,7 @@ export default define(class Procedure extends Element {
           return back(exception);
         }
 
-        context.debug(`...called the '${procedureString}' function.`);
+        context.debug(`...evaluated the '${procedureString}' function.`);
 
         return forward(value, back);
       }, back);

@@ -117,22 +117,4 @@ export default define(class Term extends Element {
   }
 
   static name = "Term";
-
-  static fromPrimitive(primitive, context) {
-    const primitiveString = primitive.getString(),
-          string = primitiveString, ///
-          node = null,
-          breakPoint = null,
-          variable = null,
-          negatedTerm = null,
-          logicalTerm = null,
-          bracketedTerm = null,
-          comparisonTerm = null;
-
-    context = null;
-
-    const term = new Term(context, string, node, breakPoint, variable, primitive, negatedTerm, logicalTerm, bracketedTerm, comparisonTerm);
-
-    return term;
-  }
 });

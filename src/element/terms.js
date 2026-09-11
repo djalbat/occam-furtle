@@ -36,12 +36,12 @@ export default define(class Terms extends Element {
     this.array.push(term);
   }
 
-  mapTerm(callback, forward, back) {
-    return map(this.array, callback, forward, back);
+  mapTerm(callback, context, forward, back) {
+    return map(this.array, callback, context, forward, back);
   }
 
   evaluate(context, back, forward) {
-    return this.mapTerm((term, forward, back) => {
+    return this.mapTerm((term, context, forward, back) => {
       return term.evaluate(context, forward, back);
     }, (valuesArray) => {
       const valuesString = valuesStringFromValuesArray(valuesArray),
