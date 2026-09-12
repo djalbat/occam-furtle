@@ -45,10 +45,10 @@ export default define(class Values extends Element {
   evaluate(context, forward, back) {
     return this.mapValue((value, forward, back) => {
       return value.evaluate(context, forward, back);
-    }, (valuesArray, back) => {
-      const valuesString = valuesStringFromValuesArray(valuesArray),
+    }, (array, back) => {
+      const valuesArray = array,  ///
+            valuesString = valuesStringFromValuesArray(valuesArray),
             string = valuesString, ///
-            array = valuesArray, ///
             node = null,
             breakPoint = null;
 

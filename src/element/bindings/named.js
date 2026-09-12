@@ -39,37 +39,6 @@ export default define(class NamedBindings extends Element {
     return forEach(this.array, callback, forward, back);
   }
 
-  compareTerms(terms, context, forward, back) {
-    const termsString = terms.getString(),
-          namedBindingsString = this.getString(); ///
-
-    context.trace(`Comparing the '${termsString}' terms with the '${namedBindingsString}' named bindings...`);
-
-    const termsLength = terms.getLength(),
-          namedBindingsLength = this.getLength();
-
-    if (termsLength !== namedBindingsLength) {
-      const message = `The '${termsString}' terms and '${namedBindingsString}' named bindings are not of the same length.`,
-            exception = Exception.fromMessage(message);
-
-      return back(exception);
-    }
-
-    return this.forEachNamedBinding((namedBinding, forward, back, index) => {
-      if (namedBinding === null) {
-        return forward(back);
-      }
-
-      const term = terms.getTerm(index);
-
-      return namedBinding.compareTerm(term, context, forward, back);
-    }, (back) => {
-      context.debug(`...compared the '${termsString}' terms with the '${namedBindingsString}' named bindings.`);
-
-      return forward(back);
-    }, back);
-  }
-
   compareNamedBinding(namedBinding, context, forward, back) {
     const namedBindingString = namedBinding.getString(),
           namedBindingsString = this.getString(); ///

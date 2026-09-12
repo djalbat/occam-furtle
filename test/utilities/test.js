@@ -10,13 +10,13 @@ const { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts 
 
 function createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, nominalValuesFromNothing) {
   let context,
-      releaseContext = null,
-      releaseContexts = [];
+      releaseContext = null;
 
   const log = Log.fromLogLevel(logLevel),
         callback = (breakPoint, context, forward, back) => {
           forward(breakPoint, back);
-        };
+        },
+        releaseContexts = [];
 
   before(() => {
     context = {
@@ -42,10 +42,6 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
     function fail(exception) {
       throw exception;
-
-      assert.isTrue(false);
-
-      done();
     }
   });
 
@@ -72,8 +68,10 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
       done();
     }
 
-    function back(exception) {
-      throw exception;
+    function back(exception = null) {
+      if (exception !== null) {
+        throw exception;
+      }
 
       assert.isTrue(false);
 
@@ -99,7 +97,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
 
     releaseContext = ReleaseContext.fromLogNameJSONEntriesCallbackAndCustomGrammar(log, name, json, entries, callback, customGrammar);
 
-    releaseContexts = [ ///
+    const releaseContexts = [ ///
       releaseContext,
       ...dependencyReleaseContexts
     ];
