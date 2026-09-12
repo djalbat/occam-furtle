@@ -97,7 +97,19 @@ export default define(class Apply extends Element {
         context.trace(`...evaluated the '${applyString}' function as '${valueString}'.`);
 
         return forward(value, back);
-      }, back);
+      }, (exception) => {
+        if (exception) {
+          return back(exception);
+        }
+
+        const boolean = false,
+              value = valueFromBoolean(boolean, context),
+              valueString = value.getString();
+
+        context.trace(`...evaluated the '${applyString}' function as '${valueString}'.`);
+
+        return forward(value, back);
+      });
     }, back);
   });
 

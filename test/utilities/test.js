@@ -122,7 +122,11 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
     }
 
     function back(exception) {
-      throw exception;
+      if (exception) {
+        throw exception;
+      }
+
+      assert.isTrue(false);
     }
   });
 }

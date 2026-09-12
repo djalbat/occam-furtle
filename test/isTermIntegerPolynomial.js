@@ -16,7 +16,7 @@ const logLevel = ERROR_LEVEL,
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `1\`+\`3x^2\ = x
+      content = `2x = x
 `;
 
 describe(projectName, () => {
