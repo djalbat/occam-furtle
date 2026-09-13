@@ -132,11 +132,19 @@ export function primtiveStringFromNominalValues(nominalValues) {
 }
 
 export function applyStringFromVariableAndValues(variable, values) {
-  const variableString = variable.getString(),
-        valuesString = values.getString(),
-        applyString = (valuesString !== EMPTY_STRING) ?
-                       `apply(${variableString}, ${valuesString})` :
-                         `apply(${variableString})`;
+  let parametersString;
+
+  const variableString = variable.getString();
+
+  parametersString = `${variableString}`;
+
+  if (values !== null) {
+    const valuesString = values.getString();
+
+    parametersString = `${parametersString}, ${valuesString}`;
+  }
+
+  const applyString = `apply(${parametersString})`;
 
   return applyString;
 }

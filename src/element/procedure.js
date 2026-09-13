@@ -137,16 +137,16 @@ export default define(class Procedure extends Element {
     }, back);
   });
 
-  callNominally(nominalValues, forward, back) {
+  evaluateNominally(nominalValues, forward, back) {
     const context = this.getContext(),
           procedureString = this.getString();  ///
 
-    context.trace(`Calling the '${procedureString}' function nominally...`);
+    context.trace(`Evaluating the '${procedureString}' function nominally...`);
 
     const values = valuesFromNominalValues(nominalValues, context);
 
     return this.evaluate(values, context, (value, back) => {
-      context.debug(`...called the '${procedureString}' function nominally.`);
+      context.debug(`...evaluated the '${procedureString}' function nominally.`);
 
       return forward(value, back);
     }, back);

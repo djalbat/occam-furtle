@@ -110,7 +110,7 @@ function createSuite(logLevel, filePath, projectName, procedureName, projectsDir
           procedure = procedureFromFilePathProcedureName(filePath, procedureName, context),
           nominalValues = nominalValuesFromNothing(context);
 
-    procedure.callNominally(nominalValues, forward, back);
+    procedure.evaluateNominally(nominalValues, forward, back);
 
     function forward(value) {
       const primitiveValue = value.getPrimitiveValue(),

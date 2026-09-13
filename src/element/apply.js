@@ -120,7 +120,9 @@ export default define(class Apply extends Element {
 
     values = Values.fromValue(value);
 
-    values = values.merge(this.values); ///
+    if (this.values !== null) {
+      values = values.merge(this.values); ///
+    }
 
     const { ProcedureCall } = elements,
           procedureCall = ProcedureCall.fromReferenceAndValues(reference, values, context);

@@ -797,8 +797,13 @@ export function nameFromLabelNode(labelNode, context) {
 }
 
 export function valuesFromApplyNode(allNode, context) {
-  const valuesNode = allNode.getValuesNode(), ///
-        values = valuesFromValuesNode(valuesNode, context);
+  let values = null;
+
+  const valuesNode = allNode.getValuesNode();
+
+  if (valuesNode !== null)  {
+    values = valuesFromValuesNode(valuesNode, context);
+  }
 
   return values;
 }
@@ -867,7 +872,7 @@ export function typeFromVariableNode(variableNode, context) {
 }
 
 export function variableFromApplyNode(allNode, context) {
-  const variableNode = allNode.getVariableNode(), ///
+  const variableNode = allNode.getVariableNode(),
         variable = variableFromVariableNode(variableNode, context);
 
   return variable;
