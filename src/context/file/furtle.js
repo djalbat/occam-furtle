@@ -108,6 +108,12 @@ export default class FurtleFileContext extends FileContext {
     return combinators;
   }
 
+  getTypeAliases(includeRelease = true) {
+    const typeAliases = [];
+
+    return typeAliases;
+  }
+
   getTypePrefixes(includeRelease = true) {
     const typePrefixes = [];
 
