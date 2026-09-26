@@ -2,9 +2,9 @@
 
 const { Log, ReleaseContext, verificationUtilities } =require("occam-languages");
 
-const { FileContextFromFilePath } = require("../utilities/fileContext"),
-      { releaseContextFromDependency } = require("../utilities/releaseContext"),
-      { procedureFromFilePathProcedureName } = require("../utilities/furtle");
+const { FileContextFromFilePath } = require(".//fileContext"),
+      { releaseContextFromDependency } = require(".//releaseContext"),
+      { procedureFromFilePathProcedureName } = require(".//furtle");
 
 const { createReleaseContexts, verifyReleaseContexts, initialiseReleaseContexts } = verificationUtilities;
 

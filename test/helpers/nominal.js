@@ -1,7 +1,8 @@
 "use strict";
 
-const { NominalValue } = require("../../lib/index"),
-      { nominalUtilities } = require("occam-languages");
+const { nominalUtilities } = require("occam-languages");
+
+const { NominalValue } = require("../../lib");
 
 const NominalFileContext = require("../context/file/nominal");
 

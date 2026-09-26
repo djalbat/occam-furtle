@@ -1,7 +1,8 @@
 "use strict";
 
-const { filePathUtilities } = require("occam-model"),
-      { FurtleFileContext } = require("../../lib/index");
+const { filePathUtilities } = require("occam-model");
+
+const { FurtleFileContext } = require("../../lib"); ///
 
 const { isFilePathFurtleFilePath } = filePathUtilities;
 

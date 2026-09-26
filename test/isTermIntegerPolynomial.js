@@ -3,8 +3,8 @@
 const { levels } =require("necessary"),
       { queryUtilities } = require("occam-query");
 
-const { createSuite } = require("./utilities/test"),
-      { nominalValuesFromContent } = require("./utilities/nominal");
+const { createSuite } = require("./helpers/test"),
+      { nominalValuesFromContent } = require("./helpers/nominal");
 
 const { nodesQuery } = queryUtilities,
       { ERROR_LEVEL } = levels;

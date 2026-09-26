@@ -3,8 +3,8 @@
 const { queryUtilities } = require("occam-query"),
       { levels, arrayUtilities } =require("necessary");
 
-const { createSuite } = require("./utilities/test"),
-      { nominalValuesFromContent } = require("./utilities/nominal");
+const { createSuite } = require("./helpers/test"),
+      { nominalValuesFromContent } = require("./helpers/nominal");
 
 const { first } = arrayUtilities,
       { nodesQuery } = queryUtilities,
