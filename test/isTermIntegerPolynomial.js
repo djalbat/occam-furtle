@@ -16,10 +16,10 @@ const logLevel = ERROR_LEVEL,
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `2x = x
+      content = `x^2 = x
 `;
 
-describe(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///
