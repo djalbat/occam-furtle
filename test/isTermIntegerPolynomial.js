@@ -7,19 +7,19 @@ const { createSuite } = require("./helpers/test"),
       { nominalValuesFromContent } = require("./helpers/nominal");
 
 const { nodesQuery } = queryUtilities,
-      { TRACE_LEVEL } = levels;
+      { ERROR_LEVEL } = levels;
 
-const logLevel = TRACE_LEVEL,
+const logLevel = ERROR_LEVEL,
       filePath = "polynomials/Funcions/Integer polynomials.ftl",
       projectName = "polynomials",
-      procedureName = "isTermCompound",
+      procedureName = "isTermIntegerPolynomial",
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `5x = x
+      content = `-5x^2 + x + 2 = x
 `;
 
-describe.only(projectName, () => {
+describe(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///
