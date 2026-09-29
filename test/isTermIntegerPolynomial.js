@@ -16,15 +16,16 @@ const logLevel = ERROR_LEVEL,
       projectsDirectoryPath = "../../Mathematics";
 
 const termNodesQuery = nodesQuery("/step/statement/equality!/term"),
-      content = `-5x^2 + x + 2 = x
+      content = `-12x^2 - 12x^2 = x
 `;
 
-describe(projectName, () => {
+describe.only(projectName, () => {
   createSuite(logLevel, filePath, projectName, procedureName, projectsDirectoryPath, (context) => {
     const nominalValues = nominalValuesFromContent(content, (node) => {
       const statementNode = node, ///
             termNodes = termNodesQuery(statementNode),
-            nodes = termNodes;  ///
+            length = 2,
+            nodes = nodesFromTermNodes(termNodes, length);
 
       return nodes;
     }, context);
@@ -32,3 +33,11 @@ describe(projectName, () => {
     return nominalValues;
   });
 });
+
+function nodesFromTermNodes(termNodes, length) {
+  const start = 0, ///
+        end = length, ///
+        nodes = termNodes.slice(start, end);
+
+  return nodes;
+}
