@@ -12,5 +12,5 @@ export default class ImportBindingsNode extends NonTerminalNode {
     return importBindingNodes;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ImportBindingsNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(ImportBindingsNode, ruleName, childNodes, precedence, opacity); }
 }

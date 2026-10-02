@@ -12,5 +12,5 @@ export default class BracketedTermNode extends TermNode {
     return termNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return TermNode.fromRuleNameChildNodesOpacityAndPrecedence(BracketedTermNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return TermNode.fromRuleNameChildNodesPrecedenceAndOpacity(BracketedTermNode, ruleName, childNodes, precedence, opacity); }
 }

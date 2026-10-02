@@ -19,5 +19,5 @@ export default class ListAssignmentNode extends AssignmentrNode {
     return parametersNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentrNode.fromRuleNameChildNodesOpacityAndPrecedence(ListAssignmentNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return AssignmentrNode.fromRuleNameChildNodesPrecedenceAndOpacity(ListAssignmentNode, ruleName, childNodes, precedence, opacity); }
 }

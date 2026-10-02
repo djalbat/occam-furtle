@@ -37,7 +37,7 @@ export default class ImportStatementNode extends NonTerminalNode {
     return importBindingsNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ImportStatementNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(ImportStatementNode, ruleName, childNodes, precedence, opacity); }
 }
 
 function trim(content) {

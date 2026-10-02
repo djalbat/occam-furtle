@@ -12,5 +12,5 @@ export default class NegatedTermNode extends TermNode {
     return termNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return TermNode.fromRuleNameChildNodesOpacityAndPrecedence(NegatedTermNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return TermNode.fromRuleNameChildNodesPrecedenceAndOpacity(NegatedTermNode, ruleName, childNodes, precedence, opacity); }
 }

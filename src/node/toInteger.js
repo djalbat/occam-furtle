@@ -12,5 +12,5 @@ export default class ToIntegerNode extends NonTerminalNode {
     return variableNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ToIntegerNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(TernaryNodeToIntegerNode, ruleName, childNodes, precedence, opacity); }
 }

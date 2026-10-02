@@ -47,21 +47,19 @@ export default class BindingNode extends NonTerminalNode {
     return typeNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
-    if (precedence === undefined) {
-      precedence = opacity; ///
+  static fromRuleNameChildNodesPrecedenceAndOpacity(Class, ruleName, childNodes, precedence, opacity) {
+    if (opacity === undefined) {
+      opacity = precedence; ///
 
-      opacity = childNodes; ///
-
-      childNodes = ruleName;  ///
+      precedence = childNodes; ///
 
       ruleName = Class; ///
 
       Class = BindingNode;
     }
 
-    const parametersNode = NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence);
+    const bindingNode = NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(Class, ruleName, childNodes, precedence, opacity);
 
-    return parametersNode;
+    return bindingNode;
   }
 }

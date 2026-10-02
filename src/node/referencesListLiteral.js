@@ -19,5 +19,5 @@ export default class ReferencesListLiteralNode extends NonTerminalNode {
     return referencesNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(ReferencesListLiteralNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(ReferencesListLiteralNode, ruleName, childNodes, precedence, opacity); }
 }

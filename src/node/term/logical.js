@@ -76,5 +76,5 @@ export default class LogicalTermNode extends TermNode {
     return firstTermNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return TermNode.fromRuleNameChildNodesOpacityAndPrecedence(LogicalTermNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return TermNode.fromRuleNameChildNodesPrecedenceAndOpacity(LogicalTermNode, ruleName, childNodes, precedence, opacity); }
 }

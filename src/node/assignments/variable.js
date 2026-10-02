@@ -19,5 +19,5 @@ export default class VariableAssignmentsNode extends AssignmentsNode {
     return variableAssingnmentNodss;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return AssignmentsNode.fromRuleNameChildNodesOpacityAndPrecedence(VariableAssignmentsNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return AssignmentsNode.fromRuleNameChildNodesPrecedenceAndOpacity(VariableAssignmentsNode, ruleName, childNodes, precedence, opacity); }
 }

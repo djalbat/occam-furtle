@@ -23,5 +23,5 @@ export default class NamedBindingNode extends BindingNode {
     return alias;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return BindingNode.fromRuleNameChildNodesOpacityAndPrecedence(NamedBindingNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return BindingNode.fromRuleNameChildNodesPrecedenceAndOpacity(NamedBindingNode, ruleName, childNodes, precedence, opacity); }
 }

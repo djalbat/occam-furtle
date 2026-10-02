@@ -64,5 +64,5 @@ export default class ComparisonTermNode extends TermNode {
     return secondTermNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(ruleName, childNodes, opacity, precedence) { return TermNode.fromRuleNameChildNodesOpacityAndPrecedence(ComparisonTermNode, ruleName, childNodes, opacity, precedence); }
+  static fromRuleNameChildNodesPrecedenceAndOpacity(ruleName, childNodes, precedence, opacity) { return TermNode.fromRuleNameChildNodesPrecedenceAndOpacity(ComparisonTermNode, ruleName, childNodes, precedence, opacity); }
 }

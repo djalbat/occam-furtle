@@ -53,11 +53,11 @@ class TermNode extends NonTerminalNode {
     return comparisonNode;
   }
 
-  static fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence) {
-    if (precedence === undefined) {
-      precedence = opacity; ///
+  static fromRuleNameChildNodesPrecedenceAndOpacity(Class, ruleName, childNodes, precedence, opacity) {
+    if (opacity === undefined) {
+      opacity = precedence; ///
 
-      opacity = childNodes; ///
+      precedence = childNodes; ///
 
       childNodes = ruleName;  ///
 
@@ -66,7 +66,7 @@ class TermNode extends NonTerminalNode {
       Class = TermNode;
     }
 
-    const termNode = NonTerminalNode.fromRuleNameChildNodesOpacityAndPrecedence(Class, ruleName, childNodes, opacity, precedence);
+    const termNode = NonTerminalNode.fromRuleNameChildNodesPrecedenceAndOpacity(Class, ruleName, childNodes, precedence, opacity);
 
     return termNode;
   }
