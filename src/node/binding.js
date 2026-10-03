@@ -53,6 +53,8 @@ export default class BindingNode extends NonTerminalNode {
 
       precedence = childNodes; ///
 
+      childNodes = ruleName; ///
+
       ruleName = Class; ///
 
       Class = BindingNode;
