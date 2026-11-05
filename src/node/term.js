@@ -1,7 +1,7 @@
 "use strict";
 
 import { nodeMixins } from "occam-languages";
-import { NonTerminalNode } from "occam-grammar-utilities";
+import { NonTerminalNode } from "occam-parsers";
 
 import { VARIABLE_RULE_NAME,
          PRIMITIVE_RULE_NAME,
