@@ -1,6 +1,6 @@
 "use strict";
 
-const bnf = `
+const bnf =  `
 
       document                ::=  ( importStatement | procedure | error )+ ;
       
@@ -85,7 +85,7 @@ const bnf = `
       bindings                ::=  binding ( "," binding )* ;
       
       values                  ::=  value ( "," value )* ;
-      
+            
   
   
       importBinding           ::=  reference ( "as" label )? ;   
@@ -140,9 +140,9 @@ const bnf = `
       
       bracketedTerm           ::=  "(" term ")" ; 
       
-      comparisonTerm          ::=  term ( "==" | "!=" ) \` term (-2) ; 
+      comparisonTerm          ::=  term ( "==" | "!=" ) term (-2) ; 
       
-      logicalTerm             ::=  term ( "||" | "&&" ) \` term (-1) ; 
+      logicalTerm             ::=  term ( "||" | "&&" ) term (-1) ; 
   
       negatedTerm             ::=  "!"<NO_WHITESPACE>term (-3) ; 
       
