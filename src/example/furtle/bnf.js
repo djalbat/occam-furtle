@@ -1,6 +1,6 @@
 "use strict";
 
-const bnf =  `
+const bnf = `
 
       document                ::=  ( importStatement | procedure | error )+ ;
       
@@ -85,8 +85,6 @@ const bnf =  `
       bindings                ::=  binding ( "," binding )* ;
       
       values                  ::=  value ( "," value )* ;
-      
-      terms                   ::=  term ( "," term )* ;
       
   
   
